@@ -1,0 +1,214 @@
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+
+
+                <!-- <input type="file" multiple (change)="onFileSelected($event.target.files)">
+
+    <button (click)="upload()">Upload</button> -->
+
+
+                <simple-table *ngIf="newsTables?.approvedNews?.tableData?.headerContent?.length>0"
+                    [tableData]="newsTables.approvedNews.tableData" [tableMetaData]="newsTables.approvedNews.metaData"
+                    (actionEmitter)="actionEmitter($event)"></simple-table>
+
+            </div>
+            <div class="col-md-12">
+                <simple-table *ngIf="newsTables?.notApprovedNews?.tableData?.headerContent?.length>0"
+                    [tableData]="newsTables.notApprovedNews.tableData"
+                    [tableMetaData]="newsTables.notApprovedNews.metaData"
+                    (actionEmitter)="actionEmitter($event)"></simple-table>
+
+            </div>
+            <div class="col-md-12">
+                <simple-table *ngIf="newsTables?.rejectedNews?.tableData?.headerContent?.length>0"
+                    [tableData]="newsTables.rejectedNews.tableData" [tableMetaData]="newsTables.rejectedNews.metaData"
+                    (actionEmitter)="actionEmitter($event)"></simple-table>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- Button trigger modal -->
+<button type="button" id="publishNewsBtn" class="btn btn-primary d-none" data-toggle="modal" data-target="#addEmployee">
+    Add Employee
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="addEmployee" data-backdrop="static" data-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">{{actionType === 'create' ? 'Add ' : actionType ===
+                    'edit' ? 'Edit':''}} News</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form (ngSubmit)="newsForm.form.valid && signUpCreds()" #newsForm="ngForm" novalidate
+                class="col-12 row m-0 p-0">
+                <div class="modal-body col-12 row custom-form-body">
+
+                    <div class="col-12 mb-4">
+                        <label class="form-label" for="logintitle">Title</label>
+                        <input type="text" class="form-control form-control-lg" name="title"
+                            placeholder="Enter a valid title" [(ngModel)]="publishNewsForm['title']" #title="ngModel"
+                            required [disabled]="disableFields" required
+                            [ngClass]="{ 'is-invalid': newsForm.submitted && title.invalid }" />
+                        <div *ngIf="newsForm.submitted && title.invalid" class="invalid-feedback">
+                            <div *ngIf="title.errors.required">This field is required</div>
+                        </div>
+                    </div>
+
+
+
+                    <ng-container *ngIf="actionType === 'reject'; else defaultLoad">
+                        <div class="col-12 mb-4">
+                            <label class="form-label" for="loginrejectedReason">Reason for Rejection</label>
+                            <input type="text" class="form-control form-control-lg" name="rejectedReason"
+                                placeholder="Enter a valid rejectedReason" [(ngModel)]="publishNewsForm['rejectedReason']"
+                                #rejectedReason="ngModel" required  required
+                                [ngClass]="{ 'is-invalid': newsForm.submitted && rejectedReason.invalid }" />
+                            <div *ngIf="newsForm.submitted && rejectedReason.invalid" class="invalid-feedback">
+                                <div *ngIf="rejectedReason.errors.required">This field is required</div>
+                            </div>
+                        </div>
+
+                    </ng-container>
+
+                    <ng-template #defaultLoad>
+
+                        <div class="col-12 mb-4">
+                            <label class="form-label" for="loginsub_title">Sub Title</label>
+                            <input type="text" class="form-control form-control-lg"
+                                placeholder="Enter a valid sub title" name="sub_title"
+                                [(ngModel)]="publishNewsForm['sub_title']" #sub_title="ngModel" required
+                                [disabled]="disableFields"
+                                [ngClass]="{ 'is-invalid': newsForm.submitted && sub_title.invalid }" />
+                            <div *ngIf="newsForm.submitted && sub_title.invalid" class="invalid-feedback">
+                                <div *ngIf="sub_title.errors.required">This field is required</div>
+                            </div>
+                        </div>
+                        <div class="col-12 mb-4 row">
+                            <label class="form-label col" for="loginimages">Photo(s)
+
+
+                                <span class="text-muted" style="font-size: 0.6rem;">Only 3 Images are allowed</span>
+                            </label>
+                            <button class="btn pull-right col" type="button" [disabled]="disableFields" (click)="openImageUpload()">Click or touch
+                                here
+                                to upload images/photos </button>
+                            <ng-container
+                                *ngIf="publishNewsForm && publishNewsForm['images'] && publishNewsForm['images'].length>0">
+                                <div class="col-12 d-flex">
+                                    <span class="mx-1 cursor-pointer border rounded px-1 pt-1 image_holder"
+                                        *ngFor="let images of publishNewsForm['images']; let i=index;">
+
+                                        <img [src]="'https://drive.google.com/uc?export=view&id='+images.id" alt="Er"
+                                            class="custom_upload_image">
+
+                                        <span
+                                            *ngIf="(actionType === 'create' || actionType === 'update')"
+                                            class="text-center h6 font-weight-bold text-center w-100 m-0 pt-1 pb-0"
+                                            (click)="removeImage(i)"><i
+                                                class="material-icons text-danger">delete_forever</i></span>
+                                    </span>
+                                </div>
+                            </ng-container>
+                            <input type="file" id="loginimages" class="form-control form-control-lg d-none"
+                                placeholder="Enter a valid images" name="images" [(ngModel)]="images" #image="ngModel"
+                                [disabled]="disableFields"
+                                [ngClass]="{ 'is-invalid': newsForm.submitted && images.invalid }" type="file"
+                                (change)="upload($event.target.files)" multiple accept=".png, .jpg, .jpeg, .gif" />
+                            <div *ngIf="newsForm.submitted && images.invalid" class="invalid-feedback">
+                                <div *ngIf="images.errors.required">This field is required</div>
+                            </div>
+                        </div>
+                        <div class="col-12 mb-4">
+                            <label class="form-label" for="logindescription">Content</label>
+                            <textarea cols="30" rows="5" class="form-control form-control-lg"
+                                placeholder="Enter a valid content" name="description"
+                                [(ngModel)]="publishNewsForm['description']" #description="ngModel" required
+                                [disabled]="disableFields"
+                                [ngClass]="{ 'is-invalid': newsForm.submitted && description.invalid }"></textarea>
+                            <div *ngIf="newsForm.submitted && description.invalid" class="invalid-feedback">
+                                <div *ngIf="description.errors.required">This field is required</div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 mb-3">
+                            <label class="form-label" for="loginState">State</label>
+                            <ng-select [items]="metaData['STATES']" bindLabel="label" bindValue="value" name="state"
+                                class="form-control form-control-lg" required placeholder="Enter state"
+                                [(ngModel)]="publishNewsForm['state']" #state="ngModel" [clearable]="false"
+                                [ngClass]="{ 'is-invalid': newsForm.submitted && state.invalid }"
+                                (ngModelChange)="changeOfState();publishNewsForm['district']=null;publishNewsForm['mandal']=null; ">
+                            </ng-select>
+
+                            <div *ngIf="newsForm.submitted && state.invalid" class="invalid-feedback">
+                                <div *ngIf="state.errors.required">This field is required</div>
+                            </div>
+                        </div>
+                        <ng-container *ngIf="publishNewsForm['state']">
+
+                            <div class="col-12 mb-3">
+                                <label class="form-label" for="loginDistrict">District</label>
+                                <ng-select [items]="metaData[publishNewsForm['state']+'_DISTRICTS']" bindLabel="label"
+                                    bindValue="value" [disabled]="disableFields" name="district"
+                                    class="form-control form-control-lg" required placeholder="Select District"
+                                    [(ngModel)]="publishNewsForm['district']" #district="ngModel" [clearable]="false"
+                                    [ngClass]="{ 'is-invalid': newsForm.submitted && district.invalid }"
+                                    (ngModelChange)="publishNewsForm['mandal']=null; ">
+                                </ng-select>
+                                <div *ngIf="newsForm.submitted && district.invalid" class="invalid-feedback">
+                                    <div *ngIf="district.errors.required">This field is required</div>
+                                </div>
+                            </div>
+                            <div class="col-12 mb-3" *ngIf="publishNewsForm['district']">
+                                <label class="form-label" for="loginMandal">Mandal</label>
+                                <ng-select
+                                    [items]="metaData[publishNewsForm['state']+'_DISTRICT_MANDALS'][publishNewsForm['district']]"
+                                    [disabled]="disableFields" name="mandal" class="form-control form-control-lg"
+                                    required placeholder="Select mandal" [(ngModel)]="publishNewsForm['mandal']"
+                                    #mandal="ngModel" [clearable]="false"
+                                    [ngClass]="{ 'is-invalid': newsForm.submitted && mandal.invalid }">
+                                </ng-select>
+
+                                <div *ngIf="newsForm.submitted && mandal.invalid" class="invalid-feedback">
+                                    <div *ngIf="mandal.errors.required">This field is required</div>
+                                </div>
+                            </div>
+                        </ng-container>
+
+                    </ng-template>
+
+
+
+                    <!-- <div class="col-12 text-center text-lg-start mt-4 pt-2">
+                        <button type="submit" class="btn btn-primary btn-lg"
+                            style="padding-left: 2.5rem; padding-right: 2.5rem;">Login</button>
+                    </div> -->
+                </div>
+                <div class="modal-footer col-12 row">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <!-- <button type="button" class="btn btn-primary">Understood</button> -->
+                    <button type="submit" class="btn btn-primary btn-lg" *ngIf="actionType !== 'view'"
+                        style="padding-left: 2.5rem; padding-right: 2.5rem;">
+
+                        {{ actionType === 'approve' ? 'Approve': actionType === 'reject' ? 'Reject':actionType === 'create' ? 'Create':actionType === 'update' ? 'Update':''
+
+                    
+                
+                }}
+
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

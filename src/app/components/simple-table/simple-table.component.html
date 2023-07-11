@@ -1,0 +1,58 @@
+<div class="card">
+    <div class="card-header card-header-danger" *ngIf="tableMetaData && checkKeysPresent(tableMetaData).length>0">
+        <h4 class="card-title " *ngIf="tableMetaData.title">{{tableMetaData.title}}</h4>
+        <p class="card-category" *ngIf="tableMetaData.subtitle"> {{tableMetaData.subtitle}}</p>
+        <button class="btn btn-primary create_button" *ngIf="tableMetaData.createNew" (click)="triggerAction('create', tableMetaData.createNew)">
+            <i *ngIf="tableMetaData.createNew.icon" class="material-icons">{{tableMetaData.createNew.icon}}</i>
+            <span>&nbsp; {{tableMetaData.createNew.label ? tableMetaData.createNew.label : 'Add'}}</span></button>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table" *ngIf="tableData?.headerContent?.length>0">
+                <thead class=" text-primary">
+                    <th>
+                        S.No
+                    </th>
+                    <th *ngIf="tableMetaData?.actions?.length>0">
+                        Actions
+                    </th>
+                    <th *ngFor="let thead of tableData.headerContent">
+                        {{thead.label}}
+                    </th>
+
+                </thead>
+                <tbody>
+                    <tr *ngFor="let tbody of tableData.bodyContent; let i=index;">
+                        <td>
+                            {{i+1}}
+                        </td>
+                        <td *ngIf="tableMetaData?.actions?.length>0">
+                            <ng-container *ngFor="let actButton of tableMetaData.actions">
+                                <button *ngIf="actButton.type === 'button'" class="btn btn-sm p-1 {{actButton.class}}" (click)="triggerAction(actButton.key, actButton, tbody)"
+                                [title]="actButton.tooltip" placement="right" >
+                                    <i *ngIf="actButton.icon" class="material-icons">{{actButton.icon}}</i>
+                                    <span *ngIf="actButton.label" 
+                                        >{{actButton.label}}</span>
+                                </button>
+
+                            </ng-container>
+                        </td>
+                        <td *ngFor="let thead of tableData.headerContent">
+                            
+                            <ng-container *ngIf="thead.type && thead.type === 'dataTimePipe'; else defaultText">
+                                {{tbody[thead.key] | date:'medium'}} 
+                                
+                            </ng-container>
+                            <ng-template #defaultText>
+
+                                {{tbody[thead.key]}}
+                            </ng-template>
+                        </td>
+
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

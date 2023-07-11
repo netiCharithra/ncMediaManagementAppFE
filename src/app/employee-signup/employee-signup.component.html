@@ -1,0 +1,132 @@
+<section class="vh-100">
+    <div class="container-fluid h-custom">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col-md-9 col-lg-6 col-xl-5">
+                <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp"
+                    class="img-fluid" alt="Sample image">
+            </div>
+            <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1 row">
+              
+                    <div class="text-center col-12">
+                        <img src="./../../assets/img/ncmedia/fullLogo.png" alt="" class="w-50">
+                        <p class="lead fw-normal mb-0 me-3 d-block w-100 text-muted">SignUp to NC Media Group</p>
+
+                    </div>
+                    <div class="col-12 row">
+
+                        <form (ngSubmit)="signUpForm.form.valid && signUpCreds()" #signUpForm="ngForm" novalidate class="col-12 row">
+    
+                            <div class="col-12 mb-4">
+                                <label class="form-label" for="loginName">Name</label>
+                                <input type="text" id="loginName" class="form-control form-control-lg"
+                                    placeholder="Enter a valid name" name="name" [(ngModel)]="signUpFormValues['name']"
+                                    #name="ngModel" required
+                                    [ngClass]="{ 'is-invalid': signUpForm.submitted && name.invalid }" />
+                                <div *ngIf="signUpForm.submitted && name.invalid" class="invalid-feedback">
+                                    <div *ngIf="name.errors.required">This field is required</div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-12 mb-4">
+                                <label class="form-label" for="loginEmail">Email address</label>
+                                <input type="email" id="loginEmail" class="form-control form-control-lg"
+                                    placeholder="Enter a valid email address" name="mail"
+                                    [(ngModel)]="signUpFormValues['mail']" #mail="ngModel" required
+                                    [ngClass]="{ 'is-invalid': signUpForm.submitted && mail.invalid }"
+                                    pattern="^(?=.{1,254}$)(?=.{1,64}@)[-!#$%&'*+/0-9=?A-Z^_`a-z{|}~]+(\.[-!#$%&'*+/0-9=?A-Z^_`a-z{|}~]+)*@[A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?(\.[A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?)*$" />
+                                <div *ngIf="signUpForm.submitted && mail.invalid" class="invalid-feedback">
+                                    <div *ngIf="mail.errors.required">This field is required</div>
+                                    <div *ngIf="mail.errors.pattern">Invalid email format</div>
+                                </div>
+                            </div>
+                            <div class="col-12 mb-3">
+                                <label class="form-label" for="loginPassword">Password</label>
+                                <input type="password" id="loginPassword" class="form-control form-control-lg" required
+                                    placeholder="Enter password" [(ngModel)]="signUpFormValues['password']" name="password"
+                                    #password="ngModel"
+                                    [ngClass]="{ 'is-invalid': signUpForm.submitted && password.invalid }" />
+                                <div *ngIf="signUpForm.submitted && password.invalid" class="invalid-feedback">
+                                    <div *ngIf="password.errors.required">This field is required</div>
+                                </div>
+                            </div>
+                            <div class="col-12 mb-3">
+                                <label class="form-label" for="loginState">State</label>
+                                <ng-select [items]="metaData['STATES']" bindLabel="label" bindValue="value" name="state"
+                                    class="form-control form-control-lg" required placeholder="Enter state"
+                                    [(ngModel)]="signUpFormValues['state']" #state="ngModel" [clearable]="false"
+                                    [ngClass]="{ 'is-invalid': signUpForm.submitted && state.invalid }"
+                                    (ngModelChange)="changeOfState();signUpFormValues['district']=null;signUpFormValues['mandal']=null; ">
+                                </ng-select>
+    
+                                <div *ngIf="signUpForm.submitted && state.invalid" class="invalid-feedback">
+                                    <div *ngIf="state.errors.required">This field is required</div>
+                                </div>
+                            </div>
+                            <ng-container *ngIf="signUpFormValues['state']">
+    
+                                <div class="col-12 mb-3">
+                                    <label class="form-label" for="loginDistrict">District</label>
+                                    <ng-select [items]="metaData[signUpFormValues['state']+'_DISTRICTS']" bindLabel="label"
+                                        bindValue="value" name="district" class="form-control form-control-lg" required
+                                        placeholder="Select District" [(ngModel)]="signUpFormValues['district']"
+                                        #district="ngModel" [clearable]="false"
+                                        [ngClass]="{ 'is-invalid': signUpForm.submitted && district.invalid }"
+                                        (ngModelChange)="signUpFormValues['mandal']=null; ">
+                                    </ng-select>
+                                    <div *ngIf="signUpForm.submitted && district.invalid" class="invalid-feedback">
+                                        <div *ngIf="district.errors.required">This field is required</div>
+                                    </div>
+                                </div>
+                                <div class="col-12 mb-3" *ngIf="signUpFormValues['district']">
+                                    <label class="form-label" for="loginMandal">Mandal</label>
+                                    <ng-select [items]="metaData[signUpFormValues['state']+'_DISTRICT_MANDALS'][signUpFormValues['district']]"
+                                        name="mandal" class="form-control form-control-lg" required placeholder="Select mandal"
+                                        [(ngModel)]="signUpFormValues['mandal']" #mandal="ngModel" [clearable]="false"
+                                        [ngClass]="{ 'is-invalid': signUpForm.submitted && mandal.invalid }"
+                                   >
+                                    </ng-select>
+                                   
+                                    <div *ngIf="signUpForm.submitted && mandal.invalid" class="invalid-feedback">
+                                        <div *ngIf="mandal.errors.required">This field is required</div>
+                                    </div>
+                                </div>
+                            </ng-container>
+                            <div class="col-12 mb-4">
+                                <label class="form-label" for="loginMobile">Mobile</label>
+                                <input type="number" id="loginMobile" class="form-control form-control-lg" placeholder="Enter a valid Mobile number"
+                                    name="mobile" [(ngModel)]="signUpFormValues['mobile']" #mobile="ngModel" required
+                                    [ngClass]="{ 'is-invalid': signUpForm.submitted && mobile.invalid }" />
+                                <div *ngIf="signUpForm.submitted && mobile.invalid" class="invalid-feedback">
+                                    <div *ngIf="mobile.errors.required">This field is required</div>
+                                </div>
+                            </div>
+                            <div class="col-12 mb-3">
+                                <label class="form-label" for="loginRole">Role</label>
+                                <ng-select [items]="metaData['ROLE']"
+                                    name="role" class="form-control form-control-lg" required placeholder="Select role"
+                                    [(ngModel)]="signUpFormValues['role']" #role="ngModel" [clearable]="false"
+                                    [ngClass]="{ 'is-invalid': signUpForm.submitted && role.invalid }">
+                                </ng-select>
+                            
+                                <div *ngIf="signUpForm.submitted && role.invalid" class="invalid-feedback">
+                                    <div *ngIf="role.errors.required">This field is required</div>
+                                </div>
+                            </div>
+                            <div class="col-12 text-center text-lg-start mt-4 pt-2">
+                                <button type="submit" class="btn btn-primary btn-lg"
+                                    style="padding-left: 2.5rem; padding-right: 2.5rem;">Login</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- <div class="divider d-flex align-items-center my-4">
+            <p class="text-center fw-bold mx-3 mb-0">Or</p>
+          </div> -->
+
+                    <!-- Email input -->
+
+
+            </div>
+        </div>
+    </div>
+</section>
