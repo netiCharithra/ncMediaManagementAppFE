@@ -5,7 +5,7 @@
 
 export const environment = {
   production: false,
-  base_url:'http://localhost:3000/',
+  base_url: 'https://handsome-visor-hare.cyclic.app/',
   googleDrive: {
     // insert credentials here
     apiKey: "AIzaSyDXivxGi5FHfWDAW1U1qcsjlH0_XxBur7Y",
