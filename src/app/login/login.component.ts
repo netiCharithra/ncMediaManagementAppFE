@@ -21,20 +21,19 @@ export class LoginComponent implements OnInit {
   }
 
   loginCreds = () =>{
-    console.log(this.loginFormValues)
     try {
+      this.appService.loaderService=true;
       this.appService.userLogin(this.loginFormValues).subscribe((response) => {
-        // this.toaster.toast('error', 'Error', response.msg || "MESSS", true);
-        // this.alertService.open("success", "Success",response.msg || "MSEE")
         if(response.status === 'success'){
           this.storage.api.session.save('userData',response.data)
-          // console.log(success)
           this.router.navigate(['/app']);
         } else {
           this.alertService.open("error", response.status.charAt(0).toUpperCase() + response.status.slice(1) , response.msg || "Failed !")
         }
+        this.appService.loaderService = false;
       })
     } catch (error) {
+      this.appService.loaderService = false;
       console.error(error)
     }
   }

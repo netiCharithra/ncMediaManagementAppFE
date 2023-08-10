@@ -20,19 +20,17 @@ export class EmployeesListComponent implements OnInit {
   }
   getAllEmployees = () => {
     try {
+      this.appService.loaderService = true;
       this.appService.getAllEmployees({}).subscribe((response) => {
-        // this.toaster.toast('error', 'Error', response.msg || "MESSS", true);
-        console.log(response)
         if (response.status === 'success') {
-          console.log(response['data']);
-          this.employeeTables = this.employeeTablesCopy = response['data'] || []
-          // this.alertService.open("success", "Success", response.msg || " ");
-          // this.router.navigate(['/login']);
+          this.employeeTables = this.employeeTablesCopy = response['data'] || [];
         } else {
           this.alertService.open('error', response.status.charAt(0).toUpperCase() + response.status.slice(1), response.msg || "Failed !")
         }
+        this.appService.loaderService = false;
       })
     } catch (error) {
+      this.appService.loaderService = false;
       console.error(error)
     }
   }

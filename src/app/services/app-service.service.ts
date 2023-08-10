@@ -7,6 +7,7 @@ import { Config } from './../config/config';
 })
 export class AppServiceService {
 
+  public loaderService:boolean=false;
   constructor(private _httplayer:HttpLayerService) { }
 
   userLogin(data: any) {

@@ -8,13 +8,14 @@ declare interface RouteInfo {
   title: string;
   icon: string;
   class: string;
+  hidden?: boolean;
 }
 export const ROUTES: RouteInfo[] = [
   { path: '/app/dashboard', title: 'Dashboard', icon: 'dashboard', class: '' },
   { path: '/app/news', title: 'News', icon: 'newspaper', class: '' },
   { path: '/app/employees', title: 'Employees', icon: 'groups_3', class: '' },
   { path: '/app/employee-management', title: 'Employee Management', icon: 'badge', class: '' },
-  // { path: '/app/user-profile', title: 'User Profile', icon: 'person', class: '' },
+  { path: '/app/user-profile', title: 'User Profile', icon: 'person', class: '', hidden:true },
   // { path: '/app/table-list', title: 'Table List', icon: 'content_paste', class: '' },
   // { path: '/app/typography', title: 'Typography', icon: 'library_books', class: '' },
   // { path: '/app/icons', title: 'Icons', icon: 'bubble_chart', class: '' },
@@ -31,10 +32,13 @@ export const ROUTES: RouteInfo[] = [
 })
 export class SidebarComponent implements OnInit {
   menuItems: any[];
+  public userData: any = {};
 
   constructor(private router:Router, private storage:StorageService) { }
 
   ngOnInit() {
+    this.userData = this.storage.api.session.get('userData');
+
     this.menuItems = ROUTES.filter(menuItem => menuItem);
   }
   isMobileMenu() {
@@ -59,4 +63,5 @@ export class SidebarComponent implements OnInit {
       console.error(error)
     }
   }
+  
 }

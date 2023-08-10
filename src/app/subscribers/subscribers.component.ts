@@ -20,6 +20,7 @@ export class SubscribersComponent implements OnInit {
 
   getSubscribers = () => {
     try {
+      this.appService.loaderService = true;
       this.tableData={};
       this.appService.getSubscribers({}).subscribe((response) => {
         // this.toaster.toast('error', 'Error', response.msg || "MESSS", true);
@@ -28,8 +29,10 @@ export class SubscribersComponent implements OnInit {
         } else {
           this.alertService.open("error", response.status.charAt(0).toUpperCase() + response.status.slice(1), response.msg || "Failed !")
         }
+        this.appService.loaderService = false;
       })
     } catch (error) {
+      this.appService.loaderService = false;
       console.error(error)
     }
   }

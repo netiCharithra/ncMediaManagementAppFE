@@ -28,20 +28,17 @@ export class NewsPublicationComponent implements OnInit {
     this.getNewsList()
   }
 
-
   getNewsList = () => {
     try {
+      this.appService.loaderService = true;
+
       this.appService.getNewsList({}).subscribe((response) => {
-        // this.toaster.toast('error', 'Error', response.msg || "MESSS", true);
-        console.log(response)
         if (response.status === 'success') {
-          console.log(response['data']);
-          this.newsTables = response['data'] || {}
-          // this.alertService.open("success", "Success", response.msg || " ");
-          // this.router.navigate(['/login']);
+          this.newsTables = response['data'] || {};
         } else {
           this.alertService.open('error', response.status.charAt(0).toUpperCase() + response.status.slice(1), response.msg || "Failed !")
         }
+        this.appService.loaderService = false;
       })
     } catch (error) {
       console.error(error)
@@ -50,30 +47,44 @@ export class NewsPublicationComponent implements OnInit {
 
   getNewsInfo = (data:any) => {
     try {
+      this.appService.loaderService = true;
       this.appService.getNewsInfo(data).subscribe((response) => {
-        // this.toaster.toast('error', 'Error', response.msg || "MESSS", true);
-        console.log(response)
         if (response.status === 'success') {
-          console.log(response['data']);
           this.publishNewsForm = response['data'] || {};
           document.getElementById('publishNewsBtn').click();
-          // this.alertService.open("success", "Success", response.msg || " ");
-          // this.router.navigate(['/login']);
         } else {
           this.alertService.open('error', response.status.charAt(0).toUpperCase() + response.status.slice(1), response.msg || "Failed !")
         }
+        this.appService.loaderService = false;
       })
     } catch (error) {
       console.error(error)
+      this.appService.loaderService = false;
     }
   }
 
   actionEmitter = (event) => {
     try {
+
+
+      const userData = this.storage.api.session.get('userData'); 
+
+      if (!userData['profilePicture'] || !userData['identityProof']){
+        this.alertService.open('error', 'Verification pending..!', "Please upload profile picture and identity proof in order to proceed..!")
+        return
+      }
+      
+      if (!userData['identityVerificationStatus'] || (userData['identityVerificationStatus'] === 'pending')){
+        this.alertService.open('error', 'Verification pending..!', "Identity Verification Not Approved yet..! Contact your supirior")
+        return
+      }
+      if (!userData['identityVerificationStatus'] || (userData['identityVerificationStatus'] === 'rejected')){
+        this.alertService.open('error', 'Identity Verification Error..!', "Identity Verification failed..! Reupload the documents and Contact your supirior")
+        return
+      }
       this.disableFields=false;
       this.actionType = event.type;
       this.publishNewsForm={};
-      console.log(event)
       if(event.type==='create'){
         this.disableFields=false;
          this.getMetaData();
@@ -96,37 +107,33 @@ export class NewsPublicationComponent implements OnInit {
       } else if (event.type === 'view') {
         this.actionType = event.type;
         this.getMetaData(null, true, event);
-        this.disableFields = true;
-        // this.getNewsInfo(event);      
-      }
+        this.disableFields = true;    
+      } 
     } catch (error) {
       console.error(error)
     }
   }
   getMetaData = (stateId?: any, callFurtercalls?: any, eventRowData?:any) => {
     try {
+      this.appService.loaderService = true;
       // 'AP_DISTRICTS', 'AP_DISTRICT_MANDALS'
       const metaList = stateId ? [stateId + '_DISTRICTS', stateId + '_DISTRICT_MANDALS'] : ['STATES', 'ROLE']
       this.appService.getMetaData({ metaList }).subscribe((response) => {
-        console.log(response)
         this.metaData = { ...this.metaData, ...response['data'] || {} }
         if (callFurtercalls) {
-
           const index = this.metaData['STATES'].findIndex(elem => elem.label === eventRowData['rowData'].state )
-
-          if(index>-1){
-
-            this.getMetaData(this.metaData['STATES'][index]['value'], false, eventRowData)
-          }
-
+          if(index>-1){            
+            this.getMetaData(this.metaData['STATES'][index]['value'], false, eventRowData);
+          }          
         }
         if (!callFurtercalls && eventRowData){
-          // this.publishNewsForm = eventRowData['rowData']
           this.getNewsInfo(eventRowData['rowData']);
         }
-        console.log(this.metaData)
+        this.appService.loaderService = false;
+        this.appService.loaderService = false;
       })
     } catch (error) {
+      this.appService.loaderService = false;
       console.error(error)
     }
   }
@@ -134,7 +141,6 @@ export class NewsPublicationComponent implements OnInit {
 
   changeOfState = () => {
     try {
-      console.log(this.publishNewsForm['state'])
       this.metaData[this.publishNewsForm['state'] + '_DISTRICTS'] = [];
       this.metaData[this.publishNewsForm['state'] + '_DISTRICT_MANDALS'] = [];
       this.getMetaData(this.publishNewsForm['state'])
@@ -144,32 +150,24 @@ export class NewsPublicationComponent implements OnInit {
   }
 
   signUpCreds = () => {
-    console.log(this.publishNewsForm);
+    this.appService.loaderService = true;
     try {
       this.appService.manipulateNews({ type: this.actionType, data: this.publishNewsForm }).subscribe((response) => {
-        // this.toaster.toast('error', 'Error', response.msg || "MESSS", true);
-        console.log(response)
         if (response.status === 'success') {
           this.alertService.open("success", "Success", response.msg || " ");
           document.getElementById('publishNewsBtn').click();
           this.getNewsList();
-          // this.router.navigate(['/login']);
         } else {
           this.alertService.open('error', response.status.charAt(0).toUpperCase() + response.status.slice(1), response.msg || "Failed !")
         }
+        this.appService.loaderService = false;
       })
     } catch (error) {
+      this.appService.loaderService = false;
       console.error(error)
     }
   }
-
-  // changeOfUploadImages = (event:any) => {
-  //   try {
-  //     console.log(event)
-  //   } catch (error) {
-  //     console.error(error)
-  //   }
-  // }
+  
   onFilesSelected(event: any) {
     let files= event.target.files;
     let readers = [];
@@ -181,7 +179,6 @@ export class NewsPublicationComponent implements OnInit {
 
       reader.onload = (e: any) => {
         let base64Data: string = e.target.result;
-        console.log(base64Data); // You can use the base64 data as needed
         if (!this.publishNewsForm['images']) {
           this.publishNewsForm['images'] = []
         }
@@ -191,17 +188,9 @@ export class NewsPublicationComponent implements OnInit {
         } else {
           this.publishNewsForm['images'].push(base64Data);
         }
-        // this.publishNewsForm['images'].push((base64Data.toString()).split('base64,').at(-1));
       };
-
-      reader.readAsDataURL(file);
-      
-      console.log(reader.toString())
-      // console.log((reader.toString()).split('base64,').at(-1))
-      // this.publishNewsForm['images'].push((reader.toString()).split('base64,').at(-1));
-      console.log(this.publishNewsForm)
+      reader.readAsDataURL(file);    
     }
-    console.log(readers)
   }
   openImageUpload(){
 
@@ -219,30 +208,6 @@ export class NewsPublicationComponent implements OnInit {
     this.publishNewsForm['images'].splice(index,1)
   }
 
-
-
-  sendFormDataAsBinary(formData: FormData) {
-    // Create headers to specify the content type
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/octet-stream'
-    });
-
-    // Make the HTTP post request
-    this.http.post(Config.API.UPLOAD_FILES, formData, { headers: headers, responseType: 'blob' })
-      .subscribe((response: Blob) => {
-        // Handle the response
-        // For example, you can create a download link for the binary data
-        const downloadLink = document.createElement('a');
-        const url = window.URL.createObjectURL(response);
-        downloadLink.href = url;
-        downloadLink.download = 'file.bin';
-        downloadLink.click();
-        window.URL.revokeObjectURL(url);
-      }, (error) => {
-        // Handle the error
-        console.error('Error:', error);
-      });
-  }
 
   changeOfUploadImages = (e) => {
     let myFiles:any=[];
@@ -263,6 +228,7 @@ export class NewsPublicationComponent implements OnInit {
         this.alertService.open('error', "Limit Issue", this.publishNewsForm['images'].length + " file(s) already uploaded.. Only " + (3 - this.publishNewsForm['images'].length) +' image(s) are allowed..');
         return;
       }
+      this.appService.loaderService = true;
       let selectedFiles:File[]=[];
       let userData = this.storage.api.session.get('userData')
       const formData = new FormData();
@@ -285,8 +251,10 @@ export class NewsPublicationComponent implements OnInit {
           } else {
             this.alertService.open('error', response.status.charAt(0).toUpperCase() + response.status.slice(1), response.msg || "Failed !")
           }
+          this.appService.loaderService = false;
         },
         (error) => {
+          this.appService.loaderService = false;
           console.error('Upload error:', error);
         }
       );

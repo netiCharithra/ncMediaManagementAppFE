@@ -5,7 +5,9 @@
 
 export const environment = {
   production: false,
-  base_url: 'https://handsome-visor-hare.cyclic.app/',
+  base_url: 'https://ncmediamanagementappservices.onrender.com/',
+  // base_url: 'https://viridian-slug-sari.cyclic.app/',
+  // base_url:'http://localhost:3000/',
   googleDrive: {
     // insert credentials here
     apiKey: "AIzaSyDXivxGi5FHfWDAW1U1qcsjlH0_XxBur7Y",

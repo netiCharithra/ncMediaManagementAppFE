@@ -41,11 +41,9 @@ export class SimpleTableComponent implements OnInit {
 
   checkDisabledCondition(btnData, rowData){
     if (btnData && btnData.disable && Object.keys(btnData.disable).length>0){
-      console.log(btnData, rowData)
       const disableKeys=Object.keys(btnData.disable)
       for (let index = 0; index < disableKeys.length; index++) {
         if (rowData[disableKeys[index]] && (btnData.disable[disableKeys[index]].includes(rowData[disableKeys[index]]))) {
-          console.log(true)
           return true
         }
         

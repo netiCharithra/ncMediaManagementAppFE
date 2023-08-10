@@ -1,4 +1,5 @@
 import { Component} from '@angular/core';
+import { AppServiceService } from './services/app-service.service';
 
 
 @Component({
@@ -7,5 +8,7 @@ import { Component} from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
+  constructor(public appService:AppServiceService){
 
+  }
 }

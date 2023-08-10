@@ -2,6 +2,7 @@ import { Component, OnInit, ElementRef } from '@angular/core';
 import { ROUTES } from '../sidebar/sidebar.component';
 import {Location, LocationStrategy, PathLocationStrategy} from '@angular/common';
 import { Router } from '@angular/router';
+import { StorageService } from 'app/services/storage.service';
 
 @Component({
   selector: 'app-navbar',
@@ -15,11 +16,11 @@ export class NavbarComponent implements OnInit {
     private toggleButton: any;
     private sidebarVisible: boolean;
 
-    constructor(location: Location,  private element: ElementRef, private router: Router) {
+    constructor(location: Location,  private element: ElementRef, private router: Router, public storage: StorageService) {
       this.location = location;
           this.sidebarVisible = false;
     }
-
+    public userData:any={};
     ngOnInit(){
       this.listTitles = ROUTES.filter(listTitle => listTitle);
       const navbar: HTMLElement = this.element.nativeElement;
@@ -32,6 +33,7 @@ export class NavbarComponent implements OnInit {
            this.mobile_menu_visible = 0;
          }
      });
+        this.userData = this.storage.api.session.get('userData');
     }
 
     sidebarOpen() {
@@ -121,5 +123,21 @@ export class NavbarComponent implements OnInit {
           }
       }
       return 'Dashboard';
+    }
+
+    navigating = (item) => {
+        try {
+            if (item.path === 'logout') {
+                this.storage.api.session.remove('userData');
+                this.router.navigate(['']);
+
+            } else {
+
+                this.router.navigate([item.path]);
+            }
+
+        } catch (error) {
+            console.error(error)
+        }
     }
 }
