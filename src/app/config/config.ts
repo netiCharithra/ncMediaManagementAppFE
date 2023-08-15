@@ -1,11 +1,7 @@
-// import { APPConstants } from '../../assets/configuration/app-constants';
 import { environment } from './../../environments/environment';
-
-const domain = window.location.href.split('#')[0].split('://')[0];
-const host_domain = window.location.host;
 export class Config {
     public static get BASE_POINT_API(): string { return environment.base_url+'api/v2/'; }
-    public static get BASE_POINT_UPLOAD(): string { return environment.base_url+'api/upload/'; }
+    public static get BASE_POINT_UPLOAD(): string { return environment.base_url_upload_files +'api/upload/'; }
     public static API: any = {
         // MS Token Validate
         USER_LOGIN: Config.BASE_POINT_API + 'reporterLogin',
