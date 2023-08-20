@@ -141,6 +141,9 @@ export class EmployeesComponent implements OnInit {
     }
   }
 
+  dataTOVerify(event){
+    console.log(event)
+  }
 
   changeOfState = () => {
     try {

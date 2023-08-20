@@ -94,13 +94,36 @@
                                 <div *ngIf="sub_title.errors.required">This field is required</div>
                             </div>
                         </div>
+                        <div class="col-12 mb-3">
+                            <label class="form-label" for="newsType">News Type</label>
+                            <ng-select [items]="metaData['NEWS_TYPE']" name="newsType" class="form-control form-control-lg" required
+                                placeholder="Local/National/International" [(ngModel)]="publishNewsForm['newsType']" #newsType="ngModel" [clearable]="false"
+                                [ngClass]="{ 'is-invalid': newsForm.submitted && newsType.invalid }">
+                            </ng-select>
+                        
+                            <div *ngIf="newsForm.submitted && category.invalid" class="invalid-feedback">
+                                <div *ngIf="category.errors.required">This field is required</div>
+                            </div>
+                        </div>
+                        <div class="col-12 mb-3">
+                            <label class="form-label" for="loginState">Category</label>
+                            <ng-select [items]="metaData['NEWS_CATEGORIES']"  name="category"
+                                class="form-control form-control-lg" required placeholder="Enter category" [(ngModel)]="publishNewsForm['category']"
+                                #category="ngModel" [clearable]="false" [ngClass]="{ 'is-invalid': newsForm.submitted && category.invalid }">
+                            </ng-select>
+                        
+                            <div *ngIf="newsForm.submitted && category.invalid" class="invalid-feedback">
+                                <div *ngIf="category.errors.required">This field is required</div>
+                            </div>
+                        </div>
                         <div class="col-12 mb-4 row">
                             <label class="form-label col" for="loginimages">Photo(s)
 
 
                                 <span class="text-muted" style="font-size: 0.6rem;">Only 3 Images are allowed</span>
                             </label>
-                            <button class="btn pull-right col" type="button" [disabled]="disableFields" (click)="openImageUpload()">Click or touch
+                            <!-- openImageUpload -->
+                            <button class="btn pull-right col" type="button" [disabled]="disableFields" (click)="compressFile()">Click or touch
                                 here
                                 to upload images/photos </button>
                             <ng-container
@@ -120,11 +143,12 @@
                                     </span>
                                 </div>
                             </ng-container>
-                            <input type="file" id="loginimages" class="form-control form-control-lg d-none"
+                            
+                            <!-- <input type="file" id="loginimages" class="form-control form-control-lg d-none"
                                 placeholder="Enter a valid images" name="images" [(ngModel)]="images" #image="ngModel"
                                 [disabled]="disableFields"
                                 [ngClass]="{ 'is-invalid': newsForm.submitted && images.invalid }" type="file"
-                                (change)="upload($event.target.files)" multiple accept=".png, .jpg, .jpeg, .gif" />
+                                (change)="upload($event)" multiple accept=".png, .jpg, .jpeg, .gif" /> -->
                             <div *ngIf="newsForm.submitted && images.invalid" class="invalid-feedback">
                                 <div *ngIf="images.errors.required">This field is required</div>
                             </div>
@@ -141,48 +165,51 @@
                             </div>
                         </div>
 
-                        <div class="col-12 mb-3">
-                            <label class="form-label" for="loginState">State</label>
-                            <ng-select [items]="metaData['STATES']" bindLabel="label" bindValue="value" name="state"
-                                class="form-control form-control-lg" required placeholder="Enter state"
-                                [(ngModel)]="publishNewsForm['state']" #state="ngModel" [clearable]="false"
-                                [ngClass]="{ 'is-invalid': newsForm.submitted && state.invalid }"
-                                (ngModelChange)="changeOfState();publishNewsForm['district']=null;publishNewsForm['mandal']=null; ">
-                            </ng-select>
-
-                            <div *ngIf="newsForm.submitted && state.invalid" class="invalid-feedback">
-                                <div *ngIf="state.errors.required">This field is required</div>
-                            </div>
-                        </div>
-                        <ng-container *ngIf="publishNewsForm['state']">
+                        <ng-container *ngIf="publishNewsForm['newsType'] === 'Regional'">
 
                             <div class="col-12 mb-3">
-                                <label class="form-label" for="loginDistrict">District</label>
-                                <ng-select [items]="metaData[publishNewsForm['state']+'_DISTRICTS']" bindLabel="label"
-                                    bindValue="value" [disabled]="disableFields" name="district"
-                                    class="form-control form-control-lg" required placeholder="Select District"
-                                    [(ngModel)]="publishNewsForm['district']" #district="ngModel" [clearable]="false"
-                                    [ngClass]="{ 'is-invalid': newsForm.submitted && district.invalid }"
-                                    (ngModelChange)="publishNewsForm['mandal']=null; ">
+                                <label class="form-label" for="loginState">State</label>
+                                <ng-select [items]="metaData['STATES']" bindLabel="label" bindValue="value" name="state"
+                                    class="form-control form-control-lg" required placeholder="Enter state"
+                                    [(ngModel)]="publishNewsForm['state']" #state="ngModel" [clearable]="false"
+                                    [ngClass]="{ 'is-invalid': newsForm.submitted && state.invalid }"
+                                    (ngModelChange)="changeOfState();publishNewsForm['district']=null;publishNewsForm['mandal']=null; ">
                                 </ng-select>
-                                <div *ngIf="newsForm.submitted && district.invalid" class="invalid-feedback">
-                                    <div *ngIf="district.errors.required">This field is required</div>
+    
+                                <div *ngIf="newsForm.submitted && state.invalid" class="invalid-feedback">
+                                    <div *ngIf="state.errors.required">This field is required</div>
                                 </div>
                             </div>
-                            <div class="col-12 mb-3" *ngIf="publishNewsForm['district']">
-                                <label class="form-label" for="loginMandal">Mandal</label>
-                                <ng-select
-                                    [items]="metaData[publishNewsForm['state']+'_DISTRICT_MANDALS'][publishNewsForm['district']]"
-                                    [disabled]="disableFields" name="mandal" class="form-control form-control-lg"
-                                    required placeholder="Select mandal" [(ngModel)]="publishNewsForm['mandal']"
-                                    #mandal="ngModel" [clearable]="false"
-                                    [ngClass]="{ 'is-invalid': newsForm.submitted && mandal.invalid }">
-                                </ng-select>
-
-                                <div *ngIf="newsForm.submitted && mandal.invalid" class="invalid-feedback">
-                                    <div *ngIf="mandal.errors.required">This field is required</div>
+                            <ng-container *ngIf="publishNewsForm['state']">
+    
+                                <div class="col-12 mb-3">
+                                    <label class="form-label" for="loginDistrict">District</label>
+                                    <ng-select [items]="metaData[publishNewsForm['state']+'_DISTRICTS']" bindLabel="label"
+                                        bindValue="value" [disabled]="disableFields" name="district"
+                                        class="form-control form-control-lg" required placeholder="Select District"
+                                        [(ngModel)]="publishNewsForm['district']" #district="ngModel" [clearable]="false"
+                                        [ngClass]="{ 'is-invalid': newsForm.submitted && district.invalid }"
+                                        (ngModelChange)="publishNewsForm['mandal']=null; ">
+                                    </ng-select>
+                                    <div *ngIf="newsForm.submitted && district.invalid" class="invalid-feedback">
+                                        <div *ngIf="district.errors.required">This field is required</div>
+                                    </div>
                                 </div>
-                            </div>
+                                <div class="col-12 mb-3" *ngIf="publishNewsForm['district']">
+                                    <label class="form-label" for="loginMandal">Mandal</label>
+                                    <ng-select
+                                        [items]="metaData[publishNewsForm['state']+'_DISTRICT_MANDALS'][publishNewsForm['district']]"
+                                        [disabled]="disableFields" name="mandal" class="form-control form-control-lg"
+                                        required placeholder="Select mandal" [(ngModel)]="publishNewsForm['mandal']"
+                                        #mandal="ngModel" [clearable]="false"
+                                        [ngClass]="{ 'is-invalid': newsForm.submitted && mandal.invalid }">
+                                    </ng-select>
+    
+                                    <div *ngIf="newsForm.submitted && mandal.invalid" class="invalid-feedback">
+                                        <div *ngIf="mandal.errors.required">This field is required</div>
+                                    </div>
+                                </div>
+                            </ng-container>
                         </ng-container>
 
                     </ng-template>

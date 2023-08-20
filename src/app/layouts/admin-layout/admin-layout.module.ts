@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AdminLayoutRoutes } from './admin-layout.routing';
 import { DashboardComponent } from '../../dashboard/dashboard.component';
-import { UserProfileComponent } from '../../user-profile/user-profile.component';
+import { UserProfileComponent } from './user-profile/user-profile.component';
 import { TableListComponent } from '../../table-list/table-list.component';
 import { TypographyComponent } from '../../typography/typography.component';
 import { IconsComponent } from '../../icons/icons.component';
@@ -21,10 +21,10 @@ import { NgxEchartsModule } from 'ngx-echarts';
 import * as echarts from 'echarts/lib/echarts';
 import { SubscribersComponent } from 'app/subscribers/subscribers.component';
 import { ComponentsModule } from 'app/components/components.module';
-import { EmployeesComponent } from 'app/employees/employees.component';
+import { EmployeesComponent } from 'app/layouts/admin-layout/employees/employees.component';
 import { NgSelectModule } from '@ng-select/ng-select';
-import { NewsPublicationComponent } from 'app/news-publication/news-publication.component';
-import { EmployeesListComponent } from 'app/employees-list/employees-list.component';
+import { NewsPublicationComponent } from 'app/layouts/admin-layout/news-publication/news-publication.component';
+import { EmployeesListComponent } from 'app/layouts/admin-layout/employees-list/employees-list.component';
 
 @NgModule({
   imports: [

@@ -43,7 +43,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form (ngSubmit)="signUpForm.form.valid && signUpCreds()" #signUpForm="ngForm" novalidate
+            <form (ngSubmit)="disableFields ? signUpCreds() : signUpForm.form.valid && signUpCreds()" #signUpForm="ngForm" novalidate
                 class="col-12 row m-0 p-0">
                 <div class="modal-body col-12 row custom-form-body">
 
@@ -107,7 +107,7 @@
                                 <div *ngIf="district.errors.required">This field is required</div>
                             </div>
                         </div>
-                        <div class="col-12 mb-3" *ngIf="signUpFormValues['district']">
+                        <div class="col-12 mb-3" *ngIf="metaData && signUpFormValues['district'] && metaData[signUpFormValues['state']+'_DISTRICT_MANDALS'] ">
                             <label class="form-label" for="loginMandal">Mandal</label>
                             <ng-select
                                 [items]="metaData[signUpFormValues['state']+'_DISTRICT_MANDALS'][signUpFormValues['district']]"

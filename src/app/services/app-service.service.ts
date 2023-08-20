@@ -54,4 +54,12 @@ export class AppServiceService {
   getNewsInfo(data:any){
     return this._httplayer.post(Config.API.GET_NEWS_INFO, data);
   }
+  
+  
+  getHomeData(data:any){
+    return this._httplayer.post(Config.API.GET_HOME_DATA, data);
+  }
+  getPublicNewsInfo(data:any){
+    return this._httplayer.post(Config.API.GET_PUBLIC_NEWS_INFO, data);
+  }
 }

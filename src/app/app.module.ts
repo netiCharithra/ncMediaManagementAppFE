@@ -12,7 +12,8 @@ import { AppServiceService } from './services/app-service.service';
 import { EmployeeSignupComponent } from './employee-signup/employee-signup.component';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { NewsPublicationComponent } from './news-publication/news-publication.component';
+
+import { NgxImageCompressService } from 'ngx-image-compress';
 
 @NgModule({
   imports: [
@@ -31,6 +32,7 @@ import { NewsPublicationComponent } from './news-publication/news-publication.co
     AdminLayoutComponent,
     LoginComponent,
     EmployeeSignupComponent
+    
     
     
 

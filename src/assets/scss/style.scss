@@ -2,6 +2,50 @@
 
 
 
+ /*       ScrollBar 2        */
+
+::-webkit-scrollbar {
+     width: 6px;
+ }
+
+::-webkit-scrollbar-track {
+     border-radius: 8px;
+     background-color: #fff;
+     border: 1px solid #cacaca;
+     box-shadow: inset 0 0 4px rgba(0, 0, 0, .3);
+ }
+
+::-webkit-scrollbar-thumb {
+     border-radius: 8px;
+     background-color: #ababab;
+ }
+
+
+.portalTile{
+    font-family: 'Russo One', sans-serif !important;
+}
+.two-line-ellipsis {
+    display: -webkit-box !important;
+    -webkit-line-clamp: 2 !important;
+    -webkit-box-orient: vertical !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+}
+.one-line-ellipsis {
+    display: -webkit-box !important;
+    -webkit-line-clamp: 1 !important;
+    -webkit-box-orient: vertical !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+}
+.three-line-ellipsis {
+    display: -webkit-box !important;
+    -webkit-line-clamp: 3 !important;
+    -webkit-box-orient: vertical !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+}
+
 .form-control {
     display: block;
     width: 100%;

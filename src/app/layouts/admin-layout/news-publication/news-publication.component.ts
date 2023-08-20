@@ -5,6 +5,7 @@ import { AlertService } from 'app/services/alert.service';
 import { AppServiceService } from 'app/services/app-service.service';
 import { StorageService } from 'app/services/storage.service';
 import { AsyncSubject, Observable } from 'rxjs';
+import { NgxImageCompressService } from 'ngx-image-compress';
 
 @Component({
   selector: 'news-publication',
@@ -13,7 +14,7 @@ import { AsyncSubject, Observable } from 'rxjs';
 })
 export class NewsPublicationComponent implements OnInit {
   public newsTables: any = {};
-  public images: any = ''; 
+  public images: any = '';
 
   public publishNewsForm: any = {};
   public metaData: any = {
@@ -22,7 +23,7 @@ export class NewsPublicationComponent implements OnInit {
   };
   public actionType: any = '';
   public disableFields: Boolean = false;
-  constructor(private appService: AppServiceService, private alertService: AlertService, private http: HttpClient, private storage:StorageService) { }
+  constructor(private appService: AppServiceService, private alertService: AlertService, private http: HttpClient, private storage: StorageService, private imageCompress: NgxImageCompressService) { }
 
   ngOnInit(): void {
     this.getNewsList()
@@ -45,7 +46,7 @@ export class NewsPublicationComponent implements OnInit {
     }
   }
 
-  getNewsInfo = (data:any) => {
+  getNewsInfo = (data: any) => {
     try {
       this.appService.loaderService = true;
       this.appService.getNewsInfo(data).subscribe((response) => {
@@ -67,29 +68,29 @@ export class NewsPublicationComponent implements OnInit {
     try {
 
 
-      const userData = this.storage.api.session.get('userData'); 
+      const userData = this.storage.api.session.get('userData');
 
-      if (!userData['profilePicture'] || !userData['identityProof']){
+      if (!userData['profilePicture'] || !userData['identityProof']) {
         this.alertService.open('error', 'Verification pending..!', "Please upload profile picture and identity proof in order to proceed..!")
         return
       }
-      
-      if (!userData['identityVerificationStatus'] || (userData['identityVerificationStatus'] === 'pending')){
+
+      if (!userData['identityVerificationStatus'] || (userData['identityVerificationStatus'] === 'pending')) {
         this.alertService.open('error', 'Verification pending..!', "Identity Verification Not Approved yet..! Contact your supirior")
         return
       }
-      if (!userData['identityVerificationStatus'] || (userData['identityVerificationStatus'] === 'rejected')){
+      if (!userData['identityVerificationStatus'] || (userData['identityVerificationStatus'] === 'rejected')) {
         this.alertService.open('error', 'Identity Verification Error..!', "Identity Verification failed..! Reupload the documents and Contact your supirior")
         return
       }
-      this.disableFields=false;
+      this.disableFields = false;
       this.actionType = event.type;
-      this.publishNewsForm={};
-      if(event.type==='create'){
-        this.disableFields=false;
-         this.getMetaData();
+      this.publishNewsForm = {};
+      if (event.type === 'create') {
+        this.disableFields = false;
+        this.getMetaData();
         document.getElementById('publishNewsBtn').click();
-      } else if(event.type === 'approve'){
+      } else if (event.type === 'approve') {
         this.actionType = event.type;
         this.getMetaData(null, true, event);
         this.disableFields = true;
@@ -107,26 +108,28 @@ export class NewsPublicationComponent implements OnInit {
       } else if (event.type === 'view') {
         this.actionType = event.type;
         this.getMetaData(null, true, event);
-        this.disableFields = true;    
-      } 
+        this.disableFields = true;
+      }
     } catch (error) {
       console.error(error)
     }
   }
-  getMetaData = (stateId?: any, callFurtercalls?: any, eventRowData?:any) => {
+  getMetaData = (stateId?: any, callFurtercalls?: any, eventRowData?: any) => {
     try {
       this.appService.loaderService = true;
       // 'AP_DISTRICTS', 'AP_DISTRICT_MANDALS'
-      const metaList = stateId ? [stateId + '_DISTRICTS', stateId + '_DISTRICT_MANDALS'] : ['STATES', 'ROLE']
+      const metaList = stateId ? [stateId + '_DISTRICTS', stateId + '_DISTRICT_MANDALS'] : ['NEWS_CATEGORIES', 'STATES', 'ROLE', 'NEWS_TYPE']
       this.appService.getMetaData({ metaList }).subscribe((response) => {
         this.metaData = { ...this.metaData, ...response['data'] || {} }
+        console.log(this.metaData)
         if (callFurtercalls) {
-          const index = this.metaData['STATES'].findIndex(elem => elem.label === eventRowData['rowData'].state )
-          if(index>-1){            
+          const index = this.metaData['STATES'].findIndex(elem => elem.label === eventRowData['rowData'].state)
+          if (index > -1) {
             this.getMetaData(this.metaData['STATES'][index]['value'], false, eventRowData);
-          }          
-        }
-        if (!callFurtercalls && eventRowData){
+          } else {
+            this.getNewsInfo(eventRowData['rowData']);
+          }
+        } else if (!callFurtercalls && eventRowData) {
           this.getNewsInfo(eventRowData['rowData']);
         }
         this.appService.loaderService = false;
@@ -167,9 +170,9 @@ export class NewsPublicationComponent implements OnInit {
       console.error(error)
     }
   }
-  
+
   onFilesSelected(event: any) {
-    let files= event.target.files;
+    let files = event.target.files;
     let readers = [];
 
 
@@ -182,19 +185,19 @@ export class NewsPublicationComponent implements OnInit {
         if (!this.publishNewsForm['images']) {
           this.publishNewsForm['images'] = []
         }
-        if (this.publishNewsForm['images'].length>=3){
+        if (this.publishNewsForm['images'].length >= 3) {
           this.alertService.open('error', "Limit Reached", "Maximum 3 files can be stored !")
-          return 
+          return
         } else {
           this.publishNewsForm['images'].push(base64Data);
         }
       };
-      reader.readAsDataURL(file);    
+      reader.readAsDataURL(file);
     }
   }
-  openImageUpload(){
+  openImageUpload() {
 
-    if (this.publishNewsForm['images'] && this.publishNewsForm['images'].length>3){
+    if (this.publishNewsForm['images'] && this.publishNewsForm['images'].length > 3) {
       // alert("You have reached maximum limit of images!");
       this.alertService.open('error', "Limit Reached", "Maximum 3 files can be uploaded !")
       return;
@@ -204,60 +207,112 @@ export class NewsPublicationComponent implements OnInit {
     }
   }
 
-  removeImage = (index) =>{
-    this.publishNewsForm['images'].splice(index,1)
+  removeImage = (index) => {
+    this.publishNewsForm['images'].splice(index, 1)
   }
 
 
   changeOfUploadImages = (e) => {
-    let myFiles:any=[];
+    let myFiles: any = [];
     const frmData = new FormData();
-    }
+  }
 
 
-  upload(files: FileList): void {
+  upload(event: any) {
+    const files = event.target.files;
+
+  }
+
+  imgResultBeforeCompression: string = "";
+  imgResultAfterCompression: string = "";
+  compressFile() {
     if (this.publishNewsForm['images'] && this.publishNewsForm['images'].length > 3) {
-      // alert("You have reached maximum limit of images!");
       this.alertService.open('error', "Limit Reached", "Maximum 3 files can be uploaded !")
       return;
 
-    } else {
-
-
-      if ((this.publishNewsForm?.images && this.publishNewsForm['images'].length + files.length)>3){
-        this.alertService.open('error', "Limit Issue", this.publishNewsForm['images'].length + " file(s) already uploaded.. Only " + (3 - this.publishNewsForm['images'].length) +' image(s) are allowed..');
-        return;
-      }
-      this.appService.loaderService = true;
-      let selectedFiles:File[]=[];
-      let userData = this.storage.api.session.get('userData')
-      const formData = new FormData();
-      for (let i = 0; i < files.length; i++) {
-        selectedFiles.push(files.item(i));
-        formData.append('images', files.item(i), userData.employeeId + '_' + new Date().getTime() + '_' + i + '.' + files.item(i).type.split('/').at(-1));
-  
-      }
-  
-      this.http.post(Config.API.UPLOAD_FILES, formData).subscribe(
-        (response:any) => {
-          if(response.status === "success"){
-            if (!this.publishNewsForm['images']){
-              this.publishNewsForm['images'] = [];
-            }
-            response.data.forEach(element => {
-              this.publishNewsForm['images'].push(element)
-            });
-            // this.publishNewsForm['images'] = [...response.data, this.publishNewsForm['images']]
-          } else {
-            this.alertService.open('error', response.status.charAt(0).toUpperCase() + response.status.slice(1), response.msg || "Failed !")
-          }
-          this.appService.loaderService = false;
-        },
-        (error) => {
-          this.appService.loaderService = false;
-          console.error('Upload error:', error);
-        }
-      );
     }
+    this.imageCompress.uploadMultipleFiles().then(
+      (arrayOfFiles: { image: string, fileName: string, orientation: number }[]) => {
+        if ((this.publishNewsForm?.images && this.publishNewsForm['images'].length + arrayOfFiles.length) > 3) {
+          this.alertService.open('error', "Limit Issue", this.publishNewsForm['images'].length + " file(s) already uploaded.. Only " + (3 - this.publishNewsForm['images'].length) + ' image(s) are allowed..');
+          return;
+        } else if (arrayOfFiles.length > 3) {
+          this.alertService.open('error', "Limit Reached", "Maximum 3 files can be uploaded !")
+          return;
+        }
+
+        const formData = new FormData();
+        let userData = this.storage.api.session.get('userData')
+        for (const [index, element] of arrayOfFiles.entries()) {
+          this.imgResultBeforeCompression = element.image;
+          console.log("Size in bytes of the uploaded image was:", this.imageCompress.byteCount(element.image));
+
+          this.imageCompress
+            .compressFile(element.image, null, 50, 50) // 50% ratio, 50% quality
+            .then(
+              (compressedImage) => {
+                this.imgResultAfterCompression = compressedImage;
+
+                const binaryData = this.base64ToBinary(compressedImage.split(',')[1]);
+                const fileType = this.getImageTypeFromBase64(element.image).split('/').pop(); // Get the file extension
+                console.log(fileType)
+                const blob = new Blob([binaryData], { type: 'image/jpeg' });
+
+                formData.append('images', blob, userData.employeeId + '_' + new Date().getTime() + '_' + index + '.' + fileType);
+
+                console.log("Size in bytes after compression is now:", this.imageCompress.byteCount(compressedImage));
+
+                if (index === arrayOfFiles.length - 1) {
+
+                  console.log("UPLOAD TRIGGERED");
+                  this.http.post(Config.API.UPLOAD_FILES, formData).subscribe(
+                    (response: any) => {
+                      if (response.status === "success") {
+                        if (!this.publishNewsForm['images']) {
+                          this.publishNewsForm['images'] = [];
+                        }
+                        response.data.forEach(element => {
+                          this.publishNewsForm['images'].push(element)
+                        });
+                      } else {
+                        this.alertService.open('error', response.status.charAt(0).toUpperCase() + response.status.slice(1), response.msg || "Failed !")
+                      }
+                      this.appService.loaderService = false;
+                    },
+                    (error) => {
+                      this.appService.loaderService = false;
+                      console.error('Upload error:', error);
+                    }
+                  );
+
+                }
+              }
+            );
+        }
+      }
+    );
+  }
+  getImageTypeFromBase64(base64Data: string): string {
+    // Split the data URI by comma to separate the content type part
+    const parts = base64Data.split(',');
+
+    if (parts.length === 2) {
+      // Extract the content type from the first part
+      const contentType = parts[0].split(';')[0].split(':')[1];
+      return contentType.trim();
+    }
+
+    return ''; // Return empty string if base64 data is invalid
+  }
+  base64ToBinary(base64: string): Uint8Array {
+    const binaryString = window.atob(base64);
+    const len = binaryString.length;
+    const bytes = new Uint8Array(len);
+
+    for (let i = 0; i < len; ++i) {
+      bytes[i] = binaryString.charCodeAt(i);
+    }
+
+    return bytes;
   }
 }

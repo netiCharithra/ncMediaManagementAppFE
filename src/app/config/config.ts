@@ -18,6 +18,8 @@ export class Config {
         MANIPULATE_NEWS: Config.BASE_POINT_API + 'manipulateNews',
         UPLOAD_FILES: Config.BASE_POINT_UPLOAD + 'uploadFiles',
         GET_NEWS_INFO: Config.BASE_POINT_API + 'getNewsInfo',
+        GET_HOME_DATA: Config.BASE_POINT_API +'public/getHomeData',
+        GET_PUBLIC_NEWS_INFO: Config.BASE_POINT_API +'public/getNewsInfo'
 
     }
 }

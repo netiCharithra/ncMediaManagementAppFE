@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
 
 import { DashboardComponent } from '../../dashboard/dashboard.component';
-import { UserProfileComponent } from '../../user-profile/user-profile.component';
+import { UserProfileComponent } from './user-profile/user-profile.component';
 import { TableListComponent } from '../../table-list/table-list.component';
 import { TypographyComponent } from '../../typography/typography.component';
 import { IconsComponent } from '../../icons/icons.component';
@@ -9,9 +9,9 @@ import { MapsComponent } from '../../maps/maps.component';
 import { NotificationsComponent } from '../../notifications/notifications.component';
 import { UpgradeComponent } from '../../upgrade/upgrade.component';
 import { SubscribersComponent } from 'app/subscribers/subscribers.component';
-import { EmployeesComponent } from 'app/employees/employees.component';
-import { NewsPublicationComponent } from 'app/news-publication/news-publication.component';
-import { EmployeesListComponent } from 'app/employees-list/employees-list.component';
+import { EmployeesComponent } from 'app/layouts/admin-layout/employees/employees.component';
+import { NewsPublicationComponent } from 'app/layouts/admin-layout/news-publication/news-publication.component';
+import { EmployeesListComponent } from 'app/layouts/admin-layout/employees-list/employees-list.component';
 
 export const AdminLayoutRoutes: Routes = [
     {
