@@ -6,6 +6,7 @@ import { PublicPagesComponent } from './public-pages.component';
 import { PublicHeaderComponent } from './public-header/public-header.component';
 import { HomePageComponent } from './home-page/home-page.component';
 import { ViewNewsComponent } from './view-news/view-news.component';
+import { CategoryNewsComponent } from './category-news/category-news.component';
 
 
 @NgModule({
@@ -13,7 +14,8 @@ import { ViewNewsComponent } from './view-news/view-news.component';
     PublicPagesComponent,
     PublicHeaderComponent,
     HomePageComponent,
-    ViewNewsComponent
+    ViewNewsComponent,
+    CategoryNewsComponent
   ],
   imports: [
     CommonModule,

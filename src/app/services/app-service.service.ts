@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpLayerService } from './http-layer.service';
 import { Config } from './../config/config';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -8,8 +9,13 @@ import { Config } from './../config/config';
 export class AppServiceService {
 
   public loaderService:boolean=false;
-  constructor(private _httplayer:HttpLayerService) { }
+  constructor(private _httplayer: HttpLayerService, private router: Router) { }
+  navigateTo = (data: any) => {
+    if (data.type === 'category') {
+      this.router.navigate(['/category-news', data.queryParams.category]);
 
+    }
+  }
   userLogin(data: any) {
     console.log(Config.API.USER_LOGIN)
     return this._httplayer.post(Config.API.USER_LOGIN, data);
@@ -61,5 +67,8 @@ export class AppServiceService {
   }
   getPublicNewsInfo(data:any){
     return this._httplayer.post(Config.API.GET_PUBLIC_NEWS_INFO, data);
+  }
+  getCategoryNews(data:any){
+    return this._httplayer.post(Config.API.GET_PUBLIC_CATEGORY_NEWS, data);
   }
 }

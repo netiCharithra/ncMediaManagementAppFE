@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { AppServiceService } from 'app/services/app-service.service';
 
 @Component({
   selector: 'public-header',
@@ -7,9 +9,31 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PublicHeaderComponent implements OnInit {
 
-  constructor() { }
-
+  public categoires: any = [];
+  constructor(public appService: AppServiceService, private router: Router) { }
   ngOnInit(): void {
+    this.getListOfNewsCategories();
   }
+
+  getListOfNewsCategories = () => {
+    try {
+      this.appService.loaderService = true;
+      this.appService.getMetaData({ metaList: ['NEWS_CATEGORIES'] }).subscribe((data: any) => {
+        if (data?.status === 'success') {
+          this.categoires = data?.data?.NEWS_CATEGORIES || [];
+        }
+        this.appService.loaderService = false;
+      }, (error) => {
+        console.error(error)
+        this.appService.loaderService = false;
+      })
+    } catch (error) {
+      console.error(error);
+      this.appService.loaderService = false;
+
+    }
+  }
+
+  
 
 }

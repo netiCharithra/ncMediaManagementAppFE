@@ -277,7 +277,7 @@
                             <ul class="fa-ul">
                                 <li *ngFor="let category of metaData['NEWS_CATEGORIES']"><span class="fa-li"><i
                                             class="far fa-arrow-alt-circle-right"></i></span><a
-                                        href="javascript:void(0)">{{category}}</a></li>
+                                        href="javascript:void(0)" (click)="appService.navigateTo({type:'category', queryParams:{category : category}})">{{category}}</a></li>
                             </ul>
                         </div>
                     </div>

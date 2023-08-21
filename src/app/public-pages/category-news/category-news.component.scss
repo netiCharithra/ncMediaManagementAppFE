@@ -7,15 +7,16 @@
 .left-section,
 .right-section {
     width: 100%;
+
     h2 {
-            font-size: 1.75rem;
-            font-weight: bold;
-            margin: 0;
-        }
-    
-        .fa-align-justify {
-            margin-right: 0.5rem;
-        }
+        font-size: 1.75rem;
+        font-weight: bold;
+        margin: 0;
+    }
+
+    .fa-align-justify {
+        margin-right: 0.5rem;
+    }
 }
 
 .mn-list {
@@ -108,12 +109,14 @@
     margin: 0;
     line-height: initial;
 }
+
 .news-sub-title {
     font-size: 1.25rem;
     font-weight: bold;
     margin: 0;
     line-height: initial;
 }
+
 @media (min-width:30em) {
     // FOR TAB MODE
 
@@ -121,10 +124,12 @@
     .flex-properties {
         flex-direction: row !important;
     }
-  .image img {
-    //   width: 100% !important;
-    //   height: -webkit-fill-available;
-  }
+
+    .image img {
+        //   width: 100% !important;
+        //   height: -webkit-fill-available;
+    }
+
     // .left-section {
     //     width: 80%;
     //     height: 100%;
@@ -160,27 +165,29 @@
         // height: 100%;
         width: 20%;
     }
-    
+
     .body-container-section {
         height: calc(100vh - 10rem);
         overflow-y: auto;
     }
 
-    .width-75{
+    .width-75 {
         width: 75% !important;
     }
-    .width-25{
+
+    .width-25 {
         width: 25% !important;
     }
 
-    .image-container{
+    .image-container {
         max-height: calc(100vh - 20rem);
         overflow: hidden;
     }
-        .image img {
-            // width: 100% !important;
-            // height: -webkit-fill-available;
-        }
+
+    .image img {
+        // width: 100% !important;
+        // height: -webkit-fill-available;
+    }
 }
 
 

@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AlertService } from 'app/services/alert.service';
 import { AppServiceService } from 'app/services/app-service.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'home-page',
@@ -13,7 +14,15 @@ export class HomePageComponent implements OnInit {
   public topSectionData:any = [];
   public categoryWiseRecentRecords:any = [];
   public moreRecentRecords:any = [];
-  constructor(private appService: AppServiceService, private alertService: AlertService, private router: Router) { }
+
+  private paramMapSubscription: Subscription;
+  private queryParamSubscription: Subscription;
+  constructor(public appService: AppServiceService, private alertService: AlertService, private router: Router, private route: ActivatedRoute) {
+    this.queryParamSubscription = this.route.queryParamMap.subscribe((queryParams) => {
+      const queryParamValue = queryParams.get('yourQueryParamName'); // Replace with your actual query param name
+      console.log('Query parameter changed:', queryParamValue);
+    });
+   }
 
   ngOnInit(): void {
     this.getHomeData();
@@ -78,7 +87,7 @@ export class HomePageComponent implements OnInit {
 
       // let queryStr = '?newsId=' + queryParams['newsId'] + '&category='+queryParams['category']
       // this.router.navigate(['/view-news' + queryStr]);
-      this.router.navigate(['/view-news'], { queryParams :  queryParams });
+      this.router.navigate(['/view-news', newsInfo['newsId']]);
     } catch (error) {
       console.error(error)
     }

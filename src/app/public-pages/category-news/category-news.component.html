@@ -1,0 +1,57 @@
+<div class="container-fluid body-container-section flex-properties">
+    <div class="left-section border">
+        <ng-container *ngIf="pageData?.records">
+
+            <ng-container *ngFor="let data of pageData.records">
+                <div class="w-100"><a class="news-title" href="javascript:void(0)">{{data.title}}</a>
+                </div>
+                <div class="w-100 mn-date">{{data.createdDate |date}}</div>
+                <div class="image-container" *ngIf="data?.images?.length">
+                    <div class="image" *ngFor="let image of data.images" [ngStyle]="getImageDivStyle(images)">
+                        <img [src]="'https://drive.google.com/uc?export=view&id='+image.id" alt="Failed"
+                            [ngStyle]="getImageTagStyle(images)">
+                    </div>
+                </div>
+                <div class="w-100 news-sub-title mb-2">
+                    {{data?.sub_title || ''}}
+                </div>
+                <div class="w-100">
+                    {{data?.description || ''}}
+                </div>
+            </ng-container>
+            <div class="w-100 text-center" *ngIf="!endOfRecords">
+                <button class="btn btn-primary" (click)="getNewsInfo(true)">Load More..</button>
+            </div>
+        </ng-container>
+    </div>
+    <div class="right-section border">
+        <h2><i class="fa fa-align-justify"></i>Read More</h2>
+        <ng-container *ngIf="pageData?.recentRecords">
+
+            <div class="mn-list" *ngFor="let moreRecentData of pageData.recentRecords;  let first = first">
+                <div class="mn-img">
+                    <img *ngIf="moreRecentData['images'] && moreRecentData['images'][0] && moreRecentData['images'][0].id"
+                        [src]="'https://drive.google.com/uc?export=view&id='+moreRecentData['images'][0].id"
+                        alt="Image" />
+                </div>
+                <div class="mn-content">
+                    <a class="mn-title one-line-ellipsis" href="javascript:void(0)">{{moreRecentData.title}}</a>
+                    <a class="mn-date" href="javascript:void(0)"><i
+                            class="far fa-clock"></i>{{moreRecentData.createdDate |
+                        date}}</a>
+                </div>
+            </div>
+        </ng-container>
+
+        <h2><i class="fa fa-align-justify"></i>Categories</h2>
+        <div class="category" *ngIf="pageData?.categories">
+            <ul class="fa-ul">
+                <li *ngFor="let category of pageData.categories"><span class="fa-li"><i
+                            class="far fa-arrow-alt-circle-right"></i></span><a
+                        href="javascript:void(0)" (click)="appService.navigateTo({type:'category', queryParams:{category : category}})">{{category}}</a></li>
+            </ul>
+        </div>
+
+
+    </div>
+</div>

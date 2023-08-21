@@ -218,79 +218,125 @@ export class NewsPublicationComponent implements OnInit {
   }
 
 
-  upload(event: any) {
-    const files = event.target.files;
+  // upload(event: any) {
+  //   const files = event.target.files;
 
-  }
+  // }
 
   imgResultBeforeCompression: string = "";
   imgResultAfterCompression: string = "";
-  compressFile() {
+  upload(event: any) {
+    const files = event.target.files;
     if (this.publishNewsForm['images'] && this.publishNewsForm['images'].length > 3) {
       this.alertService.open('error', "Limit Reached", "Maximum 3 files can be uploaded !")
       return;
-
     }
-    this.imageCompress.uploadMultipleFiles().then(
-      (arrayOfFiles: { image: string, fileName: string, orientation: number }[]) => {
-        if ((this.publishNewsForm?.images && this.publishNewsForm['images'].length + arrayOfFiles.length) > 3) {
-          this.alertService.open('error', "Limit Issue", this.publishNewsForm['images'].length + " file(s) already uploaded.. Only " + (3 - this.publishNewsForm['images'].length) + ' image(s) are allowed..');
-          return;
-        } else if (arrayOfFiles.length > 3) {
-          this.alertService.open('error', "Limit Reached", "Maximum 3 files can be uploaded !")
-          return;
+    if ((this.publishNewsForm?.images && this.publishNewsForm['images'].length + files.length) > 3) {
+      this.alertService.open('error', "Limit Issue", this.publishNewsForm['images'].length + " file(s) already uploaded.. Only " + (3 - this.publishNewsForm['images'].length) + ' image(s) are allowed..');
+      return;
+    } else if (files.length > 3) {
+      this.alertService.open('error', "Limit Reached", "Maximum 3 files can be uploaded !")
+      return;
+    }
+
+
+    this.appService.loaderService = true;
+    let selectedFiles: File[] = [];
+    let userData = this.storage.api.session.get('userData')
+    const formData = new FormData();
+    for (let i = 0; i < files.length; i++) {
+      selectedFiles.push(files.item(i));
+      formData.append('images', files.item(i), userData.employeeId + '_' + new Date().getTime() + '_' + i + '.' + files.item(i).type.split('/').at(-1));
+    }
+
+
+    this.http.post(Config.API.UPLOAD_FILES, formData).subscribe(
+      (response: any) => {
+        if (response.status === "success") {
+          if (!this.publishNewsForm['images']) {
+            this.publishNewsForm['images'] = [];
+          }
+          response.data.forEach(element => {
+            this.publishNewsForm['images'].push(element)
+          });
+          // this.publishNewsForm['images'] = [...response.data, this.publishNewsForm['images']]
+        } else {
+          this.alertService.open('error', response.status.charAt(0).toUpperCase() + response.status.slice(1), response.msg || "Failed !")
         }
+        this.appService.loaderService = false;
+      },
+      (error) => {
+        this.appService.loaderService = false;
+        console.error('Upload error:', error);
+      });
 
-        const formData = new FormData();
-        let userData = this.storage.api.session.get('userData')
-        for (const [index, element] of arrayOfFiles.entries()) {
-          this.imgResultBeforeCompression = element.image;
-          console.log("Size in bytes of the uploaded image was:", this.imageCompress.byteCount(element.image));
 
-          this.imageCompress
-            .compressFile(element.image, null, 50, 50) // 50% ratio, 50% quality
-            .then(
-              (compressedImage) => {
-                this.imgResultAfterCompression = compressedImage;
+    if (false) {
+      // BELOW CODE IS FOR COMPRESSING IMAGE.
+      this.imageCompress.uploadMultipleFiles().then(
+        (arrayOfFiles: { image: string, fileName: string, orientation: number }[]) => {
+          if ((this.publishNewsForm?.images && this.publishNewsForm['images'].length + arrayOfFiles.length) > 3) {
+            this.alertService.open('error', "Limit Issue", this.publishNewsForm['images'].length + " file(s) already uploaded.. Only " + (3 - this.publishNewsForm['images'].length) + ' image(s) are allowed..');
+            return;
+          } else if (arrayOfFiles.length > 3) {
+            this.alertService.open('error', "Limit Reached", "Maximum 3 files can be uploaded !")
+            return;
+          }
 
-                const binaryData = this.base64ToBinary(compressedImage.split(',')[1]);
-                const fileType = this.getImageTypeFromBase64(element.image).split('/').pop(); // Get the file extension
-                console.log(fileType)
-                const blob = new Blob([binaryData], { type: 'image/jpeg' });
+          const formData = new FormData();
+          let userData = this.storage.api.session.get('userData');
+          for (const [index, element] of arrayOfFiles.entries()) {
+            this.imgResultBeforeCompression = element.image;
+            console.log("Size in bytes of the uploaded image was:", this.imageCompress.byteCount(element.image));
 
-                formData.append('images', blob, userData.employeeId + '_' + new Date().getTime() + '_' + index + '.' + fileType);
+            this.imageCompress
+              .compressFile(element.image, null, 50, 50) // 50% ratio, 50% quality
+              .then(
+                (compressedImage) => {
+                  this.imgResultAfterCompression = compressedImage;
 
-                console.log("Size in bytes after compression is now:", this.imageCompress.byteCount(compressedImage));
+                  const binaryData = this.base64ToBinary(compressedImage.split(',')[1]);
+                  const fileType = this.getImageTypeFromBase64(element.image).split('/').pop(); // Get the file extension
+                  console.log(fileType)
+                  const blob = new Blob([binaryData], { type: 'image/jpeg' });
 
-                if (index === arrayOfFiles.length - 1) {
+                  formData.append('images', blob, userData.employeeId + '_' + new Date().getTime() + '_' + index + '.' + fileType);
 
-                  console.log("UPLOAD TRIGGERED");
-                  this.http.post(Config.API.UPLOAD_FILES, formData).subscribe(
-                    (response: any) => {
-                      if (response.status === "success") {
-                        if (!this.publishNewsForm['images']) {
-                          this.publishNewsForm['images'] = [];
+                  console.log("Size in bytes after compression is now:", this.imageCompress.byteCount(compressedImage));
+
+                  if (index === arrayOfFiles.length - 1) {
+                    this.appService.loaderService = true;
+
+                    console.log("UPLOAD TRIGGERED");
+                    this.http.post(Config.API.UPLOAD_FILES, formData).subscribe(
+                      (response: any) => {
+                        if (response.status === "success") {
+                          if (!this.publishNewsForm['images']) {
+                            this.publishNewsForm['images'] = [];
+                          }
+                          response.data.forEach(element => {
+                            this.publishNewsForm['images'].push(element)
+                          });
+                        } else {
+                          this.alertService.open('error', response.status.charAt(0).toUpperCase() + response.status.slice(1), response.msg || "Failed !")
                         }
-                        response.data.forEach(element => {
-                          this.publishNewsForm['images'].push(element)
-                        });
-                      } else {
-                        this.alertService.open('error', response.status.charAt(0).toUpperCase() + response.status.slice(1), response.msg || "Failed !")
+                        this.appService.loaderService = false;
+                      },
+                      (error) => {
+                        this.appService.loaderService = false;
+                        console.error('Upload error:', error);
                       }
-                      this.appService.loaderService = false;
-                    },
-                    (error) => {
-                      this.appService.loaderService = false;
-                      console.error('Upload error:', error);
-                    }
-                  );
+                    );
 
+                  }
                 }
-              }
-            );
+              );
+          }
+
+
         }
-      }
-    );
+      );
+    }
   }
   getImageTypeFromBase64(base64Data: string): string {
     // Split the data URI by comma to separate the content type part

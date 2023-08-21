@@ -123,9 +123,12 @@
                                 <span class="text-muted" style="font-size: 0.6rem;">Only 3 Images are allowed</span>
                             </label>
                             <!-- openImageUpload -->
-                            <button class="btn pull-right col" type="button" [disabled]="disableFields" (click)="compressFile()">Click or touch
+                            <button class="btn pull-right col" type="button" [disabled]="disableFields" (click)="openImageUpload()">Click or touch
                                 here
                                 to upload images/photos </button>
+                            <!-- <button class="btn pull-right col" type="button" [disabled]="disableFields" (click)="compressFile()">Click or touch
+                                here
+                                to upload images/photos </button> -->
                             <ng-container
                                 *ngIf="publishNewsForm && publishNewsForm['images'] && publishNewsForm['images'].length>0">
                                 <div class="col-12 d-flex">
@@ -144,11 +147,11 @@
                                 </div>
                             </ng-container>
                             
-                            <!-- <input type="file" id="loginimages" class="form-control form-control-lg d-none"
+                            <input type="file" id="loginimages" class="form-control form-control-lg d-none"
                                 placeholder="Enter a valid images" name="images" [(ngModel)]="images" #image="ngModel"
                                 [disabled]="disableFields"
                                 [ngClass]="{ 'is-invalid': newsForm.submitted && images.invalid }" type="file"
-                                (change)="upload($event)" multiple accept=".png, .jpg, .jpeg, .gif" /> -->
+                                (change)="upload($event)" multiple accept=".png, .jpg, .jpeg, .gif" />
                             <div *ngIf="newsForm.submitted && images.invalid" class="invalid-feedback">
                                 <div *ngIf="images.errors.required">This field is required</div>
                             </div>
