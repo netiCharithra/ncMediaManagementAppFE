@@ -36,6 +36,12 @@ export class AppServiceService {
   getSubscribers(data:any){
     return this._httplayer.post(Config.API.GET_SUBSCRIBERS, data);
   }
+  addSubscribers(data: any) {
+    return this._httplayer.post(Config.API.ADD_SUBSCRIBERS, data);
+  }
+  addSubscriberToGroup(data: any) {
+    return this._httplayer.post(Config.API.ADD_SUBSCRIBER_TO_GROUP, data);
+  }
   getEmployeesData(data:any){
     return this._httplayer.post(Config.API.EMPLOYEES_DATA, data);
   }

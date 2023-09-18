@@ -6,7 +6,15 @@
             <ng-container *ngFor="let data of pageData.specificRecord">
                 <div class="w-100"><a class="news-title" href="javascript:void(0)">{{data.title}}</a>
                 </div>
-                <div class="w-100 mn-date">{{data.createdDate |date}}</div>
+                <div class="w-100 mn-date">{{data.createdDate |date}} 
+
+                    <span *ngIf="data.viewCount" class="pull-right mr-2">
+
+                        <em class="fa fa-eye" aria-hidden="true"></em> {{data.viewCount}}
+                    </span>
+
+                    <em></em>
+                </div>
                 <div class="image-container" *ngIf="data?.images?.length">
                     <div class="image" *ngFor="let image of data.images" [ngStyle]="getImageDivStyle(images)">
                         <img [src]="'https://drive.google.com/uc?export=view&id='+image.id" alt="Failed" [ngStyle]="getImageTagStyle(images)">
@@ -25,7 +33,9 @@
         <h2><i class="fa fa-align-justify"></i>Read More</h2>
         <ng-container *ngIf="pageData?.recentRecords">
 
-            <div class="mn-list" *ngFor="let moreRecentData of pageData.recentRecords;  let first = first">
+            <div class="mn-list" *ngFor="let moreRecentData of pageData.recentRecords;  let first = first"
+            (click)="getIndividualNews(moreRecentData)"
+            >
                  <div class="mn-img">
                         <img *ngIf="moreRecentData['images'] && moreRecentData['images'][0] && moreRecentData['images'][0].id"
                             [src]="'https://drive.google.com/uc?export=view&id='+moreRecentData['images'][0].id"
@@ -45,7 +55,7 @@
             <ul class="fa-ul">
                 <li *ngFor="let category of pageData.categories"><span class="fa-li"><i
                             class="far fa-arrow-alt-circle-right"></i></span><a
-                        href="javascript:void(0)">{{category}}</a></li>
+                        href="javascript:void(0)" (click)="appService.navigateTo({type:'category', queryParams:{category : category}})">{{category}}</a></li>
             </ul>
         </div>
 

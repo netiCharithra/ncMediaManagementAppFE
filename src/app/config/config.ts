@@ -9,6 +9,8 @@ export class Config {
         REGISTER_EMPLOYEE: Config.BASE_POINT_UPLOAD + 'registerEmployee_v2',
         // REGISTER_EMPLOYEE: Config.BASE_POINT_API + 'registerEmployee',
         GET_SUBSCRIBERS: Config.BASE_POINT_API + 'getSubscribers',
+        ADD_SUBSCRIBERS: Config.BASE_POINT_API + 'addSubscribers',
+        ADD_SUBSCRIBER_TO_GROUP: Config.BASE_POINT_API + 'addSubscriberToGroup',
         FETCH_DASHBOARD: Config.BASE_POINT_API + 'fetchDashboard',
         EMPLOYEES_DATA: Config.BASE_POINT_API + 'getEmployeesData',
         MANIPULATE_EMPLOYEE: Config.BASE_POINT_API + 'manipulateEmployee',

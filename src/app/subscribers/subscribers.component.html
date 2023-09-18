@@ -2,9 +2,143 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
-                <simple-table *ngIf="tableData?.headerContent?.length>0" [tableData]="tableData" [tableMetaData]="tableMetaData"></simple-table>
+                <simple-table *ngIf="tableData?.headerContent?.length>0" [tableData]="tableData" [tableMetaData]="tableMetaData"
+                    
+                    
+                    (actionEmitter)="actionEmitter($event)"
+                    
+                    ></simple-table>
                
             </div>
+        </div>
+    </div>
+</div>
+
+<!-- Button trigger modal -->
+<button type="button" id="addEmployeeBtn" class="btn btn-primary d-none" data-toggle="modal" data-target="#addEmployee">
+    Add Employee
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="addEmployee" data-backdrop="static" data-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Add Subcriber</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form (ngSubmit)="signUpForm.form.valid && addSubscriber()"
+                #signUpForm="ngForm" novalidate class="col-12 row m-0 p-0">
+                <div class="modal-body col-12 row custom-form-body">
+
+                    <div class="col-12 mb-4">
+                        <label class="form-label" for="loginName">Name</label>
+                        <input type="text" id="loginName" class="form-control form-control-lg"
+                            placeholder="Enter a valid name" name="name" [(ngModel)]="subscriberFormValue['name']"
+                            #name="ngModel" required 
+                            [ngClass]="{ 'is-invalid': signUpForm.submitted && name.invalid }" />
+                        <div *ngIf="signUpForm.submitted && name.invalid" class="invalid-feedback">
+                            <div *ngIf="name.errors.required">This field is required</div>
+                        </div>
+                    </div>
+
+                    <div class="col-12 mb-4">
+                        <label class="form-label" for="subscribeNumber">Mobile number</label>
+                        <input type="number" min="0" id="subscribeNumber" class="form-control form-control-lg"
+                            placeholder="Enter a valid Whatsapp number" name="mobile" [(ngModel)]="subscriberFormValue['mobile']"
+                            #mobile="ngModel"  required
+                            [ngClass]="{ 'is-invalid': signUpForm.submitted && mobile.invalid }"
+                            pattern="^([789]{1})([\d]{3})[(\D\s)]?[\d]{3}[(\D\s)]?[\d]{3}$" />
+                        <div *ngIf="signUpForm.submitted && mobile.invalid" class="invalid-feedback">
+                            <div *ngIf="mobile.errors.required">This field is required</div>
+                            <div *ngIf="mobile.errors.pattern">Invalid Whatsapp number format</div>
+                        </div>
+                    </div>
+                    <div class="col-12 mb-3">
+                        <label class="form-label" for="loginState">State</label>
+                        <ng-select [items]="metaData['STATES']" bindLabel="label" bindValue="value" name="state"
+                             class="form-control form-control-lg" required
+                            placeholder="Enter state" [(ngModel)]="subscriberFormValue['state']" #state="ngModel"
+                            [clearable]="false" [ngClass]="{ 'is-invalid': signUpForm.submitted && state.invalid }"
+                            (ngModelChange)="changeOfState();subscriberFormValue['district']=null;subscriberFormValue['mandal']=null; ">
+                        </ng-select>
+
+                        <div *ngIf="signUpForm.submitted && state.invalid" class="invalid-feedback">
+                            <div *ngIf="state.errors.required">This field is required</div>
+                        </div>
+                    </div>
+                    <ng-container *ngIf="subscriberFormValue['state']">
+
+                        <div class="col-12 mb-3">
+                            <label class="form-label" for="loginDistrict">District</label>
+                            <ng-select [items]="metaData[subscriberFormValue['state']+'_DISTRICTS']" bindLabel="label"
+                                bindValue="value"  name="district"
+                                class="form-control form-control-lg" required placeholder="Select District"
+                                [(ngModel)]="subscriberFormValue['district']" #district="ngModel" [clearable]="false"
+                                [ngClass]="{ 'is-invalid': signUpForm.submitted && district.invalid }"
+                                (ngModelChange)="subscriberFormValue['mandal']=null; ">
+                            </ng-select>
+                            <div *ngIf="signUpForm.submitted && district.invalid" class="invalid-feedback">
+                                <div *ngIf="district.errors.required">This field is required</div>
+                            </div>
+                        </div>
+                        <div class="col-12 mb-3"
+                            *ngIf="metaData && subscriberFormValue['district'] && metaData[subscriberFormValue['state']+'_DISTRICT_MANDALS'] ">
+                            <label class="form-label" for="loginMandal">Mandal</label>
+                            <ng-select
+                                [items]="metaData[subscriberFormValue['state']+'_DISTRICT_MANDALS'][subscriberFormValue['district']]"
+                                 name="mandal" class="form-control form-control-lg" required
+                                placeholder="Select mandal" [(ngModel)]="subscriberFormValue['mandal']" #mandal="ngModel"
+                                [clearable]="false"
+                                [ngClass]="{ 'is-invalid': signUpForm.submitted && mandal.invalid }">
+                            </ng-select>
+
+                            <div *ngIf="signUpForm.submitted && mandal.invalid" class="invalid-feedback">
+                                <div *ngIf="mandal.errors.required">This field is required</div>
+                            </div>
+                        </div>
+                    </ng-container>
+                    <!-- <div class="col-12 mb-4">
+                        <label class="form-label" for="loginMobile">Mobile</label>
+                        <input type="number" id="loginMobile" class="form-control form-control-lg"
+                            placeholder="Enter a valid Mobile number" name="mobile"
+                            [(ngModel)]="subscriberFormValue['mobile']"  #mobile="ngModel"
+                            required [ngClass]="{ 'is-invalid': signUpForm.submitted && mobile.invalid }" />
+                        <div *ngIf="signUpForm.submitted && mobile.invalid" class="invalid-feedback">
+                            <div *ngIf="mobile.errors.required">This field is required</div>
+                        </div>
+                    </div>
+                    <div class="col-12 mb-3">
+                        <label class="form-label" for="loginRole">Role</label>
+                        <ng-select [items]="metaData['ROLE']" name="role" class="form-control form-control-lg" required
+                             placeholder="Select role" [(ngModel)]="subscriberFormValue['role']"
+                            #role="ngModel" [clearable]="false"
+                            [ngClass]="{ 'is-invalid': signUpForm.submitted && role.invalid }">
+                        </ng-select>
+
+                        <div *ngIf="signUpForm.submitted && role.invalid" class="invalid-feedback">
+                            <div *ngIf="role.errors.required">This field is required</div>
+                        </div>
+                    </div> -->
+                    <!-- <div class="col-12 text-center text-lg-start mt-4 pt-2">
+                        <button type="submit" class="btn btn-primary btn-lg"
+                            style="padding-left: 2.5rem; padding-right: 2.5rem;">Login</button>
+                    </div> -->
+                </div>
+                <div class="modal-footer col-12 row">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <!-- <button type="button" class="btn btn-primary">Understood</button> -->
+                    <button type="submit" class="btn btn-primary btn-lg"
+                        style="padding-left: 2.5rem; padding-right: 2.5rem;">
+
+                     Add
+
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
 </div>

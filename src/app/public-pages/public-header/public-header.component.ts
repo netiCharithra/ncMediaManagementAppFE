@@ -10,6 +10,7 @@ import { AppServiceService } from 'app/services/app-service.service';
 export class PublicHeaderComponent implements OnInit {
 
   public categoires: any = [];
+  public ipCount: any = 0;
   constructor(public appService: AppServiceService, private router: Router) { }
   ngOnInit(): void {
     this.getListOfNewsCategories();
@@ -18,9 +19,10 @@ export class PublicHeaderComponent implements OnInit {
   getListOfNewsCategories = () => {
     try {
       this.appService.loaderService = true;
-      this.appService.getMetaData({ metaList: ['NEWS_CATEGORIES'] }).subscribe((data: any) => {
+      this.appService.getMetaData({ metaList: ['NEWS_CATEGORIES', 'viewersIp'] }).subscribe((data: any) => {
         if (data?.status === 'success') {
           this.categoires = data?.data?.NEWS_CATEGORIES || [];
+          this.ipCount = data?.data?.viewersIp.length || 0;
         }
         this.appService.loaderService = false;
       }, (error) => {

@@ -28,7 +28,11 @@
                         </td>
                         <td *ngIf="tableMetaData?.actions?.length>0">
                             <ng-container *ngFor="let actButton of tableMetaData.actions">
-                                <button *ngIf="actButton.type === 'button'" class="btn btn-sm p-1 {{actButton.class}}" (click)="triggerAction(actButton.key, actButton, tbody)"
+                                <button *ngIf="actButton.type === 'button'" class="btn btn-sm p-1 {{actButton.class}}
+                                
+                                 {{checkDisabledCondition(actButton,tbody) ? 'd-none' : ''}}
+                                
+                                " (click)="triggerAction(actButton.key, actButton, tbody)"
                                 [title]="actButton.tooltip" placement="right" >
                                     <i *ngIf="actButton.icon" class="material-icons">{{actButton.icon}}</i>
                                     <span *ngIf="actButton.label" 

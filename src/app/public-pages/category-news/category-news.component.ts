@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { AlertService } from 'app/services/alert.service';
 import { AppServiceService } from 'app/services/app-service.service';
 
@@ -18,7 +18,7 @@ export class CategoryNewsComponent implements OnInit {
     count:2
   };
 
-  constructor(private route: ActivatedRoute, public appService: AppServiceService, private alertService: AlertService) {
+  constructor(private route: ActivatedRoute, public appService: AppServiceService, private alertService: AlertService, private router: Router) {
     this.payload['category'] = this.route.snapshot.params['id'];
     this.route.paramMap.subscribe((params: Params) => {
 
@@ -118,4 +118,12 @@ export class CategoryNewsComponent implements OnInit {
     return { 'height': `${height}`, 'width': `${width}` };
   }
 
+
+  getIndividualNews=(news)=>{
+    try {
+      this.router.navigate(['/view-news', news['newsId']]);
+    } catch (error) {
+      console.error(error)
+    }
+  }
 }

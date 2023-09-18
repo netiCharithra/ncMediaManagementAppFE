@@ -5,7 +5,13 @@
             <ng-container *ngFor="let data of pageData.records">
                 <div class="w-100"><a class="news-title" href="javascript:void(0)">{{data.title}}</a>
                 </div>
-                <div class="w-100 mn-date">{{data.createdDate |date}}</div>
+                <div class="w-100 mn-date">{{data.createdDate |date}}
+
+                    <span *ngIf="data.viewCount" class="pull-right mr-2">
+                    
+                        <em class="fa fa-eye" aria-hidden="true"></em> {{data.viewCount}}
+                    </span>
+                </div>
                 <div class="image-container" *ngIf="data?.images?.length">
                     <div class="image" *ngFor="let image of data.images" [ngStyle]="getImageDivStyle(images)">
                         <img [src]="'https://drive.google.com/uc?export=view&id='+image.id" alt="Failed"
@@ -28,7 +34,9 @@
         <h2><i class="fa fa-align-justify"></i>Read More</h2>
         <ng-container *ngIf="pageData?.recentRecords">
 
-            <div class="mn-list" *ngFor="let moreRecentData of pageData.recentRecords;  let first = first">
+            <div class="mn-list" *ngFor="let moreRecentData of pageData.recentRecords;  let first = first"
+            (click)="getIndividualNews(moreRecentData)"
+            >
                 <div class="mn-img">
                     <img *ngIf="moreRecentData['images'] && moreRecentData['images'][0] && moreRecentData['images'][0].id"
                         [src]="'https://drive.google.com/uc?export=view&id='+moreRecentData['images'][0].id"
