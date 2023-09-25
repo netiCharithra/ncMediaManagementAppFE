@@ -7,10 +7,10 @@
                 </div>
                 <div class="w-100 mn-date">{{data.createdDate |date}}
 
-                    <span *ngIf="data.viewCount" class="pull-right mr-2">
+                    <!-- <span *ngIf="data.viewCount" class="pull-right mr-2">
                     
                         <em class="fa fa-eye" aria-hidden="true"></em> {{data.viewCount}}
-                    </span>
+                    </span> -->
                 </div>
                 <div class="image-container" *ngIf="data?.images?.length">
                     <div class="image" *ngFor="let image of data.images" [ngStyle]="getImageDivStyle(images)">
