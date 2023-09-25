@@ -13,11 +13,22 @@ import { EmployeeSignupComponent } from './employee-signup/employee-signup.compo
 import { NgSelectModule } from '@ng-select/ng-select';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
+// import { AngularFireModule } from '@angular/fire';
+import { FirestoreModule } from '@angular/fire/firestore';
+import { getFirestore, provideFirestore } from '@angular/fire/firestore';
+import { provideFirebaseApp, getApp, initializeApp } from '@angular/fire/app';
+import { FIREBASE_OPTIONS } from '@angular/fire/compat';
+import { AngularFireMessagingModule } from '@angular/fire/compat/messaging';
+import { AngularFireModule } from '@angular/fire/compat';
 import { NgxImageCompressService } from 'ngx-image-compress';
+import { environment } from 'environments/environment';
+import { MessagingService } from './services/messaging-service';
+import { AsyncPipe } from '@angular/common';
+import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 
 @NgModule({
   imports: [
-    BrowserAnimationsModule, 
+    BrowserAnimationsModule,
     NgSelectModule,
     FormsModule,
     ReactiveFormsModule,
@@ -25,19 +36,24 @@ import { NgxImageCompressService } from 'ngx-image-compress';
     ComponentsModule,
     RouterModule,
     AppRoutingModule,
-    NgbModule
+    NgbModule,
+    AngularFireMessagingModule, AngularFireModule,
+    provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
+    provideFirestore(() => getFirestore()),
+    FirestoreModule,
+    AngularFireAuthModule
   ],
   declarations: [
     AppComponent,
     AdminLayoutComponent,
     LoginComponent,
     EmployeeSignupComponent
-    
-    
-    
+
+
+
 
   ],
-  providers: [AppServiceService],
+  providers: [AppServiceService, MessagingService, AsyncPipe, { provide: FIREBASE_OPTIONS, useValue: environment.firebaseConfig }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

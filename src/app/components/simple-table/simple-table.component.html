@@ -2,9 +2,38 @@
     <div class="card-header card-header-danger" *ngIf="tableMetaData && checkKeysPresent(tableMetaData).length>0">
         <h4 class="card-title " *ngIf="tableMetaData.title">{{tableMetaData.title}}</h4>
         <p class="card-category" *ngIf="tableMetaData.subtitle"> {{tableMetaData.subtitle}}</p>
-        <button class="btn btn-primary create_button" *ngIf="tableMetaData.createNew" (click)="triggerAction('create', tableMetaData.createNew)">
-            <i *ngIf="tableMetaData.createNew.icon" class="material-icons">{{tableMetaData.createNew.icon}}</i>
-            <span>&nbsp; {{tableMetaData.createNew.label ? tableMetaData.createNew.label : 'Add'}}</span></button>
+
+        <div class="create_button">
+
+            <ng-container *ngFor="let externalHeaderAction of tableMetaData.headerExternalActions">
+    
+                <span class="toggleBtn" *ngIf="externalHeaderAction.type === 'select'">
+                    <span class="menu-wrap">
+                        <ul class="menu">
+                            <li class="menu-item">
+                                <button class="btn btn-primary" href="javascript:void(0)">{{externalHeaderAction.label}}</button>
+                                <ul class="drop-menu">
+                                    <li class="drop-menu-item" *ngFor="let options of externalHeaderAction.options">
+                                        <a href="javascript:void(0)" (click)="onSelectExternalHeaderAction(externalHeaderAction, options)">{{options}}</a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </span>
+                </span>
+    
+                <button class="btn btn-primary" *ngIf="externalHeaderAction.type === 'button'"
+                    (click)="triggerAction('create', tableMetaData.createNew)">
+                    <i *ngIf="tableMetaData.createNew.icon" class="material-icons">{{tableMetaData.createNew.icon}}</i>
+                    <span>&nbsp; {{tableMetaData.createNew.label ? tableMetaData.createNew.label : 'Add'}}</span></button>
+            </ng-container>
+            <button class="btn btn-primary " *ngIf="tableMetaData.createNew"
+                (click)="triggerAction('create', tableMetaData.createNew)">
+                <i *ngIf="tableMetaData.createNew.icon" class="material-icons">{{tableMetaData.createNew.icon}}</i>
+                <span>&nbsp; {{tableMetaData.createNew.label ? tableMetaData.createNew.label : 'Add'}}</span></button>
+        </div>
+
+
     </div>
     <div class="card-body">
         <div class="table-responsive">
@@ -32,20 +61,19 @@
                                 
                                  {{checkDisabledCondition(actButton,tbody) ? 'd-none' : ''}}
                                 
-                                " (click)="triggerAction(actButton.key, actButton, tbody)"
-                                [title]="actButton.tooltip" placement="right" >
+                                " (click)="triggerAction(actButton.key, actButton, tbody)" [title]="actButton.tooltip"
+                                    placement="right">
                                     <i *ngIf="actButton.icon" class="material-icons">{{actButton.icon}}</i>
-                                    <span *ngIf="actButton.label" 
-                                        >{{actButton.label}}</span>
+                                    <span *ngIf="actButton.label">{{actButton.label}}</span>
                                 </button>
 
                             </ng-container>
                         </td>
                         <td *ngFor="let thead of tableData.headerContent">
-                            
+
                             <ng-container *ngIf="thead.type && thead.type === 'dataTimePipe'; else defaultText">
-                                {{tbody[thead.key] | date:'medium'}} 
-                                
+                                {{tbody[thead.key] | date:'medium'}}
+
                             </ng-container>
                             <ng-template #defaultText>
 

@@ -18,7 +18,9 @@
             "polyfills": "src/polyfills.ts",
             "assets": [
               "src/assets",
-              "src/favicon.ico"
+              "src/favicon.ico",
+              "src/firebase-messaging-sw.js",
+              "src/manifest.json"
             ],
             "styles": [
               "src/assets/scss/style.scss",
@@ -137,7 +139,9 @@
             ],
             "assets": [
               "src/assets",
-              "src/favicon.ico"
+              "src/favicon.ico",
+              "src/firebase-messaging-sw.js",
+              "src/manifest.json"
             ]
           }
         },

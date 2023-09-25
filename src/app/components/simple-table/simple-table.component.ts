@@ -52,4 +52,14 @@ export class SimpleTableComponent implements OnInit {
     }
     return false;
   }
+
+  onSelectExternalHeaderAction = (action, selectedType) => {
+    let obj = {
+      type:"headerActionSelect",
+      action:action, 
+      value:selectedType
+    };
+    this.actionEmitter.emit(obj);
+
+  }
 }

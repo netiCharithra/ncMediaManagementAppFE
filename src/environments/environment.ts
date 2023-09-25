@@ -5,9 +5,18 @@
 
 export const environment = {
   production: false,
-  base_url: 'https://viridian-slug-sari.cyclic.app/',
+  firebaseConfig: {
+    apiKey: "AIzaSyBz7rI9K7VGMmO1GbRX7pstXOZgv5-z__E",
+    authDomain: "ncmedianewsportal-v2.firebaseapp.com",
+    projectId: "ncmedianewsportal-v2",
+    storageBucket: "ncmedianewsportal-v2.appspot.com",
+    messagingSenderId: "1090074501186",
+    appId: "1:1090074501186:web:2a7fc30151dc7530be0ddb",
+    measurementId: "G-9F8X1GRERE"
+  },
+  // base_url: 'https://viridian-slug-sari.cyclic.app/',
   base_url_upload_files: 'https://nc-media-managament-app-be-files-upload.onrender.com/',
-  // base_url: 'http://localhost:3000/',
+  base_url: 'http://localhost:3000/',
   // base_url_upload_files: 'http://localhost:3001/',
   googleDrive: {
     // insert credentials here
@@ -25,5 +34,5 @@ export const environment = {
     simple: true,
     multipart: false,
     resumable: false,
-  },
+  }
 };

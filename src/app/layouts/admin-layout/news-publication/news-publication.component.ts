@@ -6,6 +6,7 @@ import { AppServiceService } from 'app/services/app-service.service';
 import { StorageService } from 'app/services/storage.service';
 import { AsyncSubject, Observable } from 'rxjs';
 import { NgxImageCompressService } from 'ngx-image-compress';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'news-publication',
@@ -23,7 +24,10 @@ export class NewsPublicationComponent implements OnInit {
   };
   public actionType: any = '';
   public disableFields: Boolean = false;
-  constructor(private appService: AppServiceService, private alertService: AlertService, private http: HttpClient, private storage: StorageService, private imageCompress: NgxImageCompressService) { }
+  public automaticNewsType:any='';
+  public autoFetchLink:any='';
+  constructor(private appService: AppServiceService, private alertService: AlertService, private http: HttpClient, private storage: StorageService, private imageCompress: NgxImageCompressService,
+    private router: Router) { }
 
   ngOnInit(): void {
     this.getNewsList()
@@ -109,6 +113,11 @@ export class NewsPublicationComponent implements OnInit {
         this.actionType = event.type;
         this.getMetaData(null, true, event);
         this.disableFields = true;
+      } else if (event.type === 'headerActionSelect'){
+        console.log(event);
+        this.automaticNewsType = event.value;
+        this.router.navigate(['/app/news', this.automaticNewsType]);
+        // document.getElementById('autoNewsFetchLinkBtn').click();
       }
     } catch (error) {
       console.error(error)
@@ -361,4 +370,9 @@ export class NewsPublicationComponent implements OnInit {
 
     return bytes;
   }
+
+ 
+
+
+  
 }

@@ -77,4 +77,7 @@ export class AppServiceService {
   getCategoryNews(data:any){
     return this._httplayer.post(Config.API.GET_PUBLIC_CATEGORY_NEWS, data);
   }
+  setFCMToken(data:any){
+    return this._httplayer.post(Config.API.SET_FCM_TOKEN, data);
+  }
 }

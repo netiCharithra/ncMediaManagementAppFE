@@ -12,6 +12,7 @@ import { SubscribersComponent } from 'app/subscribers/subscribers.component';
 import { EmployeesComponent } from 'app/layouts/admin-layout/employees/employees.component';
 import { NewsPublicationComponent } from 'app/layouts/admin-layout/news-publication/news-publication.component';
 import { EmployeesListComponent } from 'app/layouts/admin-layout/employees-list/employees-list.component';
+import { AndhraJyothiComponent } from './link-news/andhra-jyothi/andhra-jyothi.component';
 
 export const AdminLayoutRoutes: Routes = [
     {
@@ -21,6 +22,7 @@ export const AdminLayoutRoutes: Routes = [
     },
     { path: 'dashboard', component: DashboardComponent },
     { path: 'news', component: NewsPublicationComponent },
+    { path: 'news/:type', component: AndhraJyothiComponent },
     { path: 'employee-management', component: EmployeesComponent },
     { path: 'employees', component: EmployeesListComponent },
     { path: 'user-profile', component: UserProfileComponent },

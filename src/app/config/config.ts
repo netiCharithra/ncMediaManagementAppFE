@@ -22,7 +22,8 @@ export class Config {
         GET_NEWS_INFO: Config.BASE_POINT_API + 'getNewsInfo',
         GET_HOME_DATA: Config.BASE_POINT_API +'public/getHomeData',
         GET_PUBLIC_NEWS_INFO: Config.BASE_POINT_API +'public/getNewsInfo',
-        GET_PUBLIC_CATEGORY_NEWS: Config.BASE_POINT_API +'public/getCategoryNews'
+        GET_PUBLIC_CATEGORY_NEWS: Config.BASE_POINT_API +'public/getCategoryNews',
+        SET_FCM_TOKEN: Config.BASE_POINT_API +'public/setFCMToken'
 
     }
 }
