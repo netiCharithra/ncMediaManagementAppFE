@@ -25,6 +25,7 @@ import { environment } from 'environments/environment';
 import { MessagingService } from './services/messaging-service';
 import { AsyncPipe } from '@angular/common';
 import { AngularFireAuthModule } from '@angular/fire/compat/auth';
+import { MetaShareService } from './services/meta-share.service';
 
 @NgModule({
   imports: [
@@ -53,7 +54,7 @@ import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 
 
   ],
-  providers: [AppServiceService, MessagingService, AsyncPipe, { provide: FIREBASE_OPTIONS, useValue: environment.firebaseConfig }],
+  providers: [AppServiceService, MessagingService, AsyncPipe, { provide: FIREBASE_OPTIONS, useValue: environment.firebaseConfig }, MetaShareService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

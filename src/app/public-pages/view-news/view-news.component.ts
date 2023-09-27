@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { AlertService } from 'app/services/alert.service';
 import { AppServiceService } from 'app/services/app-service.service';
+import { Title } from '@angular/platform-browser';
+import { MetaShareService } from 'app/services/meta-share.service';
 
 @Component({
   selector: 'view-news',
@@ -13,7 +15,7 @@ export class ViewNewsComponent implements OnInit {
   public paramPayload:any={};
   public pageData:any;
 
-  constructor(private route: ActivatedRoute, private appService: AppServiceService, private alertService: AlertService, private router:Router) {
+  constructor(private metaShareService:MetaShareService,private titleService: Title, private route: ActivatedRoute, private appService: AppServiceService, private alertService: AlertService, private router:Router) {
     this.paramPayload['newsId'] = this.route.snapshot.params['id'];
     // this.route.queryParams.subscribe(params => {
     //   if (params){
@@ -53,6 +55,12 @@ export class ViewNewsComponent implements OnInit {
           if (response.data) {
             this.pageData=response.data || {};
             console.log(this.pageData)
+            this.metaShareService.setPageMetadata(
+              this.pageData.specificRecord[0].title  + '| Neti Charithra',
+              this.metaShareService.getFirst12Words(this.pageData.specificRecord[0].description || '')+'...',
+              'https://drive.google.com/uc?export=view&id=' + (this.pageData.specificRecord[0].images[0].id)
+            )
+            this.titleService.setTitle(this.pageData.specificRecord[0].title  + '| Neti Charithra')
           }
           // console.log(response)
         } else {
