@@ -4,32 +4,43 @@
 <div class="top-header">
     <div class="container-fluid">
         <div class="row align-items-center">
-            <div class="col-lg-9 col-md-8">
+
+            <div class="image-container">
+                <img src="/assets/img/ncmedia/header_1.png" alt="Image 1" class="image">
+                
+                <img src="/assets/img/ncmedia/TB.png" alt="Image 2" class="image">
+                <img src="/assets/img/ncmedia/header_2.png" alt="Image 2" class="image">
+            </div>
+            
+            <div class="mobile-image-container">
+                <img src="/assets/img/ncmedia/ganta_gantaku_news.png" alt="Image 2" class="image image_bottom">
+                <span class="d-none-mobile">Click here to get Breaking News to your Whatsapp Directly..!</span>
+                <img src="/assets/img/ncmedia/breakingNews.png" alt="Image 2" class="image d-none-mobile">
+
+            </div>
+            <!-- <div class="col-lg-9 col-md-8">
                 <div class="logo">
                     <a href="javascript:void(0)" class="portalTile h2 text-danger">
                         <img src="/assets/img/ncmedia/WebTopBanner.png" alt="Logo">
-                        <!-- NETI CHARITHRA -->
                     </a>
                 </div>
-            </div>
+            </div> -->
             <!-- <div class="col-lg-6 col-md-4">
                     <div class="search">
                         <input type="text" placeholder="Search">
                         <button><i class="fa fa-search"></i></button>
                     </div>
                 </div> -->
-            <div class="col-lg-3 col-md-4">
+            <!-- <div class="col-lg-3 col-md-4">
 
-                <!-- <a *ngIf="ipCount" href="javascript:void(0)" class="p-1"><i class="fa fa-eye"></i> {{ipCount}}</a> -->
                 <div class="social">
-                    <!-- <img src="/assets/img/ncmedia/ncLogo.png" alt="Logo" class="right-img"> -->
                     <a href="javascript:void(0)" class="p-1"><i class="fa fa-twitter"></i></a>
                     <a href="javascript:void(0)" class="p-1"><i class="fa fa-facebook"></i></a>
                     <a href="javascript:void(0)" class="p-1"><i class="fa fa-linkedin"></i></a>
                     <a href="javascript:void(0)" class="p-1"><i class="fa fa-instagram"></i></a>
                     <a href="javascript:void(0)" class="p-1"><i class="fa fa-youtube"></i></a>
                 </div>
-            </div>
+            </div> -->
         </div>
     </div>
 </div>
@@ -41,26 +52,19 @@
     <div class="container">
         <nav class="navbar navbar-expand-md bg-dark navbar-dark">
             <a href="javascript:void(0)" class="navbar-brand">MENU</a>
-            <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
-                <span class="navbar-toggler-icon"></span>
+            <button type="button" class="navbar-toggler" data-target="#navbarCollapse" (click)="showMenu = !showMenu">
+                <!-- <span class="navbar-toggler-icon"></span> -->
+                <i class="fa fa-bars" aria-hidden="true"></i>
+
             </button>
 
-            <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
+            <div class="navbar-collapse justify-content-between {{showMenu && isMobileMenu() ? 'transform_custom_menu d-block':''}}" id="navbarCollapse">
                 <div class="navbar-nav m-auto">
-                    <!-- active -->
+                    <i *ngIf="isMobileMenu()" class="fa fa-times mobileCloseIcon" aria-hidden="true"></i>
+
                     <a href="index.html" class="nav-item nav-link ">Home</a>
-                    <a href="javascript:void(0)" class="nav-item nav-link" *ngFor="let category of categoires" (click)="appService.navigateTo({type:'category', queryParams:{category : category}})">{{category}}</a>
-                    <!-- <a href="javascript:void(0)" class="nav-item nav-link">Sports</a>
-                    <a href="javascript:void(0)" class="nav-item nav-link">Tech</a>
-                    <a href="javascript:void(0)" class="nav-item nav-link">fahion</a> -->
-                    <!-- <div class="nav-item dropdown">
-                        <a href="javascript:void(0)" class="nav-link dropdown-toggle" data-toggle="dropdown">Dropdown</a>
-                        <div class="dropdown-menu">
-                            <a href="javascript:void(0)" class="dropdown-item">Sub Item 1</a>
-                            <a href="javascript:void(0)" class="dropdown-item">Sub Item 2</a>
-                        </div>
-                    </div> -->
-                    <!-- <a href="single-page.html" class="nav-item nav-link">Single Page</a> -->
+                    <a href="javascript:void(0)" class="nav-item nav-link" *ngFor="let category of categoires" (click)="appService.navigateTo({type:'category', queryParams:{category : category}}); showMenu=false;">{{category}}</a>
+                   
                     <a href="contact.html" class="nav-item nav-link">Contact Us</a>
                 </div>
             </div>

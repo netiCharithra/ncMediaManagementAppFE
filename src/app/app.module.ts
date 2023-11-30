@@ -26,6 +26,7 @@ import { MessagingService } from './services/messaging-service';
 import { AsyncPipe } from '@angular/common';
 import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 import { MetaShareService } from './services/meta-share.service';
+import { AdvertisementManagementComponent } from './advertisement-management/advertisement-management.component';
 
 @NgModule({
   imports: [
@@ -48,7 +49,8 @@ import { MetaShareService } from './services/meta-share.service';
     AppComponent,
     AdminLayoutComponent,
     LoginComponent,
-    EmployeeSignupComponent
+    EmployeeSignupComponent,
+    AdvertisementManagementComponent
 
 
 

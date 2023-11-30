@@ -22,6 +22,7 @@ export const ROUTES: RouteInfo[] = [
   // { path: '/app/maps', title: 'Maps', icon: 'location_on', class: '' },
   // { path: '/app/notifications', title: 'Notifications', icon: 'notifications', class: '' },
   { path: '/app/subscribers', title: 'Subscribers', icon: 'diversity_3', class: '' },
+  { path: '/app/advertisementManagement', title: 'Advertisement Management', icon: 'diversity_3', class: '' },
   { path: 'logout', title: 'Logout', icon: 'logout', class: 'active-pro' },
 ];
 

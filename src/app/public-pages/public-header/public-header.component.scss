@@ -86,7 +86,7 @@
 
 @media (min-width: 768px) {
     .top-header {
-        max-height: 90px;
+        max-height: 130px;
     }
 }
 
@@ -130,9 +130,17 @@
 .navbar-dark .navbar-nav .nav-link:hover,
 .navbar-dark .navbar-nav .nav-link.active {
     padding: 10px 10px 8px 10px;
-    color: #ffffff;
+    color: #fff ;
 }
-
+.transform_custom_menu{
+    .transform_custom_menu{
+        color: #fff;;
+    }
+}
+.navbar-nav{
+    height: 100% !important;
+    background-color: #333333 !important;
+}
 .navbar-dark .navbar-nav .nav-link:hover,
 .navbar-dark .navbar-nav .nav-link.active {
     background: rgba(228, 122, 46, .2);
@@ -171,9 +179,15 @@
 
     .header,
     .header .navbar {
-        background: #333333 !important;
+        background: unset !important;
     }
 
+    .navbar-brand{
+        display: none !important;
+    }
+    .header{
+        position: absolute !important;
+    }
     .header a.nav-link {
         padding: 5px;
     }
@@ -182,3 +196,109 @@
         box-shadow: none;
     }
 }
+.transform_custom_menu{
+    transform: unset !important;
+}
+
+ /* Common styles for all screen sizes */
+ .image-container {
+     display: flex;
+     flex-wrap: wrap;
+     justify-content: space-between;
+     width: 100%;
+     height: 70px;
+ }
+
+ .image {
+    //  width: 30%;
+     height: 100%;
+     /* Adjust the width as needed */
+     margin-bottom: 10px;
+ }
+
+ /* Styles for screens larger than 768px (laptop and bigger screens) */
+ @media (min-width: 769px) {
+     .image {
+        //  width: 30%;
+            height: 100%;
+         /* Adjust the width as needed */
+     }
+
+         .image:nth-child(1){
+                margin-left: 10px;
+            }
+         .image:nth-child(3) {
+             margin-right: 10px;
+         }
+ }
+
+ /* Styles for screens smaller than 768px (mobile and between laptop mode) */
+ @media (max-width: 768px) {
+     .image {
+         width: 48%;
+         /* Adjust the width as needed */
+     }
+
+     /* Arrange IMAGE_1 and IMAGE_3 side by side in mobile mode */
+     .image:nth-child(1),
+     .image:nth-child(3) {
+         width: 35%;
+     }
+
+     /* Force IMAGE_2 to the next line in mobile mode */
+     .image:nth-child(2) {
+        //  order: 2;
+        display: none;
+     }
+     
+     .top-header{
+         padding: 0 !important;
+     }
+
+     .image-container{
+        height: 90px !important;
+     }
+     .d-none-mobile{
+        display: none !important;
+     }
+     .mobile-image-container{
+        justify-content: center !important;
+     }
+     .image_bottom{
+        width: 100% !important;
+     }
+     .image-container{
+        justify-content: space-evenly;
+     }
+ }
+
+ /* Styles for screens smaller than 768px (mobile and between laptop mode) */
+//  @media (max-width: 768px) {
+//  }
+
+
+.mobile-image-container{
+    display: flex;
+        justify-content: space-between;
+        width: 100%;
+    height: 50px !important;
+}
+
+.navbar-toggler{
+        background: #33333387;
+        position: fixed;
+        right: 10px;
+        height: 50px;
+        bottom: 10px;
+        border-radius: 50%;
+        width: 50px;
+        z-index: 9999999;
+    }
+
+
+    .mobileCloseIcon {
+         position: absolute;
+         right: 10px;
+         top: 10px;
+         font-size: 20px;
+     }

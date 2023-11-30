@@ -60,7 +60,10 @@ export class ViewNewsComponent implements OnInit {
               this.metaShareService.getFirst12Words(this.pageData.specificRecord[0].description || '')+'...',
               'https://drive.google.com/uc?export=view&id=' + (this.pageData.specificRecord[0].images[0].id)
             )
-            this.titleService.setTitle(this.pageData.specificRecord[0].title  + '| Neti Charithra')
+            console.log(this.pageData.specificRecord[0].title + '| Neti Charithra',
+              this.metaShareService.getFirst12Words(this.pageData.specificRecord[0].description || '') + '...',
+              'https://drive.google.com/uc?export=view&id=' + (this.pageData.specificRecord[0].images[0].id))
+            // this.titleService.setTitle(this.pageData.specificRecord[0].title  + '| Neti Charithra')
           }
           // console.log(response)
         } else {
@@ -121,6 +124,26 @@ export class ViewNewsComponent implements OnInit {
       this.router.navigate(['/view-news', news['newsId']]);
     } catch (error) {
       console.error(error)
+    }
+  }
+  share(data) {
+    const title = data.title;
+    const text = this.metaShareService.getFirst12Words(data.description);
+    const url = 'https://neticharithra-ncmedia.web.app/#/view-news/' + data.newsId;
+    const imageUrl = 'https://example.com/image.jpg';
+
+    if (navigator.share) {
+      navigator
+        .share({
+          title,
+          text,
+          url
+                })
+        .then(() => console.log('Shared successfully'))
+        .catch(error => console.error('Error sharing:', error));
+    } else {
+      // Fallback behavior if the Web Share API is not supported.
+      console.log('Web Share API not supported. Implement a fallback here.');
     }
   }
 }

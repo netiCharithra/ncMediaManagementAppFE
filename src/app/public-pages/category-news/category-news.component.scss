@@ -103,12 +103,12 @@
     color: #E47A2E;
 }
 
-.news-title {
-    font-size: 1.75rem;
-    font-weight: bold;
-    margin: 0;
-    line-height: initial;
-}
+// .news-title {
+//     font-size: 1.75rem;
+//     font-weight: bold;
+//     margin: 0;
+//     line-height: initial;
+// }
 
 .news-sub-title {
     font-size: 1.25rem;
@@ -210,3 +210,11 @@
     // width: 100%;
     // height: -webkit-fill-available;
 }
+// @media (max-width: 768px) {
+
+//     .news-title {
+//         font-size: 1.3rem !important;
+//     }
+// }   
+
+

@@ -4,7 +4,11 @@
         <ng-container *ngIf="pageData?.specificRecord">
 
             <ng-container *ngFor="let data of pageData.specificRecord">
-                <div class="w-100"><a class="news-title" href="javascript:void(0)">{{data.title}}</a>
+                <div class="w-100 text_title"><a class="news-title" href="javascript:void(0)">{{data.title}}</a>
+                                        <span class="shareIconPosition cursor-pointer" (click)="share(data)"><i class="fa fa-share-square-o"
+                                                aria-hidden="true"></i>
+                                        
+                                        </span>
                 </div>
                 <div class="w-100 mn-date">{{data.createdDate |date}} 
 
@@ -16,6 +20,7 @@
                     <em></em>
                 </div>
                 <div class="image-container" *ngIf="data?.images?.length">
+
                     <div class="image" *ngFor="let image of data.images" [ngStyle]="getImageDivStyle(images)">
                         <img [src]="'https://drive.google.com/uc?export=view&id='+image.id" alt="Failed" [ngStyle]="getImageTagStyle(images)">
                     </div>

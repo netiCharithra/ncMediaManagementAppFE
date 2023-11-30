@@ -33,7 +33,7 @@
 }
 .one-line-ellipsis {
     display: -webkit-box !important;
-    -webkit-line-clamp: 1 !important;
+    -webkit-line-clamp: 2 !important;
     -webkit-box-orient: vertical !important;
     overflow: hidden !important;
     text-overflow: ellipsis !important;
@@ -468,3 +468,28 @@ textarea.form-control.is-invalid {
      width: 100vw;
      z-index: 9999;
  }
+
+ .news-title {
+     font-size: 1.1rem !important;
+    font-weight: bold;
+        margin: 0;
+        line-height: initial;
+ }
+
+ .news-sub-title {
+     font-size: 1rem;
+     font-weight: bold;
+     margin: 0;
+     line-height: initial;
+ }
+ .mn-title{
+        line-height: unset !important;
+        font-size: 1rem !important;
+        font-weight: bold !important;
+    }
+
+    .each-news-line{
+        margin-bottom: 15px !important;
+            border-bottom: 1px solid #ccc;
+            padding: 10px;
+    }

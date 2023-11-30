@@ -2,7 +2,7 @@
     <div class="left-section border">
         <ng-container *ngIf="pageData?.records">
 
-            <ng-container *ngFor="let data of pageData.records">
+            <div *ngFor="let data of pageData.records" class="each-news-line">
                 <div class="w-100"><a class="news-title" href="javascript:void(0)">{{data.title}}</a>
                 </div>
                 <div class="w-100 mn-date">{{data.createdDate |date}}
@@ -24,7 +24,7 @@
                 <div class="w-100">
                     {{data?.description || ''}}
                 </div>
-            </ng-container>
+            </div>
             <div class="w-100 text-center" *ngIf="!endOfRecords">
                 <button class="btn btn-primary" (click)="getNewsInfo(true)">Load More..</button>
             </div>

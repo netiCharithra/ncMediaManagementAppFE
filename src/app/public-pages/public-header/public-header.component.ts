@@ -11,6 +11,7 @@ export class PublicHeaderComponent implements OnInit {
 
   public categoires: any = [];
   public ipCount: any = 0;
+  public showMenu:boolean=false;
   constructor(public appService: AppServiceService, private router: Router) { }
   ngOnInit(): void {
     this.getListOfNewsCategories();
@@ -36,6 +37,11 @@ export class PublicHeaderComponent implements OnInit {
     }
   }
 
-  
+  isMobileMenu() {
+    if (window.innerWidth > 991) {
+      return false;
+    }
+    return true;
+  };
 
 }

@@ -13,6 +13,7 @@ import { EmployeesComponent } from 'app/layouts/admin-layout/employees/employees
 import { NewsPublicationComponent } from 'app/layouts/admin-layout/news-publication/news-publication.component';
 import { EmployeesListComponent } from 'app/layouts/admin-layout/employees-list/employees-list.component';
 import { AndhraJyothiComponent } from './link-news/andhra-jyothi/andhra-jyothi.component';
+import { AdvertisementManagementComponent } from 'app/advertisement-management/advertisement-management.component';
 
 export const AdminLayoutRoutes: Routes = [
     {
@@ -33,4 +34,5 @@ export const AdminLayoutRoutes: Routes = [
     { path: 'notifications', component: NotificationsComponent },
     { path: 'upgrade', component: UpgradeComponent },
     { path: 'subscribers', component: SubscribersComponent },
+    { path: 'advertisementManagement', component: AdvertisementManagementComponent },
 ];
