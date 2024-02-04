@@ -18,9 +18,9 @@ export class AppComponent implements OnInit {
   
   message:any;
   ngOnInit(){
-    console.log("HII")
+    // console.log("HII")
     navigator.serviceWorker.addEventListener('notificationclick', (event:any) => {
-      alert("HI")
+      // alert("HI")
       console.log(event.notification)
       event.notification.close();
       const clickAction = event.notification.data.click_action;
@@ -37,7 +37,7 @@ export class AppComponent implements OnInit {
     
     this.afMessaging.requestToken.subscribe(
       (token) => {
-        console.log('FCM token:', token);
+        // console.log('FCM token:', token);
         if(token){
           this.appService.setFCMToken({token:token}).subscribe(data=>{
             console.log(data)

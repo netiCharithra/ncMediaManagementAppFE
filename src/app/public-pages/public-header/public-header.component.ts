@@ -19,7 +19,8 @@ export class PublicHeaderComponent implements OnInit {
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
     ).subscribe((event: NavigationEnd) => {
-      console.log('Route changed:', event.url);{
+      // console.log('Route changed:', event.url);
+      {
         if (event.url.split('/').length>1){
           this.activeRoute = event.url.split('/')[1];
           console.log(this.activeRoute)
