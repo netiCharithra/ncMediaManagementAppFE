@@ -14,10 +14,10 @@ export const environment = {
     appId: "1:1090074501186:web:2a7fc30151dc7530be0ddb",
     measurementId: "G-9F8X1GRERE"
   },
-  // base_url: 'https://viridian-slug-sari.cyclic.app/',
-  // base_url_upload_files: 'https://nc-media-managament-app-be-files-upload.onrender.com/',
-  base_url: 'http://localhost:3000/',
-  base_url_upload_files: 'http://localhost:3001/',
+  base_url: 'https://viridian-slug-sari.cyclic.app/',
+  base_url_upload_files: 'https://nc-media-managament-app-be-files-upload.onrender.com/',
+  // base_url: 'http://localhost:3000/',
+  // base_url_upload_files: 'http://localhost:3001/',
   googleDrive: {
     // insert credentials here
     apiKey: "AIzaSyDXivxGi5FHfWDAW1U1qcsjlH0_XxBur7Y",
