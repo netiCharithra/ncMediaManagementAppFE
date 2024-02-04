@@ -10,11 +10,19 @@ export class SimpleTableComponent implements OnInit {
 
   @Input() tableData:any;
   @Input() tableMetaData:any;
+  @Input() paginationData:any;
 
   @Output() actionEmitter = new EventEmitter<any>();
   constructor(private alertService:AlertService) { }
+  public totalRecords;// Set your total records count here
+  public recordsPerPage;
+  public currentPage;;
 
   ngOnInit(): void {
+    console.log(this.paginationData)
+    this.totalRecords = this.paginationData?.totalRecords ? this.paginationData.totalRecords : null; 
+    this.recordsPerPage = this.paginationData?.recordsPerPage ? this.paginationData.recordsPerPage : 10; 
+    this.currentPage = this.paginationData?.currentPage ? this.paginationData.currentPage : null; 
   }
 
   checkKeysPresent = (field:any) => {
@@ -38,7 +46,12 @@ export class SimpleTableComponent implements OnInit {
     }
 
   }
-
+  
+  onPageChange(page: number): void {
+    // Handle page change, fetch new records, etc.
+    this.currentPage = page;
+    // Call your API or update the record list accordingly
+  }
   checkDisabledCondition(btnData, rowData){
     if (btnData && btnData.disable && Object.keys(btnData.disable).length>0){
       const disableKeys=Object.keys(btnData.disable)

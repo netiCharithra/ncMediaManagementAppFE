@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
 import { AppServiceService } from 'app/services/app-service.service';
+import { filter } from 'rxjs';
 
 @Component({
   selector: 'public-header',
@@ -12,8 +13,23 @@ export class PublicHeaderComponent implements OnInit {
   public categoires: any = [];
   public ipCount: any = 0;
   public showMenu:boolean=false;
-  constructor(public appService: AppServiceService, private router: Router) { }
+
+  public activeRoute:any=''
+  constructor(public appService: AppServiceService, private router: Router) {
+    this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd)
+    ).subscribe((event: NavigationEnd) => {
+      console.log('Route changed:', event.url);{
+        if (event.url.split('/').length>1){
+          this.activeRoute = event.url.split('/')[1];
+          console.log(this.activeRoute)
+        } else {
+          this.activeRoute = '';
+        }
+      }
+    }); }
   ngOnInit(): void {
+   
     this.getListOfNewsCategories();
   }
 

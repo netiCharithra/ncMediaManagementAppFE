@@ -9,6 +9,7 @@ import { SimpleTableComponent } from './simple-table/simple-table.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatButtonModule } from '@angular/material/button';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { PaginationComponentComponent } from './pagination-component/pagination-component.component';
 
 @NgModule({
   imports: [
@@ -19,7 +20,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     FooterComponent,
     NavbarComponent,
     SidebarComponent,
-    SimpleTableComponent
+    SimpleTableComponent,
+    PaginationComponentComponent
   ],
   exports: [
     FooterComponent,

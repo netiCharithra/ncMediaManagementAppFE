@@ -3,8 +3,10 @@
 <div class="top-news-section flex-properties w-100">
     <div class="parent-level">
         <div class="top-news-img cursor-pointer" *ngIf="topSectionData[0]" (click)="onNewsClick(topSectionData[0])">
-            <img *ngIf="topSectionData[0]['images'] && topSectionData[0]['images'][0] && topSectionData[0]['images'][0].id"
-                [src]="'https://drive.google.com/uc?export=view&id='+topSectionData[0]['images'][0].id" alt="Image" />
+                <img [src]="getSafeImageUrl('1j1lpibSyU7cj5__-JjZ_suwyvyX7AOWZ')" alt="Image from Google Drive">
+
+            <!-- <img *ngIf="topSectionData[0]['images'] && topSectionData[0]['images'][0] && topSectionData[0]['images'][0].id"
+                [src]="'https://drive.google.com/uc?export=view&id='+topSectionData[0]['images'][0].id" alt="Image" /> -->
             <div class="top-news-content">
                 <div class="top-news-content-inner">
                     <a class="top-news-date" href="javascript:void(0)"><i

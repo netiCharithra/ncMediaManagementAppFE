@@ -14,6 +14,7 @@ import { NewsPublicationComponent } from 'app/layouts/admin-layout/news-publicat
 import { EmployeesListComponent } from 'app/layouts/admin-layout/employees-list/employees-list.component';
 import { AndhraJyothiComponent } from './link-news/andhra-jyothi/andhra-jyothi.component';
 import { AdvertisementManagementComponent } from 'app/advertisement-management/advertisement-management.component';
+import { EmployeeTracingManagementComponent } from './employee-tracing-management/employee-tracing-management.component';
 
 export const AdminLayoutRoutes: Routes = [
     {
@@ -35,4 +36,5 @@ export const AdminLayoutRoutes: Routes = [
     { path: 'upgrade', component: UpgradeComponent },
     { path: 'subscribers', component: SubscribersComponent },
     { path: 'advertisementManagement', component: AdvertisementManagementComponent },
+    { path: 'employee-tracing', component: EmployeeTracingManagementComponent },
 ];

@@ -18,12 +18,20 @@ export class Config {
         GET_NEWS_LIST: Config.BASE_POINT_API + 'getNewsList',
         GET_ALL_EMPLOYEES: Config.BASE_POINT_API + 'getAllEmployees',
         MANIPULATE_NEWS: Config.BASE_POINT_API + 'manipulateNews',
-        UPLOAD_FILES: Config.BASE_POINT_UPLOAD + 'uploadFiles',
+        UPLOAD_FILES: Config.BASE_POINT_API + 'uploadFiles',
+        DELETES3IMAGES: Config.BASE_POINT_API + 'deleteUploadedImagess3',
+        // UPLOAD_FILES: Config.BASE_POINT_UPLOAD + 'uploadFiles',
         GET_NEWS_INFO: Config.BASE_POINT_API + 'getNewsInfo',
         GET_HOME_DATA: Config.BASE_POINT_API +'public/getHomeData',
         GET_PUBLIC_NEWS_INFO: Config.BASE_POINT_API +'public/getNewsInfo',
         GET_PUBLIC_CATEGORY_NEWS: Config.BASE_POINT_API +'public/getCategoryNews',
-        SET_FCM_TOKEN: Config.BASE_POINT_API +'public/setFCMToken'
+        SET_FCM_TOKEN: Config.BASE_POINT_API +'public/setFCMToken',
+        
+
+
+       EMPLOYEE_TRACING_LIST : Config.BASE_POINT_API +'public/employeeTracingListing',
+        MANIPULATE_EMPLOYEE_TRACING: Config.BASE_POINT_API +'public/employeeTracingManagement',
+        EMPLOYEE_TRACING_CHECK: Config.BASE_POINT_API +'public/employeeTraceCheck',
 
     }
 }

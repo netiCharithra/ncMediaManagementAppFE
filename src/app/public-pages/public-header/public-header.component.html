@@ -6,7 +6,7 @@
         <div class="row align-items-center">
 
             <div class="image-container">
-                <img src="/assets/img/ncmedia/header_1.png" alt="Image 1" class="image">
+                <img src="/assets/img/ncmedia/header_1.png" [ngClass]="activeRoute==='yourStatus' ? 'd-none':''" alt="Image 1" class="image">
                 
                 <img src="/assets/img/ncmedia/TB.png" alt="Image 2" class="image">
                 <img src="/assets/img/ncmedia/header_2.png" alt="Image 2" class="image">

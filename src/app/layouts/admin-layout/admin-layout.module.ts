@@ -26,6 +26,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { NewsPublicationComponent } from 'app/layouts/admin-layout/news-publication/news-publication.component';
 import { EmployeesListComponent } from 'app/layouts/admin-layout/employees-list/employees-list.component';
 import { AndhraJyothiComponent } from './link-news/andhra-jyothi/andhra-jyothi.component';
+import { EmployeeTracingManagementComponent } from './employee-tracing-management/employee-tracing-management.component';
 
 @NgModule({
   imports: [
@@ -54,7 +55,7 @@ import { AndhraJyothiComponent } from './link-news/andhra-jyothi/andhra-jyothi.c
     NotificationsComponent,
     UpgradeComponent,
     SubscribersComponent,
-    EmployeesComponent, NewsPublicationComponent, EmployeesListComponent, AndhraJyothiComponent
+    EmployeesComponent, NewsPublicationComponent, EmployeesListComponent, AndhraJyothiComponent, EmployeeTracingManagementComponent
   ]
 })
 

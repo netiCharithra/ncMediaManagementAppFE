@@ -87,4 +87,8 @@
             </table>
         </div>
     </div>
+
+
+    <app-pagination-component *ngIf="paginationData" [totalRecords]="totalRecords" [recordsPerPage]="recordsPerPage" [currentPage]="currentPage"
+        (pageChange)="onPageChange($event)"></app-pagination-component>
 </div>

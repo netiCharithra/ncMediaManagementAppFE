@@ -1,0 +1,11 @@
+<div class="card-footer">
+    <div class="total-records">
+        Total Records: {{ totalRecords }}
+    </div>
+    <ul class="pagination">
+        <li>Pages : </li>
+        <li *ngFor="let page of pages" [class.active]="page === currentPage">
+            <a (click)="onPageChange(page)">{{ page }}</a>
+        </li>
+    </ul>
+</div>

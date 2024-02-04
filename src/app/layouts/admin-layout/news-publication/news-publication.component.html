@@ -34,7 +34,7 @@
 
 
 <!-- Button trigger modal -->
-<button type="button" id="publishNewsBtn" class="btn btn-primary d-none" data-toggle="modal" data-target="#addEmployee">
+<button type="button" id="pksublishNewsBtn" class="btn btn-primary d-none" data-toggle="modal" data-target="#addEmployee">
     Add Employee
 </button>
 
@@ -135,13 +135,15 @@
                                     <span class="mx-1 cursor-pointer border rounded px-1 pt-1 image_holder"
                                         *ngFor="let images of publishNewsForm['images']; let i=index;">
 
-                                        <img [src]="'https://drive.google.com/uc?export=view&id='+images.id" alt="Er"
+                                        <img [src]="images.tempURL" alt="Failed to load Images"
                                             class="custom_upload_image">
+                                        <!-- <img [src]="'https://drive.google.com/uc?export=view&id='+images.id" alt="Er"
+                                            class="custom_upload_image"> -->
 
                                         <span
                                             *ngIf="(actionType === 'create' || actionType === 'update')"
                                             class="text-center h6 font-weight-bold text-center w-100 m-0 pt-1 pb-0"
-                                            (click)="removeImage(i)"><i
+                                            (click)="removeImage(i, images)"><i
                                                 class="material-icons text-danger">delete_forever</i></span>
                                     </span>
                                 </div>

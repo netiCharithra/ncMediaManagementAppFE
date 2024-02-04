@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AlertService } from 'app/services/alert.service';
 import { AppServiceService } from 'app/services/app-service.service';
 import { Subscription } from 'rxjs';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'home-page',
@@ -17,7 +18,7 @@ export class HomePageComponent implements OnInit {
 
   private paramMapSubscription: Subscription;
   private queryParamSubscription: Subscription;
-  constructor(public appService: AppServiceService, private alertService: AlertService, private router: Router, private route: ActivatedRoute) {
+  constructor(private sanitizer: DomSanitizer, public appService: AppServiceService, private alertService: AlertService, private router: Router, private route: ActivatedRoute) {
     this.queryParamSubscription = this.route.queryParamMap.subscribe((queryParams) => {
       const queryParamValue = queryParams.get('yourQueryParamName'); // Replace with your actual query param name
       console.log('Query parameter changed:', queryParamValue);
@@ -28,7 +29,10 @@ export class HomePageComponent implements OnInit {
     this.getHomeData();
     this.getMetaData();
   }
-
+  getSafeImageUrl(fileId: string): SafeResourceUrl {
+    const url = `https://drive.google.com/uc?export=view&id=${fileId}`;
+    return this.sanitizer.bypassSecurityTrustResourceUrl(url);
+  }
   getHomeData = () => {
     try {
       this.appService.getHomeData({}).subscribe((response) => {

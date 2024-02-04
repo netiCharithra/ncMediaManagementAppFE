@@ -58,6 +58,82 @@
                         </div>
                     </div>
 
+
+                    <div class="col-12 mb-4 row">
+                        <label class="form-label col" for="loginimages">Profile Picture
+                    
+                    
+                            <span class="text-muted" style="font-size: 0.6rem;">Only 1 Image is allowed</span>
+                        </label>
+                        <!-- openImageUpload -->
+                        <button class="btn pull-right col" type="button" [disabled]="disableFields" (click)="openImageUpload('loginimages')">Click or
+                            touch
+                            here
+                            to upload Profile Picture </button>
+                        <!-- <button class="btn pull-right col" type="button" [disabled]="disableFields" (click)="compressFile()">Click or touch
+                                                    here
+                                                    to upload images/photos </button> -->
+                        <ng-container *ngIf="signUpFormValues && signUpFormValues['profilePicture']">
+                            <div class="col-12 d-flex">
+                                <span class="mx-1 cursor-pointer border rounded px-1 pt-1 image_holder">
+                    
+                                    <img [src]="signUpFormValues['profilePicture'].tempURL" alt="Failed to load Images" class="custom_upload_image">
+                                    <!-- <img [src]="'https://drive.google.com/uc?export=view&id='+images.id" alt="Er"
+                                                                class="custom_upload_image"> -->
+                    
+                                    <span *ngIf="(actionType === 'create' || actionType === 'edit')"
+                                        class="text-center h6 font-weight-bold text-center w-100 m-0 pt-1 pb-0"
+                                        (click)="removeImage('profilePicture', signUpFormValues['profilePicture'])"><i class="material-icons text-danger">delete_forever</i></span>
+                                </span>
+                            </div>
+                        </ng-container>
+                    
+                        <input type="file" id="loginimages" class="form-control form-control-lg d-none" placeholder="Enter a valid images"
+                            name="profilePicture" [(ngModel)]="signUpFormValues['profilePicture_copy']" #profilePicture="ngModel"
+                            [ngClass]="{ 'is-invalid': signUpForm.submitted && profilePicture.invalid }" type="file" (change)="upload($event, 'profilePicture')"
+                            multiple accept=".png, .jpg, .jpeg, .gif" />
+                        <div *ngIf="signUpForm.submitted && profilePicture.invalid" class="invalid-feedback">
+                            <div *ngIf="profilePicture.errors.required">This field is required</div>
+                        </div>
+                    </div>
+                    <div class="col-12 mb-4 row">
+                        <label class="form-label col" for="loginimages">Aadhar Card
+                    
+                    
+                            <span class="text-muted" style="font-size: 0.6rem;">Only 1 Image is allowed</span>
+                        </label>
+                        <!-- openImageUpload -->
+                        <button class="btn pull-right col" type="button" [disabled]="disableFields" (click)="openImageUpload('identityProofUploader')">Click or
+                            touch
+                            here
+                            to upload Aadhar Card </button>
+                        <!-- <button class="btn pull-right col" type="button" [disabled]="disableFields" (click)="compressFile()">Click or touch
+                                                    here
+                                                    to upload images/photos </button> -->
+                        <ng-container *ngIf="signUpFormValues && signUpFormValues['identityProof']">
+                            <div class="col-12 d-flex">
+                                <span class="mx-1 cursor-pointer border rounded px-1 pt-1 image_holder">
+                    
+                                    <img [src]="signUpFormValues['identityProof'].tempURL" alt="Failed to load Images" class="custom_upload_image">
+                                    <!-- <img [src]="'https://drive.google.com/uc?export=view&id='+images.id" alt="Er"
+                                                                class="custom_upload_image"> -->
+                    
+                                    <span *ngIf="(actionType === 'create' || actionType === 'update')"
+                                        class="text-center h6 font-weight-bold text-center w-100 m-0 pt-1 pb-0"
+                                        (click)="removeImage('identityProof', signUpFormValues['identityProof'])"><i class="material-icons text-danger">delete_forever</i></span>
+                                </span>
+                            </div>
+                        </ng-container>
+                    
+                        <input type="file" id="identityProofUploader" class="form-control form-control-lg d-none" placeholder="Enter a valid images"
+                            name="identityProof" [(ngModel)]="signUpFormValues['identityProof_copy']" #identityProof="ngModel"
+                            [ngClass]="{ 'is-invalid': signUpForm.submitted && identityProof.invalid }" type="file" (change)="upload($event, 'identityProof')"
+                            multiple accept=".png, .jpg, .jpeg, .gif" />
+                        <div *ngIf="signUpForm.submitted && identityProof.invalid" class="invalid-feedback">
+                            <div *ngIf="identityProof.errors.required">This field is required</div>
+                        </div>
+                    </div>
+
                     <div class="col-12 mb-4">
                         <label class="form-label" for="loginEmail">Email address</label>
                         <input type="email" id="loginEmail" class="form-control form-control-lg"
@@ -123,6 +199,15 @@
                         </div>
                     </ng-container>
                     <div class="col-12 mb-4">
+                        <label class="form-label" for="constituency">Constituency</label>
+                        <input type="text" id="constituency" class="form-control form-control-lg" placeholder="Enter a valid name"
+                            name="constituency" [(ngModel)]="signUpFormValues['constituency']" #constituency="ngModel" required
+                            [disabled]="disableFields" [ngClass]="{ 'is-invalid': signUpForm.submitted && constituency.invalid }" />
+                        <div *ngIf="signUpForm.submitted && constituency.invalid" class="invalid-feedback">
+                            <div *ngIf="constituency.errors.required">This field is required</div>
+                        </div>
+                    </div>
+                    <div class="col-12 mb-4">
                         <label class="form-label" for="loginMobile">Mobile</label>
                         <input type="number" id="loginMobile" class="form-control form-control-lg"
                             placeholder="Enter a valid Mobile number" name="mobile"
@@ -132,6 +217,7 @@
                             <div *ngIf="mobile.errors.required">This field is required</div>
                         </div>
                     </div>
+                       
                     <div class="col-12 mb-3">
                         <label class="form-label" for="loginRole">Role</label>
                         <ng-select [items]="metaData['ROLE']" name="role" class="form-control form-control-lg" required
@@ -191,13 +277,18 @@
                 <div class="col-md-6">Identity Proof</div>
                 <div class="col-md-3">
                     <img class="img image-border"
-                        [src]="'https://drive.google.com/uc?export=view&id='+signUpFormValues.profilePicture"
+                        [src]="signUpFormValues?.profilePicture?.tempURL" alt="Failed to load profile picture"
                         style="height: 200px;" />
+                    <!-- <img class="img image-border"
+                        [src]="'https://drive.google.com/uc?export=view&id='+signUpFormValues.profilePicture"
+                        style="height: 200px;" /> -->
 
                 </div>
                 <div class="col-md-9">
                     <img class="img w-100 image-border"
-                        [src]="'https://drive.google.com/uc?export=view&id='+signUpFormValues.identityProof" />
+                     [src]="signUpFormValues?.identityProof?.tempURL"  alt="Failed to load identity proof"/>
+                    <!-- <img class="img w-100 image-border"
+                        [src]="'https://drive.google.com/uc?export=view&id='+signUpFormValues.identityProof" /> -->
 
                 </div>
             </div>

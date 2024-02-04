@@ -66,7 +66,18 @@ export class AppServiceService {
   getNewsInfo(data:any){
     return this._httplayer.post(Config.API.GET_NEWS_INFO, data);
   }
-  
+  deleteS3Images(data:any){
+    return this._httplayer.post(Config.API.DELETES3IMAGES, data);
+  }
+  getEmployeTracingList(data:any){
+    return this._httplayer.post(Config.API.EMPLOYEE_TRACING_LIST, data);
+  }
+  manipulateEmployeTracing(data:any){
+    return this._httplayer.post(Config.API.MANIPULATE_EMPLOYEE_TRACING, data);
+  }
+  employeeTracingCheck(data:any){
+    return this._httplayer.post(Config.API.EMPLOYEE_TRACING_CHECK, data);
+  }
   
   getHomeData(data:any){
     return this._httplayer.post(Config.API.GET_HOME_DATA, data);

@@ -216,8 +216,21 @@ export class NewsPublicationComponent implements OnInit {
     }
   }
 
-  removeImage = (index) => {
-    this.publishNewsForm['images'].splice(index, 1)
+  removeImage = (index, imageInfo) => {
+    console.log('imageInfo', imageInfo)
+    this.appService.deleteS3Images(imageInfo).subscribe(
+      (response: any) => {
+        if (response.status === "success") {
+          this.publishNewsForm['images'].splice(index, 1)
+        } else {
+          this.alertService.open('error', response.status.charAt(0).toUpperCase() + response.status.slice(1), response.msg || "Failed !")
+        }
+        this.appService.loaderService = false;
+      },
+      (error) => {
+        this.appService.loaderService = false;
+        console.error('Upload error:', error);
+      });
   }
 
 

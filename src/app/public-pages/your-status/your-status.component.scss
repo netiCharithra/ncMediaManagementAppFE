@@ -1,0 +1,62 @@
+.id-card {
+    max-width: 50%;
+    margin: 0 auto;
+    border: 1px solid #ccc;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+}
+/* Making mobile Mode */
+@media screen and (min-width:360px) and (max-width:640px) {
+   .id-card{
+    max-width: 90%;
+   }
+}
+
+.header img {
+    max-width: 100%;
+}
+
+.info-table {
+    width: 100%;
+}
+
+.photo img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.info {
+    padding-left: 15px;
+}
+
+h2 {
+    margin: 0;
+    font-size: 1.2em;
+}
+
+table {
+    width: 100%;
+    margin-top: 10px;
+}
+
+td {
+    padding: 5px;
+}
+
+ .invalid-user-container {
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     height: 100%;
+ }
+
+ .invalid-user-message {
+     font-size: 18px;
+     color: #ff0000;
+     /* You can choose your desired color */
+     text-align: center;
+ }

@@ -8,6 +8,7 @@ import { HomePageComponent } from './home-page/home-page.component';
 import { ViewNewsComponent } from './view-news/view-news.component';
 import { CategoryNewsComponent } from './category-news/category-news.component';
 import { PublicFooterComponent } from './public-footer/public-footer.component';
+import { YourStatusComponent } from './your-status/your-status.component';
 
 
 @NgModule({
@@ -17,7 +18,8 @@ import { PublicFooterComponent } from './public-footer/public-footer.component';
     HomePageComponent,
     ViewNewsComponent,
     CategoryNewsComponent,
-    PublicFooterComponent
+    PublicFooterComponent,
+    YourStatusComponent
   ],
   imports: [
     CommonModule,
