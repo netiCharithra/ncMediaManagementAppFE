@@ -2,9 +2,10 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
-
-                <simple-table *ngIf="listingTable?.tableData?.headerContent?.length>0" [tableMetaData]="listingTable.metaData"
-                    [tableData]="listingTable?.tableData" [paginationData]="listingTable" (actionEmitter)="actionEmitter($event)"></simple-table>
+                <qrcode [qrdata]="QRLink" #qrCodeImage class="d-none"></qrcode>
+                <simple-table *ngIf="listingTable?.tableData?.headerContent?.length>0"
+                    [tableMetaData]="listingTable.metaData" [tableData]="listingTable?.tableData"
+                    [paginationData]="listingTable" (actionEmitter)="actionEmitter($event)"></simple-table>
 
             </div>
         </div>
@@ -34,12 +35,13 @@
 
                     <div class="col-12 mb-3">
                         <label class="form-label" for="loginState">Select Employee</label>
-                        <ng-select [items]="metaData['employees']" bindLabel="name" bindValue="employeeId" name="employeeId"
-                            class="form-control form-control-lg" required placeholder="Select Employee"
-                            [(ngModel)]="employeeTracingFormValues['employeeId']" #employeeId="ngModel" [clearable]="false"
+                        <ng-select [items]="metaData['employees']" bindLabel="name" bindValue="employeeId"
+                            name="employeeId" class="form-control form-control-lg" required
+                            placeholder="Select Employee" [(ngModel)]="employeeTracingFormValues['employeeId']"
+                            #employeeId="ngModel" [clearable]="false"
                             [ngClass]="{ 'is-invalid': signUpForm.submitted && employeeId.invalid }">
                         </ng-select>
-                    
+
                         <div *ngIf="signUpForm.submitted && employeeId.invalid" class="invalid-feedback">
                             <div *ngIf="employeeId.errors.required">This field is required</div>
                         </div>
@@ -48,25 +50,27 @@
 
                     <div class="col-12 mb-4">
                         <label class="form-label" for="startDate">Start Date</label>
-                        <input type="date" id="startDate" class="form-control form-control-lg" placeholder="Enter a valid name" name="startDate"
-                            [(ngModel)]="employeeTracingFormValues['startDate']" #startDate="ngModel" required 
+                        <input type="date" id="startDate" class="form-control form-control-lg"
+                            placeholder="Enter a valid name" name="startDate"
+                            [(ngModel)]="employeeTracingFormValues['startDate']" #startDate="ngModel" required
                             [ngClass]="{ 'is-invalid': signUpForm.submitted && startDate.invalid }" />
-                            <div *ngIf="signUpForm.submitted && startDate.invalid" class="invalid-feedback">
-                                <div *ngIf="startDate.errors.required">This field is required</div>
-                            </div>
+                        <div *ngIf="signUpForm.submitted && startDate.invalid" class="invalid-feedback">
+                            <div *ngIf="startDate.errors.required">This field is required</div>
                         </div>
-                        <!-- [max]="today" -->
+                    </div>
+                    <!-- [max]="today" -->
                     <div class="col-12 mb-4">
                         <label class="form-label" for="endDate">Start Date</label>
-                        <input type="date" id="endDate" class="form-control form-control-lg" placeholder="Enter a valid name" name="endDate"
-                            [(ngModel)]="employeeTracingFormValues['endDate']" #endDate="ngModel" required 
+                        <input type="date" id="endDate" class="form-control form-control-lg"
+                            placeholder="Enter a valid name" name="endDate"
+                            [(ngModel)]="employeeTracingFormValues['endDate']" #endDate="ngModel" required
                             [min]="employeeTracingFormValues['startDate']"
                             [ngClass]="{ 'is-invalid': signUpForm.submitted && endDate.invalid }" />
                         <div *ngIf="signUpForm.submitted && endDate.invalid" class="invalid-feedback">
                             <div *ngIf="endDate.errors.required">This field is required</div>
                         </div>
                     </div>
-                    
+
                 </div>
                 <div class="modal-footer col-12 row">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

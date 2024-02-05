@@ -27,6 +27,8 @@ import { NewsPublicationComponent } from 'app/layouts/admin-layout/news-publicat
 import { EmployeesListComponent } from 'app/layouts/admin-layout/employees-list/employees-list.component';
 import { AndhraJyothiComponent } from './link-news/andhra-jyothi/andhra-jyothi.component';
 import { EmployeeTracingManagementComponent } from './employee-tracing-management/employee-tracing-management.component';
+import { QRCodeModule } from 'angularx-qrcode';
+import { ClipboardModule } from 'ngx-clipboard';
 
 @NgModule({
   imports: [
@@ -39,7 +41,7 @@ import { EmployeeTracingManagementComponent } from './employee-tracing-managemen
     MatFormFieldModule,
     MatInputModule,
     MatSelectModule,
-    MatTooltipModule, ComponentsModule,
+    MatTooltipModule, ComponentsModule, QRCodeModule, ClipboardModule,
     NgxEchartsModule.forRoot({
       echarts: () => import('echarts'),
     }),

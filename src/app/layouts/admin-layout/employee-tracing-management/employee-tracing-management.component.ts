@@ -1,7 +1,9 @@
 import { DatePipe, formatDate } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { AlertService } from 'app/services/alert.service';
 import { AppServiceService } from 'app/services/app-service.service';
+import html2canvas from 'html2canvas';
+import { ClipboardService } from 'ngx-clipboard';
 
 @Component({
   selector: 'employee-tracing-management',
@@ -17,7 +19,10 @@ export class EmployeeTracingManagementComponent implements OnInit {
   public employeeTracingFormValues = {};
   public metaData = {};
   public tableMetaData = {};
-  constructor(private appService: AppServiceService, private alertService: AlertService, private datePipe: DatePipe) { }
+  public QRLink:any='';
+  @ViewChild('qrCodeImage') qrCodeImage!: ElementRef<HTMLImageElement>;
+
+  constructor(private appService: AppServiceService, private alertService: AlertService, private datePipe: DatePipe, private clipboardService: ClipboardService) { }
 
   public  today = new Date().toISOString().split('T')[0];
 
@@ -31,7 +36,6 @@ export class EmployeeTracingManagementComponent implements OnInit {
       this.appService.loaderService = true;
       this.appService.getAllEmployees({ page: this.pageNumber }).subscribe((response) => {
         if (response.status === 'success') {
-          console.log(response['data'])
           this.metaData['employees'] = response?.data || []
           // this.employeeTables = this.employeeTablesCopy = response['data'] || [];
         } else {
@@ -44,12 +48,25 @@ export class EmployeeTracingManagementComponent implements OnInit {
       console.error(error)
     }
   }
+
+
+  copyImageToClipboard(   ) {
+    
+    const canvas = document.querySelector('canvas') as HTMLCanvasElement;
+
+    canvas.toBlob((blob) => {
+      const item = new ClipboardItem({ 'image/png': blob });
+      navigator.clipboard.write([item]);
+      this.alertService.open('success', "QR Code Copied Successfully..",'Success')
+    });
+  }
+
+
   getTableListing = () => {
     try {
       this.appService.loaderService = true;
       this.appService.getEmployeTracingList({}).subscribe((response) => {
         if (response.status === 'success') {
-          console.log(response['data'])
           this.listingTable = { ...response['data'] || {}, currentPage : this.pageNumber};
 
         } else {
@@ -64,7 +81,6 @@ export class EmployeeTracingManagementComponent implements OnInit {
   }
   signUpCreds = () =>{
 
-    console.log(this.employeeTracingFormValues)
 
     var payload = JSON.parse(JSON.stringify(this.employeeTracingFormValues))
 
@@ -77,11 +93,9 @@ export class EmployeeTracingManagementComponent implements OnInit {
       payload['endDate'] = this.datePipe.transform(payload['endDate'], 'yyyy-MM-ddTHH:mm:ssZ')
       // payload['endDate'] = this.convertToUTC(payload['endDate'])
     }
-    console.log(payload);
 
     this.appService.manipulateEmployeTracing({data:payload}).subscribe((response) => {
       if (response.status === 'success') {
-        console.log(response)
         this.alertService.open('success', response.status.charAt(0).toUpperCase() + response.status.slice(1), response.msg || "Success !");
         this.employeeTracingFormValues={};
         document.getElementById('addEmployeeBtn').click();
@@ -96,7 +110,6 @@ export class EmployeeTracingManagementComponent implements OnInit {
   }
 
   actionEmitter = (event) => {
-    console.log(event)
     if(event?.type === 'create'){
       this.getAllEmployees();
       document.getElementById('addEmployeeBtn').click()
@@ -104,6 +117,9 @@ export class EmployeeTracingManagementComponent implements OnInit {
       this.getAllEmployees();
       this.employeeTracingFormValues = { ...event?.rowData, startDate: formatDate(event.rowData.startDate || '', 'yyyy-MM-dd', 'en-US'), endDate: formatDate(event.rowData.endDate || '', 'yyyy-MM-dd', 'en-US') } || {};
       document.getElementById('addEmployeeBtn').click()
+    } else if(event?.type === 'qrCode'){
+      this.QRLink = 'https://neticharithra-ncmedia.web.app/#/yourStatus/' + event.rowData.activeTraceId;
+      this.copyImageToClipboard();
     }
   }
 
