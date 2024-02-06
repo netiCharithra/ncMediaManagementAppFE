@@ -129,7 +129,7 @@ export class EmployeesComponent implements OnInit {
     try {
       // 'AP_DISTRICTS', 'AP_DISTRICT_MANDALS'
       this.appService.loaderService = true;
-      const metaList = stateId ? [stateId + '_DISTRICTS', stateId + '_DISTRICT_MANDALS'] : ['STATES', 'ROLE']
+      const metaList = stateId ? [stateId + '_DISTRICTS', stateId + '_DISTRICT_MANDALS'] : ['STATES', 'ROLE', 'BLOOD_GROUP']
       this.appService.getMetaData({ metaList }).subscribe((response) => {
         this.metaData = { ...this.metaData, ...response['data'] || {} }
         if (callFurtercalls) {

@@ -34,7 +34,7 @@ export class EmployeeTracingManagementComponent implements OnInit {
   getAllEmployees = () => {
     try {
       this.appService.loaderService = true;
-      this.appService.getAllEmployees({ page: this.pageNumber }).subscribe((response) => {
+      this.appService.getAllEmployeesv2({ page: this.pageNumber }).subscribe((response) => {
         if (response.status === 'success') {
           this.metaData['employees'] = response?.data || []
           // this.employeeTables = this.employeeTablesCopy = response['data'] || [];

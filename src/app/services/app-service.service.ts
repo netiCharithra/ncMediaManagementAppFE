@@ -57,6 +57,9 @@ export class AppServiceService {
   getAllEmployees(data:any){
     return this._httplayer.post(Config.API.GET_ALL_EMPLOYEES, data);
   }
+  getAllEmployeesv2(data:any){
+    return this._httplayer.post(Config.API.GET_ALL_EMPLOYEES_V2, data);
+  }
   manipulateNews(data:any){
     return this._httplayer.post(Config.API.MANIPULATE_NEWS, data);
   }
