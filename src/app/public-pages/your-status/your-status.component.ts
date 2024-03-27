@@ -32,7 +32,7 @@ export class YourStatusComponent implements OnInit {
       case 'expired':
         return 'red';
       case 'inactive':
-        return 'darkyellow';
+        return '#717100';
       case 'active':
         return 'green';
       default:
@@ -51,7 +51,7 @@ export class YourStatusComponent implements OnInit {
         // this.listingTable = { ...response['data'] || {}, currentPage: this.pageNumber };
 
         setTimeout(() => {
-          if(this.responseData?.['status'] === 'expired' || this.responseData?.['status'] === 'invalid'){
+          if(this.responseData?.['status'] === 'expired' || this.responseData?.['status'] === 'inactive'){
             this.visible = true;
           } else {
             this.visible = false;

@@ -58,7 +58,6 @@ export class CategoryNewsComponent implements OnInit {
               this.pageData['recentRecords'] = response?.data?.recentRecords || [];
             }
             this.endOfRecords = response?.data?.endOfRecords;
-            console.log(this.endOfRecords)
             if (!response?.data?.endOfRecords) {
               this.payload.page = this.payload.page+1;
             }
