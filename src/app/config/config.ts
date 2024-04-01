@@ -17,6 +17,7 @@ export class Config {
         EMPLOYEE_DATA: Config.BASE_POINT_API + 'getEmployeeData',
         GET_NEWS_LIST: Config.BASE_POINT_API + 'getNewsList',
         GET_ALL_EMPLOYEES: Config.BASE_POINT_API + 'getAllEmployees',
+        GET_ALL_EMPLOYEES_V2: Config.BASE_POINT_API + 'getAllEmployeesV2',
         MANIPULATE_NEWS: Config.BASE_POINT_API + 'manipulateNews',
         UPLOAD_FILES: Config.BASE_POINT_API + 'uploadFiles',
         DELETES3IMAGES: Config.BASE_POINT_API + 'deleteUploadedImagess3',

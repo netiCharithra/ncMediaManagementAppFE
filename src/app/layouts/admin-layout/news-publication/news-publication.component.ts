@@ -110,6 +110,7 @@ export class NewsPublicationComponent implements OnInit {
         this.disableFields = false;
         // this.getNewsInfo(event);      
       } else if (event.type === 'view') {
+        alert(":AA")
         this.actionType = event.type;
         this.getMetaData(null, true, event);
         this.disableFields = true;
@@ -268,9 +269,10 @@ export class NewsPublicationComponent implements OnInit {
     const formData = new FormData();
     for (let i = 0; i < files.length; i++) {
       selectedFiles.push(files.item(i));
-      formData.append('images', files.item(i), userData.employeeId + '_' + new Date().getTime() + '_' + i + '.' + files.item(i).type.split('/').at(-1));
+      formData.append('images', files.item(i), userData.employeeId + '_' + new Date().getTime() + '_' + i);
     }
 
+    formData.append('fileName', "original")
 
     this.http.post(Config.API.UPLOAD_FILES, formData).subscribe(
       (response: any) => {
