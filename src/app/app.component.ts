@@ -1,4 +1,4 @@
-import { Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AppServiceService } from './services/app-service.service';
 import { AngularFireMessaging } from '@angular/fire/compat/messaging';
 import { mergeMapTo } from 'rxjs/operators';
@@ -12,14 +12,15 @@ import { MessagingService } from './services/messaging-service';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  constructor(private messagingService:MessagingService,public appService: AppServiceService, private afMessaging: AngularFireMessaging){
+  constructor(private messagingService: MessagingService, public appService: AppServiceService, private afMessaging: AngularFireMessaging) {
 
   }
-  
-  message:any;
-  ngOnInit(){
+
+
+  message: any;
+  ngOnInit() {
     // console.log("HII")
-    navigator.serviceWorker.addEventListener('notificationclick', (event:any) => {
+    navigator.serviceWorker.addEventListener('notificationclick', (event: any) => {
       // alert("HI")
       console.log(event.notification)
       event.notification.close();
@@ -30,16 +31,16 @@ export class AppComponent implements OnInit {
       }
     });
 
-    
+
     this.messagingService.requestPermission();
     this.messagingService.receiveMessage();
     this.message = this.messagingService.currentMessage;
-    
+
     this.afMessaging.requestToken.subscribe(
       (token) => {
         // console.log('FCM token:', token);
-        if(token){
-          this.appService.setFCMToken({token:token}).subscribe(data=>{
+        if (token) {
+          this.appService.setFCMToken({ token: token }).subscribe(data => {
             console.log(data)
           })
         }

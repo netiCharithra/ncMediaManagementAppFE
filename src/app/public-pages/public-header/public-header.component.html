@@ -1,23 +1,36 @@
-
 <!-- <body> -->
 <!-- Top Header Start -->
 <div class="top-header">
     <div class="container-fluid">
-        <div class="row align-items-center">
+        <div class="row justify-content-between align-items-center">
 
-            <div class="image-container">
-                <img src="/assets/img/ncmedia/header_1.png" [ngClass]="activeRoute==='yourStatus' ? 'd-none':''" alt="Image 1" class="image">
-                
+            <img src="/assets/img/ncmedia/logo_english.png" alt="Image 2" class="image">
+
+            <div class="row mr-2 v2NavBarLarge">
+                <a href="javascript:void(0)" class="nav-item nav-link"
+                    [ngClass]="activeRoute === 'home' ? 'activeClass' : ''"
+                    (click)="appService.navigateTo({type:'home'}); showMenu=false;">Home</a>
+                <a href="javascript:void(0)" class="nav-item nav-link" *ngFor="let category of categoires"
+                    [ngClass]="activeRoute === category ? 'activeClass' : ''"
+                    (click)="appService.navigateTo({type:'category', queryParams:{category : category}}); showMenu=false;">{{category}}</a>
+
+                <!-- <a href="javascript:void(0)" class="nav-item nav-link"
+                    (click)="appService.navigateTo({type:'home'}); showMenu=false;">Contact US</a> -->
+            </div>
+            <!-- <div class="image-container">
+                <img src="/assets/img/ncmedia/header_1.png" [ngClass]="activeRoute==='yourStatus' ? 'd-none':''"
+                    alt="Image 1" class="image">
+
                 <img src="/assets/img/ncmedia/TB.png" alt="Image 2" class="image">
                 <img src="/assets/img/ncmedia/header_2.png" alt="Image 2" class="image">
             </div>
-            
+
             <div class="mobile-image-container">
                 <img src="/assets/img/ncmedia/ganta_gantaku_news.png" alt="Image 2" class="image image_bottom">
                 <span class="d-none-mobile">Click here to get Breaking News to your Whatsapp Directly..!</span>
                 <img src="/assets/img/ncmedia/breakingNews.png" alt="Image 2" class="image d-none-mobile">
-
-            </div>
+ -->
+            <!-- </div> -->
             <!-- <div class="col-lg-9 col-md-8">
                 <div class="logo">
                     <a href="javascript:void(0)" class="portalTile h2 text-danger">
@@ -48,7 +61,7 @@
 
 
 <!-- Header Start -->
-<div class="header">
+<div class="header" *ngIf="isMobileMenu()">
     <div class="container">
         <nav class="navbar navbar-expand-md bg-dark navbar-dark">
             <a href="javascript:void(0)" class="navbar-brand">MENU</a>
@@ -58,13 +71,15 @@
 
             </button>
 
-            <div class="navbar-collapse justify-content-between {{showMenu && isMobileMenu() ? 'transform_custom_menu d-block':''}}" id="navbarCollapse">
+            <div class="navbar-collapse justify-content-between {{showMenu && isMobileMenu() ? 'transform_custom_menu d-block':''}}"
+                id="navbarCollapse">
                 <div class="navbar-nav m-auto">
                     <i *ngIf="isMobileMenu()" class="fa fa-times mobileCloseIcon" aria-hidden="true"></i>
 
-                    <a href="index.html" class="nav-item nav-link ">Home</a>
-                    <a href="javascript:void(0)" class="nav-item nav-link" *ngFor="let category of categoires" (click)="appService.navigateTo({type:'category', queryParams:{category : category}}); showMenu=false;">{{category}}</a>
-                   
+                    <a href="index.html" class="nav-item nav-link ">Home </a>
+                    <a href="javascript:void(0)" class="nav-item nav-link" *ngFor="let category of categoires"
+                        (click)="appService.navigateTo({type:'category', queryParams:{category : category}}); showMenu=false;">{{category}}</a>
+
                     <a href="contact.html" class="nav-item nav-link">Contact Us</a>
                 </div>
             </div>

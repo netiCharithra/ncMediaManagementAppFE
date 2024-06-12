@@ -1,29 +1,43 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+
+a,
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: "Inter", sans-serif !important;
+}
+
 /* You can add global styles to this file, and also import other style files */
 
 
 
- /*       ScrollBar 2        */
+/*       ScrollBar 2        */
 
 ::-webkit-scrollbar {
-     width: 6px;
- }
+    width: 6px;
+}
 
 ::-webkit-scrollbar-track {
-     border-radius: 8px;
-     background-color: #fff;
-     border: 1px solid #cacaca;
-     box-shadow: inset 0 0 4px rgba(0, 0, 0, .3);
- }
+    border-radius: 8px;
+    background-color: #fff;
+    border: 1px solid #cacaca;
+    box-shadow: inset 0 0 4px rgba(0, 0, 0, .3);
+}
 
 ::-webkit-scrollbar-thumb {
-     border-radius: 8px;
-     background-color: #ababab;
- }
+    border-radius: 8px;
+    background-color: #ababab;
+}
 
 
-.portalTile{
+.portalTile {
     font-family: 'Russo One', sans-serif !important;
 }
+
 .two-line-ellipsis {
     display: -webkit-box !important;
     -webkit-line-clamp: 2 !important;
@@ -31,6 +45,7 @@
     overflow: hidden !important;
     text-overflow: ellipsis !important;
 }
+
 .one-line-ellipsis {
     display: -webkit-box !important;
     -webkit-line-clamp: 2 !important;
@@ -38,6 +53,7 @@
     overflow: hidden !important;
     text-overflow: ellipsis !important;
 }
+
 .three-line-ellipsis {
     display: -webkit-box !important;
     -webkit-line-clamp: 3 !important;
@@ -389,107 +405,112 @@ textarea.form-control.is-invalid {
         margin-bottom: 0
     }
 }
+
 /* Importing Bootstrap SCSS file. */
 @import '~bootstrap/scss/bootstrap';
 
-.text-ellipsis{
-        overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
+.text-ellipsis {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
-.cursor-pointer{
+
+.cursor-pointer {
     cursor: pointer !important;
 }
-.label{
+
+.label {
     font-size: 0.9rem !important;
     color: #272727 !important;
     font-weight: bold !important;
 }
 
- .loader {
-     width: 150px;
-     height: 150px;
-     border-left: 5px solid #38ff8e;
-     border-radius: 50%;
-     animation: right5231 0.9s linear infinite;
- }
+.loader {
+    width: 150px;
+    height: 150px;
+    border-left: 5px solid #38ff8e;
+    border-radius: 50%;
+    animation: right5231 0.9s linear infinite;
+}
 
- .loader::before,
- .loader::after {
-     content: "";
-     width: 120px;
-     height: 120px;
-     display: block;
-     position: absolute;
-     top: calc(50% - 60px);
-     left: calc(50% - 60px);
-     border-right: 5px solid #ffbe0b;
-     border-radius: 50%;
-     animation: left036 0.9s linear infinite;
- }
+.loader::before,
+.loader::after {
+    content: "";
+    width: 120px;
+    height: 120px;
+    display: block;
+    position: absolute;
+    top: calc(50% - 60px);
+    left: calc(50% - 60px);
+    border-right: 5px solid #ffbe0b;
+    border-radius: 50%;
+    animation: left036 0.9s linear infinite;
+}
 
- .loader::after {
-     width: 90px;
-     height: 90px;
-     top: calc(50% - 45px);
-     left: calc(50% - 45px);
-     border: 0;
-     border-top: 5px solid #ff086e;
-     animation: none;
- }
+.loader::after {
+    width: 90px;
+    height: 90px;
+    top: calc(50% - 45px);
+    left: calc(50% - 45px);
+    border: 0;
+    border-top: 5px solid #ff086e;
+    animation: none;
+}
 
- @keyframes right5231 {
-     from {
-         transform: rotate(0deg);
-     }
+@keyframes right5231 {
+    from {
+        transform: rotate(0deg);
+    }
 
-     to {
-         transform: rotate(360deg);
-     }
- }
+    to {
+        transform: rotate(360deg);
+    }
+}
 
- @keyframes left036 {
-     from {
-         transform: rotate(720deg);
-     }
+@keyframes left036 {
+    from {
+        transform: rotate(720deg);
+    }
 
-     to {
-         transform: rotate(0deg);
-     }
- }
- .loader_container {
-     background-color: #00000069;
-     display: flex;
-     align-items: center;
-     justify-content: center;
-     min-height: 100vh;
-     position: absolute;
-     top: 0;
-     width: 100vw;
-     z-index: 9999;
- }
+    to {
+        transform: rotate(0deg);
+    }
+}
 
- .news-title {
-     font-size: 1.1rem !important;
+.loader_container {
+    background-color: #00000069;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    position: absolute;
+    top: 0;
+    width: 100vw;
+    z-index: 9999;
+}
+
+.news-title {
+    font-size: 1.1rem !important;
     font-weight: bold;
-        margin: 0;
-        line-height: initial;
- }
+    margin: 0;
+    line-height: initial;
+}
 
- .news-sub-title {
-     font-size: 1rem;
-     font-weight: bold;
-     margin: 0;
-     line-height: initial;
- }
- .mn-title{
-        line-height: unset !important;
-        font-size: 1rem !important;
-        font-weight: bold !important;
-    }
+.news-sub-title {
+    font-size: 1rem;
+    font-weight: bold;
+    margin: 0;
+    line-height: initial;
+}
 
-    .each-news-line{
-        margin-bottom: 15px !important;
-            border-bottom: 1px solid #ccc;
-            padding: 10px;
-    }
+.mn-title {
+    line-height: unset !important;
+    font-size: 1rem !important;
+    font-weight: bold !important;
+}
+
+.each-news-line {
+    margin-bottom: 15px !important;
+    border-bottom: 1px solid #ccc;
+    padding: 10px;
+}
