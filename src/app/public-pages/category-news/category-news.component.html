@@ -1,4 +1,4 @@
-<div class="container-fluid body-container-section flex-properties">
+<!-- <div class="container-fluid body-container-section flex-properties">
     <div class="left-section border">
         <ng-container *ngIf="pageData?.records">
 
@@ -7,10 +7,7 @@
                 </div>
                 <div class="w-100 mn-date">{{data.createdDate |date}}
 
-                    <!-- <span *ngIf="data.viewCount" class="pull-right mr-2">
-                    
-                        <em class="fa fa-eye" aria-hidden="true"></em> {{data.viewCount}}
-                    </span> -->
+                   
                 </div>
                 <div class="image-container" *ngIf="data?.images?.length">
                     <div class="image" *ngFor="let image of data.images" [ngStyle]="getImageDivStyle(images)">
@@ -62,4 +59,36 @@
 
 
     </div>
+</div> -->
+
+
+<div class="col-12 border-bottom-custome p-0 my-3">
+
+    <p class="header_section">{{metaInformation?.[userLanguage]}}</p>
+</div>
+<div class="col-12 row m-0 p-0">
+    <ng-container *ngIf="pageData?.['records']?.length>0">
+
+        <div class="col-md-4 col-sm-12 mb-4" *ngFor="let news of pageData?.['records']">
+            <div class="card m-0  cursor-pointer custome_newsCard h-100">
+                <img class="card-img-top" [src]="news?.images?.[0]?.['tempURL']" [alt]="news.title">
+                <div class="card-body">
+                    <h5 class="card-title">{{ news?.title }}</h5>
+                    <p class="card-text m-0"><small class="text-muted">{{ news?.createdDate |
+                            date:'yyyy-MM-dd'}}</small>
+                    </p>
+                    <p class="card-text description">{{ news?.description }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="container d-flex justify-content-center align-items-center"
+                *ngIf="!paginationNewsData?.endOfRecords">
+                <button type="button" class="btn btn-primary" (click)="getNewsInfo()">Load More..</button>
+            </div>
+        </div>
+    </ng-container>
+
+    <no-records-screen *ngIf="!initialLoad && (!pageData?.['records'] || pageData?.['records'].length === 0)"
+        style="width: 100%;"></no-records-screen>
 </div>

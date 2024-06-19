@@ -1,0 +1,39 @@
+.visually-hidden {
+    display: none;
+}
+
+.carousel {
+    overflow: hidden;
+}
+
+.carousel .carousel-inner {
+    transition: transform 0.5s ease-in-out;
+}
+
+.carousel-item {
+    transition: transform 0.5s ease-in-out;
+}
+
+.carousel-custome {
+    // height: 23rem !important;
+    height: 100% !important;
+}
+
+.ellipsis-text {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    /* Number of lines to show */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    /* Optional: Adjust other styles like font-size, line-height, etc. */
+}
+
+.border-radiuse-10 {
+    border-radius: 5px !important;
+}
+
+.border-bottom-radius-10 {
+    border-bottom-left-radius: 5px !important;
+    border-bottom-right-radius: 5px !important;
+}

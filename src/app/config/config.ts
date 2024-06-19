@@ -1,7 +1,7 @@
 import { environment } from './../../environments/environment';
 export class Config {
-    public static get BASE_POINT_API(): string { return environment.base_url+'api/v2/'; }
-    public static get BASE_POINT_UPLOAD(): string { return environment.base_url_upload_files +'api/upload/'; }
+    public static get BASE_POINT_API(): string { return environment.base_url + 'api/v2/'; }
+    public static get BASE_POINT_UPLOAD(): string { return environment.base_url_upload_files + 'api/upload/'; }
     public static API: any = {
         // MS Token Validate
         USER_LOGIN: Config.BASE_POINT_API + 'reporterLogin',
@@ -23,16 +23,19 @@ export class Config {
         DELETES3IMAGES: Config.BASE_POINT_API + 'deleteUploadedImagess3',
         // UPLOAD_FILES: Config.BASE_POINT_UPLOAD + 'uploadFiles',
         GET_NEWS_INFO: Config.BASE_POINT_API + 'getNewsInfo',
-        GET_HOME_DATA: Config.BASE_POINT_API +'public/getHomeData',
-        GET_PUBLIC_NEWS_INFO: Config.BASE_POINT_API +'public/getNewsInfo',
-        GET_PUBLIC_CATEGORY_NEWS: Config.BASE_POINT_API +'public/getCategoryNews',
-        SET_FCM_TOKEN: Config.BASE_POINT_API +'public/setFCMToken',
-        
+        GET_HOME_DATA: Config.BASE_POINT_API + 'public/getHomeDataV2',
+        GET_HOME_DATA_V2_NEWSTYPE: Config.BASE_POINT_API + 'public/getHomeDataV2_NEWSTYPE',
+        GET_HOME_DATA_V2_CATEGORY_WISE: Config.BASE_POINT_API + 'public/getHomeDataV2CategoryWise',
+        GET_DISTRICT_NEWS: Config.BASE_POINT_API + 'public/getDistrictNews',
+        GET_PUBLIC_NEWS_INFO: Config.BASE_POINT_API + 'public/getNewsInfo',
+        GET_PUBLIC_CATEGORY_NEWS: Config.BASE_POINT_API + 'public/getCategoryNews',
+        SET_FCM_TOKEN: Config.BASE_POINT_API + 'public/setFCMToken',
 
 
-       EMPLOYEE_TRACING_LIST : Config.BASE_POINT_API +'public/employeeTracingListing',
-        MANIPULATE_EMPLOYEE_TRACING: Config.BASE_POINT_API +'public/employeeTracingManagement',
-        EMPLOYEE_TRACING_CHECK: Config.BASE_POINT_API +'public/employeeTraceCheck',
+
+        EMPLOYEE_TRACING_LIST: Config.BASE_POINT_API + 'public/employeeTracingListing',
+        MANIPULATE_EMPLOYEE_TRACING: Config.BASE_POINT_API + 'public/employeeTracingManagement',
+        EMPLOYEE_TRACING_CHECK: Config.BASE_POINT_API + 'public/employeeTraceCheck',
 
     }
 }

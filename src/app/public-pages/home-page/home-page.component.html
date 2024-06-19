@@ -1,10 +1,17 @@
 <!-- <public-header></public-header> -->
 
+<div class="w-100 d-flex justify-content-between" style="border: 2px solid #ccc;">
+    <p>HI</p>
+    <p>HI</p>
+    <p>HI</p>
+</div>
+
+
 <div class="top-news-section flex-properties w-100">
     <div class="parent-level">
         <div class="top-news-img cursor-pointer" *ngIf="topSectionData[0]" (click)="onNewsClick(topSectionData[0])">
-                <img [src]="topSectionData[0]['images'][0]['tempURL']" alt="Image from Google Drive">
-                <!-- <img [src]="getSafeImageUrl('1j1lpibSyU7cj5__-JjZ_suwyvyX7AOWZ')" alt="Image from Google Drive"> -->
+            <img [src]="topSectionData[0]['images'][0]['tempURL']" alt="Image from Google Drive">
+            <!-- <img [src]="getSafeImageUrl('1j1lpibSyU7cj5__-JjZ_suwyvyX7AOWZ')" alt="Image from Google Drive"> -->
 
             <!-- <img *ngIf="topSectionData[0]['images'] && topSectionData[0]['images'][0] && topSectionData[0]['images'][0].id"
                 [src]="'https://drive.google.com/uc?export=view&id='+topSectionData[0]['images'][0].id" alt="Image" /> -->
@@ -155,7 +162,8 @@
                     <div class="col-md-12">
                         <h2><i class="fa fa-align-justify"></i>More Latest News</h2>
                         <div class="row">
-                            <div class="col-lg-6 cursor-pointer" *ngIf="moreRecentRecords[0]" (click)="onNewsClick(moreRecentRecords[0])">
+                            <div class="col-lg-6 cursor-pointer" *ngIf="moreRecentRecords[0]"
+                                (click)="onNewsClick(moreRecentRecords[0])">
                                 <div class="mn-img">
                                     <img *ngIf="moreRecentRecords[0]['images'] && moreRecentRecords[0]['images'][0] && moreRecentRecords[0]['images'][0].id"
                                         [src]="'https://drive.google.com/uc?export=view&id='+moreRecentRecords[0]['images'][0].id"
@@ -174,7 +182,8 @@
                             </div>
                             <div class="col-lg-6">
                                 <div class="mn-list cursor-pointer"
-                                    *ngFor="let moreRecentData of moreRecentRecords; let first = first" (click)="onNewsClick(moreRecentData)">
+                                    *ngFor="let moreRecentData of moreRecentRecords; let first = first"
+                                    (click)="onNewsClick(moreRecentData)">
                                     <ng-container *ngIf="!first">
 
                                         <div class="mn-img">
@@ -280,7 +289,9 @@
                             <ul class="fa-ul">
                                 <li *ngFor="let category of metaData['NEWS_CATEGORIES']"><span class="fa-li"><i
                                             class="far fa-arrow-alt-circle-right"></i></span><a
-                                        href="javascript:void(0)" (click)="appService.navigateTo({type:'category', queryParams:{category : category}})">{{category}}</a></li>
+                                        href="javascript:void(0)"
+                                        (click)="appService.navigateTo({type:'category', queryParams:{category : category}})">{{category}}</a>
+                                </li>
                             </ul>
                         </div>
                     </div>

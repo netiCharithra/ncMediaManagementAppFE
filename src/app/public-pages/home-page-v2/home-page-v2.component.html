@@ -1,0 +1,270 @@
+<div class="container">
+    <!-- app.component.html -->
+    <!-- app.component.html -->
+    <div class="row mt-4">
+        <div class="col-md-4 col-12 order-1 box px-1" style="overflow-y: auto;">
+            <!-- 25% width on medium and above, full width on mobile -->
+            <!-- <div class="" > -->
+
+            <ng-container *ngFor="let item of homeDataV2?.latestRecords">
+
+                <p class="ellipsis-text title-latest-news cursor-pointer">{{item?.title}}</p>
+            </ng-container>
+            <!-- </div> -->
+        </div>
+        <div class="col-md-8 col-12 order-2 box px-1 mobile-carousel">
+            <carousel [carouselData]="homeDataV2?.prioritizedRecords">
+            </carousel>
+
+        </div>
+
+    </div>
+    <div class="row">
+        <div class="col-12 border-bottom p-0">
+
+            <p class="header_section">{{'latestNews' | translate}}</p>
+        </div>
+        <div class="col-12 row m-0 p-0 mobile-scroll-latest-news">
+
+            <div class="col-md-6 ">
+                <!-- Content for the first div -->
+                <!-- <div style="background-color: #f0f0f0; padding: 20px; margin-bottom: 20px;"> -->
+                <div class="card mb-3 custome_newsCard">
+                    <div class="row g-0">
+                        <div class="col-md-12">
+                            <img [src]="homeDataV2?.latestNineRecords?.[0]?.['images']?.[0]?.['tempURL']"
+                                class="img-fluid rounded-start latestNineImage" alt="News Image">
+                        </div>
+                        <div class="col-md-12">
+                            <div class="card-body">
+                                <h5 class="card-title">{{homeDataV2?.latestNineRecords?.[0]?.['title']}}</h5>
+                                <p class="card-text text-muted mb-1">
+                                    {{homeDataV2?.latestNineRecords?.[0]?.['createdDate']|
+                                    date:'yyyy-MM-dd'}}</p>
+                                <p class="card-text text-truncate" style="max-width: 100%;">
+                                    {{homeDataV2?.latestNineRecords?.[0]?.['description']}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- </div> -->
+            </div>
+            <div class="col-md-6 row mx-auto my-md-4">
+
+                <div class=" col-md-6 p-0 col-12  " *ngFor="let item of [1,2,3,4,5,6,7,8]">
+                    <div class="custome_card row p-2 rounded custome_newsCard">
+
+                        <div class="col-5 p-0">
+                            <img [src]="homeDataV2?.latestNineRecords?.[item]?.['images']?.[0]?.['tempURL']"
+                                class="img-fluid  border-radiuse-10" alt="News Image">
+                        </div>
+                        <div class="col-7 ">
+                            <div class="card-body p-0">
+                                <h5 class="card-title m-0 ellipsis-text title-color">
+                                    {{homeDataV2?.latestNineRecords?.[item]?.['title']}}</h5>
+                                <p class="card-text text-muted mb-1 date_custome">
+                                    {{homeDataV2?.latestNineRecords?.[item]?.['createdDate']|
+                                    date:'yyyy-MM-dd'}}</p>
+
+                            </div>
+                        </div>
+                    </div>
+                    <!-- </div> -->
+                </div>
+                <!-- </div> -->
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 col-md-4 mb-4 my-4" *ngFor="let item of homeDataV2NewsType">
+            <div class="row col-12 border-bottom p-0 m-0">
+
+                <p class="header_section">{{item?.type?.[userLanguage]}}</p>
+            </div>
+            <div class="col-12 row  p-0 mx-0">
+                <div class="custome_card row p-2 rounded custome_newsCard w-100" *ngFor="let data of item?.records">
+
+                    <div class="col-3 p-0">
+                        <img [src]="data?.['images']?.[0]?.['tempURL']"
+                            class="img-fluid  border-radiuse-10 news-type-image" alt="News Image">
+                    </div>
+                    <div class="col-9 ">
+                        <div class="card-body p-0">
+                            <h5 class="card-title m-0 ellipsis-text title-color">
+                                {{data?.['title']}}</h5>
+                            <p class="card-text text-muted mb-1 date_custome">
+                                {{data?.['createdDate']|
+                                date:'yyyy-MM-dd'}}</p>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- <div class="p-3 border bg-light">Div 1</div> -->
+        </div>
+        <!-- <div class="col-12 col-md-4 mb-4">
+            <div class="p-3 border bg-light">Div 2</div>
+        </div>
+        <div class="col-12 col-md-4 mb-4">
+            <div class="p-3 border bg-light">Div 3</div>
+        </div> -->
+    </div>
+
+    <div class="row">
+        <ng-container *ngFor="let eachCategory of homeDataV2CategoryWise">
+
+
+
+            <div class="col-12 border-bottom-custome p-0 ">
+
+                <p class="header_section">{{eachCategory['category'][userLanguage]}}</p>
+            </div>
+            <div class="col-12 col-md-6 py-3" *ngIf="eachCategory['news'][0]">
+                <div class=" mb-3 custome_newsCard_category cursor-pointer cursor-pointer">
+                    <div class="row g-0">
+                        <div class="col-md-12">
+                            <img [src]="eachCategory['news'][0]?.['images']?.[0]?.['tempURL']"
+                                class="img-fluid rounded-start latestNineImage" alt="News Image">
+                        </div>
+                        <div class="col-md-12">
+                            <div class="card-body p-0 py-2">
+                                <h5 class="card-title">{{eachCategory['news'][0]?.['title']}}</h5>
+                                <p class="card-text text-muted mb-1">
+                                    {{eachCategory['news'][0]?.['createdDate']|
+                                    date:'yyyy-MM-dd'}}</p>
+                                <p class="card-text ellipsis-text">
+                                    {{eachCategory['news'][0]?.['description']}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="col-12 col-md-6 row py-3 border-left-custome ml-0">
+
+                <ng-container *ngFor="let itemInd of [1,2,3,4]">
+
+                    <div class="col-12 col-md-6" *ngIf="eachCategory['news'][itemInd]">
+
+
+                        <div class=" mb-3 custome_newsCard_category categoryCard cursor-pointer">
+                            <div class="row g-0">
+                                <div class="col-md-12">
+                                    <img [src]="eachCategory['news'][itemInd]?.['images']?.[0]?.['tempURL']"
+                                        class="img-fluid rounded-start categoryImages" alt="News Image">
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="card-body p-2">
+                                        <h5 class="card-title ellipsis-text">
+                                            {{eachCategory['news'][itemInd]?.['title']}}
+                                        </h5>
+                                        <p class="card-text text-muted mb-1">
+                                            {{eachCategory['news'][itemInd]?.['createdDate']|
+                                            date:'yyyy-MM-dd'}}</p>
+                                        <!-- <p class="card-text text-truncate" style="max-width: 100%;">
+                                            {{homeDataV2?.latestNineRecords?.[0]?.['description']}}</p> -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </ng-container>
+                <!-- <div class="col-12 col-md-6">
+                    <div class="my-div">
+                        <p>Div 2</p>
+                    </div>
+                </div>
+    
+                <div class="col-12 col-md-6">
+                    <div class="my-div">
+                        <p>Div 1</p>
+                    </div>
+                </div>
+                <div class="col-12 col-md-6">
+                    <div class="my-div">
+                        <p>Div 2</p>
+                    </div>
+                </div> -->
+            </div>
+        </ng-container>
+
+        <!-- <ng-container *ngFor="let item of [1,2,3,4,5]; let i = index">
+
+            <div class="col-12 col-md-{{i==0 ? '6':'3'}}">
+                <p>JO</p>
+            </div>
+
+        </ng-container> -->
+    </div>
+</div>
+
+
+
+
+
+
+<div class="row d-flex align-items-stretch" *ngIf="topSectionData?.length>0">
+    <div class="col-12 col-md-5 d-flex p-0 pt-2">
+        <div class="content flex-fill" style="padding: 20px;">
+            <div class="image-container">
+                <img [src]="topSectionData[0]['images'][0]['tempURL']" alt="Photo">
+                <div class="image-caption">
+                    <div class="date">{{topSectionData[0]['title']}}</div>
+                    <div class="title">{{topSectionData[0]['title']}} </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-md-7 d-flex p-0 pt-2 flex-wrap mt-4">
+        <div class="col-12 col-md-4 d-flex" *ngFor="let topNews of [1,2,3,4,5,6]">
+            <div class="small-content flex-fill">
+                <div class="image-container">
+                    <img [src]="topSectionData?.[topNews]['images'][0]['tempURL']" alt="Photo">
+                    <div class="image-caption">
+                        <div class="date">{{topSectionData[topNews]['createdDate'] | timeago}}</div>
+                        <div class="title">{{topSectionData[topNews]['title']}}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 row m-2">
+        <div class="col-lg-2 col-md-3 col-sm-4 col-11  m-2 border bg-white pr-4 pt-2 font-weight-bold rounded pb-3"
+            *ngFor="let item of categoryWiseRecentRecords">
+
+            <div class=" justify-content-between align-items-center border-bottom d-flex p-0">
+                <p class="m-0 ">{{item?.category?.[userLanguage]}}</p>
+                <p class="m-0 cursor-pointer" (click)="onClickOfMore(item.category)">
+                    More</p>
+
+            </div>
+            <div class="col-12 row p-0 m-0" *ngFor="let list of item?.records">
+
+                <div class="latestNews cursor-pointer m-0 p-0 col-12 row mt-4">
+
+
+                    <img [src]="list?.['images'][0]['tempURL']" alt="Photo" class="rounded">
+                    <div class="row  bg-white rounded col-12">
+                        <div class="col-4 ">
+
+                        </div>
+                        <div class="col-8 ">
+                            <p class="p-0 m-0 text-muted date"> {{list?.['createdDate'] | timeago}}
+                            </p>
+                            <p class="p-0 m-0 title">
+                                {{list?.['title']}}
+                            </p>
+
+                        </div>
+                    </div>
+                </div>
+                <!-- <title-card [newsData]="list"></title-card> -->
+            </div>
+
+
+        </div>
+    </div>
+
+</div>

@@ -14,6 +14,9 @@ h6 {
 /* You can add global styles to this file, and also import other style files */
 
 
+body {
+    background-color: '#eeeeee94' !important;
+}
 
 /*       ScrollBar 2        */
 
@@ -513,4 +516,62 @@ textarea.form-control.is-invalid {
     margin-bottom: 15px !important;
     border-bottom: 1px solid #ccc;
     padding: 10px;
+}
+
+@media (min-width: 1200px) {
+
+    .container,
+    .container-sm,
+    .container-md,
+    .container-lg,
+    .container-xl {
+        max-width: 1300px !important;
+    }
+}
+
+
+.custome_newsCard {
+    cursor: pointer;
+
+    .card-title {
+        font-weight: bold;
+        color: #000;
+    }
+}
+
+.custome_newsCard:hover {
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px !important;
+}
+
+.custome_newsCard_category {
+    .card-title {
+        font-weight: bold;
+        color: #000;
+    }
+}
+
+.border-bottom-custome {
+    border-bottom: 1.5px solid #ccc;
+}
+
+.border-left-custome {
+    border-left: 1.5px solid #ccc;
+}
+
+@media (max-width: 767.98px) {
+
+    .border-left-custome {
+        border-left: 0;
+    }
+
+}
+
+
+.header_section {
+    font-weight: bold;
+    margin: 0;
+    padding: 10px 15px;
+    background-color: #00272c;
+    width: fit-content;
+    color: #fff;
 }

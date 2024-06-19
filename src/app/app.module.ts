@@ -1,7 +1,7 @@
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { AppRoutingModule } from './app.routing';
 import { ComponentsModule } from './components/components.module';
@@ -27,7 +27,12 @@ import { AsyncPipe } from '@angular/common';
 import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 import { MetaShareService } from './services/meta-share.service';
 import { AdvertisementManagementComponent } from './advertisement-management/advertisement-management.component';
+import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
+export function createTranslateLoader(http: HttpClient) {
+  return new TranslateHttpLoader(http, './assets/i18n/', '.json');
+}
 @NgModule({
   imports: [
     BrowserAnimationsModule,
@@ -43,7 +48,13 @@ import { AdvertisementManagementComponent } from './advertisement-management/adv
     provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
     provideFirestore(() => getFirestore()),
     FirestoreModule,
-    AngularFireAuthModule
+    AngularFireAuthModule, TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: createTranslateLoader,
+        deps: [HttpClient],
+      },
+    }),
   ],
   declarations: [
     AppComponent,

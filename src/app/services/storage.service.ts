@@ -15,8 +15,14 @@ export class StorageService {
   private _getLocal(key) {
     return JSON.parse(localStorage.getItem(key));
   }
+  private _getLocalValue(key) {
+    return localStorage.getItem(key);
+  }
   private _saveLocal(key, value) {
     return localStorage.setItem(key, JSON.stringify(value));
+  }
+  private _saveLocalValue(key, value) {
+    return localStorage.setItem(key, value);
   }
   private _removeLocal(key) {
     return localStorage.removeItem(key);
@@ -48,7 +54,9 @@ export class StorageService {
   public api = {
     local: {
       get: this._getLocal,
+      getValue: this._getLocalValue,
       save: this._saveLocal,
+      saveValue: this._saveLocalValue,
       remove: this._removeLocal,
       clear: this._clearLocal
     },

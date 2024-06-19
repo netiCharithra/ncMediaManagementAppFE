@@ -1,6 +1,8 @@
 export const environment = {
-  production: true,  
-  base_url: 'https://viridian-slug-sari.cyclic.app/',
+  production: true,
+  // base_url: 'https://viridian-slug-sari.cyclic.app/',
+
+  base_url: 'https://nc-media-management-app-be-neti-charithras-projects.vercel.app/',
   base_url_upload_files: 'https://nc-media-managament-app-be-files-upload.onrender.com/',
   // base_url: 'http://localhost:3000/',
   // base_url_upload_files: 'http://localhost:3001/',

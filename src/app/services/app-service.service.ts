@@ -11,8 +11,9 @@ export class AppServiceService {
   public loaderService: boolean = false;
   constructor(private _httplayer: HttpLayerService, private router: Router) { }
   navigateTo = (data: any) => {
+    console.log(data)
     if (data.type === 'category') {
-      this.router.navigate(['/category-news', data.queryParams.category]);
+      this.router.navigate(['/category-news', data.queryParams]);
     } else if (data.type) {
       this.router.navigate(['/' + data.type])
     }
@@ -85,6 +86,15 @@ export class AppServiceService {
 
   getHomeData(data: any) {
     return this._httplayer.post(Config.API.GET_HOME_DATA, data);
+  }
+  getHomeDataNewsType(data: any) {
+    return this._httplayer.post(Config.API.GET_HOME_DATA_V2_NEWSTYPE, data);
+  }
+  getHomeDataCategoryWise(data: any) {
+    return this._httplayer.post(Config.API.GET_HOME_DATA_V2_CATEGORY_WISE, data);
+  }
+  getDistrictNews(data: any) {
+    return this._httplayer.post(Config.API.GET_DISTRICT_NEWS, data);
   }
   getPublicNewsInfo(data: any) {
     return this._httplayer.post(Config.API.GET_PUBLIC_NEWS_INFO, data);

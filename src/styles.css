@@ -1,6 +1,18 @@
-.pointer-cursor{
+.pointer-cursor {
     cursor: pointer !important;
 }
-.cursor-not-allowed{
+
+.cursor-not-allowed {
     cursor: not-allowed !important;
+}
+
+@media (min-width: 1200px) {
+
+    .container,
+    .container-sm,
+    .container-md,
+    .container-lg,
+    .container-xl {
+        max-width: 1300px !important;
+    }
 }

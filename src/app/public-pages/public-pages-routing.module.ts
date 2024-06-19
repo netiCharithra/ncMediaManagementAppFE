@@ -4,6 +4,8 @@ import { HomePageComponent } from 'app/public-pages/home-page/home-page.componen
 import { ViewNewsComponent } from './view-news/view-news.component';
 import { CategoryNewsComponent } from './category-news/category-news.component';
 import { YourStatusComponent } from './your-status/your-status.component';
+import { HomePageV2Component } from './home-page-v2/home-page-v2.component';
+import { DistrictNewsComponent } from './district-news/district-news.component';
 
 const routes: Routes = [
   {
@@ -12,7 +14,7 @@ const routes: Routes = [
     pathMatch: 'full',
   },
   { path: 'yourStatus/:id', component: YourStatusComponent },
-  { path: 'home', component: HomePageComponent },
+  { path: 'home', component: HomePageV2Component },
   {
     path: 'view-news/:id',
     component: ViewNewsComponent
@@ -20,6 +22,10 @@ const routes: Routes = [
   {
     path: 'category-news/:id',
     component: CategoryNewsComponent
+  },
+  {
+    path: 'dn/:id',
+    component: DistrictNewsComponent
   },
 ];
 

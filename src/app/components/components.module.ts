@@ -10,23 +10,31 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatButtonModule } from '@angular/material/button';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { PaginationComponentComponent } from './pagination-component/pagination-component.component';
+import { TitleCardComponent } from './title-card/title-card.component';
+import { TimeagoModule } from 'ngx-timeago';
+import { CarouselComponent } from './carousel/carousel.component';
+import { NoRecordsScreenComponent } from './no-records-screen/no-records-screen.component';
 
 @NgModule({
   imports: [
     CommonModule,
-    RouterModule, MatTooltipModule, MatButtonModule, NgbModule
+    RouterModule, MatTooltipModule, MatButtonModule, NgbModule, TimeagoModule.forRoot(),
   ],
   declarations: [
     FooterComponent,
     NavbarComponent,
     SidebarComponent,
     SimpleTableComponent,
-    PaginationComponentComponent
+    PaginationComponentComponent,
+    TitleCardComponent,
+    CarouselComponent,
+    NoRecordsScreenComponent,
+
   ],
   exports: [
     FooterComponent,
-    NavbarComponent,
-    SidebarComponent, SimpleTableComponent ],
+    NavbarComponent, TitleCardComponent, CarouselComponent, NoRecordsScreenComponent,
+    SidebarComponent, SimpleTableComponent],
   providers: []
 })
 export class ComponentsModule { }

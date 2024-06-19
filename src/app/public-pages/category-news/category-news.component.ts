@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Params, Router } from '@angular/router';
+import { ActivatedRoute, ParamMap, Params, Router } from '@angular/router';
 import { AlertService } from 'app/services/alert.service';
 import { AppServiceService } from 'app/services/app-service.service';
+import { CommonFunctionalityService } from 'app/services/common-functionality.service';
+import { StorageService } from 'app/services/storage.service';
 
 @Component({
   selector: 'category-news',
@@ -10,58 +12,75 @@ import { AppServiceService } from 'app/services/app-service.service';
 })
 export class CategoryNewsComponent implements OnInit {
 
-  public paramPayload: any={};
-  public pageData: any={};
-  public endOfRecords: boolean=false;
-  public payload:any={
-    page:1,
-    count:2
-  };
+  public paramPayload: any = {};
+  public paramValue: any;
+  public pageData: any = {};
+  public endOfRecords: boolean = false;
 
-  constructor(private route: ActivatedRoute, public appService: AppServiceService, private alertService: AlertService, private router: Router) {
-    this.payload['category'] = this.route.snapshot.params['id'];
-    this.route.paramMap.subscribe((params: Params) => {
+  public userLanguage: any = {};
+  public metaInformation: any = {};
+  public initialLoad: boolean = false;
 
-      const newParamValue = params.get('id');
+  public paginationNewsData: any = {
+    count: 9,
+    page: 0,
+    endOfRecords: false
+  }
+  constructor(private route: ActivatedRoute, public appService: AppServiceService, private alertService: AlertService, private router: Router, private storage: StorageService, private commonFunctionality: CommonFunctionalityService) {
 
-      if (this.payload['category'] !== newParamValue){
-        this.payload['category'] = newParamValue;
-        this.getNewsInfo();
+
+    let value = this.storage.api.local.getValue('userLanguage')
+    if (!value) {
+      value = "te"
+      this.storage.api.local.saveValue('userLanguage', value)
+    }
+    this.userLanguage = value
+
+    console.log("change rote")
+
+    this.route.paramMap.subscribe((params: ParamMap) => {
+      this.metaInformation = JSON.parse(this.commonFunctionality.decodingURI(params.get('id'))) || {};
+      console.log(this.metaInformation)
+
+      this.getNewsInfo(true)
+      // Retrieve the parameter you're interested in
+
+      this.initialLoad = true;
+      this.paginationNewsData = {
+        count: 9,
+        page: 0,
+        endOfRecords: false
       }
-      console.log(newParamValue);
     });
   }
 
   ngOnInit(): void {
-    if (this.payload['category']) {
-      this.getNewsInfo();
-    }
+    // if (this.payload['category']) {
+    //   this.getNewsInfo();
+    // }
   }
 
-  getNewsInfo = (loadMore?:any) => {
+  getNewsInfo = (initalLoad: any = false) => {
     try {
       this.appService.loaderService = true;
 
-      if(!loadMore){
-        this.pageData['records']={};
-        this.payload['page']=1;
-        this.payload['count']=2;
-      }
-      this.appService.getCategoryNews(this.payload).subscribe((response) => {
+      this.appService.getCategoryNews({ ...this.paginationNewsData, ...{ category: this.metaInformation.label } }).subscribe((response) => {
         if (response.status === 'success') {
           if (response.data) {
-            if (!loadMore){
+            if (initalLoad) {
               this.pageData = response.data || {};
-              
             } else {
               this.pageData['records'] = this.pageData['records'].concat(response?.data?.records || []);
-              this.pageData['recentRecords'] = response?.data?.recentRecords || [];
+              // this.pageData['recentRecords'] = response?.data?.recentRecords || [];
             }
-            this.endOfRecords = response?.data?.endOfRecords;
-            if (!response?.data?.endOfRecords) {
-              this.payload.page = this.payload.page+1;
-            }
+            this.paginationNewsData['endOfRecords'] = response?.data?.endOfRecords;
+            this.paginationNewsData['page'] = this.paginationNewsData['page'] + 1;
+            // this.endOfRecords = response?.data?.endOfRecords;
+            // if (!response?.data?.endOfRecords) {
+            //   this.payload.page = this.payload.page + 1;
+            // }
             console.log(this.pageData)
+            this.initialLoad = false;
           }
           // console.log(response)
         } else {
@@ -118,7 +137,7 @@ export class CategoryNewsComponent implements OnInit {
   }
 
 
-  getIndividualNews=(news)=>{
+  getIndividualNews = (news) => {
     try {
       this.router.navigate(['/view-news', news['newsId']]);
     } catch (error) {

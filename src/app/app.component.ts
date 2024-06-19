@@ -5,6 +5,7 @@ import { mergeMapTo } from 'rxjs/operators';
 import { initializeApp } from '@angular/fire/app';
 import { environment } from 'environments/environment';
 import { MessagingService } from './services/messaging-service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-root',
@@ -12,8 +13,9 @@ import { MessagingService } from './services/messaging-service';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  constructor(private messagingService: MessagingService, public appService: AppServiceService, private afMessaging: AngularFireMessaging) {
-
+  constructor(private messagingService: MessagingService, public appService: AppServiceService, private afMessaging: AngularFireMessaging, private translate: TranslateService) {
+    translate.setDefaultLang('te');
+    translate.use('te');
   }
 
 
