@@ -1,0 +1,84 @@
+/* Ensure images cover their containers */
+.single-image {
+    width: 100%;
+    height: 18rem;
+    object-fit: none;
+}
+
+.half-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.main-img-left {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+}
+
+.half-height-container {
+    height: 50%;
+    padding-bottom: 1px;
+}
+
+.half-height-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Adjustments for 60%-40% layout for three images */
+.col-md-7 {
+    width: 60%;
+    display: flex;
+    flex-direction: column;
+}
+
+.col-md-5 {
+    width: 40%;
+    display: flex;
+    flex-direction: column;
+}
+
+.half-height-container {
+    flex: 1;
+}
+
+/* Mobile view adjustments */
+@media (max-width: 767px) {
+
+    .full-height-image,
+    .half-height-image {
+        height: auto;
+    }
+
+    .half-height-container {
+        height: auto;
+    }
+
+    .col-md-7,
+    .col-md-5 {
+        width: 100%;
+        display: block;
+    }
+}
+
+.card-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.card-title-latest-news {
+    font-weight: bold;
+}
+
+.ellipsis-text {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    /* Number of lines to show */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    /* Optional: Adjust other styles like font-size, line-height, etc. */
+}

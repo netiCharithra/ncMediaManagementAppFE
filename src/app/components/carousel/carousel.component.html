@@ -4,10 +4,12 @@
         [showNavigationArrows]="true" [showNavigationIndicators]="false" (slide)="onSlide($event)"
         style="height: 100%;">
         <ng-template ngbSlide *ngFor="let eachData of carouselData; index as i">
-            <div class="carousel-caption border-bottom-radius-10">
+
+            <div class="carousel-caption border-bottom-radius-10" (click)="commonFunctions.onNewsClick(eachData)">
                 <h3 class="ellipsis-text">{{eachData['title']}}</h3>
             </div>
-            <a href="javascript:void(0)" rel="nofollow noopener noreferrer">
+            <a href="javascript:void(0)" rel="nofollow noopener noreferrer"
+                (click)="commonFunctions.onNewsClick(eachData)">
                 <div class="picsum-img-wrapper">
                     <img [src]="eachData?.['images']?.[0]?.['tempURL']" alt="My image {{i + 1}} description"
                         class="border-radiuse-10" />

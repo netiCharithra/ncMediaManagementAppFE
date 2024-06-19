@@ -42,15 +42,15 @@ export class CategoryNewsComponent implements OnInit {
       this.metaInformation = JSON.parse(this.commonFunctionality.decodingURI(params.get('id'))) || {};
       console.log(this.metaInformation)
 
-      this.getNewsInfo(true)
-      // Retrieve the parameter you're interested in
-
       this.initialLoad = true;
       this.paginationNewsData = {
         count: 9,
         page: 0,
         endOfRecords: false
       }
+      this.getNewsInfo(true)
+      // Retrieve the parameter you're interested in
+
     });
   }
 
@@ -64,16 +64,20 @@ export class CategoryNewsComponent implements OnInit {
     try {
       this.appService.loaderService = true;
 
-      this.appService.getCategoryNews({ ...this.paginationNewsData, ...{ category: this.metaInformation.label } }).subscribe((response) => {
+      let payload = this.metaInformation?.newsType ? { newsType: this.metaInformation?.value } : { category: this.metaInformation.label }
+
+
+      // this.appService.getCategoryNews({ ...this.paginationNewsData, ...{ category: this.metaInformation.label } }).subscribe((response) => {
+      this.appService[this.metaInformation?.newsType ? 'getPublicNewsNewsType' : 'getCategoryNews']({ ...this.paginationNewsData, ...payload }).subscribe((response) => {
         if (response.status === 'success') {
           if (response.data) {
             if (initalLoad) {
-              this.pageData = response.data || {};
+              this.pageData = (this.metaInformation?.newsType ? { records: response.data } : response.data) || {};
             } else {
-              this.pageData['records'] = this.pageData['records'].concat(response?.data?.records || []);
+              this.pageData['records'] = this.pageData['records'].concat((this.metaInformation?.newsType ? response?.data : response?.data?.records) || []);
               // this.pageData['recentRecords'] = response?.data?.recentRecords || [];
             }
-            this.paginationNewsData['endOfRecords'] = response?.data?.endOfRecords;
+            this.paginationNewsData['endOfRecords'] = this.metaInformation?.newsType ? response?.endOfRecords : response?.data?.endOfRecords;
             this.paginationNewsData['page'] = this.paginationNewsData['page'] + 1;
             // this.endOfRecords = response?.data?.endOfRecords;
             // if (!response?.data?.endOfRecords) {

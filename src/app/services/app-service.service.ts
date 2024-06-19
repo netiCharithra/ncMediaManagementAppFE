@@ -99,6 +99,9 @@ export class AppServiceService {
   getPublicNewsInfo(data: any) {
     return this._httplayer.post(Config.API.GET_PUBLIC_NEWS_INFO, data);
   }
+  getPublicNewsNewsType(data: any) {
+    return this._httplayer.post(Config.API.GET_NEWS_BY_NEWS_TYPE, data);
+  }
   getCategoryNews(data: any) {
     return this._httplayer.post(Config.API.GET_PUBLIC_CATEGORY_NEWS, data);
   }

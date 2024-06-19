@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { AlertService } from 'app/services/alert.service';
 import { AppServiceService } from 'app/services/app-service.service';
+import { CommonFunctionalityService } from 'app/services/common-functionality.service';
 import { StorageService } from 'app/services/storage.service';
 import { Subscription } from 'rxjs';
 
@@ -40,7 +41,9 @@ export class HomePageV2Component implements OnInit, OnChanges {
   ];
   public paramMapSubscription: Subscription;
   public queryParamSubscription: Subscription;
-  constructor(private sanitizer: DomSanitizer, public appService: AppServiceService, private alertService: AlertService, private router: Router, private route: ActivatedRoute, public storage: StorageService, public translate: TranslateService) {
+  constructor(private sanitizer: DomSanitizer, public appService: AppServiceService, private alertService: AlertService, private router: Router, private route: ActivatedRoute, public storage: StorageService, public translate: TranslateService,
+    public commonFunctions: CommonFunctionalityService
+  ) {
     let value = this.storage.api.local.getValue('userLanguage')
     if (!value) {
       value = "te"
@@ -175,16 +178,16 @@ export class HomePageV2Component implements OnInit, OnChanges {
 
   onNewsClick = (newsInfo: any, category?: any) => {
     try {
-      let queryParams = {
-        newsId: newsInfo['newsId']
-      };
-      if (category) {
-        queryParams['category'] = category;
-      }
+      // let queryParams = {
+      //   newsId: newsInfo['newsId']
+      // };
+      // if (category) {
+      //   queryParams['category'] = category;
+      // }
 
       // let queryStr = '?newsId=' + queryParams['newsId'] + '&category='+queryParams['category']
       // this.router.navigate(['/view-news' + queryStr]);
-      this.router.navigate(['/view-news', newsInfo['newsId']]);
+      this.router.navigate(['/view-news', this.userLanguage, newsInfo['newsId']]);
     } catch (error) {
       console.error(error)
     }
@@ -192,4 +195,9 @@ export class HomePageV2Component implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges) {
     console.log('Input data changed:', changes);
   }
+
+
+  // onNewsClick = (newsId:any) =>{
+
+  // }
 }

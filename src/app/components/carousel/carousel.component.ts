@@ -1,5 +1,6 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { NgbCarousel, NgbSlideEvent, NgbSlideEventSource } from '@ng-bootstrap/ng-bootstrap';
+import { CommonFunctionalityService } from 'app/services/common-functionality.service';
 
 @Component({
   selector: 'carousel',
@@ -8,7 +9,6 @@ import { NgbCarousel, NgbSlideEvent, NgbSlideEventSource } from '@ng-bootstrap/n
 })
 export class CarouselComponent implements OnInit, OnChanges {
 
-  images = [62].map((n) => `https://picsum.photos/id/${n}/900/500`);
 
   paused = false;
   unpauseOnArrow = false;
@@ -41,7 +41,7 @@ export class CarouselComponent implements OnInit, OnChanges {
       this.togglePaused();
     }
   }
-  constructor() {
+  constructor(public commonFunctions: CommonFunctionalityService) {
   }
 
   ngOnInit(): void {

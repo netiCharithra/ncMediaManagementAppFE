@@ -79,6 +79,9 @@ export class PublicHeaderComponent implements OnInit {
           this.categoires = data?.data?.NEWS_CATEGORIES_REGIONAL || [];
           let newAdditional = data?.data?.NEWS_TYPE_REGIONAL || [];
           newAdditional.shift();
+          newAdditional.forEach(element => {
+            element['newsType'] = true
+          });
           this.categoires = [...this.categoires, ...newAdditional || []];
           this.statesData = data?.data?.STATES || [];
 

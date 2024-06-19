@@ -6,6 +6,7 @@ import { CategoryNewsComponent } from './category-news/category-news.component';
 import { YourStatusComponent } from './your-status/your-status.component';
 import { HomePageV2Component } from './home-page-v2/home-page-v2.component';
 import { DistrictNewsComponent } from './district-news/district-news.component';
+import { ViewNewsV2Component } from './view-news-v2/view-news-v2.component';
 
 const routes: Routes = [
   {
@@ -14,10 +15,15 @@ const routes: Routes = [
     pathMatch: 'full',
   },
   { path: 'yourStatus/:id', component: YourStatusComponent },
+  // { path: 'home', component: ViewNewsV2Component },
   { path: 'home', component: HomePageV2Component },
+  // {
+  //   path: 'view-news/:id',
+  //   component: ViewNewsComponent
+  // },
   {
-    path: 'view-news/:id',
-    component: ViewNewsComponent
+    path: 'view-news/:lang/:id',
+    component: ViewNewsV2Component
   },
   {
     path: 'category-news/:id',

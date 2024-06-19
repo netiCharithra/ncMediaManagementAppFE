@@ -29,8 +29,8 @@ export class Config {
         GET_DISTRICT_NEWS: Config.BASE_POINT_API + 'public/getDistrictNews',
         GET_PUBLIC_NEWS_INFO: Config.BASE_POINT_API + 'public/getNewsInfo',
         GET_PUBLIC_CATEGORY_NEWS: Config.BASE_POINT_API + 'public/getCategoryNews',
+        GET_NEWS_BY_NEWS_TYPE: Config.BASE_POINT_API + 'public/getNewsNewsType',
         SET_FCM_TOKEN: Config.BASE_POINT_API + 'public/setFCMToken',
-
 
 
         EMPLOYEE_TRACING_LIST: Config.BASE_POINT_API + 'public/employeeTracingListing',

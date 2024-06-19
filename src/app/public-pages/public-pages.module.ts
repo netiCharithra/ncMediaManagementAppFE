@@ -17,6 +17,7 @@ import { ComponentsModule } from 'app/components/components.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { HttpClient } from '@angular/common/http';
 import { DistrictNewsComponent } from './district-news/district-news.component';
+import { ViewNewsV2Component } from './view-news-v2/view-news-v2.component';
 
 
 @NgModule({
@@ -29,7 +30,8 @@ import { DistrictNewsComponent } from './district-news/district-news.component';
     PublicFooterComponent,
     YourStatusComponent,
     HomePageV2Component,
-    DistrictNewsComponent
+    DistrictNewsComponent,
+    ViewNewsV2Component
   ],
   imports: [
     CommonModule, NgbModule,
