@@ -35,15 +35,15 @@
                     (click)="commonFunctions.onNewsClick(homeDataV2?.latestNineRecords?.[0])">
                     <div class="row g-0">
                         <div class="col-md-12">
-                            <img [src]="homeDataV2?.latestNineRecords?.[0]?.['images']?.[0]?.['tempURL']"
+                            <img [src]="homeDataV2?.latestNineRecords?.[0]?.['images']?.[0]?.['externalURL'] || homeDataV2?.latestNineRecords?.[0]?.['images']?.[0]?.['tempURL']"
                                 class="img-fluid rounded-start latestNineImage" alt="News Image">
                         </div>
                         <div class="col-md-12">
-                            <div class="card-body">
+                            <div class="card-body" *ngFo="homeDataV2?.latestNineRecords?.[0]">
                                 <h5 class="card-title">{{homeDataV2?.latestNineRecords?.[0]?.['title']}}</h5>
                                 <p class="card-text text-muted mb-1">
                                     {{homeDataV2?.latestNineRecords?.[0]?.['createdDate']|
-                                    date:'yyyy-MM-dd'}}</p>
+                                    date:'medium'}}</p>
                                 <p class="card-text text-truncate" style="max-width: 100%;">
                                     {{homeDataV2?.latestNineRecords?.[0]?.['description']}}</p>
                             </div>
@@ -56,11 +56,11 @@
             <div class="col-md-6 row mx-auto my-md-4">
 
                 <div class=" col-md-6 p-0 col-12  " *ngFor="let item of [1,2,3,4,5,6,7,8]">
-                    <div class="custome_card row p-2 rounded custome_newsCard"
+                    <div class="custome_card row p-2 rounded custome_newsCard" *ngIf="homeDataV2?.latestNineRecords?.[item]"
                         (click)="commonFunctions.onNewsClick(homeDataV2?.latestNineRecords?.[item])">
 
                         <div class="col-5 p-0">
-                            <img [src]="homeDataV2?.latestNineRecords?.[item]?.['images']?.[0]?.['tempURL']"
+                            <img [src]="homeDataV2?.latestNineRecords?.[item]?.['images']?.[0]?.['externalURL'] || homeDataV2?.latestNineRecords?.[item]?.['images']?.[0]?.['tempURL']"
                                 class="img-fluid  border-radiuse-10" alt="News Image">
                         </div>
                         <div class="col-7 ">
@@ -69,7 +69,7 @@
                                     {{homeDataV2?.latestNineRecords?.[item]?.['title']}}</h5>
                                 <p class="card-text text-muted mb-1 date_custome">
                                     {{homeDataV2?.latestNineRecords?.[item]?.['createdDate']|
-                                    date:'yyyy-MM-dd'}}</p>
+                                    date:'medium'}}</p>
 
                             </div>
                         </div>
@@ -91,7 +91,7 @@
                     (click)="commonFunctions.onNewsClick(data)">
 
                     <div class="col-3 p-0">
-                        <img [src]="data?.['images']?.[0]?.['tempURL']"
+                        <img [src]="data?.['images']?.[0]?.['externalURL'] || data?.['images']?.[0]?.['tempURL']"
                             class="img-fluid  border-radiuse-10 news-type-image" alt="News Image">
                     </div>
                     <div class="col-9 ">
@@ -100,7 +100,7 @@
                                 {{data?.['title']}}</h5>
                             <p class="card-text text-muted mb-1 date_custome">
                                 {{data?.['createdDate']|
-                                date:'yyyy-MM-dd'}}</p>
+                                date:'medium'}}</p>
 
                         </div>
                     </div>
@@ -130,7 +130,7 @@
                 <div class=" mb-3 custome_newsCard_category cursor-pointer cursor-pointer">
                     <div class="row g-0">
                         <div class="col-md-12">
-                            <img [src]="eachCategory['news'][0]?.['images']?.[0]?.['tempURL']"
+                            <img [src]="eachCategory['news'][0]?.['images']?.[0]?.['externalURL'] || eachCategory['news'][0]?.['images']?.[0]?.['tempURL']"
                                 class="img-fluid rounded-start latestNineImage" alt="News Image">
                         </div>
                         <div class="col-md-12">
@@ -138,7 +138,7 @@
                                 <h5 class="card-title">{{eachCategory['news'][0]?.['title']}}</h5>
                                 <p class="card-text text-muted mb-1">
                                     {{eachCategory['news'][0]?.['createdDate']|
-                                    date:'yyyy-MM-dd'}}</p>
+                                    date:'medium'}}</p>
                                 <p class="card-text ellipsis-text">
                                     {{eachCategory['news'][0]?.['description']}}</p>
                             </div>
@@ -159,7 +159,7 @@
                         <div class=" mb-3 custome_newsCard_category categoryCard cursor-pointer">
                             <div class="row g-0">
                                 <div class="col-md-12">
-                                    <img [src]="eachCategory['news'][itemInd]?.['images']?.[0]?.['tempURL']"
+                                    <img [src]="eachCategory['news'][itemInd]?.['images']?.[0]?.['externalURL'] || eachCategory['news'][itemInd]?.['images']?.[0]?.['tempURL']"
                                         class="img-fluid rounded-start categoryImages" alt="News Image">
                                 </div>
                                 <div class="col-md-12">
@@ -169,7 +169,7 @@
                                         </h5>
                                         <p class="card-text text-muted mb-1">
                                             {{eachCategory['news'][itemInd]?.['createdDate']|
-                                            date:'yyyy-MM-dd'}}</p>
+                                            date:'medium'}}</p>
                                         <!-- <p class="card-text text-truncate" style="max-width: 100%;">
                                             {{homeDataV2?.latestNineRecords?.[0]?.['description']}}</p> -->
                                     </div>
@@ -216,7 +216,7 @@
     <div class="col-12 col-md-5 d-flex p-0 pt-2">
         <div class="content flex-fill" style="padding: 20px;">
             <div class="image-container">
-                <img [src]="topSectionData[0]['images'][0]['tempURL']" alt="Photo">
+                <img [src]="topSectionData[0]['externalURL'][0] || topSectionData[0]['images'][0]['tempURL']" alt="Photo">
                 <div class="image-caption">
                     <div class="date">{{topSectionData[0]['title']}}</div>
                     <div class="title">{{topSectionData[0]['title']}} </div>
@@ -228,9 +228,9 @@
         <div class="col-12 col-md-4 d-flex" *ngFor="let topNews of [1,2,3,4,5,6]">
             <div class="small-content flex-fill">
                 <div class="image-container">
-                    <img [src]="topSectionData?.[topNews]['images'][0]['tempURL']" alt="Photo">
+                    <img [src]="topSectionData?.[topNews]['images'][0]['externalURL'] || topSectionData?.[topNews]['images'][0]['tempURL']" alt="Photo">
                     <div class="image-caption">
-                        <div class="date">{{topSectionData[topNews]['createdDate'] | timeago}}</div>
+                        <div class="date">{{topSectionData[topNews]['createdDate']  | date:'medium'}}</div>
                         <div class="title">{{topSectionData[topNews]['title']}}</div>
                     </div>
                 </div>
@@ -252,13 +252,13 @@
                 <div class="latestNews cursor-pointer m-0 p-0 col-12 row mt-4">
 
 
-                    <img [src]="list?.['images'][0]['tempURL']" alt="Photo" class="rounded">
+                    <img [src]="list?.['images'][0]['externalURL'] || list?.['images'][0]['tempURL']" alt="Photo" class="rounded">
                     <div class="row  bg-white rounded col-12">
                         <div class="col-4 ">
 
                         </div>
                         <div class="col-8 ">
-                            <p class="p-0 m-0 text-muted date"> {{list?.['createdDate'] | timeago}}
+                            <p class="p-0 m-0 text-muted date"> {{list?.['createdDate']  | date:'medium'}}
                             </p>
                             <p class="p-0 m-0 title">
                                 {{list?.['title']}}

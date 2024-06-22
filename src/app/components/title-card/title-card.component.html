@@ -1,13 +1,13 @@
 <div class="latestNews cursor-pointer m-0 p-0 col-12 row mt-4">
 
 
-    <img [src]="newsData['images'][0]['tempURL']" alt="Photo" class="rounded">
+    <img [src]="newsData['images'][0]['externalURL'] || newsData['images'][0]['tempURL']" alt="Photo" class="rounded">
     <div class="row  bg-white rounded">
         <div class="col-4 ">
 
         </div>
         <div class="col-8 ">
-            <p class="p-0 m-0 text-muted date"> {{newsData['createdDate'] | timeago}}
+            <p class="p-0 m-0 text-muted date"> {{newsData['createdDate'] | date}}
             </p>
             <p class="p-0 m-0 title">
                 {{newsData['title']}}

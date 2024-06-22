@@ -9,11 +9,11 @@
         <div class="col-md-4 col-sm-12 mb-4" *ngFor="let news of newsData"
             (click)="commonFunctionality.onNewsClick(news)">
             <div class="card m-0  cursor-pointer custome_newsCard">
-                <img class="card-img-top" [src]="news?.images?.[0]?.['tempURL']" [alt]="news.title">
+                <img class="card-img-top" [src]="news?.images?.[0]?.['externalURL'] || news?.images?.[0]?.['tempURL']" [alt]="news.title">
                 <div class="card-body">
                     <h5 class="card-title">{{ news?.title }}</h5>
                     <p class="card-text m-0"><small class="text-muted">{{ news?.createdDate |
-                            date:'yyyy-MM-dd'}}</small>
+                            date:'medium'}}</small>
                     </p>
                     <p class="card-text description">{{ news?.description }}</p>
                 </div>

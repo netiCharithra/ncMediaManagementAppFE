@@ -7,6 +7,7 @@ import { StorageService } from 'app/services/storage.service';
 import { AsyncSubject, Observable } from 'rxjs';
 import { NgxImageCompressService } from 'ngx-image-compress';
 import { Router } from '@angular/router';
+import { CommonFunctionalityService } from 'app/services/common-functionality.service';
 
 @Component({
   selector: 'news-publication',
@@ -24,15 +25,43 @@ export class NewsPublicationComponent implements OnInit {
   };
   public actionType: any = '';
   public disableFields: Boolean = false;
-  public automaticNewsType:any='';
-  public autoFetchLink:any='';
+  public automaticNewsType: any = '';
+  public autoFetchLink: any = '';
+  public uploadOnlineTempURL: any = '';
+  public employeesList:any=[];
+  public loggedUserDetails:any={}
   constructor(private appService: AppServiceService, private alertService: AlertService, private http: HttpClient, private storage: StorageService, private imageCompress: NgxImageCompressService,
+    private commonFunctionality: CommonFunctionalityService,
     private router: Router) { }
 
   ngOnInit(): void {
-    this.getNewsList()
+    this.getNewsList();
+    this.loggedUserDetails = this.storage.api.session.get('userData');
+
+    console.log("TTT", this.loggedUserDetails)
+    if(this.loggedUserDetails?.role === 'CEO'){
+      this.getAllEmployees();
+    }
+
+
   }
 
+  getAllEmployees = () => {
+    try {
+      this.appService.loaderService = true;
+      this.appService.getAllEmployees({}).subscribe((response) => {
+        if (response.status === 'success') {
+           this.employeesList = response['data'] || [];
+        } else {
+          this.alertService.open('error', response.status.charAt(0).toUpperCase() + response.status.slice(1), response.msg || "Failed !")
+        }
+        this.appService.loaderService = false;
+      })
+    } catch (error) {
+      this.appService.loaderService = false;
+      console.error(error)
+    }
+  }
   getNewsList = () => {
     try {
       this.appService.loaderService = true;
@@ -56,6 +85,7 @@ export class NewsPublicationComponent implements OnInit {
       this.appService.getNewsInfo(data).subscribe((response) => {
         if (response.status === 'success') {
           this.publishNewsForm = response['data'] || {};
+          this.publishNewsForm['initalDataCopy'] = JSON.parse(JSON.stringify(this.publishNewsForm))
           document.getElementById('publishNewsBtn').click();
         } else {
           this.alertService.open('error', response.status.charAt(0).toUpperCase() + response.status.slice(1), response.msg || "Failed !")
@@ -114,7 +144,7 @@ export class NewsPublicationComponent implements OnInit {
         this.actionType = event.type;
         this.getMetaData(null, true, event);
         this.disableFields = true;
-      } else if (event.type === 'headerActionSelect'){
+      } else if (event.type === 'headerActionSelect') {
         console.log(event);
         this.automaticNewsType = event.value;
         this.router.navigate(['/app/news', this.automaticNewsType]);
@@ -128,7 +158,7 @@ export class NewsPublicationComponent implements OnInit {
     try {
       this.appService.loaderService = true;
       // 'AP_DISTRICTS', 'AP_DISTRICT_MANDALS'
-      const metaList = stateId ? [stateId + '_DISTRICTS', stateId + '_DISTRICT_MANDALS'] : ['NEWS_CATEGORIES', 'STATES', 'ROLE', 'NEWS_TYPE']
+      const metaList = stateId ? [stateId + '_DISTRICTS', stateId + '_DISTRICT_MANDALS'] : ['NEWS_CATEGORIES', 'STATES', 'ROLE', 'NEWS_TYPE', 'NEWS_SOURCES']
       this.appService.getMetaData({ metaList }).subscribe((response) => {
         this.metaData = { ...this.metaData, ...response['data'] || {} }
         console.log(this.metaData)
@@ -165,7 +195,19 @@ export class NewsPublicationComponent implements OnInit {
   signUpCreds = () => {
     this.appService.loaderService = true;
     try {
-      this.appService.manipulateNews({ type: this.actionType, data: this.publishNewsForm }).subscribe((response) => {
+      let payload = this.publishNewsForm;
+
+      if(this.loggedUserDetails['role'] === 'CEO' && payload['reportedBy']){
+        let reportedBy = {
+          name:payload['reportedBy']['name'],
+          profilePicture:payload['reportedBy']['profilePicture'],
+          role:payload['reportedBy']['role'],
+          employeeId:payload['reportedBy']['employeeId']
+        }
+        payload['reportedBy'] = reportedBy
+      }
+      console.log(payload)
+      this.appService.manipulateNews({ type: this.actionType, data: payload }).subscribe((response) => {
         if (response.status === 'success') {
           this.alertService.open("success", "Success", response.msg || " ");
           document.getElementById('publishNewsBtn').click();
@@ -213,25 +255,63 @@ export class NewsPublicationComponent implements OnInit {
       return;
 
     } else {
-      document.getElementById('loginimages').click()
+      this.uploadOnlineTempURL = '';
+      document.getElementById('myModalBtn').click()
+
+      // document.getElementById('loginimages').click()
     }
+  }
+
+  openUploadImageLocal = () => {
+    document.getElementById('myModalBtn').click()
+
+    document.getElementById('loginimages').click()
+  }
+
+
+  addImageURL = async () => {
+    if (!this.uploadOnlineTempURL) {
+      this.alertService.open('error', "IMAGE URL NEEDED", "ERROR !")
+
+      return
+    }
+    this.commonFunctionality.checkImage(this.uploadOnlineTempURL).subscribe(result => {
+      if (result) {
+        if (!Array.isArray(this.publishNewsForm['images'])) {
+          this.publishNewsForm['images'] = [];
+      }
+      
+      this.publishNewsForm['images'].push({ externalURL: this.uploadOnlineTempURL });
+      
+        document.getElementById('myModalBtn').click()
+
+      } else {
+        this.alertService.open('error', "Invalid Image URL", "Invalid Image")
+      }
+    });
   }
 
   removeImage = (index, imageInfo) => {
     console.log('imageInfo', imageInfo)
-    this.appService.deleteS3Images(imageInfo).subscribe(
-      (response: any) => {
-        if (response.status === "success") {
-          this.publishNewsForm['images'].splice(index, 1)
-        } else {
-          this.alertService.open('error', response.status.charAt(0).toUpperCase() + response.status.slice(1), response.msg || "Failed !")
-        }
-        this.appService.loaderService = false;
-      },
-      (error) => {
-        this.appService.loaderService = false;
-        console.error('Upload error:', error);
-      });
+
+    if( this.publishNewsForm['images'][index]['externalURL']){
+      this.publishNewsForm['images'].splice(index, 1)
+    } else {
+
+      this.appService.deleteS3Images(imageInfo).subscribe(
+        (response: any) => {
+          if (response.status === "success") {
+            this.publishNewsForm['images'].splice(index, 1)
+          } else {
+            this.alertService.open('error', response.status.charAt(0).toUpperCase() + response.status.slice(1), response.msg || "Failed !")
+          }
+          this.appService.loaderService = false;
+        },
+        (error) => {
+          this.appService.loaderService = false;
+          console.error('Upload error:', error);
+        });
+    }
   }
 
 
@@ -386,8 +466,8 @@ export class NewsPublicationComponent implements OnInit {
     return bytes;
   }
 
- 
 
 
-  
+
+
 }

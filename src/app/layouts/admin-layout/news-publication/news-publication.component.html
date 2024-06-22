@@ -71,9 +71,9 @@
                         <div class="col-12 mb-4">
                             <label class="form-label" for="loginrejectedReason">Reason for Rejection</label>
                             <input type="text" class="form-control form-control-lg" name="rejectedReason"
-                                placeholder="Enter a valid rejectedReason" [(ngModel)]="publishNewsForm['rejectedReason']"
-                                #rejectedReason="ngModel" required  required
-                                [ngClass]="{ 'is-invalid': newsForm.submitted && rejectedReason.invalid }" />
+                                placeholder="Enter a valid rejectedReason"
+                                [(ngModel)]="publishNewsForm['rejectedReason']" #rejectedReason="ngModel" required
+                                required [ngClass]="{ 'is-invalid': newsForm.submitted && rejectedReason.invalid }" />
                             <div *ngIf="newsForm.submitted && rejectedReason.invalid" class="invalid-feedback">
                                 <div *ngIf="rejectedReason.errors.required">This field is required</div>
                             </div>
@@ -96,22 +96,24 @@
                         </div>
                         <div class="col-12 mb-3">
                             <label class="form-label" for="newsType">News Type</label>
-                            <ng-select [items]="metaData['NEWS_TYPE']" name="newsType" class="form-control form-control-lg" required
-                                placeholder="Local/National/International" [(ngModel)]="publishNewsForm['newsType']" #newsType="ngModel" [clearable]="false"
+                            <ng-select [items]="metaData['NEWS_TYPE']" name="newsType" class="" required
+                                placeholder="Local/National/International" [(ngModel)]="publishNewsForm['newsType']"
+                                #newsType="ngModel" [clearable]="false"
                                 [ngClass]="{ 'is-invalid': newsForm.submitted && newsType.invalid }">
                             </ng-select>
-                        
+
                             <div *ngIf="newsForm.submitted && category.invalid" class="invalid-feedback">
                                 <div *ngIf="category.errors.required">This field is required</div>
                             </div>
                         </div>
                         <div class="col-12 mb-3">
                             <label class="form-label" for="loginState">Category</label>
-                            <ng-select [items]="metaData['NEWS_CATEGORIES']"  name="category"
-                                class="form-control form-control-lg" required placeholder="Enter category" [(ngModel)]="publishNewsForm['category']"
-                                #category="ngModel" [clearable]="false" [ngClass]="{ 'is-invalid': newsForm.submitted && category.invalid }">
+                            <ng-select [items]="metaData['NEWS_CATEGORIES']" name="category" required
+                                placeholder="Enter category" [(ngModel)]="publishNewsForm['category']"
+                                #category="ngModel" [clearable]="false"
+                                [ngClass]="{ 'is-invalid': newsForm.submitted && category.invalid }">
                             </ng-select>
-                        
+
                             <div *ngIf="newsForm.submitted && category.invalid" class="invalid-feedback">
                                 <div *ngIf="category.errors.required">This field is required</div>
                             </div>
@@ -123,7 +125,8 @@
                                 <span class="text-muted" style="font-size: 0.6rem;">Only 3 Images are allowed</span>
                             </label>
                             <!-- openImageUpload -->
-                            <button class="btn pull-right col" type="button" [disabled]="disableFields" (click)="openImageUpload()">Click or touch
+                            <button class="btn pull-right col" type="button" [disabled]="disableFields"
+                                (click)="openImageUpload()">Click or touch
                                 here
                                 to upload images/photos </button>
                             <!-- <button class="btn pull-right col" type="button" [disabled]="disableFields" (click)="compressFile()">Click or touch
@@ -135,20 +138,19 @@
                                     <span class="mx-1 cursor-pointer border rounded px-1 pt-1 image_holder"
                                         *ngFor="let images of publishNewsForm['images']; let i=index;">
 
-                                        <img [src]="images.tempURL" alt="Failed to load Images"
+                                        <img [src]="images?.externalURL || images?.tempURL" alt="Failed to load Images"
                                             class="custom_upload_image">
                                         <!-- <img [src]="'https://drive.google.com/uc?export=view&id='+images.id" alt="Er"
                                             class="custom_upload_image"> -->
 
-                                        <span
-                                            *ngIf="(actionType === 'create' || actionType === 'update')"
+                                        <span *ngIf="(actionType === 'create' || actionType === 'update')"
                                             class="text-center h6 font-weight-bold text-center w-100 m-0 pt-1 pb-0"
                                             (click)="removeImage(i, images)"><i
                                                 class="material-icons text-danger">delete_forever</i></span>
                                     </span>
                                 </div>
                             </ng-container>
-                            
+
                             <input type="file" id="loginimages" class="form-control form-control-lg d-none"
                                 placeholder="Enter a valid images" name="images" [(ngModel)]="images" #image="ngModel"
                                 [disabled]="disableFields"
@@ -169,30 +171,37 @@
                                 <div *ngIf="description.errors.required">This field is required</div>
                             </div>
                         </div>
+                        <div class="col-12 mb-4">
+
+                            <label class="form-label" for="logindescription">Priority News</label>
+                            <input type="checkbox" [(ngModel)]="publishNewsForm['priorityIndex']" class="ml-3" />
+
+
+                        </div>
 
                         <ng-container *ngIf="publishNewsForm['newsType'] === 'Regional'">
 
                             <div class="col-12 mb-3">
                                 <label class="form-label" for="loginState">State</label>
                                 <ng-select [items]="metaData['STATES']" bindLabel="label" bindValue="value" name="state"
-                                    class="form-control form-control-lg" required placeholder="Enter state"
-                                    [(ngModel)]="publishNewsForm['state']" #state="ngModel" [clearable]="false"
+                                    required placeholder="Enter state" [(ngModel)]="publishNewsForm['state']"
+                                    #state="ngModel" [clearable]="false"
                                     [ngClass]="{ 'is-invalid': newsForm.submitted && state.invalid }"
                                     (ngModelChange)="changeOfState();publishNewsForm['district']=null;publishNewsForm['mandal']=null; ">
                                 </ng-select>
-    
+
                                 <div *ngIf="newsForm.submitted && state.invalid" class="invalid-feedback">
                                     <div *ngIf="state.errors.required">This field is required</div>
                                 </div>
                             </div>
                             <ng-container *ngIf="publishNewsForm['state']">
-    
+
                                 <div class="col-12 mb-3">
                                     <label class="form-label" for="loginDistrict">District</label>
-                                    <ng-select [items]="metaData[publishNewsForm['state']+'_DISTRICTS']" bindLabel="label"
-                                        bindValue="value" [disabled]="disableFields" name="district"
-                                        class="form-control form-control-lg" required placeholder="Select District"
-                                        [(ngModel)]="publishNewsForm['district']" #district="ngModel" [clearable]="false"
+                                    <ng-select [items]="metaData[publishNewsForm['state']+'_DISTRICTS']"
+                                        bindLabel="label" bindValue="value" [disabled]="disableFields" name="district"
+                                        required placeholder="Select District" [(ngModel)]="publishNewsForm['district']"
+                                        #district="ngModel" [clearable]="false"
                                         [ngClass]="{ 'is-invalid': newsForm.submitted && district.invalid }"
                                         (ngModelChange)="publishNewsForm['mandal']=null; ">
                                     </ng-select>
@@ -204,12 +213,11 @@
                                     <label class="form-label" for="loginMandal">Mandal</label>
                                     <ng-select
                                         [items]="metaData[publishNewsForm['state']+'_DISTRICT_MANDALS'][publishNewsForm['district']]"
-                                        [disabled]="disableFields" name="mandal" class="form-control form-control-lg"
-                                        required placeholder="Select mandal" [(ngModel)]="publishNewsForm['mandal']"
-                                        #mandal="ngModel" [clearable]="false"
+                                        [disabled]="disableFields" name="mandal" required placeholder="Select mandal"
+                                        [(ngModel)]="publishNewsForm['mandal']" #mandal="ngModel" [clearable]="false"
                                         [ngClass]="{ 'is-invalid': newsForm.submitted && mandal.invalid }">
                                     </ng-select>
-    
+
                                     <div *ngIf="newsForm.submitted && mandal.invalid" class="invalid-feedback">
                                         <div *ngIf="mandal.errors.required">This field is required</div>
                                     </div>
@@ -217,14 +225,43 @@
                             </ng-container>
                         </ng-container>
 
+                        <div class="col-12 mb-3">
+                            <label class="form-label" for="loginState">Source</label>
+                            <ng-select [items]="metaData['NEWS_SOURCES']" name="source" bindValue="label" required
+                                placeholder="Select Source" [(ngModel)]="publishNewsForm['source']" #source="ngModel"
+                                [clearable]="false" [ngClass]="{ 'is-invalid': newsForm.submitted && source.invalid }">
+                            </ng-select>
+
+                            <div *ngIf="newsForm.submitted && source.invalid" class="invalid-feedback">
+                                <div *ngIf="source.errors.required">This field is required</div>
+                            </div>
+                        </div>
+                        <div class="col-12 mb-3"
+                            *ngIf="publishNewsForm?.['source'] && publishNewsForm?.['source'] !== 'Neti Charithra'">
+                            <label class="form-label" for="loginState">Source Link</label>
+                            <input type="text" class="form-control form-control-lg" name="sourceLink"
+                                placeholder="Enter a Source Link" [(ngModel)]="publishNewsForm['sourceLink']"
+                                #sourceLink="ngModel" required [disabled]="disableFields" required
+                                [ngClass]="{ 'is-invalid': newsForm.submitted && sourceLink.invalid }" />
+                            <div *ngIf="newsForm.submitted && sourceLink.invalid" class="invalid-feedback">
+                                <div *ngIf="sourceLink.errors.required">This field is required</div>
+                            </div>
+                        </div>
+                        <div class="col-12 mb-3"
+                            *ngIf="loggedUserDetails?.['role'] == 'CEO' && publishNewsForm?.['source'] === 'Neti Charithra'">
+                            <label class="form-label" for="loginState">Source</label>
+                            <ng-select [items]="employeesList" name="reportedBy" bindLabel="name" 
+                                placeholder="Select reportedBy" [(ngModel)]="publishNewsForm['reportedBy']" #reportedBy="ngModel"
+                                [clearable]="false" [ngClass]="{ 'is-invalid': newsForm.submitted && reportedBy.invalid }">
+                            </ng-select>
+
+                            <div *ngIf="newsForm.submitted && reportedBy.invalid" class="invalid-feedback">
+                                <div *ngIf="reportedBy.errors.required">This field is required</div>
+                            </div>
+                        </div>
                     </ng-template>
 
 
-
-                    <!-- <div class="col-12 text-center text-lg-start mt-4 pt-2">
-                        <button type="submit" class="btn btn-primary btn-lg"
-                            style="padding-left: 2.5rem; padding-right: 2.5rem;">Login</button>
-                    </div> -->
                 </div>
                 <div class="modal-footer col-12 row">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -232,11 +269,12 @@
                     <button type="submit" class="btn btn-primary btn-lg" *ngIf="actionType !== 'view'"
                         style="padding-left: 2.5rem; padding-right: 2.5rem;">
 
-                        {{ actionType === 'approve' ? 'Approve': actionType === 'reject' ? 'Reject':actionType === 'create' ? 'Create':actionType === 'update' ? 'Update':''
+                        {{ actionType === 'approve' ? 'Approve': actionType === 'reject' ? 'Reject':actionType ===
+                        'create' ? 'Create':actionType === 'update' ? 'Update':''
 
-                    
-                
-                }}
+
+
+                        }}
 
                     </button>
                 </div>
@@ -250,7 +288,8 @@
 
 
 <!-- Button trigger modal -->
-<button type="button" class="btn btn-primary d-none" id="autoNewsFetchLinkBtn" data-toggle="modal" data-target="#autoNewsFetchLink">
+<button type="button" class="btn btn-primary d-none" id="autoNewsFetchLinkBtn" data-toggle="modal"
+    data-target="#autoNewsFetchLink">
     Launch static backdrop modal
 </button>
 
@@ -266,14 +305,49 @@
                 </button>
             </div>
             <div class="modal-body">
-                
-             
-                
+
+
+
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 <button type="button" class="btn btn-primary">Understood</button>
             </div>
+        </div>
+    </div>
+</div>
+
+<button type="button" class="btn btn-primary d-none" data-toggle="modal" data-target="#myModal" id="myModalBtn">
+    Launch demo modal
+</button>
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
+    data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="myModalLabel">Enter URL or Click upload images</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row mx-3">
+                    <div class="row col-12">
+
+                        <input type="text" class="form-control form-control-lg col-9" name="title"
+                            placeholder="Enter URL" [(ngModel)]="uploadOnlineTempURL">
+                        <button class="btn btn-primary col-3" (click)="addImageURL()">GET</button>
+                    </div>
+                    <button class="btn btn-secondary  col-12 mt-2" (click)="openUploadImageLocal()">Click here to Upload
+                        Images</button>
+                </div>
+                <!-- Modal body content goes here -->
+            </div>
+            <!-- <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div> -->
         </div>
     </div>
 </div>

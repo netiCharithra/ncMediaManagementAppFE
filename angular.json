@@ -23,15 +23,16 @@
               "src/manifest.json"
             ],
             "styles": [
-              "src/assets/scss/style.scss",
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "src/assets/scss/material-dashboard.scss",
               "src/assets/css/demo.css",
-              "node_modules/toastr/build/toastr.min.css",
               "node_modules/@ng-select/ng-select/themes/default.theme.css",
               "src/assets/scss/lib/slick.scss",
               "src/assets/scss/lib/slick-theme.css",
-              "node_modules/font-awesome/css/font-awesome.min.css"
+              "node_modules/font-awesome/css/font-awesome.min.css",
+              "src/assets/scss/style.scss",
+              "node_modules/toastr/build/toastr.min.css"
+
             ],
             "scripts": [
               "node_modules/jquery/dist/jquery.js",

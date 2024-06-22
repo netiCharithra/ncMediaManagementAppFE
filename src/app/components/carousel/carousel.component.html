@@ -11,7 +11,7 @@
             <a href="javascript:void(0)" rel="nofollow noopener noreferrer"
                 (click)="commonFunctions.onNewsClick(eachData)">
                 <div class="picsum-img-wrapper">
-                    <img [src]="eachData?.['images']?.[0]?.['tempURL']" alt="My image {{i + 1}} description"
+                    <img [src]="eachData?.['images']?.[0]?.['externalURL'] || eachData?.['images']?.[0]?.['tempURL']" alt="My image {{i + 1}} description"
                         class="border-radiuse-10" />
                 </div>
             </a>

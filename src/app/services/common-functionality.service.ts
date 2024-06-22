@@ -2,13 +2,15 @@ import { Injectable } from '@angular/core';
 import { AppServiceService } from './app-service.service';
 import { StorageService } from './storage.service';
 import { Router } from '@angular/router';
+import { Observable, catchError, map, of } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CommonFunctionalityService {
 
-  constructor(private appService: AppServiceService, private storage: StorageService, private router: Router) { }
+  constructor(private appService: AppServiceService, private storage: StorageService, private router: Router, private http : HttpClient) { }
 
   encodingURI(str) {
     const utf8Bytes = new TextEncoder().encode(str);
@@ -38,5 +40,12 @@ export class CommonFunctionalityService {
     } catch (error) {
       console.error(error)
     }
+  }
+  
+  checkImage(url: string): Observable<boolean> {
+    return this.http.get(url, { responseType: 'blob' }).pipe(
+      map((blob: Blob) => blob.type.startsWith('image')),
+      catchError(() => of(false))
+    );
   }
 }
