@@ -10,7 +10,7 @@ import { HttpClient } from '@angular/common/http';
 })
 export class CommonFunctionalityService {
 
-  constructor(private appService: AppServiceService, private storage: StorageService, private router: Router, private http : HttpClient) { }
+  constructor(private appService: AppServiceService, private storage: StorageService, private router: Router, private http: HttpClient) { }
 
   encodingURI(str) {
     const utf8Bytes = new TextEncoder().encode(str);
@@ -41,11 +41,21 @@ export class CommonFunctionalityService {
       console.error(error)
     }
   }
-  
+
   checkImage(url: string): Observable<boolean> {
     return this.http.get(url, { responseType: 'blob' }).pipe(
       map((blob: Blob) => blob.type.startsWith('image')),
       catchError(() => of(false))
     );
+  }
+  isMobile(): boolean {
+    return window.innerWidth <= 768; // You can adjust the width threshold as needed
+  }
+
+  getCurrentLanguage = async () => {
+    let lang = await this.storage.api.local.getValue('userLanguage')
+
+
+    return lang
   }
 }

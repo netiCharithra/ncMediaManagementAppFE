@@ -575,3 +575,35 @@ textarea.form-control.is-invalid {
     width: fit-content;
     color: #fff;
 }
+
+@media (max-width: 767.98px) {
+
+    .custome-container-head,
+    .custome-container-public-header {
+        padding: 0 !important;
+
+    }
+
+
+    .news-listing-container {
+        padding: 0px 2rem !important;
+    }
+
+
+    .img-fluid-custome {
+        width: 100% !important;
+        height: 5rem !important;
+    }
+
+    .carousel-caption {
+        h3 {
+            font-size: 1rem !important;
+        }
+    }
+
+    .carousel-caption-top {
+        h3 {
+            font-size: 0.75rem !important;
+        }
+    }
+}

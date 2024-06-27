@@ -1,8 +1,8 @@
-<div class="container">
+<div class="container news-listing-container">
     <!-- app.component.html -->
     <!-- app.component.html -->
     <div class="row mt-4">
-        <div class="col-md-4 col-12 order-1 box px-1" style="overflow-y: auto;">
+        <div class="col-md-4 col-12 order-1 box px-1 mobile-rowSlide d-none d-md-block" style="overflow-y: auto;">
             <!-- 25% width on medium and above, full width on mobile -->
             <!-- <div class="" > -->
 
@@ -15,6 +15,10 @@
             <!-- </div> -->
         </div>
         <div class="col-md-8 col-12 order-2 box px-1 mobile-carousel">
+            <!-- <div class="col-12 border-bottom p-0">
+
+                <p class="header_section">{{'trending' | translate}}</p>
+            </div> -->
             <carousel [carouselData]="homeDataV2?.prioritizedRecords">
             </carousel>
 
@@ -28,18 +32,19 @@
         </div>
         <div class="col-12 row m-0 p-0 mobile-scroll-latest-news">
 
-            <div class="col-md-6 ">
+            <div class="col-md-6 d-none d-md-block px-0">
                 <!-- Content for the first div -->
                 <!-- <div style="background-color: #f0f0f0; padding: 20px; margin-bottom: 20px;"> -->
                 <div class="card mb-3 custome_newsCard"
                     (click)="commonFunctions.onNewsClick(homeDataV2?.latestNineRecords?.[0])">
                     <div class="row g-0">
-                        <div class="col-md-12">
+                        <div class="col-md-12 d-flex align-items-center justify-content-around"
+                            *ngIf="homeDataV2?.latestNineRecords?.[0]">
                             <img [src]="homeDataV2?.latestNineRecords?.[0]?.['images']?.[0]?.['externalURL'] || homeDataV2?.latestNineRecords?.[0]?.['images']?.[0]?.['tempURL']"
                                 class="img-fluid rounded-start latestNineImage" alt="News Image">
                         </div>
                         <div class="col-md-12">
-                            <div class="card-body" *ngFo="homeDataV2?.latestNineRecords?.[0]">
+                            <div class="card-body" *ngIf="homeDataV2?.latestNineRecords?.[0]">
                                 <h5 class="card-title">{{homeDataV2?.latestNineRecords?.[0]?.['title']}}</h5>
                                 <p class="card-text text-muted mb-1">
                                     {{homeDataV2?.latestNineRecords?.[0]?.['createdDate']|
@@ -53,15 +58,17 @@
 
                 <!-- </div> -->
             </div>
-            <div class="col-md-6 row mx-auto my-md-4">
+            <div class="col-md-6 row mx-auto my-md-4  ">
 
-                <div class=" col-md-6 p-0 col-12  " *ngFor="let item of [1,2,3,4,5,6,7,8]">
-                    <div class="custome_card row p-2 rounded custome_newsCard" *ngIf="homeDataV2?.latestNineRecords?.[item]"
+                <div class=" col-md-6 p-0 col-12 px-0 "
+                    *ngFor="let item of commonFunctions?.isMobile() ? [0,1,2,3,4,5,6,7,8] : [1,2,3,4,5,6,7,8]">
+                    <div class="custome_card row p-2 rounded custome_newsCard"
+                        *ngIf="homeDataV2?.latestNineRecords?.[item]"
                         (click)="commonFunctions.onNewsClick(homeDataV2?.latestNineRecords?.[item])">
 
                         <div class="col-5 p-0">
                             <img [src]="homeDataV2?.latestNineRecords?.[item]?.['images']?.[0]?.['externalURL'] || homeDataV2?.latestNineRecords?.[item]?.['images']?.[0]?.['tempURL']"
-                                class="img-fluid  border-radiuse-10" alt="News Image">
+                                class="img-fluid  img-fluid-custome  border-radiuse-10" alt="News Image">
                         </div>
                         <div class="col-7 ">
                             <div class="card-body p-0">
@@ -81,7 +88,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-12 col-md-4 mb-4 my-4" *ngFor="let item of homeDataV2NewsType">
+        <div class="col-12 col-md-4 mb-4 my-4 px-0" *ngFor="let item of homeDataV2NewsType">
             <div class="row col-12 border-bottom p-0 m-0">
 
                 <p class="header_section">{{item?.type?.[userLanguage]}}</p>
@@ -129,7 +136,7 @@
                 (click)="commonFunctions.onNewsClick(eachCategory['news'][0])">
                 <div class=" mb-3 custome_newsCard_category cursor-pointer cursor-pointer">
                     <div class="row g-0">
-                        <div class="col-md-12">
+                        <div class="col-md-12 d-flex align-items-center justify-content-around">
                             <img [src]="eachCategory['news'][0]?.['images']?.[0]?.['externalURL'] || eachCategory['news'][0]?.['images']?.[0]?.['tempURL']"
                                 class="img-fluid rounded-start latestNineImage" alt="News Image">
                         </div>
@@ -216,7 +223,8 @@
     <div class="col-12 col-md-5 d-flex p-0 pt-2">
         <div class="content flex-fill" style="padding: 20px;">
             <div class="image-container">
-                <img [src]="topSectionData[0]['externalURL'][0] || topSectionData[0]['images'][0]['tempURL']" alt="Photo">
+                <img [src]="topSectionData[0]['externalURL'][0] || topSectionData[0]['images'][0]['tempURL']"
+                    alt="Photo">
                 <div class="image-caption">
                     <div class="date">{{topSectionData[0]['title']}}</div>
                     <div class="title">{{topSectionData[0]['title']}} </div>
@@ -228,9 +236,10 @@
         <div class="col-12 col-md-4 d-flex" *ngFor="let topNews of [1,2,3,4,5,6]">
             <div class="small-content flex-fill">
                 <div class="image-container">
-                    <img [src]="topSectionData?.[topNews]['images'][0]['externalURL'] || topSectionData?.[topNews]['images'][0]['tempURL']" alt="Photo">
+                    <img [src]="topSectionData?.[topNews]['images'][0]['externalURL'] || topSectionData?.[topNews]['images'][0]['tempURL']"
+                        alt="Photo">
                     <div class="image-caption">
-                        <div class="date">{{topSectionData[topNews]['createdDate']  | date:'medium'}}</div>
+                        <div class="date">{{topSectionData[topNews]['createdDate'] | date:'medium'}}</div>
                         <div class="title">{{topSectionData[topNews]['title']}}</div>
                     </div>
                 </div>
@@ -252,13 +261,14 @@
                 <div class="latestNews cursor-pointer m-0 p-0 col-12 row mt-4">
 
 
-                    <img [src]="list?.['images'][0]['externalURL'] || list?.['images'][0]['tempURL']" alt="Photo" class="rounded">
+                    <img [src]="list?.['images'][0]['externalURL'] || list?.['images'][0]['tempURL']" alt="Photo"
+                        class="rounded">
                     <div class="row  bg-white rounded col-12">
                         <div class="col-4 ">
 
                         </div>
                         <div class="col-8 ">
-                            <p class="p-0 m-0 text-muted date"> {{list?.['createdDate']  | date:'medium'}}
+                            <p class="p-0 m-0 text-muted date"> {{list?.['createdDate'] | date:'medium'}}
                             </p>
                             <p class="p-0 m-0 title">
                                 {{list?.['title']}}

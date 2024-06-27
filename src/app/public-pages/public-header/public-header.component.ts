@@ -139,6 +139,9 @@ export class PublicHeaderComponent implements OnInit {
   onClickOfMore = (cat) => {
     this.appService.navigateTo({ type: 'category', queryParams: this.commonFunctionality.encodingURI(JSON.stringify(cat)) });
   }
+  geToHelp = () => {
+    this.appService.navigateTo({ type: 'help' });
+  }
 
   onClickOfDistrict = (state, district) => {
     let { DISTRICTS, ...stateData } = state;

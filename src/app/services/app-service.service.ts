@@ -108,4 +108,7 @@ export class AppServiceService {
   setFCMToken(data: any) {
     return this._httplayer.post(Config.API.SET_FCM_TOKEN, data);
   }
+  getHelpTeam(data: any) {
+    return this._httplayer.post(Config.API.GET_HELP_TEAM, data);
+  }
 }

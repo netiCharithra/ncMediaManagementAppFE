@@ -128,4 +128,22 @@ label {
 
         }
     }
+
+    .carousel-caption-top {
+        background: #0000007d;
+        width: 100%;
+        position: absolute;
+        left: 0;
+        /* padding-bottom: 0; */
+        top: 0;
+
+        padding: 10px 0px;
+
+        h3 {
+            font-weight: bold !important;
+            margin: 0 !important;
+            color: #fff;
+
+        }
+    }
 }

@@ -18,6 +18,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { HttpClient } from '@angular/common/http';
 import { DistrictNewsComponent } from './district-news/district-news.component';
 import { ViewNewsV2Component } from './view-news-v2/view-news-v2.component';
+import { HelpScreenComponent } from './help-screen/help-screen.component';
 
 
 @NgModule({
@@ -31,7 +32,8 @@ import { ViewNewsV2Component } from './view-news-v2/view-news-v2.component';
     YourStatusComponent,
     HomePageV2Component,
     DistrictNewsComponent,
-    ViewNewsV2Component
+    ViewNewsV2Component,
+    HelpScreenComponent
   ],
   imports: [
     CommonModule, NgbModule,

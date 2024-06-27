@@ -2,7 +2,7 @@
 .single-image {
     width: 100%;
     height: 18rem;
-    object-fit: none;
+    // object-fit: none;
 }
 
 .half-image {
@@ -81,4 +81,32 @@
     overflow: hidden;
     text-overflow: ellipsis;
     /* Optional: Adjust other styles like font-size, line-height, etc. */
+}
+
+.description-with-watermark {
+    position: relative;
+    /* Ensure proper positioning */
+}
+
+.watermark-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-size: contain;
+    background-position: center center;
+    background-repeat: repeat;
+    z-index: 999;
+    border-radius: 10px;
+    opacity: 0.1;
+}
+
+.description-with-watermark .card-text {
+    position: relative;
+    /* Ensure text stays on top of watermark */
+    z-index: 1;
+    /* Ensure text stays on top of watermark */
+    padding: 15px;
+    /* Adjust padding to separate text from background */
 }

@@ -1,0 +1,40 @@
+<div class="container text-center py-3" style="background-color: #f0f0f0;">
+    <div class="text-left mb-3">
+        <button (click)="goBack()" class="btn btn-link">
+            <i class="ion-chevron-back" style="font-size: 30px; font-weight: bold;"></i>
+        </button>
+    </div>
+    <img [src]="userLanguage === 'te' ? 'assets/img/ncmedia/logo_te.png' : 'assets/img/ncmedia/logo_en.png'"
+        class="img-fluid mb-3" alt="Logo" style="max-width: 200px; height: auto;">
+    <h1 class="mb-3">Help & Contact Us</h1>
+    <div class="border p-3 mb-4 bg-white" style="border-radius: 10px;">
+        <p class="mb-2">Email: netichatithra@gmail.com</p>
+        <p class="mb-2">Phone: +91 63629 23 654</p>
+        <p class="mb-0">Website: <a href="https://neticharithra-ncmedia.web.app/"
+                target="_blank">neticharithra-ncmedia.web.app</a></p>
+    </div>
+    <h2 class="h5 font-weight-bold mb-3">TEAM</h2>
+    <div class="row">
+        <div *ngFor="let member of teamInfo" class="col-md-6 col-lg-4">
+            <div class="card text-center mt-0">
+                <img [src]="member.tempURLProfile" class="card-img-top rounded-circle mx-auto mt-3" alt="Team Member"
+                    style="width: 80px; height: 80px;">
+                <div class="card-body">
+                    <h5 class="card-title mb-1">{{ member.name }}</h5>
+                    <p class="card-text mb-1">{{ member.role }}</p>
+                    <!-- <a [href]="'mailto:' + member.email" class="card-link">{{ member.email }}</a> -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <p class="text-muted small mb-4">
+        We do not charge for publishing news articles. Contact us via email, WhatsApp, or visit our website to publish
+        your news.
+    </p>
+    <div class="d-flex justify-content-around flex-wrap">
+        <button (click)="handleWhatsAppMessage()" class="btn btn-primary mb-2" style="width: 48%;">Message us on
+            WhatsApp</button>
+        <button (click)="handleEmail()" class="btn btn-primary mb-2" style="width: 48%;">Contact us via Email</button>
+        <button (click)="handleWebsite()" class="btn btn-primary mb-2" style="width: 48%;">Visit our Website</button>
+    </div>
+</div>

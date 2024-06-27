@@ -105,8 +105,32 @@
     .top-header .social {
         margin-bottom: 0;
     }
+
+    .custome_header_image {
+        // background-color: #000;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 4px 0px 0px 0px;
+    }
+
+    .v2NavBarLarge .nav-link {
+        width: max-content !important;
+    }
 }
 
+.custome-scroll-bar-header::-webkit-scrollbar {
+    display: none;
+}
+
+/* Hide scrollbar for Internet Explorer, Edge and Firefox */
+.custome-scroll-bar-header {
+    -ms-overflow-style: none;
+    /* IE and Edge */
+    scrollbar-width: none;
+    /* Firefox */
+
+}
 
 /**********************************/
 /********* Header Nav CSS *********/

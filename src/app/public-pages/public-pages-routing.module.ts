@@ -7,6 +7,7 @@ import { YourStatusComponent } from './your-status/your-status.component';
 import { HomePageV2Component } from './home-page-v2/home-page-v2.component';
 import { DistrictNewsComponent } from './district-news/district-news.component';
 import { ViewNewsV2Component } from './view-news-v2/view-news-v2.component';
+import { HelpScreenComponent } from './help-screen/help-screen.component';
 
 const routes: Routes = [
   {
@@ -32,6 +33,10 @@ const routes: Routes = [
   {
     path: 'dn/:id',
     component: DistrictNewsComponent
+  },
+  {
+    path: 'help',
+    component: HelpScreenComponent
   },
 ];
 
