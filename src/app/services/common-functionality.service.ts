@@ -35,7 +35,7 @@ export class CommonFunctionalityService {
 
       let lang = await this.storage.api.local.getValue('userLanguage')
 
-      this.router.navigate(['/view-news', lang || 'te', newsInfo['newsId']]);
+      this.router.navigate(['/view-news', lang || 'te', newsInfo['newsId'], this.encodingURI(JSON.stringify(newsInfo))]);
 
     } catch (error) {
       console.error(error)

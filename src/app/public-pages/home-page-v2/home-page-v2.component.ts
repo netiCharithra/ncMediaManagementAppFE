@@ -187,7 +187,7 @@ export class HomePageV2Component implements OnInit, OnChanges {
 
       // let queryStr = '?newsId=' + queryParams['newsId'] + '&category='+queryParams['category']
       // this.router.navigate(['/view-news' + queryStr]);
-      this.router.navigate(['/view-news', this.userLanguage, newsInfo['newsId']]);
+      this.router.navigate(['/view-news', this.userLanguage, newsInfo['newsId'], this.commonFunctions.encodingURI(JSON.stringify(newsInfo))]);
     } catch (error) {
       console.error(error)
     }

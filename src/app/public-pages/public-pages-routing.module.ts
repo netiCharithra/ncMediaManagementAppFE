@@ -23,6 +23,10 @@ const routes: Routes = [
   //   component: ViewNewsComponent
   // },
   {
+    path: 'view-news/:lang/:id/:data',
+    component: ViewNewsV2Component
+  },
+  {
     path: 'view-news/:lang/:id',
     component: ViewNewsV2Component
   },

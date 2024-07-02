@@ -1,4 +1,5 @@
 import { AfterViewInit, Component, ElementRef, OnInit, Renderer2 } from '@angular/core';
+import { Meta, Title } from '@angular/platform-browser';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { AlertService } from 'app/services/alert.service';
 import { AppServiceService } from 'app/services/app-service.service';
@@ -15,6 +16,7 @@ export class ViewNewsV2Component implements OnInit, AfterViewInit {
 
   public paramNewsId: any;
   public paramNewsLang: any;
+  public paramData: any;
   mainArticle = {
     title: 'Main News Article Title',
     content: 'This is the content of the main news article.',
@@ -35,7 +37,7 @@ export class ViewNewsV2Component implements OnInit, AfterViewInit {
   ];
 
   constructor(private elRef: ElementRef, private renderer: Renderer2, private appService: AppServiceService, public metaShareService: MetaShareService, private alertService: AlertService, private route: ActivatedRoute,
-    public commonfunctionality: CommonFunctionalityService
+    public commonfunctionality: CommonFunctionalityService, private meta: Meta, private titleService: Title
   ) {
 
 
@@ -45,17 +47,49 @@ export class ViewNewsV2Component implements OnInit, AfterViewInit {
 
       this.paramNewsId = params.get('id');
       this.paramNewsLang = params.get('lang');
+      if (params.get('data')) {
+        console.log("data Here")
+        let data = JSON.parse(commonfunctionality.decodingURI(params.get('data')))
+
+        console.log(data)
+        this.paramData = data;
+        this.setTitle(data)
+      }
 
       this.getNewsInfo();
+
+
+
+
+
       // console.log("RPO", params.get('id'))
       // this.handleParamChange();
     });
 
 
 
+
   }
 
+
+  setTitle = (data: any) => {
+
+    this.titleService.setTitle(data.title);
+    this.meta.updateTag({ name: 'title', content: data.title });
+    this.meta.updateTag({ name: 'description', content: data.sub_title });
+    this.meta.updateTag({ property: 'og:title', content: data.title });
+    this.meta.updateTag({ property: 'og:image', content: data?.['images']?.[0]?.['tempURL'] || data?.['images']?.[0]?.['externalURL'] });
+    this.meta.updateTag({ property: 'og:url', content: `https://neticharithra-ncmedia.web.app/#/view-news/${data.language}/${data.newsId}` });
+    this.meta.updateTag({ property: 'og:description', content: data.sub_title });
+    this.meta.updateTag({ property: 'twitter:image', content: data?.['images']?.[0]?.['tempURL'] || data?.['images']?.[0]?.['externalURL'] });
+    this.meta.updateTag({ property: 'twitter:title', content: data.title });
+    this.meta.updateTag({ property: 'twitter:description', content: data.sub_title });
+    this.meta.updateTag({ property: 'twitter:url', content: `https://neticharithra-ncmedia.web.app/#/view-news/${data.language}/${data.newsId}` });
+  }
   ngOnInit(): void {
+
+    console.log("new v2, title set below")
+
 
 
   }
@@ -78,6 +112,11 @@ export class ViewNewsV2Component implements OnInit, AfterViewInit {
             this.pageData = response.data || {};
             console.log(this.pageData)
             this.specificRecord = response?.data?.specificRecord?.[0] || {};
+            if (!this.paramData) {
+
+              this.setTitle(this.specificRecord)
+
+            }
             this.recentRecords = response?.data?.recentRecords
             // this.metaShareService.setPageMetadata(
             //   this.pageData.specificRecord[0].title + '| Neti Charithra',
