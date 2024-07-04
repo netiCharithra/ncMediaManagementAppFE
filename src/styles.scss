@@ -1,0 +1,126 @@
+/* You can add global styles to this file, and also import other style files */
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+
+a,
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: "Inter", sans-serif !important;
+}
+.districtDiv {
+    right: unset;
+    left: 0;
+    z-index: 99999;
+
+    .title {
+        font-weight: bold;
+        color: #000;
+    }
+}
+
+nc-web-public-header{
+
+    .nav-link{
+        font-weight: 600 !important;
+    }
+}
+
+
+.custome-scroll-bar-header::-webkit-scrollbar {
+    display: none;
+}
+
+
+.public-screen-content-height{
+    height: calc(100vh - 7rem);
+}
+/* Hide scrollbar for Internet Explorer, Edge and Firefox */
+.custome-scroll-bar-header {
+    -ms-overflow-style: none;
+    /* IE and Edge */
+    scrollbar-width: none;
+    /* Firefox */
+
+}
+
+.cursor-pointer{
+    cursor: pointer !important;
+}
+
+// HOME PAGE STYLES STARTS
+.border-bottom-custome {
+    border-bottom: 1.5px solid #ccc;
+}
+.border-left-custome {
+    border-left: 1.5px solid #ccc;
+}
+
+@media (max-width: 767.98px) {
+
+    .border-left-custome {
+        border-left: 0;
+    }
+
+}
+
+.header_section {
+    font-weight: bold;
+    margin: 0;
+    padding: 10px 15px;
+    background-color: #00272c;
+    width: fit-content;
+    color: #fff;
+}
+
+
+.custome_newsCard {
+    cursor: pointer;
+
+    .card-title {
+        font-weight: bold;
+        color: #000;
+    }
+}
+
+.custome_newsCard:hover {
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px !important;
+}
+
+.custome_newsCard_category {
+    .card-title {
+        font-weight: bold;
+        color: #000;
+    }
+}
+
+// HOME PAGE STYLES ENDS
+@media (min-width: 576px) {
+    .districtDiv {
+        min-width: 540px !important;
+    }
+}
+
+@media (min-width: 768px) {
+    .districtDiv {
+        min-width: 720px !important;
+    }
+}
+
+@media (min-width: 992px) {
+    .districtDiv {
+        min-width: 960px !important;
+    }
+}
+
+@media (min-width: 1200px) {
+    .districtDiv {
+        min-width: 1000px !important;
+    }
+}

@@ -1,0 +1,10 @@
+{
+    "greeting": "Hello! te",
+    "message": "Welcome to my app. te",
+    "publicHeader": {
+        "home": "హోమ్",
+        "districtNews": "జిల్లా వార్తలు"
+    },
+    "latestNews": "తాజా వార్తలు",
+    "trending": "ట్రేండింగ్"
+}
