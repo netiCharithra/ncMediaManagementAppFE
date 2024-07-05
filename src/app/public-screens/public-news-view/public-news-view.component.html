@@ -1,0 +1,121 @@
+<div class="container mt-4">
+    <div class="row">
+        <!-- Main Article Section -->
+        <div class="col-lg-8 col-md-12">
+            <div class="card mb-4 mt-0">
+
+                <div *ngIf="specificRecord?.images?.length > 0" class="card-img-top">
+                    <div class="row no-gutters">
+                        <!-- If only one image, display it full width -->
+                        <div *ngIf="specificRecord?.images?.length === 1" class="col-12">
+                            <img [src]="specificRecord?.images?.[0]['externalURL'] || specificRecord?.images?.[0]['tempURL']"
+                                class="img-fluid single-image" alt="Main Article Image">
+                        </div>
+
+                        <!-- If two images, display side by side on desktop, stacked on mobile -->
+                        <div *ngIf="specificRecord?.images?.length === 2" class="col-12">
+                            <div class="row no-gutters">
+                                <div class="col-md-6 col-12">
+                                    <img [src]="specificRecord?.images?.[0]['externalURL'] || specificRecord?.images?.[0]['tempURL']"
+                                        class="img-fluid half-image" alt="Main Article Image">
+                                </div>
+                                <div class="col-md-6 col-12">
+                                    <img [src]="specificRecord?.images?.[1]['externalURL'] || specificRecord?.images?.[1]['tempURL']"
+                                        class="img-fluid half-image" alt="Main Article Image">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- If three images, one on the left taking 60% width, and two on the right taking 40% width stacked vertically on desktop, different on mobile -->
+                        <div *ngIf="specificRecord?.images?.length === 3" class="col-12">
+                            <div class="row no-gutters">
+                                <div class="col-md-7 col-12 justify-content-center">
+                                    <img [src]="specificRecord?.images?.[0]['externalURL'] || specificRecord?.images?.[0]['tempURL']"
+                                        class="img-fluid main-img-left" alt="Main Article Image">
+                                </div>
+                                <div class="col-md-5 col-12">
+                                    <div class="row no-gutters h-50">
+                                        <div class="col-12">
+                                            <img [src]="specificRecord?.images?.[1]['externalURL'] || specificRecord?.images?.[1]['tempURL']"
+                                                class="img-fluid half-height-image" alt="Main Article Image">
+                                        </div>
+                                    </div>
+                                    <div class="row no-gutters h-50 mt-1">
+                                        <div class="col-12">
+                                            <img [src]="specificRecord?.images?.[2]['externalURL'] || specificRecord?.images?.[2]['tempURL']"
+                                                class="img-fluid half-height-image" alt="Main Article Image">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body ">
+                    <h2 class="card-title">{{ specificRecord?.title }}</h2>
+                    <p class="card-text"><small class="text-muted">{{ specificRecord?.createdDate | date }}</small></p>
+                    <!-- <p class="card-text">{{ specificRecord?.description }}</p> -->
+                    <div class="description-with-watermark">
+                        <div class="watermark-background"
+                            style="background-image: url('/assets/images/fullLogo.png');"></div>
+                        <p class="card-text px-0">{{ specificRecord?.description }}</p>
+                    </div>
+                    <div class="row justify-content-center">
+                        <div class="col-md-6 col-12">
+                            <div class="d-flex align-items-center mt-3"
+                                *ngIf="specificRecord?.source === 'Neti Charithra'">
+                                <img [src]="specificRecord?.reportedBy?.['profilePicture']?.['tempURL']"
+                                    class="rounded-circle mr-3" alt="Author Image" width="50" height="50">
+                                <div>
+                                    <h6 class="mb-0">{{ specificRecord?.reportedBy?.name }}</h6>
+                                    <small class="text-muted">{{ specificRecord?.reportedBy?.role }}</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-12 d-flex justify-content-end align-items-center">
+                            Credits / Source :
+                            <ng-container *ngIf="specificRecord?.sourceLink; else noLink">
+                                <a [href]="specificRecord.sourceLink" target="_blank" rel="noopener noreferrer">
+                                    {{specificRecord?.source}}
+                                </a>
+                            </ng-container>
+                            <ng-template #noLink>
+                                {{specificRecord?.source}}
+                            </ng-template>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- Latest Articles Section -->
+        <div class="col-lg-4 col-md-12">
+            <div class="list-group">
+                <p class="header_section">{{'latestNews' | translate}}</p>
+
+                <!-- <h3 class="mb-3">Latest News</h3> -->
+                <div *ngFor="let article of recentRecords; let i=index" class="list-group-item p-0 cursor-pointer border"
+                [ngClass]="i !== 0 ? ' border-top-0' : ''"
+
+
+                ngclass
+                    (click)="commonfunctionality.onNewsClick(article)">
+
+                    <div class="col-12 row m-0 p-2">
+                        <div class="col-4">  <img [src]="article?.['images'][0]['externalURL'] || article?.['images'][0]['tempURL']"
+                            class="mr-3 img-thumbnail p-0" alt="Latest Article Image"
+                            style="object-fit:cover; height: 100%;"></div>
+                        <div class="col-8 p-0 pt-1"> <div class="media-body">
+                            <h5 class="mt-0 card-title-latest-news ellipsis-text">{{ article?.title }}</h5>
+                            <p class="mb-1"><small class="text-muted">{{ article?.createdDate | date }}</small></p>
+                        </div></div>
+                      
+                       
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

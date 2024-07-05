@@ -6,7 +6,8 @@ import { NoRecordsScreenComponent } from './no-records-screen/no-records-screen.
 
 @NgModule({
   declarations: [
-    NoRecordsScreenComponent
+    NoRecordsScreenComponent,
+    
   ],
   imports: [
     CommonModule

@@ -11,6 +11,8 @@ import { HttpClient } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { PublicDistrictNewsComponent } from './public-district-news/public-district-news.component';
 import { ComponentsModule } from '../components/components.module';
+import { PublicNewsViewComponent } from './public-news-view/public-news-view.component';
+import { PublicCategorisedNewsComponent } from './public-categorised-news/public-categorised-news.component';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -21,7 +23,9 @@ export function createTranslateLoader(http: HttpClient) {
     PublicScreensComponent,
     PublicHeaderComponent,
     PublicHomeComponent,
-    PublicDistrictNewsComponent
+    PublicDistrictNewsComponent,
+    PublicNewsViewComponent,
+    PublicCategorisedNewsComponent
   ],
   imports: [
     CommonModule,ComponentsModule,

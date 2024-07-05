@@ -54,6 +54,9 @@ nc-web-public-header{
     cursor: pointer !important;
 }
 
+.h-75 {
+    height: 75% !important;
+}
 // HOME PAGE STYLES STARTS
 .border-bottom-custome {
     border-bottom: 1.5px solid #ccc;
@@ -61,7 +64,10 @@ nc-web-public-header{
 .border-left-custome {
     border-left: 1.5px solid #ccc;
 }
-
+.media {
+    display: flex;
+    align-items: flex-start;
+}
 @media (max-width: 767.98px) {
 
     .border-left-custome {
@@ -124,3 +130,44 @@ nc-web-public-header{
         min-width: 1000px !important;
     }
 }
+// /* Style for WebKit-based browsers (Chrome, Safari) */
+// ::-webkit-scrollbar {
+//     width: 8px; // Set the width of the scrollbar
+//     height: 8px; // Set the height of the scrollbar
+//   }
+  
+//   ::-webkit-scrollbar-track {
+//     background: #f1f1f1; // Set the background of the scrollbar track
+//   }
+  
+//   ::-webkit-scrollbar-thumb {
+//     background: #888; // Set the color of the scrollbar thumb
+//     border-radius: 4px; // Make the scrollbar thumb rounded
+//   }
+  
+//   ::-webkit-scrollbar-thumb:hover {
+//     background: #555; // Change color on hover
+//   }
+  
+//   /* Hide the scrollbar buttons (arrows) */
+//   ::-webkit-scrollbar-button {
+//     display: none; // Hide the buttons
+//   }
+  
+//   /* Style for Firefox */
+//   * {
+//     scrollbar-width: thin;
+//     scrollbar-color: #888 #f1f1f1;
+//   }
+  
+//   /* Additional styles to hide the buttons in Firefox */
+//   * {
+//     scrollbar-width: thin;
+//     scrollbar-color: #888 #f1f1f1;
+//   }
+  
+//   /* Optional: For completeness, add some styles for other browsers like Edge */
+//   ::-ms-scrollbar {
+//     display: none; // Hide scrollbar in older versions of IE/Edge
+//   }
+  
