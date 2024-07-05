@@ -12,7 +12,7 @@ import { TranslateService } from '@ngx-translate/core';
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
-  title = 'ncMediaManagementAppFE';
+  title = 'Neti Charithra';
 
   constructor(private translate:TranslateService){
     translate.setDefaultLang('te');
