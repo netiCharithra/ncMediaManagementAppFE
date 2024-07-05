@@ -5,6 +5,8 @@ import { PublicScreensComponent } from './public-screens.component';
 import { PublicDistrictNewsComponent } from './public-district-news/public-district-news.component';
 import { PublicNewsViewComponent } from './public-news-view/public-news-view.component';
 import { PublicCategorisedNewsComponent } from './public-categorised-news/public-categorised-news.component';
+import { YourStatusComponent } from './your-status/your-status.component';
+import { PublicHelpScreenComponent } from './public-help-screen/public-help-screen.component';
 
 const routes: Routes = [
   {
@@ -29,6 +31,10 @@ const routes: Routes = [
   {
     path: 'category-news/:id',
     component: PublicCategorisedNewsComponent
+  },  { path: 'yourStatus/:id', component: YourStatusComponent },
+  {
+    path: 'help',
+    component: PublicHelpScreenComponent
   },
 ];
 

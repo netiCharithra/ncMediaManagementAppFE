@@ -1,4 +1,6 @@
-<div class="row news-header-container m-0">
+<!-- <div class=" news-listing-container"> -->
+
+<div class="container row news-header-container m-0 justify-content-around mx-auto ">
     <div class="col-12 d-flex justify-content-between align-items-center p-2">
 
         <div class=" custome_header_image ">
@@ -7,13 +9,13 @@
             
                 class="image ml-md-0 ml-3 ">
         </div>
-        <div class="helpDiv d-block d-sm-none mr-3 cursor-pointer" >
+        <div class="helpDiv d-block d-sm-none mr-3 cursor-pointer" (click)="geToHelp()">
             Help
         </div>
 
         
     </div>
-    <div class=" col-12 d-flex mr-2 v2NavBarLarge align-items-center  justify-content-between px-0">
+    <div class=" col-12 d-flex mr-2 v2NavBarLarge align-items-center  justify-content-between px-0" *ngIf="!hideMenu">
         <div class="d-flex justify-content-around w-100 " [ngClass]="{
             'overflow-auto': commonFunctionality.isMobile(),
             'custome-scroll-bar-header': commonFunctionality.isMobile()

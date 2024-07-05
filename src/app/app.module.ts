@@ -7,16 +7,18 @@ import { PublicScreensComponent } from './public-screens/public-screens.componen
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }
 const routes: Routes = [
-  { path: '',
+
+ { path: '',
       
-      component:PublicScreensComponent,
-      loadChildren: () => import('./public-screens/public-screens.module').then(m => m.PublicScreensModule) 
-  }
+    component:PublicScreensComponent,
+    loadChildren: () => import('./public-screens/public-screens.module').then(m => m.PublicScreensModule) 
+}
 
 ];
 
@@ -35,6 +37,9 @@ const routes: Routes = [
       },
     }),
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  providers: [
+    provideAnimationsAsync()
+  ]
 })
 export class AppModule { }

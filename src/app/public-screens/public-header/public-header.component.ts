@@ -17,6 +17,7 @@ export class PublicHeaderComponent implements OnInit{
   // TO BE REMOVED START
 
   public showMenu:boolean = false;
+  public hideMenu:boolean = false;
   public activeRoute :any ='';
   // TO BE REMOVED END
 
@@ -57,7 +58,11 @@ export class PublicHeaderComponent implements OnInit{
       {
         if (event.url.split('/').length > 1) {
           this.activeRoute = event.url.split('/').at(-1);
-          console.log(this.activeRoute)
+          console.log("activeRoute",  )
+          if(event.url.split('/')?.[1] === 'yourStatus'){
+            this.hideMenu=true
+          }
+        
         } else {
           this.activeRoute = '';
           // console.log(activeRoute)

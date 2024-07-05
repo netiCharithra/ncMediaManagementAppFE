@@ -13,6 +13,8 @@ import { PublicDistrictNewsComponent } from './public-district-news/public-distr
 import { ComponentsModule } from '../components/components.module';
 import { PublicNewsViewComponent } from './public-news-view/public-news-view.component';
 import { PublicCategorisedNewsComponent } from './public-categorised-news/public-categorised-news.component';
+import { YourStatusComponent } from './your-status/your-status.component';
+import { PublicHelpScreenComponent } from './public-help-screen/public-help-screen.component';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -25,7 +27,9 @@ export function createTranslateLoader(http: HttpClient) {
     PublicHomeComponent,
     PublicDistrictNewsComponent,
     PublicNewsViewComponent,
-    PublicCategorisedNewsComponent
+    PublicCategorisedNewsComponent,
+    YourStatusComponent,
+    PublicHelpScreenComponent
   ],
   imports: [
     CommonModule,ComponentsModule,
