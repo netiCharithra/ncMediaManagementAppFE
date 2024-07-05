@@ -17,7 +17,10 @@ const routes: Routes = [
  { path: '',
       
     component:PublicScreensComponent,
-    loadChildren: () => import('./public-screens/public-screens.module').then(m => m.PublicScreensModule) 
+    children: [{
+      path: '',
+      loadChildren: () => import('./public-screens/public-screens.module').then(m => m.PublicScreensModule) 
+    }]
 },
 { path: '**', redirectTo: '' }
 
@@ -29,7 +32,7 @@ const routes: Routes = [
     AppComponent,
   ],
   imports: [
-    CommonModule,BrowserModule,RouterModule.forRoot(routes),HttpClientModule,
+    CommonModule,BrowserModule,RouterModule.forRoot(routes,{useHash:true}),HttpClientModule,
     
     TranslateModule.forRoot({
       loader: {
