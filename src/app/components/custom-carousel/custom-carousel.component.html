@@ -1,0 +1,36 @@
+<!-- carousel.component.html -->
+<div id="carouselExample" class="carousel slide custome-carousel border" data-bs-ride="carousel" data-bs-interval="2000"
+    data-bs-pause="hover" *ngIf="carouselData?.length>0">
+    <div class="carousel-inner h-100">
+        <!-- carouselData -->
+        <div class="carousel-item h-100 cursor-pointer {{i===0?'active':''}}" *ngFor="let eachData of carouselData; let i=index"  (click)="commonFunctions.onNewsClick(eachData)">
+            <div class="h-100 w-100">
+                <img [src]="eachData?.['images']?.[0]?.['externalURL'] || eachData?.['images']?.[0]?.['tempURL']"
+                    alt="My image {{i + 1}} description" class="border-radiuse-10 w-100 h-100" />
+                <div class="carousel-text-caption-container w-100 m-0 ">
+
+                    <p class="carousel-text-caption m-0">{{eachData?.title}}
+
+
+                    <span class="m-0 carousel-text-date"> - {{eachData?.createdDate | date}}</span>
+                    </p>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- <ng-template ngbSlide *ngFor="let eachData of carouselData; index as i">
+
+    
+    </ng-template> -->
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next"
+        id="nextBUtton">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+    </button>
+</div>

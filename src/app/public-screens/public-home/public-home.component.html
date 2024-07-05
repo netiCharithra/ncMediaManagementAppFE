@@ -15,10 +15,16 @@
             <!-- </div> -->
         </div>
         <div class="col-md-8 col-12 order-2 box px-1 mobile-carousel">
-            <!-- <div class="col-12 border-bottom p-0">
 
-                <p class="header_section">{{'trending' | translate}}</p>
-            </div> -->
+            <ng-container *ngIf="homeDataV2?.prioritizedRecords?.length>0">
+
+
+                <!-- <div class="col-12 border-bottom p-0">
+    
+                    <p class="header_section">{{'trending' | translate}} </p>
+                </div> -->
+                <nc-web-custom-carousel [carouselData]="homeDataV2?.prioritizedRecords"></nc-web-custom-carousel>
+            </ng-container>
             <!-- <carousel [carouselData]="homeDataV2?.prioritizedRecords">
             </carousel> -->
 
@@ -48,7 +54,7 @@
                                 <h5 class="card-title">{{homeDataV2?.latestNineRecords?.[0]?.['title']}}</h5>
                                 <p class="card-text text-muted mb-1">
                                     {{homeDataV2?.latestNineRecords?.[0]?.['createdDate']|
-                                    date:'medium'}}</p>
+                                    date}}</p>
                                 <p class="card-text text-truncate" style="max-width: 100%;">
                                     {{homeDataV2?.latestNineRecords?.[0]?.['description']}}</p>
                             </div>
@@ -76,7 +82,7 @@
                                     {{homeDataV2?.latestNineRecords?.[item]?.['title']}}</h5>
                                 <p class="card-text text-muted mb-1 date_custome">
                                     {{homeDataV2?.latestNineRecords?.[item]?.['createdDate']|
-                                    date:'medium'}}</p>
+                                    date}}</p>
 
                             </div>
                         </div>
@@ -103,11 +109,11 @@
                     </div>
                     <div class="col-9 ">
                         <div class="card-body p-0">
-                            <h5 class="card-title m-0 ellipsis-text title-color">
+                            <h5 class="card-title m-0 mt-2 ellipsis-text title-color">
                                 {{data?.['title']}}</h5>
                             <p class="card-text text-muted mb-1 date_custome">
                                 {{data?.['createdDate']|
-                                date:'medium'}}</p>
+                                date}}</p>
 
                         </div>
                     </div>
@@ -145,7 +151,7 @@
                                 <h5 class="card-title">{{eachCategory['news'][0]?.['title']}}</h5>
                                 <p class="card-text text-muted mb-1">
                                     {{eachCategory['news'][0]?.['createdDate']|
-                                    date:'medium'}}</p>
+                                    date}}</p>
                                 <p class="card-text ellipsis-text">
                                     {{eachCategory['news'][0]?.['description']}}</p>
                             </div>
@@ -176,7 +182,7 @@
                                         </h5>
                                         <p class="card-text text-muted mb-1">
                                             {{eachCategory['news'][itemInd]?.['createdDate']|
-                                            date:'medium'}}</p>
+                                            date}}</p>
                                         <!-- <p class="card-text text-truncate" style="max-width: 100%;">
                                             {{homeDataV2?.latestNineRecords?.[0]?.['description']}}</p> -->
                                     </div>
@@ -239,7 +245,7 @@
                     <img [src]="topSectionData?.[topNews]['images'][0]['externalURL'] || topSectionData?.[topNews]['images'][0]['tempURL']"
                         alt="Photo">
                     <div class="image-caption">
-                        <div class="date">{{topSectionData[topNews]['createdDate'] | date:'medium'}}</div>
+                        <div class="date">{{topSectionData[topNews]['createdDate'] | date}}</div>
                         <div class="title">{{topSectionData[topNews]['title']}}</div>
                     </div>
                 </div>
@@ -268,7 +274,7 @@
 
                         </div>
                         <div class="col-8 ">
-                            <p class="p-0 m-0 text-muted date"> {{list?.['createdDate'] | date:'medium'}}
+                            <p class="p-0 m-0 text-muted date"> {{list?.['createdDate'] | date}}
                             </p>
                             <p class="p-0 m-0 title">
                                 {{list?.['title']}}

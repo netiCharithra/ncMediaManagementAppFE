@@ -13,6 +13,7 @@ h4,
 h5,
 h6 {
     font-family: "Inter", sans-serif !important;
+    line-height: 1.3rem !important;
 }
 .districtDiv {
     right: unset;
@@ -72,6 +73,17 @@ nc-web-public-header{
 
     .border-left-custome {
         border-left: 0;
+    }
+    .carousel-caption {
+        h3 {
+            font-size: 1rem !important;
+        }
+    }
+
+    .carousel-caption-top {
+        h3 {
+            font-size: 0.75rem !important;
+        }
     }
 
 }
