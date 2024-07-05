@@ -4,6 +4,8 @@ import { AppServiceService } from '../../services/app-service.service';
 import { AlertService } from '../../services/alert.service';
 import { StorageService } from '../../services/storage.service';
 import { CommonFunctionalityService } from '../../services/common-functionality.service';
+import { TranslateService } from '@ngx-translate/core';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'nc-web-public-categorised-news',
@@ -26,7 +28,7 @@ export class PublicCategorisedNewsComponent implements OnInit {
     page: 0,
     endOfRecords: false
   }
-  constructor(private route: ActivatedRoute, public appService: AppServiceService, private alertService: AlertService, private router: Router, private storage: StorageService, public commonFunctionality: CommonFunctionalityService) {
+  constructor(private route: ActivatedRoute, public appService: AppServiceService, private alertService: AlertService, private router: Router, private storage: StorageService, public commonFunctionality: CommonFunctionalityService, private translate:TranslateService,  private titleService:Title) {
 
 
     let value = this.storage.api.local.getValue('userLanguage')
@@ -40,6 +42,10 @@ export class PublicCategorisedNewsComponent implements OnInit {
 
     this.route.paramMap.subscribe((params: ParamMap) => {
       this.metaInformation = JSON.parse(this.commonFunctionality.decodingURI(params.get('id'))) || {};
+      this.translate.get('title').subscribe((translatedTitle: string) => {
+        // console.log("translatedTitle", translatedTitle)
+        this.titleService.setTitle(translatedTitle + ' | '+ this.metaInformation?.[this.userLanguage]+ ' వార్తలు' );
+      });
       console.log(this.metaInformation)
 
       this.initialLoad = true;

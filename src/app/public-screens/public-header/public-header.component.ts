@@ -21,7 +21,7 @@ export class PublicHeaderComponent implements OnInit{
   public activeRoute :any ='';
   // TO BE REMOVED END
 
-  public selectedLanguage:any='';
+  public selectedLanguage:any='te';
   public categoires:any=[];
   public statesData:any=[];
   public languageList:any = [

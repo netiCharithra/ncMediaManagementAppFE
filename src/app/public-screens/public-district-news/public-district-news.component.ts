@@ -4,6 +4,8 @@ import { ActivatedRoute, ParamMap } from '@angular/router';
 import { AppServiceService } from '../../services/app-service.service';
 import { StorageService } from '../../services/storage.service';
 import { AlertService } from '../../services/alert.service';
+import { TranslateService } from '@ngx-translate/core';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'nc-web-public-district-news',
@@ -24,8 +26,8 @@ export class PublicDistrictNewsComponent implements OnInit {
 
 
 
-  constructor(public commonFunctionality: CommonFunctionalityService, private route: ActivatedRoute, private appService: AppServiceService, private alertService: AlertService, private storage: StorageService
-  ) {
+  constructor(public commonFunctionality: CommonFunctionalityService, private route: ActivatedRoute, private appService: AppServiceService, private alertService: AlertService, private storage: StorageService, private translate:TranslateService 
+ , private titleService:Title ) {
 
     let value = this.storage.api.local.getValue('userLanguage')
     if (!value) {
@@ -39,7 +41,10 @@ export class PublicDistrictNewsComponent implements OnInit {
     this.route.paramMap.subscribe((params: ParamMap) => {
       this.metaInformation = JSON.parse(this.commonFunctionality.decodingURI(params.get('id'))) || {}
       // Retrieve the parameter you're interested in
-
+      this.translate.get('title').subscribe((translatedTitle: string) => {
+        // console.log("translatedTitle", translatedTitle)
+        this.titleService.setTitle(translatedTitle + ' | '+ this.metaInformation?.district?.[this.userLanguage]+ ' జిల్లా వార్తలు' );
+      });
       this.initialLoad = true;
       this.paginationNewsData = {
         count: 9,

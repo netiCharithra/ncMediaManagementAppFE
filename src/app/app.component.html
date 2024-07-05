@@ -1,4 +1,7 @@
 <div class="container-fluid p-0">
 
   <router-outlet />
+  <div class="loader_container" *ngIf="appService.loaderService">
+    <div class="loader"></div>
+</div>
 </div>
