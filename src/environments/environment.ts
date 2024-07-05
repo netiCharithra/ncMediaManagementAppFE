@@ -15,11 +15,11 @@ export const environment = {
       measurementId: "G-9F8X1GRERE"
     },
   
-    // base_url: 'https://us-central1-neticharithra-ncmedia.cloudfunctions.net/api/',
+    base_url: 'https://us-central1-neticharithra-ncmedia.cloudfunctions.net/api/',
     // base_url: 'https://nc-media-management-app-be-neti-charithras-projects.vercel.app/',
     // base_url: 'https://viridian-slug-sari.cyclic.app/',
     base_url_upload_files: 'https://nc-media-managament-app-be-files-upload.onrender.com/',
-    base_url: 'http://192.168.10.185:3000/',
+    // base_url: 'http://192.168.10.185:3000/',
     // base_url_upload_files: 'http://localhost:3001/',
     googleDrive: {
       // insert credentials here
