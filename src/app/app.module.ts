@@ -18,7 +18,9 @@ const routes: Routes = [
       
     component:PublicScreensComponent,
     loadChildren: () => import('./public-screens/public-screens.module').then(m => m.PublicScreensModule) 
-}
+},
+{ path: '**', redirectTo: '' }
+
 
 ];
 
