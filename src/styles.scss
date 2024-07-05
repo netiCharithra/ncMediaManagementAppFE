@@ -85,8 +85,15 @@ nc-web-public-header{
             font-size: 0.75rem !important;
         }
     }
-
+    .small-content {
+        margin-bottom: 20px;
+        /* Increase margin for mobile devices */
+    }
+    .news-listing-container{
+        padding: 0px 10px !important;
+    }
 }
+
 
 .header_section {
     font-weight: bold;
@@ -142,44 +149,68 @@ nc-web-public-header{
         min-width: 1000px !important;
     }
 }
-// /* Style for WebKit-based browsers (Chrome, Safari) */
-// ::-webkit-scrollbar {
-//     width: 8px; // Set the width of the scrollbar
-//     height: 8px; // Set the height of the scrollbar
-//   }
-  
-//   ::-webkit-scrollbar-track {
-//     background: #f1f1f1; // Set the background of the scrollbar track
-//   }
-  
-//   ::-webkit-scrollbar-thumb {
-//     background: #888; // Set the color of the scrollbar thumb
-//     border-radius: 4px; // Make the scrollbar thumb rounded
-//   }
-  
-//   ::-webkit-scrollbar-thumb:hover {
-//     background: #555; // Change color on hover
-//   }
-  
-//   /* Hide the scrollbar buttons (arrows) */
-//   ::-webkit-scrollbar-button {
-//     display: none; // Hide the buttons
-//   }
-  
-//   /* Style for Firefox */
-//   * {
-//     scrollbar-width: thin;
-//     scrollbar-color: #888 #f1f1f1;
-//   }
-  
-//   /* Additional styles to hide the buttons in Firefox */
-//   * {
-//     scrollbar-width: thin;
-//     scrollbar-color: #888 #f1f1f1;
-//   }
-  
-//   /* Optional: For completeness, add some styles for other browsers like Edge */
-//   ::-ms-scrollbar {
-//     display: none; // Hide scrollbar in older versions of IE/Edge
-//   }
-  
+
+
+.loader_container {
+    background-color: #00000069;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    position: absolute;
+    top: 0;
+    width: 100vw;
+    z-index: 9999;
+}
+
+.loader {
+    width: 150px;
+    height: 150px;
+    border-left: 5px solid #38ff8e;
+    border-radius: 50%;
+    animation: right5231 0.9s linear infinite;
+}
+
+.loader::before,
+.loader::after {
+    content: "";
+    width: 120px;
+    height: 120px;
+    display: block;
+    position: absolute;
+    top: calc(50% - 60px);
+    left: calc(50% - 60px);
+    border-right: 5px solid #ffbe0b;
+    border-radius: 50%;
+    animation: left036 0.9s linear infinite;
+}
+
+.loader::after {
+    width: 90px;
+    height: 90px;
+    top: calc(50% - 45px);
+    left: calc(50% - 45px);
+    border: 0;
+    border-top: 5px solid #ff086e;
+    animation: none;
+}
+
+@keyframes right5231 {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes left036 {
+    from {
+        transform: rotate(720deg);
+    }
+
+    to {
+        transform: rotate(0deg);
+    }
+}

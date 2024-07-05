@@ -1,5 +1,5 @@
 import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { DomSanitizer, SafeResourceUrl, Title } from '@angular/platform-browser';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { AppServiceService } from '../../services/app-service.service';
@@ -41,13 +41,17 @@ export class PublicHomeComponent implements OnInit, OnChanges {
   // public paramMapSubscription: Subscription;
   public queryParamSubscription: Subscription;
   constructor(private sanitizer: DomSanitizer, public appService: AppServiceService, private alertService: AlertService, private router: Router, private route: ActivatedRoute, public storage: StorageService, public translate: TranslateService,
-    public commonFunctions: CommonFunctionalityService
+    public commonFunctions: CommonFunctionalityService, private titleService:Title
   ) {
     let value = this.storage.api.local.getValue('userLanguage')
     if (!value) {
       value = "te"
       this.storage.api.local.saveValue('userLanguage', value)
     }
+    this.translate.get('title').subscribe((translatedTitle: string) => {
+      // console.log("translatedTitle", translatedTitle)
+      this.titleService.setTitle(translatedTitle  );
+    });
     this.userLanguage = value
     this.queryParamSubscription = this.route.queryParamMap.subscribe((queryParams) => {
       const queryParamValue = queryParams.get('yourQueryParamName'); // Replace with your actual query param name
@@ -86,6 +90,8 @@ export class PublicHomeComponent implements OnInit, OnChanges {
   }
   getHomeDataNewsType = () => {
     try {
+      this.appService.loaderService = true;
+
       this.appService.getHomeDataNewsType({}).subscribe((response) => {
         if (response.status === 'success') {
 
