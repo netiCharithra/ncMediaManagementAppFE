@@ -11,8 +11,8 @@ export const environment = {
     projectId: "ncmedianewsportal-v2",
     storageBucket: "ncmedianewsportal-v2.appspot.com",
     messagingSenderId: "1090074501186",
-    appId: "1:1090074501186:web:2a7fc30151dc7530be0ddb",
-    measurementId: "G-9F8X1GRERE"
+    appId: "1:1090074501186:web:69b5f7a9b57218dabe0ddb",
+    measurementId: "G-V8LKWEJ3MG"
   },
 
   base_url: 'https://us-central1-neticharithra-ncmedia.cloudfunctions.net/api/',
