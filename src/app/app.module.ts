@@ -8,21 +8,33 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { ManagementScreensComponent } from './management-screens/management-screens.component';
+import { ManangementScreensNavbarComponent } from './management-screens/manangement-screens-navbar/manangement-screens-navbar.component';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }
 const routes: Routes = [
 
- { path: '',
-      
-    component:PublicScreensComponent,
+  {
+    path: '',
+
+    component: PublicScreensComponent,
     children: [{
       path: '',
-      loadChildren: () => import('./public-screens/public-screens.module').then(m => m.PublicScreensModule) 
+      loadChildren: () => import('./public-screens/public-screens.module').then(m => m.PublicScreensModule)
     }]
-},
-{ path: '**', redirectTo: '' }
+  },
+  {
+    path: 'admin',
+
+    component: ManangementScreensNavbarComponent,
+    children: [{
+      path: '',
+      loadChildren: () => import('./management-screens/management-screens.module').then(m => m.ManagementScreensModule)
+    }]
+  },
+  { path: '**', redirectTo: '' }
 
 
 ];
@@ -32,8 +44,8 @@ const routes: Routes = [
     AppComponent,
   ],
   imports: [
-    CommonModule,BrowserModule,RouterModule.forRoot(routes,{useHash:true}),HttpClientModule,
-    
+    CommonModule, BrowserModule, RouterModule.forRoot(routes, { useHash: true }), HttpClientModule,
+
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,

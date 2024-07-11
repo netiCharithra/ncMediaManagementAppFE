@@ -69,30 +69,7 @@ nc-web-public-header{
     display: flex;
     align-items: flex-start;
 }
-@media (max-width: 767.98px) {
 
-    .border-left-custome {
-        border-left: 0;
-    }
-    .carousel-caption {
-        h3 {
-            font-size: 1rem !important;
-        }
-    }
-
-    .carousel-caption-top {
-        h3 {
-            font-size: 0.75rem !important;
-        }
-    }
-    .small-content {
-        margin-bottom: 20px;
-        /* Increase margin for mobile devices */
-    }
-    .news-listing-container{
-        padding: 0px 10px !important;
-    }
-}
 
 
 .header_section {
@@ -212,5 +189,50 @@ nc-web-public-header{
 
     to {
         transform: rotate(0deg);
+    }
+}
+
+.width-fit-content{
+    width: fit-content !important;
+  }
+
+
+  .custom-side-nav-bar{
+
+      .mat-drawer-inner-container{
+        // width: 100% !important;
+        width: fit-content !important;
+    }
+  }
+
+  @media (max-width: 767.98px) {
+
+    .border-left-custome {
+        border-left: 0;
+    }
+    .carousel-caption {
+        h3 {
+            font-size: 1rem !important;
+        }
+    }
+
+    .carousel-caption-top {
+        h3 {
+            font-size: 0.75rem !important;
+        }
+    }
+    .small-content {
+        margin-bottom: 20px;
+        /* Increase margin for mobile devices */
+    }
+    .news-listing-container{
+        padding: 0px 10px !important;
+    }
+    .custom-side-nav-bar{
+
+        .mat-drawer-inner-container{
+          // width: 100% !important;
+          width: 100% !important;
+      }
     }
 }

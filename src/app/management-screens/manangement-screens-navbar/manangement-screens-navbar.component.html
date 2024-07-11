@@ -1,0 +1,72 @@
+<div *ngIf="shouldRun " class="example-container ">
+    <!-- <div *ngIf="shouldRun" class="example-container" [class.example-is-mobile]="mobileQuery.matches"> -->
+    <!-- <mat-toolbar class="example-toolbar">
+      <button mat-icon-button (click)="onClickOfMenuBtn()"><mat-icon>menu</mat-icon></button>
+      <h1 class="example-app-name">Responsive App</h1>
+    </mat-toolbar>
+   -->
+    <mat-sidenav-container class="example-sidenav-container custom-side-nav-bar custome-sidebar p-md-4"
+        *ngIf="showHideContent">
+        <mat-sidenav #snav [mode]="mobileQuery.matches ? 'over' : 'side'" [fixedInViewport]="mobileQuery.matches"
+            [opened]="openDrawer" style="width: fit-content !important;" class="custome-side-nav-section"
+            [disableClose]="true" (openedChange)="onSidenavStateChanged($event)">
+            <!-- <mat-sidenav #snav [mode]="mobileQuery.matches ? 'over' : 'side'" [fixedInViewport]="mobileQuery.matches" fixedTopGap="56"> -->
+                <div *ngIf="!mobileQuery.matches && !showLabel">
+                    <img src="/assets/images/header_2.png" alt="" style="height: 3rem;">
+
+                </div>
+                <div class="m-auto mt-2" [ngClass]="{'w-50': mobileQuery.matches, 'd-none': (!mobileQuery.matches && !showLabel), 'w-75':(!mobileQuery.matches && showLabel)}">
+
+                    <img src="/assets/images/logo_en.png" alt="" class="w-100">
+                </div>
+                <i (click)="onClickOfMenuBtn()" class="bi bi-x-lg fs-6 d-md-none close-icon-mobile"></i>
+
+            <mat-nav-list>
+
+                <!-- <button  class="d-md-none">Close</button> -->
+                <div *ngFor="let nav of menuList" routerLink="." class="row p-3 cursor-pointer align-items-center m-0 ">
+
+                    <i class="bi bi-{{nav?.icon}} fs-4 col-2"></i>
+                    <p [ngClass]="{'d-none': !mobileQuery.matches && !showLabel}" class="m-0 col-10">{{ nav.label }}</p>
+                </div>
+            </mat-nav-list>
+        </mat-sidenav>
+        <!-- *ngIf="showHideContent" -->
+
+        <mat-sidenav-content>
+            <div class="mx-3">
+                <div class="container">
+
+                    <nc-web-manangement-screens-header></nc-web-manangement-screens-header>
+                </div>
+
+            </div>
+        </mat-sidenav-content>
+    </mat-sidenav-container>
+</div>
+<div *ngIf="!shouldRun">
+    <div>Please open on Stackblitz to see result</div>
+</div>
+
+
+<!-- <div *ngIf="shouldRun" class="example-container" >
+  
+      <mat-sidenav-container class="example-sidenav-container custom-side-nav-bar" [style.marginTop.px]="mobileQuery.matches ? 56 : 0">
+        <mat-sidenav #snav [mode]="mobileQuery.matches ? 'over' : 'side'" [fixedInViewport]="mobileQuery.matches" fixedTopGap="56" [opened]="openDrawer" style="border:2px solid; width: fit-content !important;">
+          <mat-nav-list>
+            <a *ngFor="let nav of fillerNav" routerLink="." class="d-flex">
+              <p>ICON</p>
+              <p  [ngClass]="{'d-none': !mobileQuery.matches && !showLabel}">{{ nav }}</p>
+            </a>
+          </mat-nav-list>
+        </mat-sidenav>
+    
+        <mat-sidenav-content>
+         <nc-web-manangement-screens-header></nc-web-manangement-screens-header>
+        </mat-sidenav-content>
+      </mat-sidenav-container>
+    </div>
+    <div *ngIf="!shouldRun">
+      <div>Please open on Stackblitz to see result</div>
+    </div>
+     -->

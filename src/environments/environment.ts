@@ -19,7 +19,7 @@ export const environment = {
     // base_url: 'https://nc-media-management-app-be-neti-charithras-projects.vercel.app/',
     // base_url: 'https://viridian-slug-sari.cyclic.app/',
     base_url_upload_files: 'https://nc-media-managament-app-be-files-upload.onrender.com/',
-    base_url: 'http://192.168.0.109:3000/',
+    base_url: 'https://apiservices.neticharithra.com/',
     // base_url_upload_files: 'http://localhost:3001/',
     googleDrive: {
       // insert credentials here

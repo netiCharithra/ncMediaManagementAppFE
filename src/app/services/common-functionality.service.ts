@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { AppServiceService } from './app-service.service';
 import { StorageService } from './storage.service';
 import { Router } from '@angular/router';
-import { Observable, catchError, map, of } from 'rxjs';
+import { Observable, Subject, catchError, map, of } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 
 @Injectable({
@@ -10,6 +10,7 @@ import { HttpClient } from '@angular/common/http';
 })
 export class CommonFunctionalityService {
 
+  // public show
   constructor(private appService: AppServiceService, private storage: StorageService, private router: Router, private http: HttpClient) { }
 
   encodingURI(str:any) {
@@ -57,5 +58,12 @@ export class CommonFunctionalityService {
 
 
     return lang
+  }
+  private sidebarTriggerSubject = new Subject<void>();
+  sidebarTriggered$ = this.sidebarTriggerSubject.asObservable();
+
+  // Method to trigger sidebar from header
+  triggerSidebarFromHeader() {
+    this.sidebarTriggerSubject.next();
   }
 }
