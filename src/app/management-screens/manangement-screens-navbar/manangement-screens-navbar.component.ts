@@ -1,23 +1,27 @@
 import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, ViewChild, viewChildren } from '@angular/core';
 import { MatDrawer, MatSidenav } from '@angular/material/sidenav';
-import {MediaMatcher} from '@angular/cdk/layout';
+import { MediaMatcher } from '@angular/cdk/layout';
 import { Subscription } from 'rxjs';
+import { filter } from 'rxjs/operators';
+
 import { CommonFunctionalityService } from '../../services/common-functionality.service';
+import { ActivatedRoute, ChildActivationStart, Event, NavigationCancel, NavigationEnd, NavigationError, NavigationStart, ParamMap, Router, Scroll } from '@angular/router';
 
 @Component({
   selector: 'nc-web-manangement-screens-navbar',
   templateUrl: './manangement-screens-navbar.component.html',
   styleUrl: './manangement-screens-navbar.component.scss'
 })
-export class ManangementScreensNavbarComponent  implements OnInit, AfterViewInit, OnDestroy{
+export class ManangementScreensNavbarComponent implements OnInit, AfterViewInit, OnDestroy {
 
+  public activeRoute: any = '';
 
   mobileQuery: MediaQueryList;
 
-  fillerNav = Array.from({length: 50}, (_, i) => `Nav Item ${i + 1}`);
+  fillerNav = Array.from({ length: 50 }, (_, i) => `Nav Item ${i + 1}`);
 
   fillerContent = Array.from(
-    {length: 50},
+    { length: 50 },
     () =>
       `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
        labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
@@ -31,7 +35,7 @@ export class ManangementScreensNavbarComponent  implements OnInit, AfterViewInit
   private subscription: Subscription;
 
 
-  constructor(changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, public commonFunction:CommonFunctionalityService) {
+  constructor(changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, public commonFunction: CommonFunctionalityService, private router: Router, private route: ActivatedRoute) {
     this.mobileQuery = media.matchMedia('(max-width: 767.98px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
@@ -39,16 +43,45 @@ export class ManangementScreensNavbarComponent  implements OnInit, AfterViewInit
       this.triggeredFromHeader();
     });
 
-    if(this.mobileQuery.matches){
-      this.openDrawer=false
+    if (this.mobileQuery.matches) {
+      this.openDrawer = false
     }
+    this.router.events.subscribe((event: Event) => {
+      if (event instanceof NavigationStart) {
+        // Navigation is starting
+        console.log('Route change detected');
+      }
+      else if (event instanceof NavigationEnd) {
+        // Navigation End
+        let url = event.urlAfterRedirects.split('/')
+
+        console.log(url[1]);
+        this.activeRoute = url[1]
+      }
+      else if (event instanceof ChildActivationStart) {
+        // ChildActivationStart router begins activating a route's children.
+        console.log('ChildActivationStart --- ', event.toString());
+      }
+      else if (event instanceof NavigationCancel) {
+        //When navigation is canceled.
+        console.log('NavigationCancel --- ', event.url);
+      }
+      else if (event instanceof NavigationError) {
+        // Error Show
+        console.log(event.error);
+      }
+      else if (event instanceof Scroll) {
+        // When the user scrolls.
+        console.log('Scroll --- ', event.position);
+      }
+    });
   }
- // Function to be triggered from header
- triggeredFromHeader() {
-  console.log('Sidebar function triggered from Header');
-  this.onClickOfMenuBtn();
-  // Add your sidebar functionality here
-}
+  // Function to be triggered from header
+  triggeredFromHeader() {
+    console.log('Sidebar function triggered from Header');
+    this.onClickOfMenuBtn();
+    // Add your sidebar functionality here
+  }
   ngOnDestroy(): void {
     this.mobileQuery.removeListener(this._mobileQueryListener);
     this.subscription.unsubscribe();
@@ -56,7 +89,7 @@ export class ManangementScreensNavbarComponent  implements OnInit, AfterViewInit
   }
 
   // shouldRun = /(^|.)(stackblitz|webcontainer).(io|com)$/.test(window.location.host);
-  shouldRun=true;
+  shouldRun = true;
 
   @ViewChild('snav') snav!: MatSidenav;
 
@@ -68,32 +101,32 @@ export class ManangementScreensNavbarComponent  implements OnInit, AfterViewInit
   // toggleDrawer() {
   //   this.drawer.toggle();
   // }
-  ngAfterViewInit(){
+  ngAfterViewInit() {
 
   }
 
-  public openDrawer:boolean=true;
-  public showLabel:boolean=true;
+  public openDrawer: boolean = true;
+  public showLabel: boolean = true;
 
-  public showHideContent:boolean=true;
+  public showHideContent: boolean = true;
 
 
-  showHideContentChange = () =>{
-    this.showHideContent=false;
+  showHideContentChange = () => {
+    this.showHideContent = false;
     setTimeout(() => {
-      this.showHideContent=true;
+      this.showHideContent = true;
     }, 1);
   }
 
-  
+
   onClickOfMenuBtn = () => {
-   
-    if(this.mobileQuery.matches){
-      this.openDrawer  =  !this.openDrawer;
+
+    if (this.mobileQuery.matches) {
+      this.openDrawer = !this.openDrawer;
       this.snav.toggle()
       this.showLabel = true;
     } else {
-      if(!this.snav?.opened){
+      if (!this.snav?.opened) {
         this.snav.toggle()
 
       }
@@ -119,23 +152,24 @@ export class ManangementScreensNavbarComponent  implements OnInit, AfterViewInit
 
 
 
-  public menuList=[
+  public menuList = [
     {
-      "label":"Dashboard",
-      "icon":'speedometer'
+      "label": "Dashboard",
+      "icon": 'speedometer',
+      "routeKey": "dashboard"
     },
     {
-      "label":"News Management",
-      "icon":"newspaper"
+      "label": "News Management",
+      "icon": "newspaper"
     },
     {
-      "label":"Employee Management",
-      "icon":"people-fill"
+      "label": "Employee Management",
+      "icon": "people-fill"
 
     },
     {
-      "label":"Employee Tracing",
-      "icon":"person-vcard"
+      "label": "Employee Tracing",
+      "icon": "person-vcard"
 
     }
   ]

@@ -17,7 +17,7 @@ export function createTranslateLoader(http: HttpClient) {
 const routes: Routes = [
 
   {
-    path: '',
+    path: 'public',
 
     component: PublicScreensComponent,
     children: [{
@@ -26,7 +26,7 @@ const routes: Routes = [
     }]
   },
   {
-    path: 'admin',
+    path: '',
 
     component: ManangementScreensNavbarComponent,
     children: [{

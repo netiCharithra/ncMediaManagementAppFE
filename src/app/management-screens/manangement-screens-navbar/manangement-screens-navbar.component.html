@@ -15,7 +15,8 @@
                     <img src="/assets/images/header_2.png" alt="" style="height: 3rem;">
 
                 </div>
-                <div class="m-auto mt-2" [ngClass]="{'w-50': mobileQuery.matches, 'd-none': (!mobileQuery.matches && !showLabel), 'w-75':(!mobileQuery.matches && showLabel)}">
+                <div class="m-auto py-4" [ngClass]="{'w-80': mobileQuery.matches,'border-bottom': mobileQuery.matches, 'd-none': (!mobileQuery.matches && !showLabel), 'w-75':(!mobileQuery.matches && showLabel)}">
+                <!-- <div class="m-auto py-4" [ngClass]="{'w-75': mobileQuery.matches,'border-bottom': mobileQuery.matches, 'd-none': (!mobileQuery.matches && !showLabel), 'w-75':(!mobileQuery.matches && showLabel)}"> -->
 
                     <img src="/assets/images/logo_en.png" alt="" class="w-100">
                 </div>
@@ -24,10 +25,10 @@
             <mat-nav-list>
 
                 <!-- <button  class="d-md-none">Close</button> -->
-                <div *ngFor="let nav of menuList" routerLink="." class="row p-3 cursor-pointer align-items-center m-0 ">
+                <div *ngFor="let nav of menuList; let ind=index" routerLink="." class="row p-2 mt-2 cursor-pointer align-items-center m-0 " [ngClass]="{'activeTab':activeRoute ===nav.routeKey, 'custome-menu-item':activeRoute !==nav.routeKey}">
 
-                    <i class="bi bi-{{nav?.icon}} fs-4 col-2"></i>
-                    <p [ngClass]="{'d-none': !mobileQuery.matches && !showLabel}" class="m-0 col-10">{{ nav.label }}</p>
+                    <i class="bi bi-{{nav?.icon}} fs-5 col-2"></i>
+                    <p [ngClass]="{'d-none': !mobileQuery.matches && !showLabel}" class="m-0 col-10 custome-menu-label">{{ nav.label }}</p>
                 </div>
             </mat-nav-list>
         </mat-sidenav>
@@ -38,6 +39,8 @@
                 <div class="container">
 
                     <nc-web-manangement-screens-header></nc-web-manangement-screens-header>
+
+                    <router-outlet></router-outlet>
                 </div>
 
             </div>
