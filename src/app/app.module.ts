@@ -10,12 +10,19 @@ import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { ManagementScreensComponent } from './management-screens/management-screens.component';
 import { ManangementScreensNavbarComponent } from './management-screens/manangement-screens-navbar/manangement-screens-navbar.component';
+import { ManagementLoginV2Component } from './management-login-v2/management-login-v2.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }
 const routes: Routes = [
+  { path: '', redirectTo: 'admin', pathMatch: 'full' },
 
+  {
+    path:'logic',
+    component:ManagementLoginV2Component
+  },
   {
     path: 'public',
 
@@ -26,7 +33,7 @@ const routes: Routes = [
     }]
   },
   {
-    path: '',
+    path: 'admin',
 
     component: ManangementScreensNavbarComponent,
     children: [{
@@ -41,10 +48,10 @@ const routes: Routes = [
 
 @NgModule({
   declarations: [
-    AppComponent,
+    AppComponent    
   ],
   imports: [
-    CommonModule, BrowserModule, RouterModule.forRoot(routes, { useHash: true }), HttpClientModule,
+    CommonModule, BrowserModule, RouterModule.forRoot(routes, { useHash: true }), HttpClientModule,BrowserAnimationsModule,
 
     TranslateModule.forRoot({
       loader: {

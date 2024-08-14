@@ -13,7 +13,7 @@ export class AppServiceService {
   navigateTo = (data: any) => {
     console.log(data)
     if (data.type === 'category') {
-      this.router.navigate(['/category-news', data.queryParams]);
+      this.router.navigate(['/public/category-news', data.queryParams]);
     } else if (data.type) {
       this.router.navigate(['/' + data.type])
     }
@@ -30,7 +30,28 @@ export class AppServiceService {
 
   getDashboardData(data: any) {
     return this._httplayer.post(Config.API.FETCH_DASHBOARD, data);
+  }
 
+  getNewsReportChart(data: any) {
+    return this._httplayer.post(Config.API.GET_NEW_REPORT_CHART, data);
+  }
+  getOverallNewsReport(data: any) {
+    return this._httplayer.post(Config.API.GET_OVERALL_NEWS_REPORT, data);
+  }
+  getEmployeesActiveCount(data: any) {
+    return this._httplayer.post(Config.API.GET_EMPLOYEES_ACTIVE_COUNT, data);
+  }
+  fetchPendingNewsList(data: any) {
+    return this._httplayer.post(Config.API.FETCH_PENDING_LIST, data);
+  }
+  fetchApprovedNewsList(data: any) {
+    return this._httplayer.post(Config.API.FETCH_APPROVED_LIST, data);
+  }
+  fetchRejectedNewsList(data: any) {
+    return this._httplayer.post(Config.API.FETCH_REJECTED_LIST, data);
+  }
+  fetchingEmployeeListV2(data: any) {
+    return this._httplayer.post(Config.API.FEtCH_EMPLOYEE_LIST_V2, data);
   }
   getMetaData(data: any) {
     return this._httplayer.post(Config.API.GET_META_DATA, data);

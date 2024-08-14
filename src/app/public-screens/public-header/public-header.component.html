@@ -1,19 +1,17 @@
 <!-- <div class=" news-listing-container"> -->
 
-<div class="container row news-header-container m-0 justify-content-around mx-auto ">
+<div class="container row news-header-container m-0 justify-content-around mx-auto " *ngIf="showHeader">
     <div class="col-12 d-flex justify-content-between align-items-center p-2">
 
         <div class=" custome_header_image ">
             <img [src]="'/assets/images/logo_' + (translate.currentLang || 'en') + '.png'" alt="Image 2"
-
-            
                 class="image ml-md-0 ml-3 ">
         </div>
         <div class="helpDiv d-block d-sm-none mr-3 cursor-pointer" (click)="geToHelp()">
             Help
         </div>
 
-        
+
     </div>
     <div class=" col-12 d-flex mr-2 v2NavBarLarge align-items-center  justify-content-between px-0" *ngIf="!hideMenu">
         <div class="d-flex justify-content-around w-100 " [ngClass]="{
@@ -37,18 +35,17 @@
                         <p class="title col-12 m-0 border-bottom py-2">
                             {{state[selectedLanguage]}}</p>
                         <div class="row col-12">
-                            <a href="javascript:void(0)" class="col-3"
-                                (click)="onClickOfDistrict(state, district)"
+                            <a href="javascript:void(0)" class="col-3" (click)="onClickOfDistrict(state, district)"
                                 *ngFor="let district of state['DISTRICTS']">
                                 {{district[selectedLanguage]}}
                             </a>
                         </div>
                     </div>
-                  
+
                 </div>
             </div>
-            <a href="javascript:void(0)" class="nav-item nav-link cursor-pointer"
-                *ngFor="let category of categoires" [ngClass]="activeRoute === category ? 'activeClass' : ''"
+            <a href="javascript:void(0)" class="nav-item nav-link cursor-pointer" *ngFor="let category of categoires"
+                [ngClass]="activeRoute === category ? 'activeClass' : ''"
                 (click)="onClickOfMore(category); showMenu=false;">{{category[selectedLanguage
                 === 'en'?'label':selectedLanguage]}}</a>
         </div>
@@ -70,59 +67,59 @@
         <!-- <a href="javascript:void(0)" class="nav-item nav-link"
             (click)="appService.navigateTo({type:'home'}); showMenu=false;">Contact US</a> -->
     </div>
-    
+
 </div>
 <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-aria-labelledby="staticBackdropLabel" aria-hidden="true">
-<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h5 class="modal-title" id="staticBackdropLabel">Change Language</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Change Language</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 
-        </div>
-        <div class="modal-body">
-            <div class="container-fluid">
-                <div class="row">
-                    <ng-container *ngFor="let lang of languageList; let index = index">
-                        <div class="col-sm">
-                            <div style="margin: 10px; padding: 10px; border-radius: 50px; display: flex; flex-direction: row; justify-content: space-between; align-items: center; border: 1px solid #ccc; cursor: pointer;"
-                                (click)="onLanguageClick(lang)"
-                                [ngStyle]="{'background-color': selectedLanguage === lang?.code ? '#3AA2DB' : '#fff'}"
-                                class="languageCard">
-                                <div
-                                    style="display: flex; flex-direction: row; justify-content: center; align-items: center;">
-                                    <div [ngStyle]="{'background-color': selectedLanguage === lang?.code ? 'white' : '#3AA2DB'}"
-                                        style="padding: 5px; border-radius: 50px; width: 40px; height: 40px; display: flex; justify-content: center; align-items: center;">
-                                        <div [ngStyle]="{'color': selectedLanguage === lang?.code ? '#000' : '#fff'}"
-                                            style="font-size: 20px;">
-                                            {{ lang?.letter }}
-                                        </div>
-                                    </div>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="row">
+                        <ng-container *ngFor="let lang of languageList; let index = index">
+                            <div class="col-sm">
+                                <div style="margin: 10px; padding: 10px; border-radius: 50px; display: flex; flex-direction: row; justify-content: space-between; align-items: center; border: 1px solid #ccc; cursor: pointer;"
+                                    (click)="onLanguageClick(lang)"
+                                    [ngStyle]="{'background-color': selectedLanguage === lang?.code ? '#3AA2DB' : '#fff'}"
+                                    class="languageCard">
                                     <div
-                                        style="padding: 5px; display: flex; justify-content: center; align-items: center;">
-                                        <div [ngStyle]="{'color': selectedLanguage === lang?.code ? '#fff' : '#000'}"
-                                            style="font-size: 20px;">
-                                            {{ lang?.nativeName }}
+                                        style="display: flex; flex-direction: row; justify-content: center; align-items: center;">
+                                        <div [ngStyle]="{'background-color': selectedLanguage === lang?.code ? 'white' : '#3AA2DB'}"
+                                            style="padding: 5px; border-radius: 50px; width: 40px; height: 40px; display: flex; justify-content: center; align-items: center;">
+                                            <div [ngStyle]="{'color': selectedLanguage === lang?.code ? '#000' : '#fff'}"
+                                                style="font-size: 20px;">
+                                                {{ lang?.letter }}
+                                            </div>
+                                        </div>
+                                        <div
+                                            style="padding: 5px; display: flex; justify-content: center; align-items: center;">
+                                            <div [ngStyle]="{'color': selectedLanguage === lang?.code ? '#fff' : '#000'}"
+                                                style="font-size: 20px;">
+                                                {{ lang?.nativeName }}
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div style="margin-right: 10px;">
-                                    <div [ngStyle]="{'border-color': selectedLanguage === lang?.code ? 'white' : 'black'}"
-                                        style="width: 14px; height: 14px; border-radius: 50px; display: flex; justify-content: center; align-items: center; border-width: 1px; border-style: solid;">
-                                        <div *ngIf="selectedLanguage === lang?.code"
-                                            style="width: 8px; height: 8px; background-color: white; border-radius: 50%;">
+                                    <div style="margin-right: 10px;">
+                                        <div [ngStyle]="{'border-color': selectedLanguage === lang?.code ? 'white' : 'black'}"
+                                            style="width: 14px; height: 14px; border-radius: 50px; display: flex; justify-content: center; align-items: center; border-width: 1px; border-style: solid;">
+                                            <div *ngIf="selectedLanguage === lang?.code"
+                                                style="width: 8px; height: 8px; background-color: white; border-radius: 50%;">
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </ng-container>
+                        </ng-container>
 
+                    </div>
                 </div>
             </div>
-        </div>
 
+        </div>
     </div>
-</div>
 </div>

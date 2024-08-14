@@ -7,6 +7,7 @@ import { PublicNewsViewComponent } from './public-news-view/public-news-view.com
 import { PublicCategorisedNewsComponent } from './public-categorised-news/public-categorised-news.component';
 import { YourStatusComponent } from './your-status/your-status.component';
 import { PublicHelpScreenComponent } from './public-help-screen/public-help-screen.component';
+import { ManagementLoginComponent } from './management-login/management-login.component';
 
 const routes: Routes = [
   {
@@ -36,6 +37,10 @@ const routes: Routes = [
     path: 'help',
     component: PublicHelpScreenComponent
   },
+  {
+    path:'login',
+    component:ManagementLoginComponent
+  }
 ];
 
 @NgModule({

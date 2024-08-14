@@ -1,0 +1,58 @@
+mat-toolbar{
+    border-radius: 10px;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+.user-avatar-width{
+    width: 5rem !important;
+}
+.user-avatar-role{
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 20px;
+    font-family: Plus Jakarta Sans;
+    letter-spacing: normal;
+    margin: 0;
+    color: #111c2d;
+
+}
+
+.user-avatar-image{
+    height: 3rem !important;
+    border-radius: 50%;
+}
+.user-avatar-section:hover{
+    background-color: #cbcbcbab;
+    border-radius: 30px;
+}
+
+
+.user-avater-expansion-dropdown{
+    width: 22rem !important;
+}
+
+.user-avatar-expansion-container{
+
+    .header{
+        font-size: 16x;
+        font-weight: 600;
+        line-height: 26px;
+        font-family: Plus Jakarta Sans;
+        letter-spacing: normal;
+        margin: 0 !important;
+        color: #111c2d;
+    }
+    .user-avatar-image{
+        width: 6rem !important;
+        height: 6rem !important;
+    }
+}
+
+.auto-scroll-header-section-menu{
+max-width: calc(100vw - 65rem);
+}
+@media (max-width: 767.98px) {
+
+    .auto-scroll-header-section-menu{
+        max-width: calc(100vw - 21rem);
+    }
+}

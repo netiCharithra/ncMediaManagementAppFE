@@ -1,6 +1,73 @@
-<mat-toolbar class="example-toolbar">
+<mat-toolbar class="example-toolbar justify-content-between">
+  <div class="m-0 p-0">
 
     <button mat-icon-button (click)="callSidebarFunction()"><i class="bi bi-list fs-4 col-2 cursor-pointer"></i>
     </button>
-    <h1 class="example-app-name">Responsive App</h1>
-  </mat-toolbar>
+  </div>
+
+ 
+  <div class="m-0 p-0 d-flex flex-row justify-content-between align-items-center">
+  
+    <div class="auto-scroll-header-section-menu  overflow-auto">
+
+      <!-- EXTRA ACTIONS HERE -->
+      <!-- <button mat-raised-button (click)="addNewsEvent()">Add News</button> -->
+    </div>
+    <ng-container>
+      <div class="m-0 p-0">
+        <button class="btn text-primary rounded border mx-1" (click)="addNewsEvent()">Add News</button>
+        <button class="btn text-primary rounded border" (click)="addEmployeeEvent()" *ngIf="screenLoaded === 'employee-management'">Add Employee</button>
+        <button class="btn text-primary rounded border" (click)="addEmployeeTracing()" *ngIf="screenLoaded === 'employee-tracing'">Add Employee Tracing</button>
+      </div>
+    </ng-container>
+  
+    <div class="btn-group">
+    
+
+      <div class="d-flex flex-row  align-items-center mx-md-3 cursor-pointer user-avatar-section p-1"
+        data-bs-toggle="dropdown" aria-expanded="false">
+        <div class="mx-2">
+          <img [src]="userDetails?.profilePicture?.tempURL" (error)="onImageError($event)" class="user-avatar-image" />
+
+
+          <!-- <img src="assets/images/useravatar.avif" alt="" > -->
+        </div>
+        <div class="d-flex flex-column user-avatar-width">
+          <p class="m-0 p-0 fs-6 fw-bold">{{ userDetails?.name.split(' ')[0] || '' }}</p>
+          <p class="m-0 p-0 user-avatar-role">{{ userDetails?.role || '' }}</p>
+        </div>
+      </div>
+      <!-- <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+        Right-aligned menu example
+      </button> -->
+      <div class="dropdown-menu dropdown-menu-end bg-white user-avater-expansion-dropdown p-4">
+
+        <div class="user-avatar-expansion-container">
+          <span class="header">User Profile</span>
+          <div class="w-100 d-flex flex-row  align-items-center my-3">
+            <div class="mx-2">
+              <img [src]="userDetails?.profilePicture?.tempURL" (error)="onImageError($event)"  class="user-avatar-image" />
+    
+    
+              <!-- <img src="assets/images/useravatar.avif" alt="" > -->
+            </div>
+            <div class="d-flex flex-column user-avatar-width">
+              <p class="m-0 p-0 fs-6 fw-bold my-1">{{ userDetails?.name || '' }}</p>
+              <p class="m-0 p-0 user-avatar-role my-1">{{ userDetails?.role || '' }} {{ '('+userDetails?.employeeId+')' || '' }} </p>
+              <p class="m-0 p-0 user-avatar-role my-1"><i class="bi bi-envelope"></i> {{ userDetails?.mail || '' }}</p>
+            </div>
+          </div>
+
+          <div class="d-flex flex-row justify-content-center my-2">
+
+            <button class="w-75 btn btn-danger">Logut</button>
+          </div>
+
+          
+        </div>
+        
+      </div>
+    </div>
+
+  </div>
+</mat-toolbar>

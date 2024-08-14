@@ -1,1 +1,128 @@
-<p>management-dashboard works!</p>
+<!-- <p>management-dashboard works!</p> -->
+<!-- <div echarts [options]="newsCountChart" class="demo-chart" style="border:2px solid #ccc; height: 300px;"></div> -->
+
+<div class="container-fluid px-0 parent-container-custome m-2">
+    <div class="row g-1 d-flex align-items-stretch h-100 ">
+        <div class="col-12 col-lg-6 home-page-cards h-100 mt-0">
+            <div class="h-45  m-0 p-4" style="position: relative;">
+
+
+                <div>
+
+                    <p class="m-0 p-0 custome-title">Welcome
+
+
+                        <span style="font-weight: 900;">{{loggedUserInfo?.name}}</span>
+                    </p>
+                    <p class="m-0 p-0 custome-sub-title">Overall
+                        {{calculateApprovedPercentage(dashboardMetaValues.overallNewsReport)}} news are published.</p>
+                </div>
+
+                <div class="row  m-1 p-0 h-75 mt-4">
+
+                    <div class="col-12 d-flex report-card-custome p-0 "
+                        *ngFor="let data of dashboardMetaOptions.reportCardList">
+                        <i class="bi bi-{{data.icon}} fs-6  icon-holder"
+                            [ngStyle]="{'color': data.iconColor, 'background-color': data.iconBackground}"></i>
+                        <div class="label-section">
+                            <p class="m-0 p-0 fw-bold">
+                                {{dashboardMetaValues.overallNewsReport[data.keyTobeBinded]}} {{data.fields}}
+                            </p>
+                            <p class="m-0 p-0">{{data.label}}</p>
+                        </div>
+
+                    </div>
+                </div>
+
+                <img src="../../../assets/images/man_working_on_laptop.png" alt="" class="dashboard_image_holder">
+            </div>
+            <div class="h-55  m-0 p-4 border-top">
+
+                <div class="d-flex justify-content-between align-items-center">
+
+                    <div>
+
+                        <p class="m-0 p-0 custome-title">New Report</p>
+                        <p class="m-0 p-0 custome-sub-title">Overall news reports</p>
+                    </div>
+                    <div class="align-items-center">
+                        <ng-container *ngIf="dashboardMetaValues.reportType === 'Monthly'">
+                            <select class="form-select" aria-label="Default select example"
+                                (change)="onYearChange($event)">
+                                <option *ngFor="let year of dashboardMetaOptions['years']"
+                                    [selected]="year === dashboardMetaValues.year">{{year}}</option>
+                                <!-- <option value="1">One</option>
+                                <option value="2">Two</option>
+                                <option value="3">Three</option> -->
+                            </select>
+                        </ng-container>
+
+                    </div>
+                </div>
+                <div echarts [options]="newsCountChart" class="w-100 h-75"></div>
+
+                <div class=" d-flex justify-content-center align-items-center m-auto p-0">
+                    <div class="custome-sub-title m-2">Time Period Over:</div>
+                    <!-- <div class="col-8"></div> -->
+                    <div class=" btn-group" role="group" aria-label="Basic outlined example">
+                        <button type="button" *ngFor="let filter of dashboardMetaOptions.chartBottomFilters"
+                            class="btn p-1 btn-outline-primary"
+                            [ngClass]="{'active':dashboardMetaValues.reportType === filter}"
+                            (click)="dashboardMetaValues.reportType = filter;getNewsReportChart() ">{{filter}}</button>
+                        <!-- <button type="button" class="btn p-1 btn-outline-primary">Weekly</button>
+                        <button type="button" class="btn p-1 btn-outline-primary">Recent</button> -->
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+        <div class=" row g-3 col-12 col-lg-6 align-items-stretch p-3 m-0 pt-0 h-100 no-padding-mobile">
+
+
+            <div class="col-12 col-lg-6 mt-sm-0 pt-0 h-45 no-padding-mobile">
+
+                <div class="home-page-cards h-100 mt-0 p-4">
+                    <p class="m-0 p-0 custome-title">Active Employee Report</p>
+                    <p class="m-0 p-0 custome-sub-title">Active / Inactive Employees</p>
+                    <div echarts [options]="activeEmployeeChart" class="w-100 h-75 mt-2"></div>
+                    <p class="m-0 p-0 custome-sub-sub-title text-center">Above report is based on current active ID
+                        cards</p>
+
+                </div>
+            </div>
+            <div class="col-12 col-lg-6 mt-sm-0 pt-0 h-45 no-padding-mobile">
+
+                <div class="home-page-cards h-100 mt-sm-0 d-flex justify-content-center align-items-center"
+                    style="position: relative;">
+                    <p class="m-0 p-0" style=" color: rgba(0, 0, 0, 0.3); ">
+                        Reports in Process
+
+
+                </div>
+            </div>
+            <div class="col-12 col-lg-6 pt-0 h-55 no-padding-mobile">
+
+                <div class="home-page-cards h-100 mt-sm-0 d-flex justify-content-center align-items-center"
+                    style="position: relative;">
+                    <p class="m-0 p-0" style=" color: rgba(0, 0, 0, 0.3); ">
+                        Reports in Process
+
+
+                </div>
+            </div>
+            <div class="col-12 col-lg-6 pt-0 h-55 no-padding-mobile">
+
+                <div class="home-page-cards h-100 mt-sm-0 d-flex justify-content-center align-items-center"
+                    style="position: relative;">
+                    <p class="m-0 p-0" style=" color: rgba(0, 0, 0, 0.3); ">
+                        Reports in Process
+
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>

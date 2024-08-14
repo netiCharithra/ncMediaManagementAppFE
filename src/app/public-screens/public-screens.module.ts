@@ -15,7 +15,12 @@ import { PublicNewsViewComponent } from './public-news-view/public-news-view.com
 import { PublicCategorisedNewsComponent } from './public-categorised-news/public-categorised-news.component';
 import { YourStatusComponent } from './your-status/your-status.component';
 import { PublicHelpScreenComponent } from './public-help-screen/public-help-screen.component';
+import { ManagementLoginComponent } from './management-login/management-login.component';
+import { FormsModule } from '@angular/forms';
 
+import {ErrorStateMatcher} from '@angular/material/core';
+import {MatInputModule} from '@angular/material/input';
+import {MatFormFieldModule} from '@angular/material/form-field';
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }
@@ -32,7 +37,7 @@ export function createTranslateLoader(http: HttpClient) {
     PublicHelpScreenComponent
   ],
   imports: [
-    CommonModule,ComponentsModule,
+    CommonModule,ComponentsModule,FormsModule,
     PublicScreensRoutingModule,RouterModule,
     TranslateModule.forChild()
   ]

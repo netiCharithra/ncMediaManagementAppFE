@@ -66,4 +66,44 @@ export class CommonFunctionalityService {
   triggerSidebarFromHeader() {
     this.sidebarTriggerSubject.next();
   }
+
+  getYearRangeReverse(startYear:number) {
+    const currentYear = new Date().getFullYear();
+    const years = [];
+    
+    for (let year = currentYear; year >= startYear; year--) {
+        years.push(year);
+    }
+    
+    return years;
+}
+
+
+
+ getMonthEpochs(year: number) {
+  const now = new Date();
+  const currentYear = now.getFullYear();
+  const currentMonth = now.getMonth();
+  const months: { month: string, startEpoch: number, endEpoch: number }[] = [];
+  
+  const endMonth = (year === currentYear) ? currentMonth : 11;
+  const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+  for (let month = 0; month <= endMonth; month++) {
+      const startDate = new Date(year, month, 1, 0, 0, 0);
+      const endDate = new Date(year, month + 1, 0, 23, 59, 59, 999);
+
+      const startEpoch = Math.floor(startDate.getTime() / 1000);
+      const endEpoch = Math.floor(endDate.getTime() / 1000);
+
+      months.push({
+          month: monthNames[month], // Month name
+          startEpoch,
+          endEpoch
+      });
+  }
+
+  return months;
+}
+
 }

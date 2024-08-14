@@ -55,8 +55,10 @@ export class ManangementScreensNavbarComponent implements OnInit, AfterViewInit,
         // Navigation End
         let url = event.urlAfterRedirects.split('/')
 
-        console.log(url[1]);
-        this.activeRoute = url[1]
+        console.log(url[2]);
+        // this.activeRoute = url.at(-1);
+        this.activeRoute = url.at(-1)?.split('?')[0]
+        // console.log('Route parameters changed:', this.screenLoaded);
       }
       else if (event instanceof ChildActivationStart) {
         // ChildActivationStart router begins activating a route's children.
@@ -139,6 +141,27 @@ export class ManangementScreensNavbarComponent implements OnInit, AfterViewInit,
 
   }
 
+  closeInMobile = () => {
+
+    if (this.mobileQuery.matches) {
+      this.openDrawer = !this.openDrawer;
+      // this.snav.toggle()
+      // this.showLabel = true;
+    } 
+    // else {
+    //   if (!this.snav?.opened) {
+    //     this.snav.toggle()
+
+    //   }
+    //   this.showLabel = !this.showLabel;
+    //   this.showHideContentChange()
+    // }
+    // console.log(this.snav)
+    // // this.snav.toggle()
+    // console.log(this.snav)
+
+  }
+
 
 
   onSidenavStateChanged(opened: any) {
@@ -160,16 +183,19 @@ export class ManangementScreensNavbarComponent implements OnInit, AfterViewInit,
     },
     {
       "label": "News Management",
-      "icon": "newspaper"
+      "icon": "newspaper",
+      routeKey:"news-management"
     },
     {
       "label": "Employee Management",
-      "icon": "people-fill"
+      "icon": "people-fill",
+      routeKey:"employee-management"
 
     },
     {
       "label": "Employee Tracing",
-      "icon": "person-vcard"
+      "icon": "person-vcard",
+      routeKey:"employee-tracing"
 
     }
   ]

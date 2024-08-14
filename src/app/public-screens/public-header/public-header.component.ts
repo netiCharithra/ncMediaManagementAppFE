@@ -43,6 +43,7 @@ export class PublicHeaderComponent implements OnInit{
       letter: "అ"
     }
   ];
+  public showHeader:boolean=true;
 
   constructor(public translate: TranslateService, public appService:AppServiceService, public commonFunctionality:CommonFunctionalityService, private storage:StorageService, private router:Router){
     let value = this.storage.api.local.getValue('userLanguage')
@@ -58,12 +59,21 @@ export class PublicHeaderComponent implements OnInit{
       {
         if (event.url.split('/').length > 1) {
           this.activeRoute = event.url.split('/').at(-1);
-          console.log("activeRoute",  )
+          console.log("activeRoute", this.activeRoute  )
           if(event.url.split('/')?.[1] === 'yourStatus'){
-            this.hideMenu=true
+            this.hideMenu=true;
+            this.showHeader=true
           }
         
+          if(this.activeRoute === 'login'){
+            this.hideMenu = true;
+          
+            this.showHeader=false
+          }
+
         } else {
+          this.showHeader=true
+
           this.activeRoute = '';
           // console.log(activeRoute)
         }
@@ -152,7 +162,7 @@ export class PublicHeaderComponent implements OnInit{
 
     let param = { state: stateData, district }
 
-    this.router.navigate(['/dn', this.commonFunctionality.encodingURI(JSON.stringify(param))]);
+    this.router.navigate(['/public/dn', this.commonFunctionality.encodingURI(JSON.stringify(param))]);
 
     console.log(stateData, district)
   }

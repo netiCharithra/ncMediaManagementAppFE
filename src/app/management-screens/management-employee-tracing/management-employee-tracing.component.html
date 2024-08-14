@@ -1,0 +1,98 @@
+<div class=" h-100 w-100 border p-3">
+    <div class=" h-100 w-100 border m-2">
+
+        <div
+            class="d-flex flex-row justify-content-between align-items-center bg-primary m-2 rounded p-2 heading_custome w-100">
+            <p class="m-0 p-0 custome-title text-white ">Employee Tracing</p>
+            <ng-select [items]="actions" bindLabel="label" bindValue="value" [(ngModel)]="employeeTracingList['action']" [clearable]="false" style="min-width: 7rem;" (change)="changeOfNewsType()">
+            </ng-select>
+        </div>
+        <nc-web-paginated-table *ngIf="employeeTracingList.tableLoaded" [columns]="employeeTracingList.header"
+        [data]="employeeTracingList.body" [page]="employeeTracingList.page" [itemsPerPage]="employeeTracingList.count"
+        [totalItems]="employeeTracingList.totalNumberOfRecords" [metaData]="employeeTracingList.metaData"  (pageChange)="onPageChangeRejectedNews($event)"
+        (actionEmitter)="actionEmitter($event)"
+   
+        [noRecordsMessage]="'No Approved News available in records'"></nc-web-paginated-table> 
+    </div>
+
+</div>     
+
+
+<!-- Button trigger modal -->
+<button type="button" #addEmployeeTracingBtnBtn id="addEmployeeTracingBtnBtn" class="btn btn-primary d-none" >
+    Add Employee
+</button>
+<!-- Button trigger modal -->
+<button type="button" id="addEmployeeTracingBtn" class="btn btn-primary d-none" data-bs-toggle="modal" data-bs-target="#addEmployee">
+    Add Employee
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="addEmployee" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header justify-content-between">
+                <h5 class="modal-title" id="staticBackdropLabel">Employee Tracing Maniuplation</h5>
+                <button type="button" class="close btn" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form (ngSubmit)="signUpForm.form.valid && signUpCreds()" #signUpForm="ngForm" novalidate
+                class="col-12 row m-0 p-0">
+                <div class="modal-body col-12 row custom-form-body">
+
+
+                    <div class="col-12 mb-3">
+                        <label class="form-label" for="loginState">Select Employee</label>
+                        <ng-select [items]="metaData['employees']" bindLabel="name" bindValue="employeeId"
+                            name="employeeId" required
+                            placeholder="Select Employee" [(ngModel)]="employeeTracingFormValues['employeeId']"
+                            #employeeId="ngModel" [clearable]="false"
+                            [ngClass]="{ 'is-invalid': signUpForm.submitted && employeeId.invalid }">
+                        </ng-select>
+
+                        <div *ngIf="signUpForm.submitted && employeeId.invalid" class="invalid-feedback">
+                            <div *ngIf="employeeId?.errors?.['required']">This field is required</div>
+                        </div>
+                    </div>
+
+
+                    <div class="col-12 mb-4">
+                        <label class="form-label" for="startDate">Start Date</label>
+                        <input type="date" id="startDate" class="form-control form-control-lg"
+                            placeholder="Enter a valid name" name="startDate"
+                            [(ngModel)]="employeeTracingFormValues['startDate']" #startDate="ngModel" required
+                            [ngClass]="{ 'is-invalid': signUpForm.submitted && startDate.invalid }" />
+                        <div *ngIf="signUpForm.submitted && startDate.invalid" class="invalid-feedback">
+                            <div *ngIf="startDate?.errors?.['required']">This field is required</div>
+                        </div>
+                    </div>
+                    <!-- [max]="today" -->
+                    <div class="col-12 mb-4">
+                        <label class="form-label" for="endDate">Start Date</label>
+                        <input type="date" id="endDate" class="form-control form-control-lg"
+                            placeholder="Enter a valid name" name="endDate"
+                            [(ngModel)]="employeeTracingFormValues['endDate']" #endDate="ngModel" required
+                            [min]="employeeTracingFormValues['startDate']"
+                            [ngClass]="{ 'is-invalid': signUpForm.submitted && endDate.invalid }" />
+                        <div *ngIf="signUpForm.submitted && endDate.invalid" class="invalid-feedback">
+                            <div *ngIf="endDate?.errors?.['required']">This field is required</div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer col-12 row">
+                    <button type="button" class="btn btn-secondary col" data-bs-dismiss="modal">Close</button>
+                    <!-- <button type="button" class="btn btn-primary">Understood</button> -->
+                    <button type="submit" class="btn btn-primary btn-lg col"
+                        style="padding-left: 2.5rem; padding-right: 2.5rem;">
+
+                        Save
+
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

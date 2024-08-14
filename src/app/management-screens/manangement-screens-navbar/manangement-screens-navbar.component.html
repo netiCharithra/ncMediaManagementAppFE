@@ -1,4 +1,4 @@
-<div *ngIf="shouldRun " class="example-container ">
+<div *ngIf="shouldRun " class="example-container admin-portal">
     <!-- <div *ngIf="shouldRun" class="example-container" [class.example-is-mobile]="mobileQuery.matches"> -->
     <!-- <mat-toolbar class="example-toolbar">
       <button mat-icon-button (click)="onClickOfMenuBtn()"><mat-icon>menu</mat-icon></button>
@@ -25,7 +25,7 @@
             <mat-nav-list>
 
                 <!-- <button  class="d-md-none">Close</button> -->
-                <div *ngFor="let nav of menuList; let ind=index" routerLink="." class="row p-2 mt-2 cursor-pointer align-items-center m-0 " [ngClass]="{'activeTab':activeRoute ===nav.routeKey, 'custome-menu-item':activeRoute !==nav.routeKey}">
+                <div *ngFor="let nav of menuList; let ind=index" [routerLink]="nav.routeKey"  class="row p-2 mt-2 cursor-pointer align-items-center m-0" (click)="closeInMobile()" [ngClass]="{'activeTab':activeRoute ===nav.routeKey, 'custome-menu-item':activeRoute !==nav.routeKey}">
 
                     <i class="bi bi-{{nav?.icon}} fs-5 col-2"></i>
                     <p [ngClass]="{'d-none': !mobileQuery.matches && !showLabel}" class="m-0 col-10 custome-menu-label">{{ nav.label }}</p>
@@ -35,12 +35,15 @@
         <!-- *ngIf="showHideContent" -->
 
         <mat-sidenav-content>
-            <div class="mx-3">
+            <div class="mx-md-3">
                 <div class="container">
 
                     <nc-web-manangement-screens-header></nc-web-manangement-screens-header>
 
-                    <router-outlet></router-outlet>
+                    <div class="data-container">
+
+                      <router-outlet></router-outlet>
+                    </div>
                 </div>
 
             </div>

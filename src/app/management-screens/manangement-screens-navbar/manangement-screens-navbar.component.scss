@@ -126,3 +126,17 @@
     margin-right: 1rem !important;
   }
 }
+.data-container {
+  overflow-y: scroll; /* Always show scrollbar */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
+.data-container::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
+.data-container{
+  height: calc(100vh - 7rem) !important;
+  overflow-y: auto;
+}
