@@ -1,0 +1,65 @@
+// Brand Colors
+$primary-red: #b71a1f;  // Updated to match your logo color
+$primary-green: #052220;  // Your logo's dark green
+
+// Theme Colors
+$primary: #007bff;
+$secondary: #6c757d;
+
+// Derived Colors
+$dark-red: darken($primary-red, 10%);
+$light-red: lighten($primary-red, 40%);
+$dark-green: darken($primary-green, 10%);
+$light-green: lighten($primary-green, 40%);
+
+// Text Colors
+$text-dark: #212529;
+$text-light: rgba(255, 255, 255, 0.9);
+$text-muted: #6c757d;
+
+// Background Colors
+$bg-white: #ffffff;
+$bg-light: #f8f9fa;
+$bg-overlay: rgba(0, 0, 0, 0.5);
+
+// Border Colors
+$border-light: rgba(255, 255, 255, 0.1);
+$border-dark: rgba(0, 0, 0, 0.1);
+
+// Transitions
+$transition-base: all 0.2s ease-in-out;
+
+// Shadows
+$shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
+$shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+$box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+$box-shadow-lg: 0 4px 8px rgba(0, 0, 0, 0.15);
+
+// Breakpoints (matching Bootstrap)
+$breakpoint-sm: 576px;
+$breakpoint-md: 768px;
+$breakpoint-lg: 992px;
+$breakpoint-xl: 1200px;
+
+// Z-index levels
+$z-dropdown: 1000;
+$z-sticky: 1020;
+$z-fixed: 1030;
+$z-modal-backdrop: 1040;
+$z-modal: 1050;
+$z-popover: 1060;
+$z-tooltip: 1070;
+
+// Colors
+$success: #28a745;
+$danger: #dc3545;
+$warning: #ffc107;
+$info: #17a2b8;
+$light: #f8f9fa;
+$dark: #343a40;
+$white: #ffffff;
+
+// Borders
+$border-radius: 0.5rem;
+$border-radius-sm: 0.25rem;
+$border-radius-lg: 1rem;

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+  <file source-language="te" target-language="en" datatype="plaintext" original="ng2.template">
+    <body>
+      <trans-unit id="homeLink" datatype="html">
+        <source>హోమ్</source>
+        <target>Home</target>
+      </trans-unit>
+      <trans-unit id="regionalLink" datatype="html">
+        <source>ప్రాంతీయ</source>
+        <target>Regional</target>
+      </trans-unit>
+      <trans-unit id="internationalLink" datatype="html">
+        <source>అంతర్జాతీయ</source>
+        <target>International</target>
+      </trans-unit>
+      <trans-unit id="latestNewsLink" datatype="html">
+        <source>తాజా వార్తలు</source>
+        <target>Latest News</target>
+      </trans-unit>
+      <trans-unit id="topNewsLink" datatype="html">
+        <source>టాప్ వార్తలు</source>
+        <target>Top News</target>
+      </trans-unit>
+      <trans-unit id="footerText" datatype="html">
+        <source>రూపకల్పన మరియు నిర్వహణ NC డిజిటల్ మీడియా గ్రూప్స్</source>
+        <target>Designed and Maintained by NC Digital Media Groups</target>
+      </trans-unit>
+      <trans-unit id="copyright" datatype="html">
+        <source>© {{currentYear}} NC డిజిటల్ మీడియా. అన్ని హక్కులు రిజర్వ్ చేయబడ్డాయి.</source>
+        <target>© {{currentYear}} NC Digital Media. All rights reserved.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

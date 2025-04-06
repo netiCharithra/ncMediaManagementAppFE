@@ -1,0 +1,69 @@
+@import "../../../../styles/theme/theme";
+
+.compact-news-card {
+  display: flex;
+  background: $bg-white;
+  border-radius: $border-radius-sm;
+  overflow: hidden;
+  box-shadow: $shadow-sm;
+  transition: $transition-base;
+  cursor: pointer;
+  height: 90px;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: $shadow-md;
+  }
+
+  .card-image {
+    width: 90px;
+    min-width: 90px;
+    height: 90px;
+    overflow: hidden;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  .card-content {
+    padding: 8px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    .title {
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin: 0;
+      line-height: 1.2;
+      color: $text-dark;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 1;
+      line-clamp: 1;
+      -webkit-box-orient: vertical;
+    }
+
+    .description {
+      font-size: 0.8rem;
+      color: $text-muted;
+      margin: 4px 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 1;
+      line-clamp: 1;
+      -webkit-box-orient: vertical;
+    }
+
+    .date {
+      font-size: 0.7rem;
+      color: $text-muted;
+    }
+  }
+}

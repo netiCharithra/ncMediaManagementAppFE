@@ -1,0 +1,66 @@
+<div class="news-expanded">
+  <div class="container py-4">
+    <!-- Loading State -->
+    <div class="loading-state" *ngIf="loading">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+
+    <!-- Error State -->
+    <div class="error-state" *ngIf="error">
+      <div class="alert alert-danger" role="alert">
+        {{ error }}
+      </div>
+    </div>
+
+    <!-- News Content -->
+    <div class="news-content" *ngIf="!loading && !error && news">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a routerLink="/">Home</a></li>
+          <li class="breadcrumb-item"><a [routerLink]="['/', news.category]">{{ news.category | titlecase }}</a></li>
+          <li class="breadcrumb-item active" aria-current="page">{{ news.title }}</li>
+        </ol>
+      </nav>
+
+      <div class="news-header">
+        <h1 class="news-title">{{ news.title }}</h1>
+        <div class="news-meta">
+          <div class="meta-left">
+            <span class="author">By {{ news.author }}</span>
+            <span class="date">{{ formatDate(news.publishDate) }}</span>
+          </div>
+          <div class="meta-right">
+            <span class="views"><i class="bi bi-eye"></i> {{ news.views }}</span>
+            <span class="likes"><i class="bi bi-heart"></i> {{ news.likes }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="news-image">
+        <img [src]="news.imageUrl" [alt]="news.title" class="img-fluid">
+        <div class="category-badge">{{ news.category }}</div>
+      </div>
+
+      <div class="news-body">
+        <p class="news-description">{{ news.shortDescription }}</p>
+        <div class="news-full-content" [innerHTML]="news.fullContent"></div>
+      </div>
+
+      <div class="news-footer">
+        <div class="tags">
+          <span class="tag" *ngFor="let tag of news.tags">#{{ tag }}</span>
+        </div>
+        <div class="share-buttons">
+          <button class="btn btn-outline-primary btn-sm">
+            <i class="bi bi-share"></i> Share
+          </button>
+          <button class="btn btn-outline-danger btn-sm">
+            <i class="bi bi-heart"></i> Like
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

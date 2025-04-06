@@ -1,0 +1,52 @@
+<div class="home-container">
+  <!-- Latest News Section -->
+  <section class="news-section latest-news">
+    <div class="container">
+      <div class="section-header">
+        <h2>Latest News</h2>
+        <a routerLink="/latest-news" class="view-all">View All</a>
+      </div>
+      <div class="news-grid latest-news-grid">
+        <app-news-card *ngFor="let news of latestNews.slice(0, 4)" [news]="news"></app-news-card>
+      </div>
+      <div class="compact-news-grid">
+        <app-compact-news-card *ngFor="let news of latestNews.slice(4, 13)" [news]="news"></app-compact-news-card>
+      </div>
+      <div class="load-more" *ngIf="latestHasMore">
+        <button class="btn btn-outline-primary" (click)="loadMoreLatest()">Load More</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Regional News Section -->
+  <section class="news-section regional-news">
+    <div class="container">
+      <div class="section-header">
+        <h2>Regional News</h2>
+        <a routerLink="/regional" class="view-all">View All</a>
+      </div>
+      <div class="news-grid">
+        <app-news-card *ngFor="let news of regionalNews" [news]="news"></app-news-card>
+      </div>
+      <div class="load-more" *ngIf="regionalHasMore">
+        <button class="btn btn-outline-primary" (click)="loadMoreRegional()">Load More</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- International News Section -->
+  <section class="news-section international-news">
+    <div class="container">
+      <div class="section-header">
+        <h2>International News</h2>
+        <a routerLink="/international" class="view-all">View All</a>
+      </div>
+      <div class="news-grid">
+        <app-news-card *ngFor="let news of internationalNews" [news]="news"></app-news-card>
+      </div>
+      <div class="load-more" *ngIf="internationalHasMore">
+        <button class="btn btn-outline-primary" (click)="loadMoreInternational()">Load More</button>
+      </div>
+    </div>
+  </section>
+</div>

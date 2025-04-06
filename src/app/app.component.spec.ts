@@ -14,16 +14,16 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have the 'ncMediaManagementAppFE' title`, () => {
+  it(`should have the 'news-website' title`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('ncMediaManagementAppFE');
+    expect(app.title).toEqual('news-website');
   });
 
   it('should render title', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, ncMediaManagementAppFE');
+    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, news-website');
   });
 });

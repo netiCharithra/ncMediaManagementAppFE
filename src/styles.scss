@@ -1,185 +1,81 @@
 /* You can add global styles to this file, and also import other style files */
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+// Custom theme colors
+$primary-red: #dc3545;
+$dark-red: darken($primary-red, 10%);
+$light-red: lighten($primary-red, 40%);
 
-a,
-p,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-    font-family: "Inter", sans-serif !important;
-    line-height: 1.3rem !important;
-}
-.districtDiv {
-    right: unset;
-    left: 0;
-    z-index: 99999;
+// Import Bootstrap
+@import "bootstrap/scss/bootstrap";
 
-    .title {
-        font-weight: bold;
-        color: #000;
-    }
+// Global theme overrides
+:root {
+  --bs-primary: #{$primary-red};
+  --bs-link-color: #{$primary-red};
+  --bs-link-hover-color: #{$dark-red};
+  --primary-color: #007bff;
+  --secondary-color: #6c757d;
+  --background-color: #f8f9fa;
 }
 
-nc-web-public-header{
-
-    .nav-link{
-        font-weight: 600 !important;
-    }
+// Global styles
+body {
+  background-color: var(--background-color);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 }
 
-
-.custome-scroll-bar-header::-webkit-scrollbar {
-    display: none;
-}
-
-
-.public-screen-content-height{
-    height: calc(100vh - 7rem);
-}
-/* Hide scrollbar for Internet Explorer, Edge and Firefox */
-.custome-scroll-bar-header {
-    -ms-overflow-style: none;
-    /* IE and Edge */
-    scrollbar-width: none;
-    /* Firefox */
-
-}
-
-.cursor-pointer{
-    cursor: pointer !important;
-}
-
-.h-75 {
-    height: 75% !important;
-}
-// HOME PAGE STYLES STARTS
-.border-bottom-custome {
-    border-bottom: 1.5px solid #ccc;
-}
-.border-left-custome {
-    border-left: 1.5px solid #ccc;
-}
-.media {
-    display: flex;
-    align-items: flex-start;
-}
-@media (max-width: 767.98px) {
-
-    .border-left-custome {
-        border-left: 0;
-    }
-    .carousel-caption {
-        h3 {
-            font-size: 1rem !important;
-        }
-    }
-
-    .carousel-caption-top {
-        h3 {
-            font-size: 0.75rem !important;
-        }
-    }
-
-}
-
-.header_section {
-    font-weight: bold;
-    margin: 0;
-    padding: 10px 15px;
-    background-color: #00272c;
-    width: fit-content;
-    color: #fff;
-}
-
-
-.custome_newsCard {
-    cursor: pointer;
-
-    .card-title {
-        font-weight: bold;
-        color: #000;
-    }
-}
-
-.custome_newsCard:hover {
-    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px !important;
-}
-
-.custome_newsCard_category {
-    .card-title {
-        font-weight: bold;
-        color: #000;
-    }
-}
-
-// HOME PAGE STYLES ENDS
-@media (min-width: 576px) {
-    .districtDiv {
-        min-width: 540px !important;
-    }
-}
-
-@media (min-width: 768px) {
-    .districtDiv {
-        min-width: 720px !important;
-    }
-}
-
-@media (min-width: 992px) {
-    .districtDiv {
-        min-width: 960px !important;
-    }
-}
-
-@media (min-width: 1200px) {
-    .districtDiv {
-        min-width: 1000px !important;
-    }
-}
-// /* Style for WebKit-based browsers (Chrome, Safari) */
-// ::-webkit-scrollbar {
-//     width: 8px; // Set the width of the scrollbar
-//     height: 8px; // Set the height of the scrollbar
-//   }
+// Custom button styles
+.btn-primary {
+  background-color: $primary-red;
+  border-color: $primary-red;
   
-//   ::-webkit-scrollbar-track {
-//     background: #f1f1f1; // Set the background of the scrollbar track
-//   }
-  
-//   ::-webkit-scrollbar-thumb {
-//     background: #888; // Set the color of the scrollbar thumb
-//     border-radius: 4px; // Make the scrollbar thumb rounded
-//   }
-  
-//   ::-webkit-scrollbar-thumb:hover {
-//     background: #555; // Change color on hover
-//   }
-  
-//   /* Hide the scrollbar buttons (arrows) */
-//   ::-webkit-scrollbar-button {
-//     display: none; // Hide the buttons
-//   }
-  
-//   /* Style for Firefox */
-//   * {
-//     scrollbar-width: thin;
-//     scrollbar-color: #888 #f1f1f1;
-//   }
-  
-//   /* Additional styles to hide the buttons in Firefox */
-//   * {
-//     scrollbar-width: thin;
-//     scrollbar-color: #888 #f1f1f1;
-//   }
-  
-//   /* Optional: For completeness, add some styles for other browsers like Edge */
-//   ::-ms-scrollbar {
-//     display: none; // Hide scrollbar in older versions of IE/Edge
-//   }
-  
+  &:hover, &:focus {
+    background-color: $dark-red;
+    border-color: $dark-red;
+  }
+}
+
+// Active states
+.active {
+  color: $primary-red !important;
+}
+
+// Form control focus states
+.form-control:focus {
+  border-color: $primary-red;
+  box-shadow: 0 0 0 0.2rem rgba($primary-red, 0.25);
+}
+
+.card {
+  transition: transform 0.2s;
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  }
+}
+
+.card-img-top {
+  height: 200px;
+  object-fit: cover;
+}
+
+.navbar {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+  color: var(--primary-color);
+  font-weight: 600;
+}
+
+@media (max-width: 768px) {
+  .card-img-top {
+    height: 150px;
+  }
+}
+
+@media (max-width: 576px) {
+  .container {
+    padding: 10px;
+  }
+}
