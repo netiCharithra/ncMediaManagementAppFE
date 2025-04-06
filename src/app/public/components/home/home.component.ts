@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { NewsService } from '../../../news.service';
@@ -9,7 +9,9 @@ import { NewsCardComponent } from '../news-card/news-card.component';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss']
+  styleUrls: ['./home.component.scss'],
+  // standalone: true,
+  // imports: [CommonModule, RouterModule, CompactNewsCardComponent, NewsCardComponent]
 })
 export class HomeComponent implements OnInit {
   latestNews: News[] = [];
@@ -20,11 +22,18 @@ export class HomeComponent implements OnInit {
   regionalHasMore = false;
   internationalHasMore = false;
 
+  isMobile = window.innerWidth <= 768;
+
   private latestPage = 0;
   private regionalPage = 0;
   private internationalPage = 0;
 
   constructor(private newsService: NewsService) {}
+
+  @HostListener('window:resize', ['$event'])
+  onResize() {
+    this.isMobile = window.innerWidth <= 768;
+  }
 
   ngOnInit(): void {
     this.loadLatestNews();
