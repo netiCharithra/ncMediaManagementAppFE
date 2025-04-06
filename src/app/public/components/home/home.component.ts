@@ -9,9 +9,7 @@ import { NewsCardComponent } from '../news-card/news-card.component';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss'],
-  // standalone: true,
-  // imports: [CommonModule, RouterModule, CompactNewsCardComponent, NewsCardComponent]
+  styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
   latestNews: News[] = [];
@@ -27,6 +25,7 @@ export class HomeComponent implements OnInit {
   private latestPage = 0;
   private regionalPage = 0;
   private internationalPage = 0;
+
 
   constructor(private newsService: NewsService) {}
 
