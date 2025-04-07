@@ -6,6 +6,7 @@ import { News } from '../../../interfaces/news.interface';
 import { CompactNewsCardComponent } from '../compact-news-card/compact-news-card.component';
 import { NewsCardComponent } from '../news-card/news-card.component';
 import { NgbCarousel, NgbSlideEvent, NgbSlideEventSource } from '@ng-bootstrap/ng-bootstrap';
+import { PublicService } from '../../services/public.service';
 
 @Component({
   selector: 'app-home',
@@ -27,22 +28,9 @@ export class HomeComponent implements OnInit {
   private regionalPage = 0;
   private internationalPage = 0;
 
-  // Carousel related properties
-  images = [62, 83, 466, 965, 982, 1043, 738].map((n) => `https://picsum.photos/id/${n}/900/500`);
-  paused = false;
-  unpauseOnArrow = false;
-  pauseOnIndicator = false;
-  pauseOnHover = true;
-  pauseOnFocus = true;
 
-  @ViewChild('carousel', { static: true }) carousel!: NgbCarousel;
+  constructor(private newsService: NewsService, private publicService: PublicService) { }
 
-  constructor(private newsService: NewsService) {}
-
-  @HostListener('window:resize', ['$event'])
-  onResize() {
-    this.isMobile = window.innerWidth <= 768;
-  }
 
   ngOnInit(): void {
     this.loadLatestNews();
@@ -50,7 +38,20 @@ export class HomeComponent implements OnInit {
     this.loadInternationalNews();
   }
 
+
+
   loadLatestNews(): void {
+
+    this.publicService.getLatestNews({})
+      .subscribe(response => {
+        if(response?.status === 'success'){
+          
+        }
+          console.log("Response", response)
+
+      });
+
+
     this.newsService.getLatestNews(this.latestPage).subscribe(result => {
       this.latestNews = this.latestPage === 0 ? result.news : [...this.latestNews, ...result.news];
       this.latestHasMore = result.hasMore;
@@ -86,25 +87,4 @@ export class HomeComponent implements OnInit {
     this.loadInternationalNews();
   }
 
-  togglePaused() {
-    if (this.paused) {
-      this.carousel.cycle();
-    } else {
-      this.carousel.pause();
-    }
-    this.paused = !this.paused;
-  }
-
-  onSlide(slideEvent: NgbSlideEvent) {
-    if (
-      this.unpauseOnArrow &&
-      slideEvent.paused &&
-      (slideEvent.source === NgbSlideEventSource.ARROW_LEFT || slideEvent.source === NgbSlideEventSource.ARROW_RIGHT)
-    ) {
-      this.togglePaused();
-    }
-    if (this.pauseOnIndicator && !slideEvent.paused && slideEvent.source === NgbSlideEventSource.INDICATOR) {
-      this.togglePaused();
-    }
-  }
 }
