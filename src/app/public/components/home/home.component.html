@@ -11,7 +11,7 @@
         <app-news-card *ngFor="let news of latestNews.slice(0, 4)" [news]="news"></app-news-card>
       </div>
       <div class="compact-news-grid" >
-        <app-compact-news-card *ngFor="let news of isMobile ? latestNews : latestNews.slice(4, 13)" [news]="news"></app-compact-news-card>
+        <app-compact-news-card *ngFor="let news of isMobile ? latestNews.slice(0, 4) : latestNews.slice(4, 13)" [news]="news"></app-compact-news-card>
       </div>
       <div class="load-more" *ngIf="latestHasMore">
         <button class="btn btn-outline-primary" (click)="loadMoreLatest()">Load More</button>

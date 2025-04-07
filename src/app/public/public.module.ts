@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { NgbCarouselModule, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { PublicRoutingModule } from './public-routing.module';
 import { HomeComponent } from './components/home/home.component';
@@ -30,7 +31,9 @@ import { CompactNewsCardComponent } from './components/compact-news-card/compact
   imports: [
     CommonModule,
     RouterModule,
-    PublicRoutingModule
+    PublicRoutingModule,
+    NgbModule,
+    NgbCarouselModule
   ],
   exports: [
     PublicLayoutComponent

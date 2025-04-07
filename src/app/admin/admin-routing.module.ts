@@ -8,7 +8,7 @@ const routes: Routes = [
     path: '',
     component: AdminLayoutComponent,
     children: [
-      { path: 'login', component: LoginComponent }
+      { path: '', component: LoginComponent }
     ]
   }
 ];
