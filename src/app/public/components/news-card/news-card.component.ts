@@ -8,7 +8,7 @@ import { News } from '../../../interfaces/news.interface';
   styleUrls: ['./news-card.component.scss']
 })
 export class NewsCardComponent {
-  @Input() news!: News;
+  @Input() news!: any;
 
   constructor(private router: Router) {}
 

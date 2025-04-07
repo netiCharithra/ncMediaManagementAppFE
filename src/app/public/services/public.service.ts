@@ -8,7 +8,9 @@ import { HttpService } from '../../services/http.service';
 export class PublicService {
   private readonly API_ENDPOINTS = {
     HOME_LATEST_NEWS: '/public/home/getLatestNews',
-    REGIONAL_NEWS: '/news/regional',
+    HOME_NEWS_TYPE_CATEGORIZED_NEWS: '/public/home/getNewsTypeCategorizedNews',
+    HOME_NEWS_CATEGORY_CATEGORIZED_NEWS: '/public/home/getNewsCategoryCategorizedNews',
+    META_DATA: '/public/metaData',
     CATEGORY_NEWS: '/news/category',
     NEWS_DETAIL: '/news',
     SEARCH_NEWS: '/news/search',
@@ -23,13 +25,16 @@ export class PublicService {
   getLatestNews(params: any): Observable<any> {
     return this.httpService.post(this.API_ENDPOINTS.HOME_LATEST_NEWS, { ...params });
   }
-
-  /**
-   * Get regional news with pagination
-   */
-  getRegionalNews(params: any, language: string): Observable<any> {
-    return this.httpService.post(this.API_ENDPOINTS.REGIONAL_NEWS, { ...params, language });
+  getNewsTypeCategorizedNews(params: any): Observable<any> {
+    return this.httpService.post(this.API_ENDPOINTS.HOME_NEWS_TYPE_CATEGORIZED_NEWS, { ...params });
   }
+  getNewsCategoryCategorizedNews(params: any): Observable<any> {
+    return this.httpService.post(this.API_ENDPOINTS.HOME_NEWS_CATEGORY_CATEGORIZED_NEWS, { ...params });
+  }
+  getMetaData(params: any): Observable<any> {
+    return this.httpService.post(this.API_ENDPOINTS.META_DATA, { ...params });
+  }
+
 
   /**
    * Get news by category with pagination

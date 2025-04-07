@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Observable, map } from 'rxjs';
+import { Observable, map, catchError } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { LanguageService } from './language.service';
 
@@ -52,7 +52,19 @@ export class HttpService {
     options.params = new HttpParams({ fromObject: params });
 
     return this.http.get(`${this.baseUrl}${endpoint}`, options).pipe(
-      map(response => response)
+      map((response: any) => {
+        console.log("RES", response?.data)
+        if (response && response.status === 'success' && response?.data) {
+          return response?.data;
+        } else {
+          console.error('API Error:', response.message || 'Operation failed');
+          throw new Error(response.message || 'Operation failed');
+        }
+      }),
+      catchError(error => {
+        console.error('API Error:', error.message || 'Operation failed');
+        throw error;
+      })
     );
   }
 
@@ -77,7 +89,18 @@ export class HttpService {
     };
 
     return this.http.post(`${this.baseUrl}${endpoint}`, bodyWithLanguage, options).pipe(
-      map(response => response)
+      map((response: any) => {
+        if (response && response.status === 'success') {
+          return response?.data;
+        } else {
+          console.error('API Error:', response.message || 'Operation failed');
+          throw new Error(response.message || 'Operation failed');
+        }
+      }),
+      catchError(error => {
+        console.error('API Error:', error.message || 'Operation failed');
+        throw error;
+      })
     );
   }
 
@@ -102,7 +125,18 @@ export class HttpService {
     };
 
     return this.http.put(`${this.baseUrl}${endpoint}`, bodyWithLanguage, options).pipe(
-      map(response => response)
+      map((response: any) => {
+        if (response && response.status === 'success') {
+          return response;
+        } else {
+          console.error('API Error:', response.message || 'Operation failed');
+          throw new Error(response.message || 'Operation failed');
+        }
+      }),
+      catchError(error => {
+        console.error('API Error:', error.message || 'Operation failed');
+        throw error;
+      })
     );
   }
 
@@ -123,7 +157,18 @@ export class HttpService {
     options.params = new HttpParams({ fromObject: { language: this.selectedLanguage } });
 
     return this.http.delete(`${this.baseUrl}${endpoint}`, options).pipe(
-      map(response => response)
+      map((response: any) => {
+        if (response && response.status === 'success') {
+          return response;
+        } else {
+          console.error('API Error:', response.message || 'Operation failed');
+          throw new Error(response.message || 'Operation failed');
+        }
+      }),
+      catchError(error => {
+        console.error('API Error:', error.message || 'Operation failed');
+        throw error;
+      })
     );
   }
 }

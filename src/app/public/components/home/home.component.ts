@@ -7,6 +7,7 @@ import { CompactNewsCardComponent } from '../compact-news-card/compact-news-card
 import { NewsCardComponent } from '../news-card/news-card.component';
 import { NgbCarousel, NgbSlideEvent, NgbSlideEventSource } from '@ng-bootstrap/ng-bootstrap';
 import { PublicService } from '../../services/public.service';
+import { LanguageService } from '../../../services/language.service';
 
 @Component({
   selector: 'app-home',
@@ -24,18 +25,24 @@ export class HomeComponent implements OnInit {
 
   isMobile = window.innerWidth <= 768;
 
-  private latestPage = 0;
-  private regionalPage = 0;
-  private internationalPage = 0;
 
+  public categoryWiseNews:any[]=[];
+  public categoryCategorisedNews:any[]=[];
+  public categoryMetaList:any[]=[];
 
-  constructor(private newsService: NewsService, private publicService: PublicService) { }
+  currentLanguage: 'en' | 'te';
+
+  constructor(private newsService: NewsService, private publicService: PublicService, public languageService:LanguageService) { 
+    this.currentLanguage = this.languageService.getCurrentLanguage();
+  }
 
 
   ngOnInit(): void {
+    
     this.loadLatestNews();
-    this.loadRegionalNews();
-    this.loadInternationalNews();
+    this.loadNewsTypeCategorizedNews();
+    this.getNewsCategoryCategorizedNews();
+    this.getMetaData()
   }
 
 
@@ -44,47 +51,40 @@ export class HomeComponent implements OnInit {
 
     this.publicService.getLatestNews({})
       .subscribe(response => {
-        if(response?.status === 'success'){
-          
-        }
-          console.log("Response", response)
-
+        this.latestNews = response ||[];
       });
 
+  }
+  loadNewsTypeCategorizedNews(): void {
 
-    this.newsService.getLatestNews(this.latestPage).subscribe(result => {
-      this.latestNews = this.latestPage === 0 ? result.news : [...this.latestNews, ...result.news];
-      this.latestHasMore = result.hasMore;
-    });
+    this.publicService.getNewsTypeCategorizedNews({})
+      .subscribe(response => {
+        this.categoryWiseNews=response[0]?.['types'] || []
+        console.log("loadNewsTypeCategorizedNews",response)
+      });
+
+  }
+  getNewsCategoryCategorizedNews(): void {
+
+    this.publicService.getNewsCategoryCategorizedNews({})
+      .subscribe(response => {
+        this.categoryCategorisedNews=response|| []
+        console.log("getNewsCategoryCategorizedNews",response)
+      });
+
   }
 
-  loadRegionalNews(): void {
-    this.newsService.getRegionalNews(this.regionalPage).subscribe(result => {
-      this.regionalNews = this.regionalPage === 0 ? result.news : [...this.regionalNews, ...result.news];
-      this.regionalHasMore = result.hasMore;
-    });
-  }
 
-  loadInternationalNews(): void {
-    this.newsService.getInternationalNews(this.internationalPage).subscribe(result => {
-      this.internationalNews = this.internationalPage === 0 ? result.news : [...this.internationalNews, ...result.news];
-      this.internationalHasMore = result.hasMore;
-    });
+  getMetaData(): void {
+    
+    this.publicService.getMetaData({ metaList: ['NEWS_CATEGORIES_REGIONAL'] })
+      .subscribe(response => {
+        this.categoryMetaList = response?.['NEWS_CATEGORIES_REGIONAL'] || [];
+      });
   }
-
-  loadMoreLatest(): void {
-    this.latestPage++;
-    this.loadLatestNews();
+ 
+  getCategoryLabel(label:any):any {
+    const found = this.categoryMetaList.find((item: any) => item.label === label);
+    return found[this.currentLanguage] || label;
   }
-
-  loadMoreRegional(): void {
-    this.regionalPage++;
-    this.loadRegionalNews();
-  }
-
-  loadMoreInternational(): void {
-    this.internationalPage++;
-    this.loadInternationalNews();
-  }
-
 }

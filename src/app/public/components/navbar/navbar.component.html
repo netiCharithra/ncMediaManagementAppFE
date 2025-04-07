@@ -15,10 +15,10 @@
         <li class="nav-item">
           <a class="nav-link" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">{{ getString('home') }}</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" routerLink="/regional" routerLinkActive="active">{{ getString('regional') }}</a>
+        <li class="nav-item" *ngFor="let category of NEWS_CATEGORIES_REGIONAL">
+          <a class="nav-link" routerLink="/regional" routerLinkActive="active">{{ category[currentLanguage] || category['label'] }}</a>
         </li>
-        <li class="nav-item">
+        <!-- <li class="nav-item">
           <a class="nav-link" routerLink="/international" routerLinkActive="active">{{ getString('international') }}</a>
         </li>
         <li class="nav-item">
@@ -26,7 +26,7 @@
         </li>
         <li class="nav-item">
           <a class="nav-link" routerLink="/top-news" routerLinkActive="active">{{ getString('topNews') }}</a>
-        </li>
+        </li> -->
       </ul>
       <div class="navbar-nav">
         <select (change)="switchLanguage($event)" class="language-select" [value]="currentLang$ | async">

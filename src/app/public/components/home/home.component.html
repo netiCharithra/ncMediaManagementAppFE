@@ -3,8 +3,8 @@
   <section class="news-section latest-news">
     <div class="container">
       <div class="section-header">
-        <h2>Latest News</h2>
-        <a routerLink="/latest-news" class="view-all">View All</a>
+        <h2>{{languageService.getString('latestNews')}}</h2>
+        <a routerLink="/latest-news" class="view-all">{{languageService.getString('viewAll')}}</a>
       </div>
      
       <div class="news-grid latest-news-grid" *ngIf="!isMobile">
@@ -13,47 +13,41 @@
       <div class="compact-news-grid" >
         <app-compact-news-card *ngFor="let news of isMobile ? latestNews.slice(0, 4) : latestNews.slice(4, 13)" [news]="news"></app-compact-news-card>
       </div>
-      <div class="load-more" *ngIf="latestHasMore">
-        <button class="btn btn-outline-primary" (click)="loadMoreLatest()">Load More</button>
-      </div>
+     
     </div>
   </section>
 
   <!-- Regional News Section -->
-  <section class="news-section regional-news">
+  <section class="news-section regional-news" *ngFor="let news of categoryWiseNews">
     <div class="container">
       <div class="section-header">
-        <h2>Regional News</h2>
-        <a routerLink="/regional" class="view-all">View All</a>
+        <h2>{{news['type'][currentLanguage] || news['type']['value']}}</h2>
+        <a [routerLink]="'/'+news['type']['webRoute']" class="view-all">{{languageService.getString('viewAll')}}</a>
       </div>
       <div class="news-grid" *ngIf="!isMobile">
-        <app-news-card *ngFor="let news of regionalNews" [news]="news"></app-news-card>
+        <app-news-card *ngFor="let news of news['records']" [news]="news"></app-news-card>
       </div>
       <div class="compact-news-grid" *ngIf="isMobile" >
-        <app-compact-news-card *ngFor="let news of regionalNews" [news]="news"></app-compact-news-card>
+        <app-compact-news-card *ngFor="let news of news['records']" [news]="news"></app-compact-news-card>
       </div>
-      <div class="load-more" *ngIf="regionalHasMore">
-        <button class="btn btn-outline-primary" (click)="loadMoreRegional()">Load More</button>
+    
+    </div>
+  </section>
+  <!-- Regional News Section -->
+  <section class="news-section regional-news" *ngFor="let news of categoryCategorisedNews">
+    <div class="container">
+      <div class="section-header">
+        <h2>{{getCategoryLabel(news['category'])}}</h2>
+        <a [routerLink]="'/'+news['category']" class="view-all">{{languageService.getString('viewAll')}}</a>
       </div>
+      <div class="news-grid" *ngIf="!isMobile">
+        <app-news-card *ngFor="let news of news['news']" [news]="news"></app-news-card>
+      </div>
+      <div class="compact-news-grid" *ngIf="isMobile" >
+        <app-compact-news-card *ngFor="let news of news['news']" [news]="news"></app-compact-news-card>
+      </div>
+    
     </div>
   </section>
 
-  <!-- International News Section -->
-  <section class="news-section international-news">
-    <div class="container">
-      <div class="section-header">
-        <h2>International News</h2>
-        <a routerLink="/international" class="view-all">View All</a>
-      </div>
-      <div class="news-grid" *ngIf="!isMobile">
-        <app-news-card *ngFor="let news of internationalNews" [news]="news"></app-news-card>
-      </div>
-      <div class="compact-news-grid" *ngIf="isMobile" >
-        <app-compact-news-card *ngFor="let news of internationalNews" [news]="news"></app-compact-news-card>
-      </div>
-      <div class="load-more" *ngIf="internationalHasMore">
-        <button class="btn btn-outline-primary" (click)="loadMoreInternational()">Load More</button>
-      </div>
-    </div>
-  </section>
 </div>

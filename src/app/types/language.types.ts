@@ -5,6 +5,7 @@ export type StringKey =
   | 'latestNews'
   | 'topNews'
   | 'readMore'
+  | 'viewAll'
   | 'footerText'
   | 'copyright'
   | 'navigation'
