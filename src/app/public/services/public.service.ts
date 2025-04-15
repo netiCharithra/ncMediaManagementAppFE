@@ -12,6 +12,7 @@ export class PublicService {
     HOME_NEWS_CATEGORY_CATEGORIZED_NEWS: '/public/home/getNewsCategoryCategorizedNews',
     HOME_CATEGORY_NEWS_PAGINATED_ONLY: '/public/home/getCategoryNewsPaginatedOnly',
     META_DATA: '/public/metaData',
+    NEWS_INFO: '/public/newsInfo',
     CATEGORY_NEWS: '/news/category',
     NEWS_DETAIL: '/news',
     SEARCH_NEWS: '/news/search',
@@ -37,6 +38,9 @@ export class PublicService {
   }
   getMetaData(params: any): Observable<any> {
     return this.httpService.post(this.API_ENDPOINTS.META_DATA, { ...params });
+  }
+  getNewsInfo(params: any): Observable<any> {
+    return this.httpService.post(this.API_ENDPOINTS.NEWS_INFO, { ...params });
   }
 
 

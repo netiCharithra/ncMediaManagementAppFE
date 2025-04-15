@@ -18,7 +18,7 @@ import { AppRoutingModule } from './app-routing.module';
     NgbModule,
     PublicModule,
     AppRoutingModule
-  ],
+    ],
   providers: [
     provideHttpClient(withInterceptorsFromDi())
   ],

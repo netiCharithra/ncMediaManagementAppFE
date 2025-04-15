@@ -1,10 +1,16 @@
 <div class="compact-news-card" (click)="navigateToFullNews()">
   <div class="card-image">
-    <img [src]="news.imageUrl" alt="Image Error">
+    <img [src]="news.imageUrl" [alt]="news.title">
   </div>
   <div class="card-content">
     <h4 class="title">{{news.title}}</h4>
-    <p class="description">{{news.description}}</p>
-    <span class="date">{{news.createdDate | date:'mediumDate'}}</span>
+    <p class="description">{{news.shortDescription}}</p>
+    <div class="metadata">
+      <span class="date">{{news.publishDate | date:'shortDate'}}</span>
+      <div class="stats">
+        <span class="views"><i class="fas fa-eye"></i> {{news.views}}</span>
+        <span class="likes"><i class="fas fa-heart"></i> {{news.likes}}</span>
+      </div>
+    </div>
   </div>
 </div>

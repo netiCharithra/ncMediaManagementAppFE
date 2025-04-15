@@ -9,4 +9,8 @@ export type StringKey =
   | 'footerText'
   | 'copyright'
   | 'navigation'
-  | 'contact';
+  | 'contact'
+  | 'followUs'
+  | 'by'
+  | 'views'
+  | 'likes';

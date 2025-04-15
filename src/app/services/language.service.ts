@@ -21,7 +21,11 @@ export class LanguageService {
       footerText: 'Designed and Maintained by NC Digital Media Groups',
       copyright: 'All rights reserved',
       navigation: 'Navigation',
-      contact: 'Contact'
+      contact: 'Contact',
+      followUs: 'Follow Us',
+      by: 'By',
+      views: 'Views',
+      likes: 'Likes'
     },
     te: {
       home: 'హోమ్',
@@ -34,7 +38,11 @@ export class LanguageService {
       footerText: 'రూపకల్పన మరియు నిర్వహణ NC డిజిటల్ మీడియా గ్రూప్స్',
       copyright: 'అన్ని హక్కులు రిజర్వ్ చేయబడ్డాయి',
       navigation: 'నావిగేషన్',
-      contact: 'సంప్రదించండి'
+      contact: 'సంప్రదించండి',
+      followUs: 'మమ్మల్ని అనుసరించండి',
+      by: 'ద్వారా',
+      views: 'వీక్షణలు',
+      likes: 'ఇష్టాలు'
     }
   };
 

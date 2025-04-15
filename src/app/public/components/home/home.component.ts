@@ -31,7 +31,7 @@ export class HomeComponent implements OnInit {
 
   currentLanguage: 'en' | 'te';
 
-  constructor(private newsService: NewsService, private publicService: PublicService, public languageService:LanguageService) { 
+  constructor(private publicService: PublicService, public languageService:LanguageService) { 
     this.currentLanguage = this.languageService.getCurrentLanguage();
   }
 
