@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { NewsService } from '../../../news.service';
-import { News } from '../../../interfaces/news.interface';
 
 @Component({
   selector: 'app-international',
@@ -8,7 +7,7 @@ import { News } from '../../../interfaces/news.interface';
   styleUrls: ['./international.component.scss']
 })
 export class InternationalComponent implements OnInit {
-  news: News[] = [];
+  news: any[] = [];
   hasMore = false;
   private page = 0;
 

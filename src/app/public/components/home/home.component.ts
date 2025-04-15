@@ -2,7 +2,6 @@ import { Component, OnInit, HostListener, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { NewsService } from '../../../news.service';
-import { News } from '../../../interfaces/news.interface';
 import { CompactNewsCardComponent } from '../compact-news-card/compact-news-card.component';
 import { NewsCardComponent } from '../news-card/news-card.component';
 import { NgbCarousel, NgbSlideEvent, NgbSlideEventSource } from '@ng-bootstrap/ng-bootstrap';
@@ -15,9 +14,9 @@ import { LanguageService } from '../../../services/language.service';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
-  latestNews: News[] = [];
-  regionalNews: News[] = [];
-  internationalNews: News[] = [];
+  latestNews: any[] = [];
+  regionalNews: any[] = [];
+  internationalNews: any[] = [];
 
   latestHasMore = false;
   regionalHasMore = false;

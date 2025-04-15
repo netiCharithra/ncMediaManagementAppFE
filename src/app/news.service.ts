@@ -1,12 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { News } from './interfaces/news.interface';
 
 @Injectable({
   providedIn: 'root'
 })
 export class NewsService {
-  private mockNews: News[] = [
+  private mockNews: any[] = [
     // Regional News
     {
       id: '1',
@@ -154,7 +153,7 @@ export class NewsService {
 
   private pageSize = 5;
 
-  getLatestNews(page: number = 0): Observable<{ news: News[], hasMore: boolean }> {
+  getLatestNews(page: number = 0): Observable<{ news: any[], hasMore: boolean }> {
     const pageSize=13
     const sortedNews = [...this.mockNews].sort((a, b) => 
       b.publishDate.getTime() - a.publishDate.getTime()
@@ -165,7 +164,7 @@ export class NewsService {
     return of({ news, hasMore });
   }
 
-  getTopNews(page: number = 0): Observable<{ news: News[], hasMore: boolean }> {
+  getTopNews(page: number = 0): Observable<{ news: any[], hasMore: boolean }> {
     const sortedNews = [...this.mockNews].sort((a, b) => b.views - a.views);
     const start = page * this.pageSize;
     const news = sortedNews.slice(start, start + this.pageSize);
@@ -173,7 +172,7 @@ export class NewsService {
     return of({ news, hasMore });
   }
 
-  getRegionalNews(page: number = 0): Observable<{ news: News[], hasMore: boolean }> {
+  getRegionalNews(page: number = 0): Observable<{ news: any[], hasMore: boolean }> {
     const filtered = this.mockNews.filter(news => news.category === 'regional');
     const start = page * this.pageSize;
     const news = filtered.slice(start, start + this.pageSize);
@@ -181,7 +180,7 @@ export class NewsService {
     return of({ news, hasMore });
   }
 
-  getInternationalNews(page: number = 0): Observable<{ news: News[], hasMore: boolean }> {
+  getInternationalNews(page: number = 0): Observable<{ news: any[], hasMore: boolean }> {
     const filtered = this.mockNews.filter(news => news.category === 'international');
     const start = page * this.pageSize;
     const news = filtered.slice(start, start + this.pageSize);

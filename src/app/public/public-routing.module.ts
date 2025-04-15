@@ -7,6 +7,8 @@ import { InternationalComponent } from './components/international/international
 import { LatestNewsComponent } from './components/latest-news/latest-news.component';
 import { TopNewsComponent } from './components/top-news/top-news.component';
 import { NewsExpandedComponent } from './components/news-expanded/news-expanded.component';
+import { TypeComponent } from './components/type/type.component';
+import { CategoryComponent } from './components/category/category.component';
 
 const routes: Routes = [
   {
@@ -18,13 +20,15 @@ const routes: Routes = [
       { path: 'regional', component: RegionalComponent },
       { path: 'international', component: InternationalComponent },
       { path: 'latest-news', component: LatestNewsComponent },
-      { path: 'top-news', component: TopNewsComponent },{
+      { path: 'top-news', component: TopNewsComponent },
+      { path: 'type/:type', component: TypeComponent },
+      { path: 'category/:category', component: CategoryComponent },
+      {
         path: 'news/:language/:id',
         component: NewsExpandedComponent
       }
     ]
   },
-  
 ];
 
 @NgModule({

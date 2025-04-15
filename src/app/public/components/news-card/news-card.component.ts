@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
-import { News } from '../../../interfaces/news.interface';
+import { LanguageService } from '../../../services/language.service';
 
 @Component({
   selector: 'app-news-card',
@@ -10,9 +10,12 @@ import { News } from '../../../interfaces/news.interface';
 export class NewsCardComponent {
   @Input() news!: any;
 
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    private languageService: LanguageService
+  ) {}
 
   navigateToFullNews(): void {
-    this.router.navigate(['/news', this.news.language, this.news.id]);
+    this.router.navigate(['/news', this.languageService.getCurrentLanguage(), this.news.newsId]);
   }
 }

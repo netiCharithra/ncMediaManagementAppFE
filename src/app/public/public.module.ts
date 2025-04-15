@@ -14,6 +14,8 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { LatestNewsComponent } from './components/latest-news/latest-news.component';
 import { CompactNewsCardComponent } from './components/compact-news-card/compact-news-card.component';
+import { TypeComponent } from './components/type/type.component';
+import { CategoryComponent } from './components/category/category.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +28,9 @@ import { CompactNewsCardComponent } from './components/compact-news-card/compact
     NavbarComponent,
     FooterComponent,
     LatestNewsComponent,
-    CompactNewsCardComponent
+    CompactNewsCardComponent,
+    TypeComponent,
+    CategoryComponent
   ],
   imports: [
     CommonModule,

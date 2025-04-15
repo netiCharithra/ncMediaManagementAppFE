@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { NewsService } from '../../../news.service';
-import { News } from '../../../interfaces/news.interface';
 
 @Component({
   selector: 'app-regional',
@@ -8,7 +7,7 @@ import { News } from '../../../interfaces/news.interface';
   styleUrls: ['./regional.component.scss']
 })
 export class RegionalComponent implements OnInit {
-  news: News[] = [];
+  news: any[] = [];
   hasMore = false;
   private page = 0;
 

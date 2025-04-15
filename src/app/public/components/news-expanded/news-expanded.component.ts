@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { News } from '../../../interfaces/news.interface';
 
 @Component({
   selector: 'app-news-expanded',
@@ -8,7 +7,7 @@ import { News } from '../../../interfaces/news.interface';
   styleUrls: ['./news-expanded.component.scss']
 })
 export class NewsExpandedComponent implements OnInit {
-  news!: News;
+  news!: any;
   loading = true;
   error: string | null = null;
 
