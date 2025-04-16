@@ -1,0 +1,48 @@
+<div class="admin-layout">
+  <!-- Sidebar Navigation -->
+  <nav class="sidebar" [class.expanded]="isExpanded">
+    <div class="sidebar-header">
+      <button class="toggle-btn" (click)="toggleMenu()">
+        <i class="fas fa-bars"></i>
+      </button>
+      <div class="logo">
+        <img src="assets/images/logo.png" alt="NC Media Logo">
+        <span class="brand-name">NC Media</span>
+      </div>
+    </div>
+
+    <ul class="nav-menu">
+      <li class="nav-item" routerLinkActive="active">
+        <a routerLink="/admin/dashboard" (click)="isMobile ? toggleMenu() : null">
+          <i class="fas fa-chart-line"></i>
+          <span>Dashboard</span>
+        </a>
+      </li>
+      <li class="nav-item" routerLinkActive="active">
+        <a routerLink="/admin/user-info" (click)="isMobile ? toggleMenu() : null">
+          <i class="fas fa-user"></i>
+          <span>User Info</span>
+        </a>
+      </li>
+    </ul>
+
+    <div class="sidebar-footer">
+      <div class="user-profile" *ngIf="userData$ | async as user">
+        <i class="fas fa-user-circle"></i>
+        <div class="user-info">
+          <p class="name">{{ user.name }}</p>
+          <p class="role">{{ user.role }}</p>
+        </div>
+      </div>
+      <button class="logout-button" (click)="logout()">
+        <i class="fas fa-sign-out-alt"></i>
+        <span>Logout</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="main-content" [class.expanded]="isExpanded && !isMobile">
+    <router-outlet></router-outlet>
+  </main>
+</div>

@@ -1,0 +1,65 @@
+.user-info-container {
+  padding: 2rem;
+  transition: margin-left 0.3s ease;
+
+  @media (max-width: 768px) {
+    padding: 1rem;
+  }
+}
+
+.user-info-header {
+  margin-bottom: 2rem;
+
+  h1 {
+    font-size: 2rem;
+    margin: 0;
+    color: #1a237e;
+  }
+}
+
+.user-info-card {
+  background: white;
+  border-radius: 8px;
+  padding: 2rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  max-width: 600px;
+
+  .user-avatar {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 2rem;
+
+    i {
+      font-size: 6rem;
+      color: #1a237e;
+    }
+  }
+
+  .user-details {
+    .info-row {
+      display: flex;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid #eee;
+
+      &:last-child {
+        margin-bottom: 0;
+        padding-bottom: 0;
+        border-bottom: none;
+      }
+
+      label {
+        width: 120px;
+        color: #666;
+        font-weight: 500;
+      }
+
+      p {
+        margin: 0;
+        color: #333;
+        font-size: 1rem;
+        flex: 1;
+      }
+    }
+  }
+}

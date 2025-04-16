@@ -1,0 +1,118 @@
+@import '../../styles/theme';
+
+.admin-layout {
+  display: flex;
+  height: 100vh;
+  background: $bg-secondary;
+}
+
+.main-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: $spacing-lg;
+  margin-left: $sidebar-collapsed-width;
+  transition: margin-left $transition-normal;
+  
+  &.expanded {
+    margin-left: $sidebar-width;
+  }
+
+  @media (max-width: $breakpoint-md) {
+    margin-left: 0;
+    padding: $spacing-md;
+    
+    &.expanded {
+      margin-left: 0;
+    }
+  }
+}
+
+.page-header {
+  margin-bottom: $spacing-xl;
+  
+  h1 {
+    font-size: $font-size-xl;
+    color: $text-primary;
+    margin: 0 0 $spacing-xs;
+    font-weight: $font-weight-bold;
+  }
+  
+  .breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: $spacing-xs;
+    color: $text-secondary;
+    font-size: $font-size-sm;
+    
+    a {
+      color: $primary;
+      text-decoration: none;
+      transition: color $transition-fast;
+      
+      &:hover {
+        color: $primary-dark;
+      }
+    }
+    
+    .separator {
+      color: $text-muted;
+    }
+  }
+}
+
+.content-card {
+  background: $bg-primary;
+  border-radius: $border-radius-lg;
+  padding: $spacing-lg;
+  @include elevation(1);
+  
+  &.with-table {
+    padding: 0;
+    
+    .card-header {
+      padding: $spacing-lg;
+      border-bottom: 1px solid $border-light;
+    }
+    
+    .card-body {
+      padding: $spacing-lg;
+    }
+  }
+}
+
+// Loading States
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba($bg-dark, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: $z-index-modal;
+  
+  .loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid rgba($text-light, 0.3);
+    border-radius: 50%;
+    border-top-color: $text-light;
+    animation: spin 1s linear infinite;
+  }
+}
+
+// Responsive Helpers
+.hide-mobile {
+  @media (max-width: $breakpoint-md) {
+    display: none !important;
+  }
+}
+
+.show-mobile {
+  display: none !important;
+  @media (max-width: $breakpoint-md) {
+    display: block !important;
+  }
+}
