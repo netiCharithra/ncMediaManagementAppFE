@@ -2,25 +2,24 @@
 
 .dashboard-container {
   padding: $spacing-xl;
-  transition: margin-left $transition-normal;
-
+  
   @media (max-width: $breakpoint-md) {
     padding: $spacing-md;
   }
 }
 
-.dashboard-header {
+.page-header {
   margin-bottom: $spacing-xl;
 
   h1 {
     font-size: $font-size-xl * 1.5;
-    margin: 0 0 $spacing-sm 0;
-    color: $primary-dark;
+    margin: 0;
+    color: $text-primary;
     font-weight: $font-weight-bold;
   }
 
-  p {
-    margin: 0;
+  .subtitle {
+    margin: $spacing-xs 0 0;
     color: $text-secondary;
     font-size: $font-size-lg;
   }
@@ -28,7 +27,7 @@
 
 .stats-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: $spacing-lg;
   margin-bottom: $spacing-xl;
 }
@@ -55,7 +54,7 @@
       font-size: $font-size-xl;
       color: $primary;
       background: $hover-light;
-      padding: $spacing-sm;
+      padding: $spacing-md;
       border-radius: $border-radius-md;
     }
 
@@ -67,105 +66,197 @@
     }
   }
 
-  .stat-value {
-    font-size: $font-size-xl;
-    font-weight: $font-weight-bold;
-    color: $text-primary;
-    margin: 0 0 $spacing-xs;
-  }
-
-  .stat-change {
-    font-size: $font-size-sm;
-    display: flex;
-    align-items: center;
-    gap: $spacing-xs;
-
-    &.positive {
-      color: $success;
+  .stat-content {
+    .stat-value {
+      font-size: $font-size-xl * 1.2;
+      font-weight: $font-weight-bold;
+      color: $text-primary;
+      margin: 0 0 $spacing-xs;
     }
 
-    &.negative {
-      color: $error;
+    .stat-change {
+      font-size: $font-size-sm;
+      display: flex;
+      align-items: center;
+      gap: $spacing-xs;
+
+      &.positive {
+        color: $success;
+      }
+
+      &.negative {
+        color: $error;
+      }
+
+      i {
+        font-size: $font-size-sm;
+      }
     }
   }
 }
 
-.chart-grid {
+.dashboard-grid {
   display: grid;
   grid-template-columns: 2fr 1fr;
   gap: $spacing-lg;
-  margin-bottom: $spacing-xl;
 
-  @media (max-width: $breakpoint-md) {
+  @media (max-width: $breakpoint-lg) {
     grid-template-columns: 1fr;
   }
 
-  .chart-card {
-    background: $bg-primary;
+  .chart-section {
+    .content-card {
+      height: 400px;
+    }
+  }
+
+  .side-section {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-lg;
+  }
+}
+
+.content-card {
+  background: $bg-primary;
+  border-radius: $border-radius-lg;
+  @include elevation(1);
+
+  .card-header {
     padding: $spacing-lg;
-    border-radius: $border-radius-lg;
-    @include elevation(1);
+    border-bottom: 1px solid $border-light;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 
     h3 {
-      margin: 0 0 $spacing-lg;
+      margin: 0;
       color: $text-primary;
       font-size: $font-size-lg;
       font-weight: $font-weight-medium;
     }
+
+    .card-actions {
+      display: flex;
+      gap: $spacing-xs;
+
+      .btn-filter {
+        padding: $spacing-xs $spacing-sm;
+        border: 1px solid $border-light;
+        background: none;
+        color: $text-secondary;
+        border-radius: $border-radius-sm;
+        font-size: $font-size-sm;
+        cursor: pointer;
+        transition: all $transition-fast;
+
+        &:hover {
+          border-color: $primary;
+          color: $primary;
+        }
+
+        &.active {
+          background: $primary;
+          border-color: $primary;
+          color: $text-light;
+        }
+      }
+    }
+  }
+
+  .card-body {
+    padding: $spacing-lg;
   }
 }
 
-.recent-activity {
-  background: $bg-primary;
+.chart-placeholder {
+  width: 100%;
+  height: 300px;
+  background: linear-gradient(135deg, $hover-light 25%, transparent 25%) -10px 0,
+              linear-gradient(225deg, $hover-light 25%, transparent 25%) -10px 0,
+              linear-gradient(315deg, $hover-light 25%, transparent 25%),
+              linear-gradient(45deg, $hover-light 25%, transparent 25%);
+  background-size: 20px 20px;
+  background-color: $bg-secondary;
+  border-radius: $border-radius-md;
+}
+
+.categories-list {
   padding: $spacing-lg;
-  border-radius: $border-radius-lg;
-  @include elevation(1);
 
-  h3 {
-    margin: 0 0 $spacing-lg;
-    color: $text-primary;
-    font-size: $font-size-lg;
-    font-weight: $font-weight-medium;
-  }
+  .category-item {
+    &:not(:last-child) {
+      margin-bottom: $spacing-lg;
+    }
 
-  .activity-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-
-    .activity-item {
+    .category-info {
       display: flex;
-      align-items: flex-start;
-      gap: $spacing-md;
-      padding: $spacing-md 0;
-      border-bottom: 1px solid $border-light;
+      justify-content: space-between;
+      margin-bottom: $spacing-xs;
 
-      &:last-child {
-        border-bottom: none;
-        padding-bottom: 0;
+      .category-name {
+        color: $text-primary;
+        font-weight: $font-weight-medium;
       }
 
-      .activity-icon {
-        font-size: $font-size-lg;
-        color: $primary;
-        background: $hover-light;
-        padding: $spacing-sm;
-        border-radius: $border-radius-md;
+      .category-count {
+        color: $text-secondary;
+        font-size: $font-size-sm;
+      }
+    }
+
+    .progress-bar {
+      height: 6px;
+      background: $hover-light;
+      border-radius: $border-radius-sm;
+      overflow: hidden;
+
+      .progress {
+        height: 100%;
+        background: $gradient-primary;
+        border-radius: $border-radius-sm;
+        transition: width $transition-normal;
+      }
+    }
+  }
+}
+
+.activity-list {
+  padding: $spacing-lg;
+
+  .activity-item {
+    display: flex;
+    align-items: flex-start;
+    gap: $spacing-md;
+
+    &:not(:last-child) {
+      margin-bottom: $spacing-lg;
+    }
+
+    .activity-icon {
+      background: $hover-light;
+      color: $primary;
+      width: 36px;
+      height: 36px;
+      border-radius: $border-radius-md;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: $font-size-lg;
+    }
+
+    .activity-content {
+      flex: 1;
+
+      .activity-title {
+        margin: 0 0 $spacing-xs;
+        color: $text-primary;
+        font-weight: $font-weight-medium;
       }
 
-      .activity-content {
-        flex: 1;
-
-        .activity-title {
-          margin: 0 0 $spacing-xs;
-          color: $text-primary;
-          font-weight: $font-weight-medium;
-        }
-
-        .activity-time {
-          color: $text-muted;
-          font-size: $font-size-sm;
-        }
+      .activity-time {
+        color: $text-muted;
+        font-size: $font-size-sm;
       }
     }
   }

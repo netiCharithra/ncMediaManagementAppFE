@@ -10,38 +10,76 @@ import { AuthService } from '../../services/auth.service';
 })
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
-  loading = false;
-  error = '';
+  isLoading = false;
+  showPassword = false;
+  errorMessage = '';
+  submitted = false;
 
   constructor(
     private fb: FormBuilder,
-    private router: Router,
-    private authService: AuthService
+    private authService: AuthService,
+    private router: Router
   ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required]]
+      password: ['', [Validators.required, Validators.minLength(6)]]
     });
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    if (this.authService.isAuthenticated()) {
+      this.router.navigate(['/admin/dashboard']);
+    }
+  }
 
-  onSubmit() {
-    if (this.loginForm.valid) {
-      this.loading = true;
-      this.error = '';
-      
-      const { email, password } = this.loginForm.value;
-      
-      this.authService.login(email, password).subscribe({
+  get f() {
+    return this.loginForm.controls;
+  }
+
+  onSubmit(): void {
+    this.submitted = true;
+    this.errorMessage = '';
+
+    if (this.loginForm.invalid) {
+      return;
+    }
+
+    this.isLoading = true;
+    this.authService.login(this.f['email'].value, this.f['password'].value)
+      .subscribe({
         next: () => {
-          this.router.navigate(['/admin']);
+          this.router.navigate(['/admin/dashboard']);
         },
-        error: (err) => {
-          this.error = err.error?.message || 'Login failed';
-          this.loading = false;
+        error: (error) => {
+          this.isLoading = false;
+          this.errorMessage = error?.error?.message || 'Invalid email or password';
+        },
+        complete: () => {
+          this.isLoading = false;
         }
       });
+  }
+
+  togglePasswordVisibility(): void {
+    this.showPassword = !this.showPassword;
+  }
+
+  getErrorMessage(field: string): string {
+    if (!this.submitted) return '';
+    
+    const control = this.f[field];
+    if (!control || !control.errors) return '';
+
+    if (control.errors['required']) {
+      return `${field.charAt(0).toUpperCase() + field.slice(1)} is required`;
     }
+    if (control.errors['email']) {
+      return 'Please enter a valid email address';
+    }
+    if (control.errors['minlength']) {
+      return 'Password must be at least 6 characters long';
+    }
+    
+    return '';
   }
 }

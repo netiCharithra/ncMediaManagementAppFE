@@ -5,90 +5,28 @@ import * as CryptoJS from 'crypto-js';
   providedIn: 'root'
 })
 export class EncryptionService {
-  private readonly SECRET_SALT = 'NC_MEDIA_SALT_2025@#$%'; // Complex salt
-  private readonly KEY_SIZE = 256;
-  private readonly ITERATIONS = 1000;
+  private readonly secretKey = 'your-secret-key'; // In production, this should be in environment variables
 
-  constructor() {}
-
-  encryptObject(obj: any): string {
-    try {
-      // Convert object to JSON string
-      const jsonStr = JSON.stringify(obj);
-      return this.encrypt(jsonStr);
-    } catch (error) {
-      console.error('Object encryption error:', error);
-      return '';
-    }
+  public encrypt(data: string): string {
+    return CryptoJS.AES.encrypt(data, this.secretKey).toString();
   }
 
-  decryptObject<T>(encrypted: string): T | null {
+  public decrypt(encryptedData: string): string {
+    const bytes = CryptoJS.AES.decrypt(encryptedData, this.secretKey);
+    return bytes.toString(CryptoJS.enc.Utf8);
+  }
+
+  public encryptObject(data: any): string {
+    return this.encrypt(JSON.stringify(data));
+  }
+
+  public decryptObject<T>(encryptedData: string): T | null {
     try {
-      const decrypted = this.decrypt(encrypted);
+      const decrypted = this.decrypt(encryptedData);
       return JSON.parse(decrypted) as T;
     } catch (error) {
-      console.error('Object decryption error:', error);
+      console.error('Decryption failed:', error);
       return null;
-    }
-  }
-
-  private encrypt(value: string): string {
-    try {
-      // Generate a random IV (Initialization Vector)
-      const iv = CryptoJS.lib.WordArray.random(16);
-      
-      // Generate key using PBKDF2
-      const key = CryptoJS.PBKDF2(this.SECRET_SALT, iv, {
-        keySize: this.KEY_SIZE / 32,
-        iterations: this.ITERATIONS
-      });
-
-      // Encrypt using AES
-      const encrypted = CryptoJS.AES.encrypt(value, key, {
-        iv: iv,
-        padding: CryptoJS.pad.Pkcs7,
-        mode: CryptoJS.mode.CBC
-      });
-
-      // Combine IV and encrypted data
-      const result = iv.concat(encrypted.ciphertext).toString(CryptoJS.enc.Base64);
-      return result;
-    } catch (error) {
-      console.error('Encryption error:', error);
-      return '';
-    }
-  }
-
-  private decrypt(encrypted: string): string {
-    try {
-      // Convert from base64
-      const ciphertext = CryptoJS.enc.Base64.parse(encrypted);
-      
-      // Extract IV and data
-      const iv = CryptoJS.lib.WordArray.create(ciphertext.words.slice(0, 4));
-      const encryptedData = CryptoJS.lib.WordArray.create(ciphertext.words.slice(4));
-
-      // Generate key using PBKDF2
-      const key = CryptoJS.PBKDF2(this.SECRET_SALT, iv, {
-        keySize: this.KEY_SIZE / 32,
-        iterations: this.ITERATIONS
-      });
-
-      // Decrypt
-      const decrypted = CryptoJS.AES.decrypt(
-        encryptedData.toString(CryptoJS.enc.Base64),
-        key,
-        {
-          iv: iv,
-          padding: CryptoJS.pad.Pkcs7,
-          mode: CryptoJS.mode.CBC
-        }
-      );
-
-      return decrypted.toString(CryptoJS.enc.Utf8);
-    } catch (error) {
-      console.error('Decryption error:', error);
-      return '';
     }
   }
 }
