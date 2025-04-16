@@ -7,6 +7,7 @@ export interface User {
   firstName?: string;
   lastName?: string;
   lastLogin?: Date;
+  expiryTime: number;  // Unix timestamp for session expiry
 }
 
 export interface UserCredentials {

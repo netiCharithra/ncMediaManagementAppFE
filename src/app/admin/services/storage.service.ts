@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { User } from '../models/user.model';
+// import { User } from '../models/user.model';
 
 @Injectable({
   providedIn: 'root'
@@ -9,19 +9,19 @@ export class StorageService {
   private readonly USER_KEY = 'nc_auth_user';
   private readonly TOKEN_KEY = 'nc_auth_token';
   
-  private currentUserSubject: BehaviorSubject<User | null>;
-  public currentUser: Observable<User | null>;
+  private currentUserSubject: BehaviorSubject<any | null>;
+  public currentUser: Observable<any | null>;
 
   constructor() {
-    this.currentUserSubject = new BehaviorSubject<User | null>(this.getStoredUser());
+    this.currentUserSubject = new BehaviorSubject<any | null>(this.getStoredUser());
     this.currentUser = this.currentUserSubject.asObservable();
   }
 
-  public get currentUserValue(): User | null {
+  public get currentUserValue(): any | null {
     return this.currentUserSubject.value;
   }
 
-  setUser(user: User): void {
+  setUser(user: any): void {
     // Store user details
     localStorage.setItem(this.USER_KEY, JSON.stringify(user));
     if (user.token) {
@@ -30,7 +30,7 @@ export class StorageService {
     this.currentUserSubject.next(user);
   }
 
-  getStoredUser(): User | null {
+  getStoredUser() {
     const storedUser = localStorage.getItem(this.USER_KEY);
     if (storedUser) {
       try {
@@ -58,7 +58,7 @@ export class StorageService {
     return this.currentUserValue?.role === 'editor';
   }
 
-  updateUserInfo(updates: Partial<User>): void {
+  updateUserInfo(updates: Partial<any>): void {
     const currentUser = this.getStoredUser();
     if (currentUser) {
       const updatedUser = { ...currentUser, ...updates };

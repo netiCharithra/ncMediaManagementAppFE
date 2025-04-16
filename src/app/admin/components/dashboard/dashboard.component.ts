@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
+import { StorageService } from '../../services/storage.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -61,16 +62,16 @@ export class DashboardComponent implements OnInit {
     }
   ];
 
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService, private storageService: StorageService) {}
 
   ngOnInit() {
     this.loadUserData();
   }
 
   private loadUserData() {
-    const userData = this.authService.getCurrentUser();
+    const userData = this.storageService.getStoredUser();
     if (userData) {
-      this.userName = userData.name;
+      this.userName = userData?.name;
     }
   }
 
