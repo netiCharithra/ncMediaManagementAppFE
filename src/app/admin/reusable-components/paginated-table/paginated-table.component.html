@@ -1,0 +1,82 @@
+<!-- table.component.html -->
+<div class="table-container">
+    <div class="table-responsive p-0 m-0">
+      <table class="table table-hover">
+        <thead>
+          <tr >
+            <ng-container>
+                <th [ngStyle]="{'min-width': (metaData?.actions?.length * 3) + 'rem'}" *ngIf="metaData?.actions?.length>0">
+
+                    Actions
+                </th>
+            </ng-container>
+            <th style="min-width: 13rem;" *ngFor="let column of columns" scope="col"   [ngStyle]="column?.style || {}" 
+            >{{ column.label }}</th>
+          </tr>
+        </thead>
+        <tbody>
+            <ng-container *ngIf="data && data.length > 0; else noRecordsTemplate">
+
+          <tr *ngFor="let row of data">
+            <ng-container>
+                <td   *ngIf="metaData?.actions?.length>0"
+                    
+                    [ngStyle]="{'min-width': (metaData?.actions?.length * 3) + 'rem'}">
+
+                    <ng-container *ngFor="let actButton of metaData.actions">
+                        <button *ngIf="actButton.type === 'button'" class="btn btn-sm m-1 {{actButton.class}}
+                        
+                         {{checkDisabledCondition(actButton,row) ? 'd-none' : ''}}
+                        
+                        " (click)="triggerAction(actButton.key, actButton, row)" [title]="actButton.tooltip"
+                            placement="right">
+                            <i *ngIf="actButton.icon" [ngClass]="actButton.icon"></i>
+                            <span *ngIf="actButton.label">{{actButton.label}}</span>
+                        </button>
+
+                    </ng-container>
+
+                </td>
+            </ng-container>
+            <td style="min-width: 13rem;" *ngFor="let column of columns"   [ngStyle]="column?.style || {}" 
+            >
+                <ng-container *ngIf="column?.['type'] === 'dataTimePipe'; else defaultText">
+                    {{row[column.key] | date:'medium'}}
+
+                </ng-container>
+                <ng-template #defaultText>
+
+                    {{row[column.key]}}
+                </ng-template>
+                </td>
+          </tr>
+
+          </ng-container>
+        </tbody>
+      </table>
+    </div>
+  
+    <nav aria-label="Table navigation" *ngIf="totalPages > 1">
+      <ul class="pagination justify-content-center">
+        <li class="page-item" [class.disabled]="page === 1">
+          <a class="page-link" (click)="onPageChange(page - 1)" aria-label="Previous">
+            <span aria-hidden="true">&laquo;</span>
+          </a>
+        </li>
+        <li class="page-item" *ngFor="let page of [].constructor(totalPages); let i = index"
+            [class.active]="page === i + 1">
+          <a class="page-link" (click)="onPageChange(i + 1)">{{ i + 1 }}</a>
+        </li>
+        <li class="page-item" [class.disabled]="page === totalPages">
+          <a class="page-link" (click)="onPageChange(page + 1)" aria-label="Next">
+            <span aria-hidden="true">&raquo;</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+  <ng-template #noRecordsTemplate>
+    <tr>
+      <td [attr.colspan]="metaData?.actions?.length + columns.length" class="text-center">{{noRecordsMessage || 'No records found.'}}</td>
+    </tr>
+  </ng-template>

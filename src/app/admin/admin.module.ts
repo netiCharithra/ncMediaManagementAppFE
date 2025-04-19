@@ -9,13 +9,15 @@ import { LoginComponent } from './components/login/login.component';
 import { NavigationComponent } from './components/navigation/navigation.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { UserInfoComponent } from './components/user-info/user-info.component';
+import { PaginatedTableComponent } from './reusable-components/paginated-table/paginated-table.component';
 
 @NgModule({
   declarations: [
     LoginComponent,
     NavigationComponent,
     DashboardComponent,
-    UserInfoComponent
+    UserInfoComponent,
+    PaginatedTableComponent
   ],
   imports: [
     CommonModule,
