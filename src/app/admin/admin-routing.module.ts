@@ -5,6 +5,7 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { UserInfoComponent } from './components/user-info/user-info.component';
 import { NavigationComponent } from './components/navigation/navigation.component';
 import { AuthGuard } from './guards/auth.guard';
+import { NewsManagementComponent } from './components/news-management/news-management.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent, canActivate: [AuthGuard] },
@@ -15,6 +16,7 @@ const routes: Routes = [
     children: [
       { path: 'dashboard', component: DashboardComponent },
       { path: 'user-info', component: UserInfoComponent },
+      { path: 'news-management', component: NewsManagementComponent },
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
     ]
   }

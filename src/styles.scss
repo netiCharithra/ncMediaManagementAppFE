@@ -1,4 +1,5 @@
 /* You can add global styles to this file, and also import other style files */
+@import "@angular/material/prebuilt-themes/indigo-pink.css";
 
 // Custom theme colors
 $primary-red: #dc3545;
@@ -22,6 +23,12 @@ $light-red: lighten($primary-red, 40%);
 body {
   background-color: var(--background-color);
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  margin: 0;
+}
+
+// Material Form Field styles
+.mat-form-field {
+  width: 100%;
 }
 
 // Custom button styles
@@ -97,4 +104,44 @@ h2 {
   .mat-simple-snackbar-action {
     color: white;
   }
+}
+
+// News Management styles
+.news-management-container {
+  .news-controls-section {
+    background-color: #fff;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+
+    .news-filter {
+      flex: 0 0 300px;
+      
+      h5 {
+        color: var(--secondary-color);
+        font-weight: 500;
+      }
+    }
+
+    .news-actions {
+      .report-news-btn {
+        height: 45px;
+        padding: 0 24px;
+        
+        i {
+          margin-right: 8px;
+          font-size: 14px;
+        }
+      }
+    }
+  }
+
+  .mat-form-field {
+    width: 100%;
+  }
+}
+
+.news-category-selector {
+  max-width: 300px;
+  margin: 0 auto;
 }

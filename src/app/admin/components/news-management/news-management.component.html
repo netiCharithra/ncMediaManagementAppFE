@@ -1,0 +1,45 @@
+<div class="news-management-container">
+  <div class="news-management-header">
+    <h1>News Management</h1>
+    <p class="subtitle">Manage all news articles in one place.</p>
+  </div>
+
+  <div class="news-management-card w-100">
+    <div class="h-100 w-100">
+      <div class="news-controls-section mb-4">
+        <div class="d-flex justify-content-between align-items-center">
+          <div class="news-filter">
+            <h5 class="mb-2">Filter News</h5>
+            <mat-form-field>
+              <mat-label>Select News Category</mat-label>
+              <mat-select [(ngModel)]="selectedTab" (selectionChange)="onTabChange($event.value)">
+                <mat-option [value]="0">Pending News</mat-option>
+                <mat-option [value]="1">Approved News</mat-option>
+                <mat-option [value]="2">Rejected News</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="news-actions">
+            <button mat-raised-button color="primary" class="report-news-btn">
+              <i class="fa-solid fa-plus"></i>
+              Report a News
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <nc-web-paginated-table *ngIf="newsData.header" 
+        [columns]="newsData.header"
+        [data]="newsData.body" 
+        [page]="newsData.page" 
+        [itemsPerPage]="newsData.count"
+        [totalItems]="newsData.totalNumberOfRecords" 
+        [metaData]="newsData.metaData"
+        (pageChange)="onPageChange($event)" 
+        (actionEmitter)="actionEmitterPendingNews($event)"
+        [noRecordsMessage]="getNoRecordsMessage()">
+      </nc-web-paginated-table>
+    </div>
+  </div>
+</div>
+<!-- TODO: Add news management UI here -->

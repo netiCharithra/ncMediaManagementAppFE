@@ -32,6 +32,12 @@
           <span>User Info</span>
         </a>
       </li>
+      <li class="nav-item" routerLinkActive="active">
+        <a routerLink="/admin/news-management" (click)="isMobile ? toggleMenu() : null">
+          <i class="fas fa-newspaper"></i>
+          <span>News Management</span>
+        </a>
+      </li>
     </ul>
 
     <div class="sidebar-footer">
