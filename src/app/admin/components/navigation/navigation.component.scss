@@ -299,11 +299,11 @@ $hover-bg: #f5f5f5;
   flex: 1;
   padding: $spacing-lg;
   overflow-y: auto;
-  margin-left: $sidebar-collapsed-width;
+  // margin-left: $sidebar-collapsed-width;
   transition: margin-left $transition-normal;
 
   &.expanded {
-    margin-left: $sidebar-width;
+    // margin-left: $sidebar-width;
   }
 
   @media (max-width: $breakpoint-md) {
