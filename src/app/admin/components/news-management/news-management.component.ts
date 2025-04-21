@@ -5,6 +5,9 @@ import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 import { MessageService } from '../../services/message.service';
 import { environment } from '../../../../environments/environment';
+import { LanguageService } from '../../../services/language.service'; 
+import { CommonFunctionalityService } from '../../services/common-functionality.service';
+declare var bootstrap: any;
 
 @Component({
   selector: 'app-news-management',
@@ -34,13 +37,16 @@ export class NewsManagementComponent implements OnInit {
   public uploadOnlineTempURL: any = '';
   public images: any = '';
   public loggedUserDetails: any = {};
+  public showLoader: boolean = false;
 
   constructor(
     private appService: AdminService, 
     private messageService: MessageService, 
     private storage: StorageService, 
     private http: HttpClient, 
-    private _activatedRoute: ActivatedRoute
+    private _activatedRoute: ActivatedRoute,
+    public languageService: LanguageService ,
+    public commonFunctionality:CommonFunctionalityService
   ) {
     this.loggedUserDetails = this.storage.getStoredUser();
     console.log("loggedUserDetails", this.loggedUserDetails);
@@ -71,7 +77,7 @@ export class NewsManagementComponent implements OnInit {
     const category = this.newsCategories[this.selectedTab];
     
     try {
-      this.appService.loaderService = true;
+      this.showLoader = true;
       
       let fetchMethod;
       switch(category) {
@@ -105,13 +111,13 @@ export class NewsManagementComponent implements OnInit {
         } else {
           this.messageService.showError(response.msg || "Failed!");
         }
-        this.appService.loaderService = false;
+        this.showLoader = false;
       }, (error) => {
         console.error(error);
-        this.appService.loaderService = false;
+        this.showLoader = false;
       });
     } catch (error) {
-      this.appService.loaderService = false;
+      this.showLoader = false;
       console.error(error);
     }
   };
@@ -121,37 +127,20 @@ export class NewsManagementComponent implements OnInit {
     this.fetchNewsList();
   }
 
-  openImageUpload() {
-    if (this.publishNewsForm['images'] && this.publishNewsForm['images'].length > 3) {
-      this.messageService.showError("Maximum 3 files can be uploaded!");
-      return;
-    } else {
-      this.uploadOnlineTempURL = '';
-      document.getElementById('myModalBtn')?.click();
+  openImageUploadModal(): void {
+    if (!this.disableFields) {
+      const modal = new bootstrap.Modal(document.getElementById('myModal'));
+      modal.show();
     }
   }
 
-  removeImage = (index: any, imageInfo: any) => {
-    console.log('imageInfo', imageInfo);
-
-    if (this.publishNewsForm['images'][index]['externalURL']) {
-      this.publishNewsForm['images'].splice(index, 1);
-    } else {
-      this.appService.deleteS3Images(imageInfo).subscribe(
-        (response: any) => {
-          if (response.status === "success") {
-            this.publishNewsForm['images'].splice(index, 1);
-          } else {
-            this.messageService.showError(response.msg || "Failed!");
-          }
-          this.appService.loaderService = false;
-        },
-        (error) => {
-          this.appService.loaderService = false;
-          console.error('Upload error:', error);
-        });
+  removeImage(index: number, image: any): void {
+    this.publishNewsForm['images'].splice(index, 1);
+    // If array is empty after removal, initialize it as empty array to maintain type
+    if (this.publishNewsForm['images'].length === 0) {
+      this.publishNewsForm['images'] = [];
     }
-  };
+  }
   
   getNewsInfo = (data: any) => {
     try {
@@ -179,9 +168,10 @@ export class NewsManagementComponent implements OnInit {
     try {
       this.appService.loaderService = true;
       // 'AP_DISTRICTS', 'AP_DISTRICT_MANDALS'
+      console.log('hi')
       const metaList = stateId ? [stateId + '_DISTRICTS', stateId + '_DISTRICT_MANDALS'] : ['NEWS_CATEGORIES', 'STATES', 'ROLE', 'NEWS_TYPE', 'NEWS_SOURCES'];
       this.appService.getMetaData({ metaList }).subscribe((response) => {
-        this.metaData = { ...this.metaData, ...response['data'] || {} };
+        this.metaData = { ...this.metaData, ...response || {} };
         console.log(this.metaData);
         if (callFurtercalls) {
           const index = this.metaData['STATES'].findIndex((elem: any) => elem.label === eventRowData['rowData'].state);
@@ -226,7 +216,14 @@ export class NewsManagementComponent implements OnInit {
       console.log(payload);
       this.appService.manipulateNews({ type: this.actionType, data: payload }).subscribe((response) => {
         if (response.status === 'success') {
-          this.messageService.showInfo(response.msg || "Success");
+          this.messageService.showInfo(
+            this.languageService.getString(
+              this.actionType === 'create' ? 'newsCreatedSuccess' :
+              this.actionType === 'update' ? 'newsUpdatedSuccess' :
+              this.actionType === 'approve' ? 'newsApprovedSuccess' :
+              'newsRejectedSuccess'
+            )
+          );
           document.getElementById('publishNewsBtn')?.click();
           this.fetchNewsList();
           this.publishNewsForm = {};
@@ -258,7 +255,7 @@ export class NewsManagementComponent implements OnInit {
       this.publishNewsForm = {};
       if (event.type === 'create') {
         this.disableFields = false;
-        document.getElementById('publishNewsBtn')?.click();
+        this.openImageUploadModal();
       } else if (event.type === 'approve') {
         this.actionType = event.type;
         this.getMetaData(null, true, event);
@@ -299,7 +296,7 @@ export class NewsManagementComponent implements OnInit {
       return;
     }
 
-    this.appService.loaderService = true;
+    this.showLoader = true;
     let selectedFiles: File[] = [];
     let userData = this.loggedUserDetails;
     const formData = new FormData();
@@ -310,7 +307,6 @@ export class NewsManagementComponent implements OnInit {
 
     formData.append('fileName', "original");
 
-    // Use the AdminService's uploadNewsImages method instead of direct HTTP call
     this.appService.uploadNewsImages(formData).subscribe(
       (response: any) => {
         if (response.status === "success") {
@@ -323,10 +319,10 @@ export class NewsManagementComponent implements OnInit {
         } else {
           this.messageService.showError(response.msg || "Failed!");
         }
-        this.appService.loaderService = false;
+        this.showLoader = false;
       },
       (error) => {
-        this.appService.loaderService = false;
+        this.showLoader = false;
         console.error('Upload error:', error);
       });
   }
@@ -338,46 +334,60 @@ export class NewsManagementComponent implements OnInit {
   };
 
   getNoRecordsMessage(): string {
-    switch(this.newsCategories[this.selectedTab]) {
-      case 'pending':
-        return 'No Pending News to get approved';
-      case 'approved':
-        return 'No Approved News available in records';
-      case 'rejected':
-        return 'No Rejected News in records';
-      default:
-        return 'No records found';
-    }
+    const category = this.newsCategories[this.selectedTab];
+    const currentLang = this.languageService.getCurrentLanguage();
+    return currentLang === 'te' ? 
+      `${category === 'pending' ? 'పెండింగ్' : category === 'approved' ? 'ఆమోదించబడిన' : 'తిరస్కరించబడిన'} వార్తలు ఏవీ లేవు` :
+      `No ${category} news found`;
   }
 
   openUploadImageLocal = () => {
-    document.getElementById('myModalBtn')?.click();
-    document.getElementById('publishNewsBtn')?.click();
-    setTimeout(() => {
-      document.getElementById('loginimages')?.click();
-    }, 500);
+    document.getElementById('loginimages')?.click();
   };
 
+  
   addImageURL = async () => {
     if (!this.uploadOnlineTempURL) {
       this.messageService.showError("IMAGE URL NEEDED");
       return;
     }
-    
-    // Simple image URL validation
-    const isValidImageUrl = this.uploadOnlineTempURL.match(/\.(jpeg|jpg|gif|png)$/) != null;
-    
-    if (isValidImageUrl) {
-      if (!Array.isArray(this.publishNewsForm['images'])) {
-        this.publishNewsForm['images'] = [];
+   
+    this.commonFunctionality.checkImage(this.uploadOnlineTempURL).subscribe(result => {
+      console.log(result,"ASSA");
+      if (result) {
+        if (!Array.isArray(this.publishNewsForm['images'])) {
+          this.publishNewsForm['images'] = [];
+        }
+
+        this.publishNewsForm['images'].push({ externalURL: this.uploadOnlineTempURL });
+        const modalElement = document.getElementById('myModal');
+        if (modalElement) {
+          const modal = bootstrap.Modal.getInstance(modalElement);
+          modal?.hide();
+        }
+      } else {
+        console.log("Invalid Image URL")
+        this.messageService.showError("Invalid Image URL");
       }
-
-      this.publishNewsForm['images'].push({ externalURL: this.uploadOnlineTempURL });
-
-      document.getElementById('myModalBtn')?.click();
-      document.getElementById('publishNewsBtn')?.click();
-    } else {
-      this.messageService.showError("Invalid Image URL");
-    }
+    });
   };
+
+  openReportNewsModal(): void {
+    this.actionType = 'create';
+    this.disableFields = false;
+    this.publishNewsForm = {
+      title: '',
+      sub_title: '',
+      description: '',
+      sourceLink: '',
+      images: [],
+      newsType: null,
+      category: null,
+      source: 'Neti Charithra',
+      reportedBy: this.loggedUserDetails
+    };
+    const modal = new bootstrap.Modal(document.getElementById('addEmployee'));
+    modal.show();
+  }
+  
 }

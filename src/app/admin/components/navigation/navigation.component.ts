@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { AuthService } from '../../services/auth.service';
 import { DataStore } from '../../store/data.store';
+import { LanguageService } from '../../../services/language.service';
 
 @Component({
   selector: 'app-navigation',
@@ -17,7 +18,8 @@ export class NavigationComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private dataStore: DataStore,
-    private router: Router
+    private router: Router,
+    public languageService: LanguageService
   ) {
     this.userData$ = this.dataStore.userData$;
   }

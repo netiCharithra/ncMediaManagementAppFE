@@ -9,6 +9,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 import { LoginComponent } from './components/login/login.component';
 import { NavigationComponent } from './components/navigation/navigation.component';
@@ -16,6 +17,7 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { UserInfoComponent } from './components/user-info/user-info.component';
 import { PaginatedTableComponent } from './reusable-components/paginated-table/paginated-table.component';
 import { NewsManagementComponent } from './components/news-management/news-management.component';
+import { AdminLoaderComponent } from './components/loader/loader.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +26,8 @@ import { NewsManagementComponent } from './components/news-management/news-manag
     DashboardComponent,
     UserInfoComponent,
     PaginatedTableComponent,
-    NewsManagementComponent
+    NewsManagementComponent,
+    AdminLoaderComponent
   ],
   imports: [
     CommonModule,
@@ -37,7 +40,8 @@ import { NewsManagementComponent } from './components/news-management/news-manag
     MatSelectModule,
     MatFormFieldModule,
     MatButtonModule,
-    MatIconModule
+    MatIconModule,
+    NgSelectModule
   ]
 })
 export class AdminModule { }
