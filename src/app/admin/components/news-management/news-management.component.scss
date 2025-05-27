@@ -626,3 +626,23 @@
     gap: 10px;
   }
 }
+
+.form-control[readonly] {
+  background-color: #e9ecef;
+  opacity: 1;
+  cursor: not-allowed;
+}
+
+textarea[readonly] {
+  background-color: #e9ecef;
+  opacity: 1;
+  cursor: not-allowed;
+}
+
+// Add disabled styles for ng-select
+::ng-deep .ng-select.ng-select-disabled {
+  .ng-select-container {
+    background-color: #e9ecef;
+    cursor: not-allowed;
+  }
+}

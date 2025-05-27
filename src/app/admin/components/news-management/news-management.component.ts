@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { AdminService } from '../../services/admin.service';
 import { StorageService } from '../../services/storage.service';
 import { HttpClient } from '@angular/common/http';
@@ -16,6 +16,7 @@ declare var bootstrap: any;
 })
 
 export class NewsManagementComponent implements OnInit {
+  @ViewChild('newsForm') newsForm: any;
 
   public employeesList: any = [];
   public selectedTab: number = 0;
@@ -71,6 +72,12 @@ export class NewsManagementComponent implements OnInit {
   ngOnInit(): void {
     this.getMetaData();
     this.fetchNewsList();
+  }
+
+  ngAfterViewInit() {
+    if (this.newsForm) {
+      this.newsForm.form.updateValueAndValidity();
+    }
   }
 
   fetchNewsList = () => {
@@ -147,14 +154,18 @@ export class NewsManagementComponent implements OnInit {
       this.appService.loaderService = true;
       this.appService.getNewsInfo(data).subscribe((response) => {
         if (response) {
-          this.publishNewsForm = response || {};
+          this.publishNewsForm = response ? { ...response } : {};
           this.publishNewsForm['initalDataCopy'] = JSON.parse(JSON.stringify(this.publishNewsForm));
           if(!this.publishNewsForm['priorityIndex']){
             this.publishNewsForm['priorityIndex'] = false;
           }
-          const modal = new bootstrap.Modal(document.getElementById('addEmployee'));
-          modal.show();
-          // document.getElementById('publishNewsBtn')?.click();
+          
+          // Add a small delay to ensure the form is properly initialized
+          setTimeout(() => {
+            const modal = new bootstrap.Modal(document.getElementById('addEmployee'));
+            modal.show();
+            this.updateFormState();
+          }, 100);
         } else {
           this.messageService.showError(response.msg || "Failed!");
         }
@@ -165,6 +176,27 @@ export class NewsManagementComponent implements OnInit {
       this.appService.loaderService = false;
     }
   };
+
+  updateFormState() {
+    if (this.newsForm) {
+      // Force form to update its state
+      Object.keys(this.newsForm.form.controls).forEach(key => {
+        const control = this.newsForm.form.get(key);
+        if (control) {
+          if (this.disableFields) {
+            // When fields are disabled, mark them as touched and valid
+            control.markAsTouched();
+            control.markAsPristine();
+            control.updateValueAndValidity();
+          } else {
+            // When fields are enabled, update their validity normally
+            control.updateValueAndValidity();
+          }
+        }
+      });
+      this.newsForm.form.updateValueAndValidity();
+    }
+  }
 
   getNewsActiveEmployees = (data: any) => {
     try {
@@ -226,6 +258,10 @@ export class NewsManagementComponent implements OnInit {
     }
   }
   signUpCreds = () => {
+    if (this.newsForm && !this.newsForm.form.valid) {
+      console.log('Form is invalid:', this.newsForm.form.errors);
+      return;
+    }
     this.appService.loaderService = true;
     try {
       let payload = this.publishNewsForm;
@@ -290,10 +326,12 @@ export class NewsManagementComponent implements OnInit {
         this.actionType = event.type;
         this.getMetaData(null, true, event);
         this.disableFields = true;
+        setTimeout(() => this.updateFormState(), 100);
       } else if (event.type === 'reject') {
         this.actionType = event.type;
         this.getMetaData(null, true, event);
         this.disableFields = true;
+        setTimeout(() => this.updateFormState(), 100);
       } else if (event.type === 'update') {
         this.actionType = event.type;
         this.getMetaData(null, true, event);
@@ -302,6 +340,7 @@ export class NewsManagementComponent implements OnInit {
         this.actionType = event.type;
         this.getMetaData(null, true, event);
         this.disableFields = true;
+        setTimeout(() => this.updateFormState(), 100);
       } else if (event.type === 'headerActionSelect') {
         console.log(event);
       }

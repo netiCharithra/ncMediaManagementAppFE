@@ -20,7 +20,7 @@ export class AdminService {
     NEWS_INFO: `/admin/getIndividualNewsInfo`,
 
 
-    
+
     NEWS_APPROVE: `/admin/news/approve`,
     NEWS_REJECT: `/admin/news/reject`,
     NEWS_CREATE: `/admin/news/create`,
@@ -104,14 +104,14 @@ export class AdminService {
    * Approve a news article
    */
   approveNews(params: any): Observable<any> {
-    return this.httpService.post(this.API_ENDPOINTS.NEWS_APPROVE, { ...params });
+    return this.httpService.post(this.API_ENDPOINTS.MANIPULATE_NEWS, { ...params },undefined,undefined,true);
   }
 
   /**
    * Reject a news article
    */
   rejectNews(params: any): Observable<any> {
-    return this.httpService.post(this.API_ENDPOINTS.NEWS_REJECT, { ...params });
+    return this.httpService.post(this.API_ENDPOINTS.MANIPULATE_NEWS, { ...params },undefined,undefined,true);
   }
 
   /**
