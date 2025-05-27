@@ -12,14 +12,21 @@ export class AdminService {
     PENDING_NEWS: `/admin/news/pending`,
     APPROVED_NEWS: `/admin/news/approved`,
     REJECTED_NEWS: `/admin/news/rejected`,
-    NEWS_INFO: `/admin/news/info`,
+    NEWS_UPLOAD_IMAGES: `/uploadFiles`,
+
+    NEWS_ACTIVE_EMPLOYEES: `/admin/news/active-employees`,
+    MANIPULATE_NEWS:'/admin/manipulateNews',
+
+    NEWS_INFO: `/admin/getIndividualNewsInfo`,
+
+
+    
     NEWS_APPROVE: `/admin/news/approve`,
     NEWS_REJECT: `/admin/news/reject`,
     NEWS_CREATE: `/admin/news/create`,
     NEWS_UPDATE: `/admin/news/update`,
     NEWS_DELETE: `/admin/news/delete`,
     NEWS_FEATURE: `/admin/news/feature`,
-    NEWS_UPLOAD_IMAGES: `/admin/news/upload-images`,
     DELETE_S3_IMAGES: `/admin/news/delete-image`,
     
     // Category Management
@@ -74,6 +81,9 @@ export class AdminService {
   fetchRejectedNewsList(params: any): Observable<any> {
     return this.httpService.post(this.API_ENDPOINTS.REJECTED_NEWS, { ...params });
   }
+  fetchNewsActiveEmployees(params: any): Observable<any> {
+    return this.httpService.post(this.API_ENDPOINTS.NEWS_ACTIVE_EMPLOYEES, { ...params });
+  }
 
   /**
    * Get approved news with pagination
@@ -108,21 +118,21 @@ export class AdminService {
    * Create a new news article
    */
   createNews(params: any): Observable<any> {
-    return this.httpService.post(this.API_ENDPOINTS.NEWS_CREATE, { ...params });
+    return this.httpService.post(this.API_ENDPOINTS.MANIPULATE_NEWS, { ...params },undefined,undefined,true);
   }
 
   /**
    * Update an existing news article
    */
   updateNews(params: any): Observable<any> {
-    return this.httpService.post(this.API_ENDPOINTS.NEWS_UPDATE, { ...params });
+    return this.httpService.post(this.API_ENDPOINTS.MANIPULATE_NEWS, { ...params },undefined,undefined,true);
   }
 
   /**
    * Delete a news article
    */
   deleteNews(params: any): Observable<any> {
-    return this.httpService.post(this.API_ENDPOINTS.NEWS_DELETE, { ...params });
+    return this.httpService.post(this.API_ENDPOINTS.MANIPULATE_NEWS, { ...params },undefined,undefined,true);
   }
 
   /**
@@ -142,8 +152,8 @@ export class AdminService {
   /**
    * Upload images for a news article
    */
-  uploadNewsImages(formData: FormData): Observable<any> {
-    return this.httpService.post(this.API_ENDPOINTS.NEWS_UPLOAD_IMAGES, formData);
+  uploadNewsImages(formData: any): Observable<any> {
+    return this.httpService.post(this.API_ENDPOINTS.NEWS_UPLOAD_IMAGES, null, undefined, formData);
   }
 
   /**
@@ -224,13 +234,13 @@ export class AdminService {
     
     switch (type) {
       case 'create':
-        return this.createNews(data);
+        return this.createNews(params);
       case 'update':
-        return this.updateNews(data);
+        return this.updateNews(params);
       case 'approve':
-        return this.approveNews(data);
+        return this.approveNews(params);
       case 'reject':
-        return this.rejectNews(data);
+        return this.rejectNews(params);
       default:
         throw new Error(`Unknown manipulation type: ${type}`);
     }

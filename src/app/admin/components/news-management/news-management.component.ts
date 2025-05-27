@@ -146,16 +146,40 @@ export class NewsManagementComponent implements OnInit {
     try {
       this.appService.loaderService = true;
       this.appService.getNewsInfo(data).subscribe((response) => {
-        if (response.status === 'success') {
-          this.publishNewsForm = response['data'] || {};
+        if (response) {
+          this.publishNewsForm = response || {};
           this.publishNewsForm['initalDataCopy'] = JSON.parse(JSON.stringify(this.publishNewsForm));
           if(!this.publishNewsForm['priorityIndex']){
             this.publishNewsForm['priorityIndex'] = false;
           }
-          document.getElementById('publishNewsBtn')?.click();
+          const modal = new bootstrap.Modal(document.getElementById('addEmployee'));
+          modal.show();
+          // document.getElementById('publishNewsBtn')?.click();
         } else {
           this.messageService.showError(response.msg || "Failed!");
         }
+        this.appService.loaderService = false;
+      });
+    } catch (error) {
+      console.error(error);
+      this.appService.loaderService = false;
+    }
+  };
+
+  getNewsActiveEmployees = (data: any) => {
+    try {
+      console.log("ac",data)
+      if(data?.label !== 'Neti Charithra'){
+        return
+      }
+      const payload={
+        employeeId:this.loggedUserDetails?.employeeId,
+        role:this.loggedUserDetails?.role
+      }
+      this.appService.loaderService = true;
+      this.appService.fetchNewsActiveEmployees(payload).subscribe((response) => {
+        console.log('empResp',response)
+        this.employeesList = response || [];
         this.appService.loaderService = false;
       });
     } catch (error) {
@@ -194,7 +218,13 @@ export class NewsManagementComponent implements OnInit {
   changeOfCheckBoxPriority(event:any){
     console.log(event);
   }
-  
+  logForm(form: any) {
+    console.log('Form:', form);
+    for (const key in form.controls) {
+      const control = form.controls[key];
+      console.log(`${key}:`, control.errors);
+    }
+  }
   signUpCreds = () => {
     this.appService.loaderService = true;
     try {
@@ -215,7 +245,7 @@ export class NewsManagementComponent implements OnInit {
       }
       console.log(payload);
       this.appService.manipulateNews({ type: this.actionType, data: payload }).subscribe((response) => {
-        if (response.status === 'success') {
+        if (response) {
           this.messageService.showInfo(
             this.languageService.getString(
               this.actionType === 'create' ? 'newsCreatedSuccess' :
@@ -224,7 +254,7 @@ export class NewsManagementComponent implements OnInit {
               'newsRejectedSuccess'
             )
           );
-          document.getElementById('publishNewsBtn')?.click();
+          document.getElementById('manipulateNewsCloseBtn')?.click();
           this.fetchNewsList();
           this.publishNewsForm = {};
         } else {
@@ -383,7 +413,7 @@ export class NewsManagementComponent implements OnInit {
       images: [],
       newsType: null,
       category: null,
-      source: 'Neti Charithra',
+      source: this.loggedUserDetails?.role === 'REPORTER' ? 'Neti Charithra' : null,
       reportedBy: this.loggedUserDetails
     };
     const modal = new bootstrap.Modal(document.getElementById('addEmployee'));

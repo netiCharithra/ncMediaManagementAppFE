@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable, map, catchError } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { LanguageService } from './language.service';
+import { StorageService } from '../admin/services/storage.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,7 @@ export class HttpService {
 
   constructor(
     private http: HttpClient,
-    private languageService: LanguageService
+    private languageService: LanguageService, private storage: StorageService
   ) {
     // Subscribe to language changes
     this.languageService.currentLang$.subscribe(lang => {
@@ -75,7 +76,7 @@ export class HttpService {
    * @param headers - Optional custom headers
    * @returns Observable of type any
    */
-  post(endpoint: string, body: any = {}, headers?: HttpHeaders): Observable<any> {
+  post(endpoint: string, body: any = {}, headers?: HttpHeaders, formData?:null, loggedUserDetails?:boolean): Observable<any> {
     const options: any = {};
     
     if (headers) {
@@ -83,12 +84,20 @@ export class HttpService {
     }
 
     // Add language to all POST requests
-    const bodyWithLanguage = {
+    let bodyWithLanguage = {
       ...body,
       language: this.selectedLanguage
     };
 
-    return this.http.post(`${this.baseUrl}${endpoint}`, bodyWithLanguage, options).pipe(
+   if(loggedUserDetails){
+    bodyWithLanguage={
+      ... this.storage.getStoredUser(),
+      ...bodyWithLanguage
+
+    }
+   }
+
+    return this.http.post(`${this.baseUrl}${endpoint}`, formData ? formData : bodyWithLanguage, options).pipe(
       map((response: any) => {
         if (response && response.status === 'success') {
           return response?.data;

@@ -69,7 +69,21 @@ export class LanguageService {
       // Navigation translations
       dashboard: 'Dashboard',
       userInfo: 'User Info',
-      logout: 'Logout'
+      logout: 'Logout',
+      // Employee management strings
+      employeeManagement: 'Employee Management',
+      addEmployee: 'Add Employee',
+      name: 'Name',
+      email: 'Email',
+      role: 'Role',
+      phone: 'Phone',
+      status: 'Status',
+      actions: 'Actions',
+      selectRole: 'Select Role',
+      active: 'Active',
+      inactive: 'Inactive',
+      save: 'Save',
+      reportedBy: 'Reported By'
     },
     te: {
       home: 'హోమ్',
@@ -130,7 +144,21 @@ export class LanguageService {
       // Navigation translations
       dashboard: 'డాష్‌బోర్డ్',
       userInfo: 'వినియోగదారు సమాచారం',
-      logout: 'లాగ్అవుట్'
+      logout: 'లాగ్అవుట్',
+      // Employee management strings
+      employeeManagement: 'ఉద్యోగుల నిర్వహణ',
+      addEmployee: 'ఉద్యోగిని జోడించండి',
+      name: 'పేరు',
+      email: 'ఇమెయిల్',
+      role: 'పాత్ర',
+      phone: 'ఫోన్',
+      status: 'స్థితి',
+      actions: 'చర్యలు',
+      selectRole: 'పాత్రను ఎంచుకోండి',
+      active: 'యాక్టివ్',
+      inactive: 'ఇన్యాక్టివ్',
+      save: 'సేవ్ చేయండి',
+      reportedBy: 'ప్రమాణం'
     }
   };
 

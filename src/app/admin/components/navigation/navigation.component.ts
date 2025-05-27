@@ -14,6 +14,7 @@ export class NavigationComponent implements OnInit {
   isExpanded = false;
   isMobile = window.innerWidth <= 768;
   userData$: Observable<any>;
+  currentLanguage: 'en' | 'te';
 
   constructor(
     private authService: AuthService,
@@ -22,6 +23,12 @@ export class NavigationComponent implements OnInit {
     public languageService: LanguageService
   ) {
     this.userData$ = this.dataStore.userData$;
+    this.currentLanguage = this.languageService.getCurrentLanguage();
+    
+    // Subscribe to language changes
+    this.languageService.currentLang$.subscribe(lang => {
+      this.currentLanguage = lang;
+    });
   }
 
   ngOnInit(): void {
@@ -50,5 +57,10 @@ export class NavigationComponent implements OnInit {
   logout(): void {
     this.authService.logout();
     this.router.navigate(['/admin/login']);
+  }
+
+  switchLanguage(event: Event): void {
+    const select = event.target as HTMLSelectElement;
+    this.languageService.setLanguage(select.value as 'en' | 'te');
   }
 }

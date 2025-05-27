@@ -18,6 +18,7 @@ import { UserInfoComponent } from './components/user-info/user-info.component';
 import { PaginatedTableComponent } from './reusable-components/paginated-table/paginated-table.component';
 import { NewsManagementComponent } from './components/news-management/news-management.component';
 import { AdminLoaderComponent } from './components/loader/loader.component';
+import { EmployeeManagementComponent } from './components/employee-management/employee-management.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { AdminLoaderComponent } from './components/loader/loader.component';
     UserInfoComponent,
     PaginatedTableComponent,
     NewsManagementComponent,
-    AdminLoaderComponent
+    AdminLoaderComponent,
+    EmployeeManagementComponent
   ],
   imports: [
     CommonModule,

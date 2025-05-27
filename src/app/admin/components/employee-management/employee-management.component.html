@@ -1,0 +1,118 @@
+<div class="employee-management">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h4 class="card-title">{{ languageService.getString('employeeManagement') }}</h4>
+                            <button class="btn btn-primary" (click)="resetForm()">
+                                <i class="fa-solid fa-plus"></i>
+                                {{ languageService.getString('addEmployee') }}
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <form #employeeForm="ngForm" (ngSubmit)="createEmployee()">
+                            <div class="row">
+                                <!-- Name -->
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">{{ languageService.getString('name') }}</label>
+                                    <input type="text" class="form-control" name="name" 
+                                           [(ngModel)]="employeeData.name" required
+                                           #name="ngModel"
+                                           [ngClass]="{ 'is-invalid': employeeForm.submitted && name.invalid }">
+                                    <div class="invalid-feedback" *ngIf="employeeForm.submitted && name.invalid">
+                                        <div *ngIf="name.errors?.['required']">{{ languageService.getString('fieldRequired') }}</div>
+                                    </div>
+                                </div>
+
+                                <!-- Email -->
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">{{ languageService.getString('email') }}</label>
+                                    <input type="email" class="form-control" name="email" 
+                                           [(ngModel)]="employeeData.email" required email
+                                           #email="ngModel"
+                                           [ngClass]="{ 'is-invalid': employeeForm.submitted && email.invalid }">
+                                    <div class="invalid-feedback" *ngIf="employeeForm.submitted && email.invalid">
+                                        <div *ngIf="email.errors?.['required']">{{ languageService.getString('fieldRequired') }}</div>
+                                        <div *ngIf="email.errors?.['email']">Invalid email format</div>
+                                    </div>
+                                </div>
+
+                                <!-- Role -->
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">{{ languageService.getString('role') }}</label>
+                                    <select class="form-select" name="role" 
+                                            [(ngModel)]="employeeData.role" required
+                                            #role="ngModel"
+                                            [ngClass]="{ 'is-invalid': employeeForm.submitted && role.invalid }">
+                                        <option value="">{{ languageService.getString('selectRole') }}</option>
+                                        <option value="ADMIN">Admin</option>
+                                        <option value="EDITOR">Editor</option>
+                                        <option value="REPORTER">Reporter</option>
+                                    </select>
+                                    <div class="invalid-feedback" *ngIf="employeeForm.submitted && role.invalid">
+                                        <div *ngIf="role.errors?.['required']">{{ languageService.getString('fieldRequired') }}</div>
+                                    </div>
+                                </div>
+
+                                <!-- Phone -->
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">{{ languageService.getString('phone') }}</label>
+                                    <input type="tel" class="form-control" name="phone" 
+                                           [(ngModel)]="employeeData.phone"
+                                           #phoneInput="ngModel">
+                                </div>
+
+                                <!-- Status -->
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">{{ languageService.getString('status') }}</label>
+                                    <select class="form-select" name="status" 
+                                            [(ngModel)]="employeeData.status" required
+                                            #status="ngModel"
+                                            [ngClass]="{ 'is-invalid': employeeForm.submitted && status.invalid }">
+                                        <option value="active">{{ languageService.getString('active') }}</option>
+                                        <option value="inactive">{{ languageService.getString('inactive') }}</option>
+                                    </select>
+                                    <div class="invalid-feedback" *ngIf="employeeForm.submitted && status.invalid">
+                                        <div *ngIf="status.errors?.['required']">{{ languageService.getString('fieldRequired') }}</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Submit Button -->
+                            <div class="row mt-3">
+                                <div class="col-12">
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="fa-solid fa-save"></i>
+                                        {{ languageService.getString('save') }}
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+
+                        <!-- Employee List Table -->
+                        <div class="table-responsive mt-4">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>{{ languageService.getString('name') }}</th>
+                                        <th>{{ languageService.getString('email') }}</th>
+                                        <th>{{ languageService.getString('role') }}</th>
+                                        <th>{{ languageService.getString('phone') }}</th>
+                                        <th>{{ languageService.getString('status') }}</th>
+                                        <th>{{ languageService.getString('actions') }}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Employee rows will be dynamically added here -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

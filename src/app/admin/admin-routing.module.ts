@@ -6,6 +6,7 @@ import { UserInfoComponent } from './components/user-info/user-info.component';
 import { NavigationComponent } from './components/navigation/navigation.component';
 import { AuthGuard } from './guards/auth.guard';
 import { NewsManagementComponent } from './components/news-management/news-management.component';
+import { EmployeeManagementComponent } from './components/employee-management/employee-management.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent, canActivate: [AuthGuard] },
@@ -17,6 +18,7 @@ const routes: Routes = [
       { path: 'dashboard', component: DashboardComponent },
       { path: 'user-info', component: UserInfoComponent },
       { path: 'news-management', component: NewsManagementComponent },
+      { path: 'employee-management', component: EmployeeManagementComponent },
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
     ]
   }

@@ -1,0 +1,85 @@
+// @import '../../styles/theme';
+
+// .employee-management {
+//   padding: 20px;
+
+//   .card {
+//     @include elevation(2);
+//     border: none;
+//     border-radius: $border-radius-lg;
+//     background: $bg-primary;
+
+//     .card-header {
+//       background: none;
+//       border-bottom: 1px solid $border-light;
+//       padding: 1.5rem;
+
+//       .card-title {
+//         margin: 0;
+//         color: $text-primary;
+//         font-weight: 600;
+//       }
+//     }
+
+//     .card-body {
+//       padding: 1.5rem;
+
+//       .form-label {
+//         color: $text-secondary;
+//         font-weight: 500;
+//       }
+
+//       .form-control, .form-select {
+//         border: 1px solid $border-light;
+//         border-radius: $border-radius-sm;
+//         padding: 0.5rem 1rem;
+        
+//         &:focus {
+//           border-color: $primary;
+//           box-shadow: none;
+//         }
+//       }
+
+//       .table {
+//         th {
+//           color: $text-secondary;
+//           font-weight: 600;
+//           border-bottom: 2px solid $border-light;
+//         }
+
+//         td {
+//           color: $text-primary;
+//           vertical-align: middle;
+//         }
+
+//         .status-badge {
+//           padding: 0.25rem 0.75rem;
+//           border-radius: $border-radius-sm;
+//           font-size: 0.875rem;
+//           font-weight: 500;
+
+//           &.active {
+//             background: rgba($success, 0.1);
+//             color: $success;
+//           }
+
+//           &.inactive {
+//             background: rgba($danger, 0.1);
+//             color: $danger;
+//           }
+//         }
+
+//         .action-buttons {
+//           .btn {
+//             padding: 0.25rem 0.5rem;
+//             margin-right: 0.5rem;
+
+//             &:last-child {
+//               margin-right: 0;
+//             }
+//           }
+//         }
+//       }
+//     }
+//   }
+// }

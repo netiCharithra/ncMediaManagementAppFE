@@ -38,9 +38,22 @@
           <span>{{ languageService.getString('newsManagement') }}</span>
         </a>
       </li>
+      <li class="nav-item" routerLinkActive="active">
+        <a routerLink="/admin/employee-management" (click)="isMobile ? toggleMenu() : null">
+          <i class="fas fa-users"></i>
+          <span>{{ languageService.getString('employeeManagement') }}</span>
+        </a>
+      </li>
     </ul>
 
     <div class="sidebar-footer">
+      <!-- Language Selector -->
+      <div class="language-selector">
+        <select [value]="currentLanguage" (change)="switchLanguage($event)" class="form-select">
+          <option value="en">English</option>
+          <option value="te">తెలుగు</option>
+        </select>
+      </div>
       <div class="user-profile" *ngIf="userData$ | async as user">
         <i class="fas fa-user-circle"></i>
         <div class="user-info">

@@ -1,5 +1,73 @@
 @import '../../styles/theme';
 
+// Common image styles mixin
+@mixin image-preview-styles {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 15px;
+  padding: 10px;
+  margin: 15px -10px -10px -10px;
+
+  .image-item {
+    position: relative;
+    width: 200px;
+    height: 200px;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid #ddd;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    margin: 0 auto;
+    
+    img {
+      width: 100% !important;
+      height: 100% !important;
+      object-fit: cover !important;
+      object-position: center !important;
+      transition: transform 0.3s ease;
+    }
+
+    &:hover {
+      img {
+        transform: scale(1.05);
+      }
+    }
+
+    .remove-image {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      width: 28px;
+      height: 28px;
+      border: none;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.95);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      padding: 0;
+      transition: all 0.2s ease;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+      z-index: 2;
+
+      &:hover {
+        background: #dc3545;
+        transform: scale(1.1);
+        
+        i {
+          color: white;
+        }
+      }
+
+      i {
+        font-size: 14px;
+        color: #dc3545;
+        line-height: 1;
+      }
+    }
+  }
+}
+
 .news-management-container {
   padding: 2rem;
   transition: margin-left 0.3s ease;
@@ -137,64 +205,14 @@
           }
         }
 
-        .image-preview {
-          display: grid;
-          grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-          gap: 15px;
+        .image-upload-section {
+          border: 2px dashed $border-light;
+          border-radius: $border-radius-sm;
+          padding: $spacing-md;
           margin-top: 15px;
-          padding: 10px;
 
-          .image-item {
-            position: relative;
-            width: 200px;
-            height: 150px;
-            border-radius: 8px;
-            overflow: hidden;
-            border: 1px solid #ddd;
-            
-            img {
-              width: 100%;
-              height: 100%;
-              object-fit: cover;
-              object-position: center;
-            }
-
-            .remove-image {
-              position: absolute;
-              top: 8px;
-              right: 8px;
-              width: 28px;
-              height: 28px;
-              border: none;
-              border-radius: 50%;
-              background: rgba(255, 255, 255, 0.95);
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              cursor: pointer;
-              padding: 0;
-              transition: all 0.2s ease;
-              box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-
-              &:hover {
-                background: #dc3545;
-                transform: scale(1.1);
-                
-                i {
-                  color: white;
-                }
-              }
-
-              i {
-                font-size: 14px;
-                color: #dc3545;
-                line-height: 1;
-              }
-            }
-
-            &:hover {
-              box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-            }
+          .image-preview {
+            @include image-preview-styles;
           }
         }
       }
@@ -344,97 +362,30 @@
                 }
 
                 .image-preview {
-                  display: grid;
-                  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-                  gap: $spacing-sm;
-                  margin-top: $spacing-sm;
-
-                  .image-item {
-                    position: relative;
-                    aspect-ratio: 1;
-                    border-radius: $border-radius-sm;
-                    overflow: hidden;
-
-                    img {
-                      width: 100%;
-                      height: 100%;
-                      object-fit: cover;
-                    }
-
-                    .remove-image {
-                      position: absolute;
-                      top: 4px;
-                      right: 4px;
-                      width: 20px;
-                      height: 20px;
-                      border-radius: 50%;
-                      background: rgba($bg-primary, 0.8);
-                      border: none;
-                      display: flex;
-                      align-items: center;
-                      justify-content: center;
-                      cursor: pointer;
-                      padding: 0;
-                      font-size: 14px;
-                      color: $error;
-                      transition: all 0.2s;
-
-                      &:hover {
-                        background: $bg-primary;
-                        transform: scale(1.1);
-                      }
-                    }
-                  }
+                  @include image-preview-styles;
                 }
 
-                // ng-select customization
-                ::ng-deep {
-                  .ng-select {
-                    .ng-select-container {
-                      height: 36px !important;
-                      min-height: 36px !important;
-                      border: 1px solid $border-light;
-                      border-radius: $border-radius-sm;
-                      background-color: $bg-primary;
-                      transition: all 0.2s;
+                .remove-image {
+                  position: absolute;
+                  top: 4px;
+                  right: 4px;
+                  width: 20px;
+                  height: 20px;
+                  border-radius: 50%;
+                  background: rgba($bg-primary, 0.8);
+                  border: none;
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  cursor: pointer;
+                  padding: 0;
+                  font-size: 14px;
+                  color: $error;
+                  transition: all 0.2s;
 
-                      .ng-value-container {
-                        padding: 8px $spacing-sm;
-                        
-                        .ng-placeholder {
-                          color: $text-secondary;
-                          font-size: $font-size-sm;
-                          opacity: 0.7;
-                        }
-
-                        .ng-value {
-                          color: $text-primary;
-                          font-size: $font-size-sm;
-                        }
-
-                        .ng-input {
-                          padding-top: 0;
-                          padding-bottom: 0;
-                          
-                          > input {
-                            padding: 0;
-                            height: calc(36px - (2 * 8px));
-                            margin: 0;
-                          }
-                        }
-                      }
-
-                      &:hover {
-                        border-color: $primary-light;
-                      }
-                    }
-
-                    &.ng-select-focused {
-                      .ng-select-container {
-                        border-color: $primary;
-                        box-shadow: 0 0 0 2px rgba($primary, 0.1);
-                      }
-                    }
+                  &:hover {
+                    background: $bg-primary;
+                    transform: scale(1.1);
                   }
                 }
               }
