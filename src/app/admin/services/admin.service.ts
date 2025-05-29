@@ -7,7 +7,7 @@ import { environment } from '../../../environments/environment';
   providedIn: 'root'
 })
 export class AdminService {
-  private readonly API_ENDPOINTS = {
+  public readonly API_ENDPOINTS = {
     // News Management
     PENDING_NEWS: `/admin/news/pending`,
     APPROVED_NEWS: `/admin/news/approved`,
@@ -18,7 +18,12 @@ export class AdminService {
     MANIPULATE_NEWS:'/admin/manipulateNews',
 
     NEWS_INFO: `/admin/getIndividualNewsInfo`,
-
+    EMPLOYEES_LIST: `/admin/employeesData`,
+    EMPLOYEE_INFO: `/admin/individualEmployeeData`,
+    MANIPULATE_INDIVIDUAL_EMPLOYEE:'/admin/manipulateIndividualEmployee',
+    EMPLOYEE_TRACING:'/admin/employeeTracingListing',
+    MANIPULATE_EMPLOYEE_TRACING:'/admin/employeeTracingManagement',
+    EMPLOYEE_TRACING_ACTIVE_EMPLOYEE_LIST:'/admin/employeeTracingActiveEmployeeList',
 
 
     NEWS_APPROVE: `/admin/news/approve`,
@@ -90,6 +95,26 @@ export class AdminService {
    */
   getApprovedNews(params: any): Observable<any> {
     return this.httpService.post(this.API_ENDPOINTS.APPROVED_NEWS, { ...params });
+  }
+  /**
+   * Get employees list with pagination
+   */
+  getEmployeesList(params: any): Observable<any> {
+    return this.httpService.post(this.API_ENDPOINTS.EMPLOYEES_LIST, { ...params });
+  }
+
+  /**
+   * Get employee information by ID
+   */
+  getEmployeeData(params: any): Observable<any> {
+    return this.httpService.post(this.API_ENDPOINTS.EMPLOYEE_INFO, { ...params });
+  }
+
+  /**
+   * Manipulate individual employee
+   */
+  manipulateIndividualEmployee(params: any): Observable<any> {
+    return this.httpService.post(this.API_ENDPOINTS.MANIPULATE_INDIVIDUAL_EMPLOYEE, { ...params },undefined,undefined,false,true);
   }
 
 
@@ -224,6 +249,27 @@ export class AdminService {
    */
   getMetaData(params: any): Observable<any> {
     return this.httpService.post(this.API_ENDPOINTS.META_DATA, { ...params });
+  }
+
+  /**
+   * Get employee tracing list
+   */
+  getEmployeTracingList(params: any): Observable<any> {
+    return this.httpService.post(this.API_ENDPOINTS.EMPLOYEE_TRACING, { ...params });
+  }
+
+  /**
+   * Manipulate employee tracing
+   */
+  manipulateEmployeTracing(params: any): Observable<any> {
+    return this.httpService.post(this.API_ENDPOINTS.MANIPULATE_EMPLOYEE_TRACING, { ...params },undefined,undefined,false,true);
+  }
+
+  /**
+   * Get all employeeTracingActiveEmployeeList
+   */
+  getEmployeeTracingActiveEmployeeList(params: any): Observable<any> {
+    return this.httpService.post(this.API_ENDPOINTS.EMPLOYEE_TRACING_ACTIVE_EMPLOYEE_LIST, { ...params });
   }
 
   /**

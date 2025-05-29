@@ -1,117 +1,364 @@
-<div class="employee-management">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-12">
-                <div class="card">
-                    <div class="card-header">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <h4 class="card-title">{{ languageService.getString('employeeManagement') }}</h4>
-                            <button class="btn btn-primary" (click)="resetForm()">
-                                <i class="fa-solid fa-plus"></i>
-                                {{ languageService.getString('addEmployee') }}
-                            </button>
+<div class="news-management">
+    <app-admin-loader [show]="adminService.loaderService"></app-admin-loader>
+    <div class="news-header">
+        <div class="header-content">
+            <h2>
+                Employee Management
+
+            </h2>
+            <div class="controls">
+                <mat-form-field appearance="outline">
+                    <mat-select [(ngModel)]="employeeListData['action']" (selectionChange)="changeOfNewsType()">
+                        <mat-option value="Active">Active</mat-option>
+                        <mat-option value="Inactive">Inactive</mat-option>
+                        <mat-option value="Disabled">Disabled</mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <button mat-flat-button color="primary" class="report-news-btn"
+                    (click)="actionEmitter({type:'create'})">
+                    <i class="fa-solid fa-plus"></i>
+                    Add Employee
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <nc-web-paginated-table *ngIf="employeeListData.tableLoaded" [columns]="employeeListData.header"
+        [data]="employeeListData.body" [page]="employeeListData.page" [itemsPerPage]="employeeListData.count"
+        [totalItems]="employeeListData.totalNumberOfRecords" [metaData]="employeeListData.metaData"
+        (pageChange)="onPageChangeRejectedNews($event)" (actionEmitter)="actionEmitter($event)"
+        [noRecordsMessage]="'No Approved News available in records'"></nc-web-paginated-table>
+</div>
+
+
+<!-- <button type="button" id="addEmployeeBtnBtn" #addEmployeeBtnBtn class="btn btn-primary d-none" >
+    Add Employee
+</button>
+<button type="button" id="addEmployeeBtn" class="btn btn-primary d-none" data-bs-toggle="modal" data-bs-target="#addEmployee">
+    Add Employee
+</button> -->
+
+<!-- Modal -->
+<div class="modal fade" id="employeeFormModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+
+
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header justify-content-between">
+                <h5 class="modal-title" id="staticBackdropLabel">{{actionType === 'create' ? 'Create ' : actionType ===
+                    'edit' ? 'Edit':''}} Employee</h5>
+                <button type="button" class="close btn" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form (ngSubmit)="disableFields ? signUpCreds() : signUpForm.form.valid && signUpCreds()"
+                #signUpForm="ngForm" novalidate class="col-12 row m-0 p-0">
+                <div class="modal-body col-12 row custom-form-body">
+
+                    <div class="col-12 col-md-6 my-1">
+                        <label class="form-label" for="loginName">Name</label>
+                        <input type="text" id="loginName" class="form-control form-control-lg"
+                            placeholder="Enter a name as per Documents" name="name" [(ngModel)]="signUpFormValues['name']"
+                            #name="ngModel" required [disabled]="disableFields"
+                            [ngClass]="{ 'is-invalid': signUpForm.submitted && name.invalid }" />
+                        <div *ngIf="signUpForm.submitted && name.invalid" class="invalid-feedback">
+                            <div *ngIf="name?.errors?.['required']">This field is required</div>
                         </div>
                     </div>
-                    <div class="card-body">
-                        <form #employeeForm="ngForm" (ngSubmit)="createEmployee()">
-                            <div class="row">
-                                <!-- Name -->
-                                <div class="col-md-6 mb-3">
-                                    <label class="form-label">{{ languageService.getString('name') }}</label>
-                                    <input type="text" class="form-control" name="name" 
-                                           [(ngModel)]="employeeData.name" required
-                                           #name="ngModel"
-                                           [ngClass]="{ 'is-invalid': employeeForm.submitted && name.invalid }">
-                                    <div class="invalid-feedback" *ngIf="employeeForm.submitted && name.invalid">
-                                        <div *ngIf="name.errors?.['required']">{{ languageService.getString('fieldRequired') }}</div>
-                                    </div>
-                                </div>
-
-                                <!-- Email -->
-                                <div class="col-md-6 mb-3">
-                                    <label class="form-label">{{ languageService.getString('email') }}</label>
-                                    <input type="email" class="form-control" name="email" 
-                                           [(ngModel)]="employeeData.email" required email
-                                           #email="ngModel"
-                                           [ngClass]="{ 'is-invalid': employeeForm.submitted && email.invalid }">
-                                    <div class="invalid-feedback" *ngIf="employeeForm.submitted && email.invalid">
-                                        <div *ngIf="email.errors?.['required']">{{ languageService.getString('fieldRequired') }}</div>
-                                        <div *ngIf="email.errors?.['email']">Invalid email format</div>
-                                    </div>
-                                </div>
-
-                                <!-- Role -->
-                                <div class="col-md-6 mb-3">
-                                    <label class="form-label">{{ languageService.getString('role') }}</label>
-                                    <select class="form-select" name="role" 
-                                            [(ngModel)]="employeeData.role" required
-                                            #role="ngModel"
-                                            [ngClass]="{ 'is-invalid': employeeForm.submitted && role.invalid }">
-                                        <option value="">{{ languageService.getString('selectRole') }}</option>
-                                        <option value="ADMIN">Admin</option>
-                                        <option value="EDITOR">Editor</option>
-                                        <option value="REPORTER">Reporter</option>
-                                    </select>
-                                    <div class="invalid-feedback" *ngIf="employeeForm.submitted && role.invalid">
-                                        <div *ngIf="role.errors?.['required']">{{ languageService.getString('fieldRequired') }}</div>
-                                    </div>
-                                </div>
-
-                                <!-- Phone -->
-                                <div class="col-md-6 mb-3">
-                                    <label class="form-label">{{ languageService.getString('phone') }}</label>
-                                    <input type="tel" class="form-control" name="phone" 
-                                           [(ngModel)]="employeeData.phone"
-                                           #phoneInput="ngModel">
-                                </div>
-
-                                <!-- Status -->
-                                <div class="col-md-6 mb-3">
-                                    <label class="form-label">{{ languageService.getString('status') }}</label>
-                                    <select class="form-select" name="status" 
-                                            [(ngModel)]="employeeData.status" required
-                                            #status="ngModel"
-                                            [ngClass]="{ 'is-invalid': employeeForm.submitted && status.invalid }">
-                                        <option value="active">{{ languageService.getString('active') }}</option>
-                                        <option value="inactive">{{ languageService.getString('inactive') }}</option>
-                                    </select>
-                                    <div class="invalid-feedback" *ngIf="employeeForm.submitted && status.invalid">
-                                        <div *ngIf="status.errors?.['required']">{{ languageService.getString('fieldRequired') }}</div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Submit Button -->
-                            <div class="row mt-3">
-                                <div class="col-12">
-                                    <button type="submit" class="btn btn-primary">
-                                        <i class="fa-solid fa-save"></i>
-                                        {{ languageService.getString('save') }}
-                                    </button>
-                                </div>
-                            </div>
-                        </form>
-
-                        <!-- Employee List Table -->
-                        <div class="table-responsive mt-4">
-                            <table class="table table-hover">
-                                <thead>
-                                    <tr>
-                                        <th>{{ languageService.getString('name') }}</th>
-                                        <th>{{ languageService.getString('email') }}</th>
-                                        <th>{{ languageService.getString('role') }}</th>
-                                        <th>{{ languageService.getString('phone') }}</th>
-                                        <th>{{ languageService.getString('status') }}</th>
-                                        <th>{{ languageService.getString('actions') }}</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <!-- Employee rows will be dynamically added here -->
-                                </tbody>
-                            </table>
+                    <div class="col-12 col-md-6 my-1">
+                        <label class="form-label" for="aadharNumber">Aadhar Number</label>
+                        <input type="number" id="aadharNumber" class="form-control form-control-lg"
+                            placeholder="XXXXXXXXXXXX" name="aadharNumber"
+                            [(ngModel)]="signUpFormValues['aadharNumber']" #aadharNumber="ngModel"
+                            [disabled]="disableFields" required
+                            [ngClass]="{ 'is-invalid': signUpForm.submitted && aadharNumber.invalid }"
+                            pattern="^[2-9]{1}[0-9]{3}[0-9]{4}[0-9]{4}$" />
+                        <div *ngIf="signUpForm.submitted && aadharNumber.invalid" class="invalid-feedback">
+                            <div *ngIf="aadharNumber?.errors?.['required']">This field is required</div>
+                            <div *ngIf="aadharNumber?.errors?.['pattern']">Invalid Aadhar format</div>
                         </div>
                     </div>
+                    <div class="col-12 col-md-6 my-1">
+                        <label class="form-label" for="loginMobile">Mobile</label>
+                        <div class="input-group">
+                          <span class="input-group-text">+91</span>
+                          <input
+                            type="number"
+                            id="loginMobile"
+                            placeholder="Enter your 10-digit mobile number"
+                            name="mobile"
+                            class="form-control form-control-lg"
+                            [(ngModel)]="signUpFormValues['mobile']"
+                            [disabled]="disableFields"
+                            #mobile="ngModel"
+                            required
+                            [ngClass]="{ 'is-invalid': signUpForm.submitted && mobile.invalid }"
+                          />
+                        </div>
+                        <div *ngIf="signUpForm.submitted && mobile.invalid" class="invalid-feedback">
+                          <div *ngIf="mobile?.errors?.['required']">This field is required</div>
+                        </div>
+                      </div>
+
+                    <div class="col-12 col-md-6 my-1">
+                        <label class="form-label" for="loginEmail">Email address</label>
+                        <input type="email" id="loginEmail" placeholder="Enter a valid email address" name="mail"
+                            [(ngModel)]="signUpFormValues['mail']" class="form-control form-control-lg" #mail="ngModel"
+                            [disabled]="disableFields" required
+                            [ngClass]="{ 'is-invalid': signUpForm.submitted && mail.invalid }"
+                            pattern="^(?=.{1,254}$)(?=.{1,64}@)[-!#$%&'*+/0-9=?A-Z^_`a-z{|}~]+(\.[-!#$%&'*+/0-9=?A-Z^_`a-z{|}~]+)*@[A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?(\.[A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?)*$" />
+                        <div *ngIf="signUpForm.submitted && mail.invalid" class="invalid-feedback">
+                            <div *ngIf="mail?.errors?.['required']">This field is required</div>
+                            <div *ngIf="mail?.errors?.['pattern']">Invalid email format</div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6 my-1 ">
+                        <label class="form-label col" for="loginimages">Profile Picture
+
+
+                            <span class="text-muted" style="font-size: 0.6rem;">Only 1 Image is allowed</span>
+                        </label>
+                        <button class="btn pull-right col" type="button" [disabled]="disableFields"
+                            (click)="openImageUpload('loginimages')">Click or
+                            touch
+                            here
+                            to upload Profile Picture </button>
+                      
+                        <ng-container *ngIf="signUpFormValues && signUpFormValues['profilePicture']">
+                            <div class="col-12 d-flex">
+                                <span class="mx-1 cursor-pointer border rounded px-1 pt-1 image_holder">
+
+                                    <img [src]="signUpFormValues['profilePicture'].tempURL" alt="Failed to load Images"
+                                        class="custom_upload_image">
+                                 
+                                    <span *ngIf="(actionType === 'create' || actionType === 'edit')"
+                                        class="text-center h6 font-weight-bold text-center w-100 m-0 pt-1 pb-0"
+                                        (click)="removeImage('profilePicture', signUpFormValues['profilePicture'])">
+                                        <i class="bi bi-trash-fill"></i></span>
+                                </span>
+                            </div>
+                        </ng-container>
+
+                        <input type="file" id="loginimages" class="form-control form-control-lg d-none"
+                            placeholder="Enter a valid images" name="profilePicture"
+                            [(ngModel)]="signUpFormValues['profilePicture_copy']" #profilePicture="ngModel"
+                            [ngClass]="{ 'is-invalid': signUpForm.submitted && profilePicture.invalid }" type="file"
+                            (change)="upload($event, 'profilePicture')" multiple accept=".png, .jpg, .jpeg, .gif" />
+                        <div *ngIf="signUpForm.submitted && profilePicture.invalid" class="invalid-feedback">
+                            <div *ngIf="profilePicture?.errors?.['required']">This field is required</div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6 my-1">
+                        <label class="form-label col" for="loginimages">Aadhar Card
+
+
+                            <span class="text-muted" style="font-size: 0.6rem;">Only 1 Image is allowed</span>
+                        </label>
+                        <button class="btn pull-right col" type="button" [disabled]="disableFields"
+                            (click)="openImageUpload('identityProofUploader')">Click or
+                            touch
+                            here
+                            to upload Aadhar Card </button>
+                  
+                        <ng-container *ngIf="signUpFormValues && signUpFormValues['identityProof']">
+                            <div class="col-12 d-flex">
+                                <span class="mx-1 cursor-pointer border rounded px-1 pt-1 image_holder">
+
+                                    <img [src]="signUpFormValues['identityProof'].tempURL" alt="Failed to load Images"
+                                        class="custom_upload_image">
+                                
+                                    <span *ngIf="(actionType === 'create' || actionType === 'update')"
+                                        class="text-center h6 font-weight-bold text-center w-100 m-0 pt-1 pb-0"
+                                        (click)="removeImage('identityProof', signUpFormValues['identityProof'])"><i
+                                            class="material-icons text-danger">delete_forever</i></span>
+                                </span>
+                            </div>
+                        </ng-container>
+
+                        <input type="file" id="identityProofUploader" class="form-control form-control-lg d-none"
+                            placeholder="Enter a valid images" name="identityProof"
+                            [(ngModel)]="signUpFormValues['identityProof_copy']" #identityProof="ngModel"
+                            [ngClass]="{ 'is-invalid': signUpForm.submitted && identityProof.invalid }" type="file"
+                            (change)="upload($event, 'identityProof')" multiple accept=".png, .jpg, .jpeg, .gif" />
+                        <div *ngIf="signUpForm.submitted && identityProof.invalid" class="invalid-feedback">
+                            <div *ngIf="identityProof?.errors?.['required']">This field is required</div>
+                        </div>
+                    </div>
+
+
+
+
+                    <div class="col-12 col-md-6 my-1" *ngIf="actionType === 'create'">
+                        <label class="form-label" for="loginPassword">Password</label>
+                        <input type="password" id="loginPassword" required class="form-control form-control-lg"
+                            [disabled]="disableFields" placeholder="Enter password"
+                            [(ngModel)]="signUpFormValues['password']" name="password" #password="ngModel"
+                            [ngClass]="{ 'is-invalid': signUpForm.submitted && password.invalid }" />
+                        <div *ngIf="signUpForm.submitted && password.invalid" class="invalid-feedback">
+                            <div *ngIf="password?.errors?.['required']">This field is required</div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6 my-1">
+                        <label class="form-label" for="loginState">State</label>
+                        <ng-select [items]="metaData['STATES']" bindLabel="label" bindValue="value" name="state"
+                            [disabled]="disableFields" required placeholder="Enter state"
+                            [(ngModel)]="signUpFormValues['state']" #state="ngModel" [clearable]="false"
+                            [ngClass]="{ 'is-invalid': signUpForm.submitted && state.invalid }"
+                            (ngModelChange)="changeOfState();signUpFormValues['district']=null;signUpFormValues['mandal']=null; ">
+                        </ng-select>
+
+                        <div *ngIf="signUpForm.submitted && state.invalid" class="invalid-feedback">
+                            <div *ngIf="state?.errors?.['required']">This field is required</div>
+                        </div>
+                    </div>
+                    <ng-container *ngIf="signUpFormValues['state']">
+
+                        <div class="col-12 col-md-6 my-1">
+                            <label class="form-label" for="loginDistrict">District</label>
+                            <ng-select [items]="metaData[signUpFormValues['state']+'_DISTRICTS']" bindLabel="label"
+                                bindValue="value" [disabled]="disableFields" name="district" required
+                                placeholder="Select District" [(ngModel)]="signUpFormValues['district']"
+                                #district="ngModel" [clearable]="false"
+                                [ngClass]="{ 'is-invalid': signUpForm.submitted && district.invalid }"
+                                (ngModelChange)="signUpFormValues['mandal']=null; ">
+                            </ng-select>
+                            <div *ngIf="signUpForm.submitted && district.invalid" class="invalid-feedback">
+                                <div *ngIf="district?.errors?.['required']">This field is required</div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6 my-1"
+                            *ngIf="metaData && signUpFormValues['district'] && metaData[signUpFormValues['state']+'_DISTRICT_MANDALS'] ">
+                            <label class="form-label" for="loginMandal">Mandal</label>
+                            <ng-select
+                                [items]="metaData[signUpFormValues['state']+'_DISTRICT_MANDALS'][signUpFormValues['district']]"
+                                [disabled]="disableFields" name="mandal" required placeholder="Select mandal"
+                                [(ngModel)]="signUpFormValues['mandal']" #mandal="ngModel" [clearable]="false"
+                                [ngClass]="{ 'is-invalid': signUpForm.submitted && mandal.invalid }">
+                            </ng-select>
+
+                            <div *ngIf="signUpForm.submitted && mandal.invalid" class="invalid-feedback">
+                                <div *ngIf="mandal?.errors?.['required']">This field is required</div>
+                            </div>
+                        </div>
+                    </ng-container>
+                    <div class="col-12 col-md-6 my-1">
+                        <label class="form-label" for="constituency">Constituency</label>
+                        <input type="text" id="constituency" placeholder="Enter a valid name" name="constituency"
+                            class="form-control form-control-lg" [(ngModel)]="signUpFormValues['constituency']"
+                            #constituency="ngModel" required [disabled]="disableFields"
+                            [ngClass]="{ 'is-invalid': signUpForm.submitted && constituency.invalid }" />
+                        <div *ngIf="signUpForm.submitted && constituency.invalid" class="invalid-feedback">
+                            <div *ngIf="constituency?.errors?.['required']">This field is required</div>
+                        </div>
+                    </div>
+                                          
+                    <div class="col-12 col-md-6 my-1">
+                        <label class="form-label" for="BloodGroup">Blood Group</label>
+                        <ng-select [items]="metaData['BLOOD_GROUP']" name="bloodGroup" bindLabel="label"
+                            bindValue="value" required [disabled]="disableFields" placeholder="Select bloodGroup"
+                            [(ngModel)]="signUpFormValues['bloodGroup']" #bloodGroup="ngModel" [clearable]="false"
+                            [ngClass]="{ 'is-invalid': signUpForm.submitted && bloodGroup.invalid }">
+                        </ng-select>
+
+                        <div *ngIf="signUpForm.submitted && bloodGroup.invalid" class="invalid-feedback">
+                            <div *ngIf="bloodGroup?.errors?.['required']">This field is required</div>
+                        </div>
+                    </div>
+                   
+
+                    <div class="col-12 col-md-6 my-1">
+                        <label class="form-label" for="loginRole">Role</label>
+                        <ng-select [items]="metaData['ROLE']" name="role" required [disabled]="disableFields"
+                            placeholder="Select role" [(ngModel)]="signUpFormValues['role']" #role="ngModel"
+                            [clearable]="false" [ngClass]="{ 'is-invalid': signUpForm.submitted && role.invalid }">
+                        </ng-select>
+
+                        <div *ngIf="signUpForm.submitted && role.invalid" class="invalid-feedback">
+                            <div *ngIf="role?.errors?.['required']">This field is required</div>
+                        </div>
+                    </div>
+                    <!-- <div class="col-12 text-center text-lg-start mt-4 pt-2">
+                        <button type="submit" class="btn btn-primary btn-lg"
+                            style="padding-left: 2.5rem; padding-right: 2.5rem;">Login</button>
+                    </div> -->
                 </div>
+                <div class="modal-footer col-12 row">
+                    <button type="button" class="btn btn-secondary col" data-bs-dismiss="modal" id="closeFormModalBtn">Close</button>
+                    <!-- <button type="button" class="btn btn-primary">Understood</button> -->
+                    <button type="submit" class="btn btn-primary btn-lg col"
+                        style="padding-left: 2.5rem; padding-right: 2.5rem;">
+
+                        {{
+                        actionType === 'create' ? 'Create ': actionType === 'active' ? 'Activate':actionType ===
+                        'inactive' ? 'Deactivate':actionType === 'disable' ? 'Disable':actionType === 'enable' ?
+                        'Enable':actionType === 'edit' ? 'Update':''
+                        }}
+
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Button trigger modal -->
+<button type="button" id="identityVerifactionBtn" class="btn btn-primary d-none" data-bs-toggle="modal"
+    data-bs-target="#identityVerifaction">
+    Add Employee
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="identityVerifaction" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header justify-content-between">
+                <h5 class="modal-title" id="staticBackdropLabel">Verify Identity</h5>
+                <button type="button" class="close btn" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="col-12 row m-0 p-0">
+                <div class="col-md-6">Profile Picture</div>
+                <div class="col-md-6">Identity Proof</div>
+                <div class="col-md-3">
+                    <img class="img image-border" [src]="signUpFormValues?.profilePicture?.tempURL"
+                        alt="Failed to load profile picture" style="height: 200px;" />
+                    <!-- <img class="img image-border"
+                        [src]="'https://drive.google.com/uc?export=view&id='+signUpFormValues.profilePicture"
+                        style="height: 200px;" /> -->
+
+                </div>
+                <div class="col-md-9">
+                    <img class="img w-100 image-border" [src]="signUpFormValues?.identityProof?.tempURL"
+                        alt="Failed to load identity proof" />
+                    <!-- <img class="img w-100 image-border"
+                        [src]="'https://drive.google.com/uc?export=view&id='+signUpFormValues.identityProof" /> -->
+
+                </div>
+            </div>
+            <div class="col-12 row m-0 p-0">
+                <button class="btn btn-success mx-2 pull-right col"
+                    (click)="updateVerification('approved')">Approve</button>
+                <button class="btn btn-danger mx-2 pull-right col"
+                    (click)="identityVerificationRejectionReason = 'Invalid Documents'">Reject</button>
+            </div>
+            <div class="col-12 row" *ngIf="identityVerificationRejectionReason">
+                <span class="col">
+
+                    <label for="">Reason for Rejection</label>
+                    <input type="text" [(ngModel)]="identityVerificationRejectionReason" class="form-control"
+                        placeholder="Invalid Documents" />
+                </span>
+                <span class="col">
+
+                    <button class="btn btn-primary btn-sm"
+                        [ngClass]="!identityVerificationRejectionReason ? 'cursor-not-allowed':''"
+                        [disabled]="!identityVerificationRejectionReason"
+                        (click)="updateVerification('rejected')">Submit</button>
+                </span>
             </div>
         </div>
     </div>

@@ -44,6 +44,13 @@
           <span>{{ languageService.getString('employeeManagement') }}</span>
         </a>
       </li>
+
+      <li class="nav-item" routerLinkActive="active">
+        <a routerLink="/admin/employee-tracing" (click)="isMobile ? toggleMenu() : null">
+          <i class="fas fa-users"></i>
+          <span>employeeTracing</span>
+        </a>
+      </li>
     </ul>
 
     <div class="sidebar-footer">

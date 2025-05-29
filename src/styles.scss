@@ -145,3 +145,11 @@ h2 {
   max-width: 300px;
   margin: 0 auto;
 }
+::ng-deep .cdk-overlay-container {
+  z-index: 1000; // Or higher than your dialog
+}
+
+::ng-deep .cdk-global-overlay-wrapper,
+::ng-deep .cdk-overlay-pane {
+  z-index: 1000 !important;
+}

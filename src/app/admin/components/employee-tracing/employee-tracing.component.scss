@@ -1,0 +1,146 @@
+.news-management {
+    padding: 1.5rem;
+    background: #f8f9fa;
+    min-height: calc(100vh - 64px);
+  
+    .news-header {
+      background: #fff;
+      padding: 1.25rem;
+      border-radius: 8px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+      margin-bottom: 1.5rem;
+  
+      .header-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        
+        h2 {
+          margin: 0;
+          font-size: 1.25rem;
+          color: #2c3e50;
+          font-weight: 600;
+        }
+  
+        .controls {
+          display: flex;
+          gap: 0.75rem;
+          align-items: center;
+        }
+      }
+    }
+  
+    // Modal Styles
+    .modal {
+      .modal-dialog {
+        max-width: 800px;
+        margin: 1.5rem auto;
+      }
+  
+      .modal-content {
+        border: none;
+        border-radius: 8px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+      }
+  
+      .modal-header {
+        background: #fff;
+        border-bottom: 1px solid #e9ecef;
+        padding: 1rem 1.25rem;
+        border-radius: 8px 8px 0 0;
+  
+        .modal-title {
+          font-size: 1.125rem;
+          font-weight: 600;
+          color: #2c3e50;
+          margin: 0;
+        }
+  
+        .close {
+          padding: 0.25rem;
+          margin: -0.25rem -0.25rem -0.25rem auto;
+          font-size: 1.25rem;
+          color: #6c757d;
+          transition: color 0.2s ease;
+  
+          &:hover {
+            color: #343a40;
+          }
+        }
+      }
+  
+      .modal-body {
+        padding: 1.25rem;
+        max-height: calc(100vh - 200px);
+        overflow-y: auto;
+  
+        &::-webkit-scrollbar {
+          width: 4px;
+        }
+  
+        &::-webkit-scrollbar-track {
+          background: #f1f1f1;
+          border-radius: 2px;
+        }
+  
+        &::-webkit-scrollbar-thumb {
+          background: #c1c1c1;
+          border-radius: 2px;
+        }
+  
+        // Form grid layout
+        .form-grid {
+          display: grid;
+          grid-template-columns: repeat(2, 1fr);
+          gap: 1rem;
+          margin-bottom: 1rem;
+  
+          .form-group {
+            &.full-width {
+              grid-column: 1 / -1;
+            }
+          }
+        }
+      }
+  
+      .modal-footer {
+        background: #fff;
+        border-top: 1px solid #e9ecef;
+        padding: 1rem 1.25rem;
+        border-radius: 0 0 8px 8px;
+      }
+    }
+  
+    @media (max-width: 768px) {
+      padding: 1rem;
+  
+      .news-header {
+        padding: 1rem;
+  
+        .header-content {
+          flex-direction: column;
+          gap: 0.75rem;
+          align-items: stretch;
+  
+          .controls {
+            flex-direction: column;
+          }
+        }
+      }
+  
+      .modal {
+        .modal-dialog {
+          margin: 0.5rem;
+        }
+  
+        .modal-body {
+          padding: 1rem;
+          .form-grid {
+            grid-template-columns: 1fr;
+            gap: 0.75rem;
+          }
+        }
+      }
+    }
+  }
+  

@@ -49,6 +49,7 @@ export type StringKey =
   | 'addEmployee'
   | 'name'
   | 'email'
+  | 'mobile'
   | 'role'
   | 'phone'
   | 'status'

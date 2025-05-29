@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Observable, map, catchError } from 'rxjs';
+import { Observable, map, catchError, of } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { LanguageService } from './language.service';
 import { StorageService } from '../admin/services/storage.service';
+import { MessageService } from '../admin/services/message.service';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +15,7 @@ export class HttpService {
 
   constructor(
     private http: HttpClient,
-    private languageService: LanguageService, private storage: StorageService
+    private languageService: LanguageService, private storage: StorageService, private messageService: MessageService
   ) {
     // Subscribe to language changes
     this.languageService.currentLang$.subscribe(lang => {
@@ -76,7 +77,7 @@ export class HttpService {
    * @param headers - Optional custom headers
    * @returns Observable of type any
    */
-  post(endpoint: string, body: any = {}, headers?: HttpHeaders, formData?:null, loggedUserDetails?:boolean): Observable<any> {
+  post(endpoint: string, body: any = {}, headers?: HttpHeaders, formData?:null, loggedUserDetails?:boolean, returnEntireResponse?:boolean): Observable<any> {
     const options: any = {};
     
     if (headers) {
@@ -100,15 +101,17 @@ export class HttpService {
     return this.http.post(`${this.baseUrl}${endpoint}`, formData ? formData : bodyWithLanguage, options).pipe(
       map((response: any) => {
         if (response && response.status === 'success') {
-          return response?.data;
+          return returnEntireResponse ? response : response?.data;
         } else {
-          console.error('API Error:', response.message || 'Operation failed');
-          throw new Error(response.message || 'Operation failed');
+          console.error('API Error:', response?.msg || response.message || 'Operation failed');
+          this.messageService.showError(response?.msg || response.message || 'Operation failed');
+          return null;
         }
       }),
-      catchError(error => {
+      catchError((error:any) => {
         console.error('API Error:', error.message || 'Operation failed');
-        throw error;
+        this.messageService.showError(error.message || 'Operation failed');
+       return of(null);
       })
     );
   }
@@ -139,6 +142,7 @@ export class HttpService {
           return response;
         } else {
           console.error('API Error:', response.message || 'Operation failed');
+          this.messageService.showError(response.message || 'Operation failed');
           throw new Error(response.message || 'Operation failed');
         }
       }),

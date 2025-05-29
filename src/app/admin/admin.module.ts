@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { AdminRoutingModule } from './admin-routing.module';
@@ -19,6 +19,7 @@ import { PaginatedTableComponent } from './reusable-components/paginated-table/p
 import { NewsManagementComponent } from './components/news-management/news-management.component';
 import { AdminLoaderComponent } from './components/loader/loader.component';
 import { EmployeeManagementComponent } from './components/employee-management/employee-management.component';
+import { EmployeeTracingComponent } from './components/employee-tracing/employee-tracing.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,7 @@ import { EmployeeManagementComponent } from './components/employee-management/em
     PaginatedTableComponent,
     NewsManagementComponent,
     AdminLoaderComponent,
-    EmployeeManagementComponent
+    EmployeeManagementComponent,EmployeeTracingComponent
   ],
   imports: [
     CommonModule,
@@ -44,6 +45,7 @@ import { EmployeeManagementComponent } from './components/employee-management/em
     MatButtonModule,
     MatIconModule,
     NgSelectModule
-  ]
+  ] , providers: [DatePipe] // ✅ Add this
+
 })
 export class AdminModule { }
