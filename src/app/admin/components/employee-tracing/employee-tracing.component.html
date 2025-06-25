@@ -14,14 +14,37 @@
                         </ng-container>
                     </mat-select>
                 </mat-form-field>
-                <button mat-flat-button color="primary" class="report-news-btn"
-                    (click)="onAddEmployeeClick()">
+                <button mat-flat-button color="primary" class="report-news-btn" (click)="onAddEmployeeClick()">
                     <i class="fa-solid fa-plus"></i>
                     Add Employee Tracing
                 </button>
             </div>
         </div>
     </div>
+    <!-- <qrcode [qrdata]="'Your data string'" [width]="256" [errorCorrectionLevel]="'M'"></qrcode> -->
+    <div class="qr-wrapper" style="
+      position: relative;
+      width: 200px;
+      height: 200px;
+    
+      border-radius: 12px;
+      padding: 4px;
+      box-sizing: border-box;
+    ">
+        <qrcode [qrdata]="'https://your-url.com'" [width]="192" colorDark="#8B0000" [errorCorrectionLevel]="'H'">
+        </qrcode>
+        <img src="assets/images/logos/fullLogo.png" alt="logo" style="
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 60%;
+        transform: translate(-50%, -50%);
+        border-radius: 8px;
+        opacity: 0.3;
+      " />
+    </div>
+
+
 
     <nc-web-paginated-table *ngIf="employeeTracingList.tableLoaded" [columns]="employeeTracingList.header"
         [data]="employeeTracingList.body" [page]="employeeTracingList.page" [itemsPerPage]="employeeTracingList.count"
@@ -51,9 +74,9 @@
                     <div class="col-12 mb-3">
                         <label class="form-label" for="loginState">Select Employee</label>
                         <ng-select [items]="metaData['employees']" bindLabel="name" bindValue="employeeId"
-                            name="employeeId" required
-                            placeholder="Select Employee" [(ngModel)]="employeeTracingFormValues['employeeId']"
-                            #employeeId="ngModel" [clearable]="false"
+                            name="employeeId" required placeholder="Select Employee"
+                            [(ngModel)]="employeeTracingFormValues['employeeId']" #employeeId="ngModel"
+                            [clearable]="false"
                             [ngClass]="{ 'is-invalid': signUpForm.submitted && employeeId.invalid }">
                         </ng-select>
 
@@ -88,7 +111,8 @@
 
                 </div>
                 <div class="modal-footer col-12 row">
-                    <button type="button" class="btn btn-secondary col" data-bs-dismiss="modal" id="closeEmployeeTracingModalBtn">Close</button>
+                    <button type="button" class="btn btn-secondary col" data-bs-dismiss="modal"
+                        id="closeEmployeeTracingModalBtn">Close</button>
                     <!-- <button type="button" class="btn btn-primary">Understood</button> -->
                     <button type="submit" class="btn btn-primary btn-lg col"
                         style="padding-left: 2.5rem; padding-right: 2.5rem;">

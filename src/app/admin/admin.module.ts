@@ -20,6 +20,8 @@ import { NewsManagementComponent } from './components/news-management/news-manag
 import { AdminLoaderComponent } from './components/loader/loader.component';
 import { EmployeeManagementComponent } from './components/employee-management/employee-management.component';
 import { EmployeeTracingComponent } from './components/employee-tracing/employee-tracing.component';
+import { QRCodeModule } from 'angularx-qrcode';
+
 
 @NgModule({
   declarations: [
@@ -44,7 +46,7 @@ import { EmployeeTracingComponent } from './components/employee-tracing/employee
     MatFormFieldModule,
     MatButtonModule,
     MatIconModule,
-    NgSelectModule
+    NgSelectModule,QRCodeModule
   ] , providers: [DatePipe] // ✅ Add this
 
 })
