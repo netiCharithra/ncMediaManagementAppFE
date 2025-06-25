@@ -16,7 +16,8 @@ export class PublicService {
     CATEGORY_NEWS: '/news/category',
     NEWS_DETAIL: '/news',
     SEARCH_NEWS: '/news/search',
-    TAGS: '/news/tags'
+    TAGS: '/news/tags',
+    EMPLOYEE_ACTIVE_TRACING: '/public/employeeTraceCheck'
   };
 
   constructor(private httpService: HttpService) { }
@@ -41,6 +42,9 @@ export class PublicService {
   }
   getNewsInfo(params: any): Observable<any> {
     return this.httpService.post(this.API_ENDPOINTS.NEWS_INFO, { ...params });
+  }
+  employeeTraceCheck(params: any): Observable<any> {
+    return this.httpService.post(this.API_ENDPOINTS.EMPLOYEE_ACTIVE_TRACING, { ...params });
   }
 
 

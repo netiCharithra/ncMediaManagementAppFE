@@ -107,7 +107,7 @@ export class EmployeeTracingComponent implements OnInit{
       this.formModalShowHide('show')
     } else if (event?.type === 'qrCode') {
       this.QRLink = 'https://neticharithra-ncmedia.web.app/#/yourStatus/' + event.rowData.activeTraceId;
-      this.copyImageToClipboard();
+      this.qrModalShowHide('show');
     }
   }
   copyImageToClipboard() {
@@ -167,6 +167,15 @@ export class EmployeeTracingComponent implements OnInit{
     if (type === 'hide') {
       // modal.hide();
       document.getElementById('closeEmployeeTracingModalBtn')?.click()
+    } else {
+      modal.show();
+    }
+  }
+  qrModalShowHide = (type: any = 'show') => {
+    const modal = new bootstrap.Modal(document.getElementById('qrCodeModal'));
+    if (type === 'hide') {
+      // modal.hide();
+      document.getElementById('closeQrCodeModalBtn')?.click()
     } else {
       modal.show();
     }

@@ -9,6 +9,7 @@ import { TopNewsComponent } from './components/top-news/top-news.component';
 import { NewsExpandedComponent } from './components/news-expanded/news-expanded.component';
 import { TypeComponent } from './components/type/type.component';
 import { CategoryComponent } from './components/category/category.component';
+import { EmployeeActiveTracingComponent } from './employee-active-tracing/employee-active-tracing.component';
 
 const routes: Routes = [
   {
@@ -23,6 +24,7 @@ const routes: Routes = [
       { path: 'top-news', component: TopNewsComponent },
       { path: 'type/:type', component: TypeComponent },
       { path: 'category/:category', component: CategoryComponent },
+      { path: 'validate-employee/:employeeId', component: EmployeeActiveTracingComponent },
       {
         path: 'news/:language/:id',
         component: NewsExpandedComponent

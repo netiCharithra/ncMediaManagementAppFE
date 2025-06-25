@@ -16,6 +16,7 @@ import { LatestNewsComponent } from './components/latest-news/latest-news.compon
 import { CompactNewsCardComponent } from './components/compact-news-card/compact-news-card.component';
 import { TypeComponent } from './components/type/type.component';
 import { CategoryComponent } from './components/category/category.component';
+import { EmployeeActiveTracingComponent } from './employee-active-tracing/employee-active-tracing.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,7 @@ import { CategoryComponent } from './components/category/category.component';
     LatestNewsComponent,
     CompactNewsCardComponent,
     TypeComponent,
-    CategoryComponent
+    CategoryComponent, EmployeeActiveTracingComponent
   ],
   imports: [
     CommonModule,

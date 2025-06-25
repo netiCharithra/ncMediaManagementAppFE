@@ -21,29 +21,7 @@
             </div>
         </div>
     </div>
-    <!-- <qrcode [qrdata]="'Your data string'" [width]="256" [errorCorrectionLevel]="'M'"></qrcode> -->
-    <div class="qr-wrapper" style="
-      position: relative;
-      width: 200px;
-      height: 200px;
     
-      border-radius: 12px;
-      padding: 4px;
-      box-sizing: border-box;
-    ">
-        <qrcode [qrdata]="'https://your-url.com'" [width]="192" colorDark="#8B0000" [errorCorrectionLevel]="'H'">
-        </qrcode>
-        <img src="assets/images/logos/fullLogo.png" alt="logo" style="
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        width: 60%;
-        transform: translate(-50%, -50%);
-        border-radius: 8px;
-        opacity: 0.3;
-      " />
-    </div>
-
 
 
     <nc-web-paginated-table *ngIf="employeeTracingList.tableLoaded" [columns]="employeeTracingList.header"
@@ -124,4 +102,75 @@
             </form>
         </div>
     </div>
+</div>
+
+
+
+<!-- Modal -->
+<div
+  class="modal fade"
+  id="qrCodeModal"
+  data-bs-backdrop="static"
+  data-bs-keyboard="false"
+  tabindex="-1"
+  aria-labelledby="qrCodeModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content shadow-lg rounded-4">
+      <!-- Modal Header -->
+      <div class="modal-header border-bottom-0 pb-0">
+        <h4 class="modal-title fw-semibold text-primary" id="qrCodeModalLabel">
+          Scan the QR Code
+        </h4>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+
+      <!-- Modal Body -->
+      <div class="modal-body d-flex flex-column align-items-center py-4">
+        <div class="qr-wrapper" style="
+        position: relative;
+        width: 200px;
+        height: 200px;
+      
+        border-radius: 12px;
+        padding: 4px;
+        box-sizing: border-box;
+      ">
+          <qrcode [qrdata]="'https://your-url.com'" [width]="192" colorDark="#8B0000" [errorCorrectionLevel]="'H'">
+          </qrcode>
+          <img src="assets/images/logos/fullLogo.png" alt="logo" style="
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          width: 60%;
+          transform: translate(-50%, -50%);
+          border-radius: 8px;
+          opacity: 0.3;
+        " />
+      </div>
+
+        <p class="mt-4 text-muted text-center px-3">
+          Scan this QR code using your mobile device to quickly access the application.
+        </p>
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="modal-footer border-top-0 justify-content-center">
+        <button
+          type="button"
+          class="btn btn-outline-secondary px-4"
+          data-bs-dismiss="modal"
+          id="closeQrCodeModalBtn"
+        >
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
 </div>
