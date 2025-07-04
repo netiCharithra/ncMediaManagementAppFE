@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Observable, map, catchError, of } from 'rxjs';
+import { Observable, map, catchError, of, switchMap, from } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { LanguageService } from './language.service';
 import { StorageService } from '../admin/services/storage.service';
 import { MessageService } from '../admin/services/message.service';
+import { VisitorsService } from './visitors.service';
+import { LocationService } from './location.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +17,7 @@ export class HttpService {
 
   constructor(
     private http: HttpClient,
-    private languageService: LanguageService, private storage: StorageService, private messageService: MessageService
+    private languageService: LanguageService, private storage: StorageService, private messageService: MessageService, private visitorsService: VisitorsService, private locationService: LocationService
   ) {
     // Subscribe to language changes
     this.languageService.currentLang$.subscribe(lang => {
@@ -77,44 +79,62 @@ export class HttpService {
    * @param headers - Optional custom headers
    * @returns Observable of type any
    */
-  post(endpoint: string, body: any = {}, headers?: HttpHeaders, formData?:null, loggedUserDetails?:boolean, returnEntireResponse?:boolean): Observable<any> {
+  post(
+    endpoint: string,
+    body: any = {},
+    headers?: HttpHeaders,
+    formData: any = null,
+    loggedUserDetails?: boolean,
+    returnEntireResponse?: boolean
+  ): Observable<any> {
     const options: any = {};
-    
     if (headers) {
       options.headers = headers;
     }
-
-    // Add language to all POST requests
-    let bodyWithLanguage = {
-      ...body,
-      language: this.selectedLanguage
-    };
-
-   if(loggedUserDetails){
-    bodyWithLanguage={
-      ... this.storage.getStoredUser(),
-      ...bodyWithLanguage
-
-    }
-   }
-
-    return this.http.post(`${this.baseUrl}${endpoint}`, formData ? formData : bodyWithLanguage, options).pipe(
-      map((response: any) => {
-        if (response && response.status === 'success') {
-          return returnEntireResponse ? response : response?.data;
-        } else {
-          console.error('API Error:', response?.msg || response.message || 'Operation failed');
-          this.messageService.showError(response?.msg || response.message || 'Operation failed');
-          return null;
+  
+    // Get visitorId (sync) and location (async)
+    const visitorId = this.visitorsService.getOrCreateVisitorId();
+  
+    return from(this.locationService.getLocation()).pipe(
+      switchMap((location) => {
+        console.log("location", location)
+        let bodyWithLanguage = {
+          ...body,
+          language: this.selectedLanguage,
+          visitorId,
+          location: location ? [location.lat, location.lon] : null,
+          requestTime: new Date().getTime(),
+        };
+  
+        if (loggedUserDetails) {
+          bodyWithLanguage = {
+            ...this.storage.getStoredUser(),
+            ...bodyWithLanguage,
+          };
         }
-      }),
-      catchError((error:any) => {
-        console.error('API Error:', error.message || 'Operation failed');
-        this.messageService.showError(error.message || 'Operation failed');
-       return of(null);
+  
+        return this.http.post(`${this.baseUrl}${endpoint}`, formData || bodyWithLanguage, options).pipe(
+          map((response: any) => {
+            if (response?.status === 'success') {
+              return returnEntireResponse ? response : response.data;
+            } else {
+              const errorMsg = response?.msg || response.message || 'Operation failed';
+              console.error('API Error:', errorMsg);
+              this.messageService.showError(errorMsg);
+              return null;
+            }
+          }),
+          catchError((error: any) => {
+            const errorMsg = error?.message || 'Operation failed';
+            console.error('API Error:', errorMsg);
+            this.messageService.showError(errorMsg);
+            return of(null);
+          })
+        );
       })
     );
   }
+  
 
   /**
    * Generic PUT request method
