@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { DataStore } from '../../store/data.store';
+import { StorageService } from '../../services/storage.service';
 
 @Component({
   selector: 'app-user-info',
@@ -8,12 +8,15 @@ import { DataStore } from '../../store/data.store';
   styleUrls: ['./user-info.component.scss']
 })
 export class UserInfoComponent implements OnInit {
-  userData$: Observable<any>;
+  public userData: any={};
 
-  constructor(private dataStore: DataStore) {
-    this.userData$ = this.dataStore.userData$;
+  constructor(private dataStore: StorageService) {
+    this.userData = this.dataStore.getStoredUser();
+
+    console.log(this.userData,'user data 2')
   }
 
   ngOnInit(): void {
+    console.log(this.dataStore.getStoredUser())
   }
 }

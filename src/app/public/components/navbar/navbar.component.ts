@@ -48,6 +48,7 @@ export class NavbarComponent implements OnInit {
 
   switchLanguage(event: Event): void {
     const select = event.target as HTMLSelectElement;
+    console.log(select.value, 'ennnnn')
     this.languageService.setLanguage(select.value as 'en' | 'te');
   }
 

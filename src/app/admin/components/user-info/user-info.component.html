@@ -3,7 +3,7 @@
     <h1>User Profile</h1>
   </div>
 
-  <div class="user-info-card" *ngIf="userData$ | async as user">
+  <div class="user-info-card" *ngIf="userData ">
     <div class="user-avatar">
       <i class="fas fa-user-circle"></i>
     </div>
@@ -11,20 +11,19 @@
     <div class="user-details">
       <div class="info-row">
         <label>Name</label>
-        <p>{{ user.name }}</p>
+        <p>{{ userData?.name }}</p>
       </div>
       
       <div class="info-row">
         <label>Email</label>
-        <p>{{ user.email }}</p>
+        <p>{{ userData?.email }}</p>
       </div>
       
       <div class="info-row">
         <label>Role</label>
-        <p>{{ user.role }}</p>
+        <p>{{ userData?.role }}</p>
       </div>
     </div>
   </div>
 
-  <nc-web-paginated-table></nc-web-paginated-table>
 </div>

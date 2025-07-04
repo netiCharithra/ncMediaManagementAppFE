@@ -14,7 +14,7 @@ export class NavigationComponent implements OnInit {
   isExpanded = false;
   isMobile = window.innerWidth <= 768;
   userData$: Observable<any>;
-  currentLanguage: 'en' | 'te';
+  currentLanguage: 'te' | 'en';
 
   constructor(
     private authService: AuthService,

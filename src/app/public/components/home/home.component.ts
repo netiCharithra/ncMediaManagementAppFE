@@ -29,7 +29,7 @@ export class HomeComponent implements OnInit {
   public categoryCategorisedNews:any[]=[];
   public categoryMetaList:any[]=[];
 
-  currentLanguage: 'en' | 'te';
+  currentLanguage: 'te' | 'en';
 
   constructor(private publicService: PublicService, public languageService:LanguageService) { 
     this.currentLanguage = this.languageService.getCurrentLanguage();

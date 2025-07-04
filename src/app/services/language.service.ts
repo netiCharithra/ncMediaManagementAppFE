@@ -6,7 +6,7 @@ import { StringKey } from '../types/language.types';
   providedIn: 'root'
 })
 export class LanguageService {
-  private currentLang = new BehaviorSubject<'en' | 'te'>('en');
+  private currentLang = new BehaviorSubject<'en' | 'te'>('te');
   currentLang$ = this.currentLang.asObservable();
 
   private translations: Record<'en' | 'te', Record<StringKey, string>> = {
@@ -72,6 +72,7 @@ export class LanguageService {
       logout: 'Logout',
       // Employee management strings
       employeeManagement: 'Employee Management',
+      employeeTracing: 'Employee Tracing',
       addEmployee: 'Add Employee',
       name: 'Name',
       email: 'Email',
@@ -148,6 +149,7 @@ export class LanguageService {
       logout: 'లాగ్అవుట్',
       // Employee management strings
       employeeManagement: 'ఉద్యోగుల నిర్వహణ',
+      employeeTracing: 'ఉద్యోగుల ట్రేసింగ్',
       addEmployee: 'ఉద్యోగిని జోడించండి',
       name: 'పేరు',
       email: 'ఇమెయిల్',

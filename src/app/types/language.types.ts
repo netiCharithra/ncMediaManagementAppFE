@@ -74,4 +74,5 @@ export type StringKey =
   // Navigation
   | 'dashboard'
   | 'userInfo'
-  | 'logout';
+  | 'logout'
+  | 'employeeTracing';

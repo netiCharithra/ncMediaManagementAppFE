@@ -47,8 +47,8 @@
 
       <li class="nav-item" routerLinkActive="active">
         <a routerLink="/admin/employee-tracing" (click)="isMobile ? toggleMenu() : null">
-          <i class="fas fa-users"></i>
-          <span>employeeTracing</span>
+          <i class="fas fa-users-cog"></i>
+          <span>{{ languageService.getString('employeeTracing') }}</span>
         </a>
       </li>
     </ul>
