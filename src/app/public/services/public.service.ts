@@ -17,7 +17,8 @@ export class PublicService {
     NEWS_DETAIL: '/news',
     SEARCH_NEWS: '/news/search',
     TAGS: '/news/tags',
-    EMPLOYEE_ACTIVE_TRACING: '/public/employeeTraceCheck'
+    EMPLOYEE_ACTIVE_TRACING: '/public/employeeTraceCheck',
+    VISITOR_COUNT: '/public/getVisitorsCount'
   };
 
   constructor(private httpService: HttpService) { }
@@ -91,5 +92,10 @@ export class PublicService {
         language
       }
     );
+  }
+
+
+  getVisitorCount(): Observable<any> {
+    return this.httpService.post(this.API_ENDPOINTS.VISITOR_COUNT, {  });
   }
 }
