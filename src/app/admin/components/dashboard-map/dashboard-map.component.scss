@@ -1,0 +1,66 @@
+/* Map container */
+.map-container {
+  position: relative;
+  height: 500px;
+  width: 100%;
+  overflow: hidden;
+}
+
+/* Loading overlay */
+.loading-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.loading-text {
+  font-size: 1.2rem;
+  color: #333;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.loading-dots::after {
+  content: '';
+  display: inline-block;
+  width: 0;
+  overflow: hidden;
+  vertical-align: bottom;
+  animation: ellipsis 1.5s infinite;
+}
+
+@keyframes ellipsis {
+  0% { width: 0; }
+  100% { width: 1.5em; }
+}
+
+/* Map styles */
+#map {
+  height: 100%;
+  width: 100%;
+  transition: opacity 0.3s ease;
+  
+  &.loading {
+    opacity: 0.5;
+  }
+}
+
+/* Fix Leaflet marker icons if missing */
+.leaflet-container {
+  height: 100%;
+  width: 100%;
+  z-index: 0;
+}
+
+.leaflet-div-icon {
+  background: transparent;
+  border: none;
+}

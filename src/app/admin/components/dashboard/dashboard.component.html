@@ -5,6 +5,7 @@
   </div>
 
 
+
   <div class="stats-grid">
     <div class="stat-card">
       <div class="stat-header">
@@ -113,6 +114,16 @@
     </div>
 
     <div class="side-section">
+
+
+      <div class="content-card">
+        <div  style="height: 450px !important;">
+          <app-dashboard-map [visitorLocations]="dashboardStats['visitorLocations']"></app-dashboard-map>
+        </div>
+      </div>
+
+
+
       <div class="content-card">
         <div class="card-header">
           <h3>Top Categories</h3>

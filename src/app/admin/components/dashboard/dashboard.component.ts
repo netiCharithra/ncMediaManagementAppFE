@@ -76,7 +76,8 @@ export class DashboardComponent implements OnInit {
     this.getDashboardArticlesStatsInfo();
     this.getArticlesByCategory();
     this.getActiveEmployeeStats();
-    this.getChartData(this.selectedTimeframe)
+    this.getChartData(this.selectedTimeframe);
+    this.getVisitorLocations();
   }
 
   getChartData = (timeFrame: any) => {
@@ -230,9 +231,24 @@ export class DashboardComponent implements OnInit {
       const userData = this.storage.getStoredUser();
       this.adminService.getVisitsTimeSeries({ ...userData, ...{ period: timeframe } }).subscribe((response: any) => {
         if (response) {
-          console.log("respo chart", response)
           this.dashboardStats['visitsTimeSeries'] = response || {}
           this.updateChartData(timeframe)
+        }
+        this.adminService.loaderService = false;
+      })
+    } catch (error) {
+      this.adminService.loaderService = false;
+      console.error(error)
+    }
+  }
+  getVisitorLocations = () => {
+    try {
+      this.adminService.loaderService = true;
+      const userData = this.storage.getStoredUser();
+      this.adminService.getVisitorLocations({ ...userData }).subscribe((response: any) => {
+        if (response) {
+          console.log("respo chart", response)
+          this.dashboardStats['visitorLocations'] = response || {}
         }
         this.adminService.loaderService = false;
       })

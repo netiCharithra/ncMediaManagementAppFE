@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 import { AdminRoutingModule } from './admin-routing.module';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTabsModule } from '@angular/material/tabs';
@@ -23,6 +24,8 @@ import { AdminLoaderComponent } from './components/loader/loader.component';
 import { EmployeeManagementComponent } from './components/employee-management/employee-management.component';
 import { EmployeeTracingComponent } from './components/employee-tracing/employee-tracing.component';
 import { QRCodeModule } from 'angularx-qrcode';
+import { DashboardMapComponent } from './components/dashboard-map/dashboard-map.component';
+import { GeocodingService } from './services/geocoding.service';
 
 
 @NgModule({
@@ -34,13 +37,15 @@ import { QRCodeModule } from 'angularx-qrcode';
     PaginatedTableComponent,
     NewsManagementComponent,
     AdminLoaderComponent,
-    EmployeeManagementComponent,EmployeeTracingComponent
+    EmployeeManagementComponent,EmployeeTracingComponent, DashboardMapComponent
   ],
   imports: [
     CommonModule,
     RouterModule,
+    AdminRoutingModule,
     ReactiveFormsModule,
     FormsModule,
+    HttpClientModule,
     AdminRoutingModule,
     MatSnackBarModule,
     MatTabsModule,
@@ -54,7 +59,10 @@ import { QRCodeModule } from 'angularx-qrcode';
       echarts: () => import('echarts')
     })
   ],
-  providers: [DatePipe]
+  providers: [
+    DatePipe,
+    GeocodingService
+  ]
 
 })
 export class AdminModule { }

@@ -30,6 +30,7 @@ export class AdminService {
     GET_ACTIVE_EMPLOYEE_STATS:'/admin/getActiveEmployeeStats',
     GET_VISITOR_TIME_SERIES:'/admin/getVisitorTimeSeries',
     GET_VISITS_TIME_SERIES:'/admin/getVisitsTimeSeries',
+    GET_VISITOR_LOCATIONS:'/admin/getVisitorLocations',
 
 
     NEWS_APPROVE: `/admin/news/approve`,
@@ -338,5 +339,12 @@ export class AdminService {
    */
   getVisitsTimeSeries(params: any): Observable<any> {
     return this.httpService.post(this.API_ENDPOINTS.GET_VISITS_TIME_SERIES, { ...params });
+  }
+
+  /**
+   * Get visitor locations
+   */
+  getVisitorLocations(params: any): Observable<any> {
+    return this.httpService.post(this.API_ENDPOINTS.GET_VISITOR_LOCATIONS, { ...params });
   }
 }
