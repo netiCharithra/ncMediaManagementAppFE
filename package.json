@@ -30,7 +30,9 @@
     "angularx-qrcode": "^18.0.2",
     "bootstrap": "^5.3.3",
     "crypto-js": "^4.2.0",
+    "echarts": "^5.4.3",
     "express": "^4.18.2",
+    "ngx-echarts": "^16.0.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.14.10"

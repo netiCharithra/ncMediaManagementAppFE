@@ -28,6 +28,8 @@ export class AdminService {
     DASHBOARD_ARTICLES_STATS_INFO:'/admin/getArticlesDashbordInfo',
     GET_ARTICLES_BY_CATEGORY:'/admin/getArticlesByCategory',
     GET_ACTIVE_EMPLOYEE_STATS:'/admin/getActiveEmployeeStats',
+    GET_VISITOR_TIME_SERIES:'/admin/getVisitorTimeSeries',
+    GET_VISITS_TIME_SERIES:'/admin/getVisitsTimeSeries',
 
 
     NEWS_APPROVE: `/admin/news/approve`,
@@ -322,5 +324,19 @@ export class AdminService {
    */
   getActiveEmployeeStats(params: any): Observable<any> {
     return this.httpService.post(this.API_ENDPOINTS.GET_ACTIVE_EMPLOYEE_STATS, { ...params });
+  }
+
+  /**
+   * Get visitor time series
+   */
+  getVisitorTimeSeries(params: any): Observable<any> {
+    return this.httpService.post(this.API_ENDPOINTS.GET_VISITOR_TIME_SERIES, { ...params });
+  }
+
+  /**
+   * Get visits time series
+   */
+  getVisitsTimeSeries(params: any): Observable<any> {
+    return this.httpService.post(this.API_ENDPOINTS.GET_VISITS_TIME_SERIES, { ...params });
   }
 }

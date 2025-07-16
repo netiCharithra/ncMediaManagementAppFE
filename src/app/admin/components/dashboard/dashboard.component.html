@@ -4,6 +4,7 @@
     <p class="subtitle">Welcome back, {{userName}}!</p>
   </div>
 
+
   <div class="stats-grid">
     <div class="stat-card">
       <div class="stat-header">
@@ -90,16 +91,23 @@
     <div class="chart-section">
       <div class="content-card">
         <div class="card-header">
-          <h3>Traffic Overview</h3>
-          <div class="card-actions">
-            <button class="btn-filter active">Week</button>
-            <button class="btn-filter">Month</button>
-            <button class="btn-filter">Year</button>
+          <h3>Traffic Analytics</h3>
+          <div class="timeframe-selector">
+            <button 
+              *ngFor="let period of timeframes" 
+              [class.active]="selectedTimeframe === period"
+              (click)="onTimeframeChange(period)">
+              {{ period | titlecase }}
+            </button>
           </div>
         </div>
-        <div class="card-body">
-          <!-- Chart will be rendered here -->
-          <div class="chart-placeholder"></div>
+        <div class="card-body charts-container">
+          <div class="chart-wrapper">
+            <div echarts [options]="chartOptionVisitors" class="chart-container"></div>
+          </div>
+          <div class="chart-wrapper">
+            <div echarts [options]="chartOptionVisits" class="chart-container"></div>
+          </div>
         </div>
       </div>
     </div>

@@ -10,6 +10,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { NgxEchartsModule } from 'ngx-echarts';
+import * as echarts from 'echarts';
 
 import { LoginComponent } from './components/login/login.component';
 import { NavigationComponent } from './components/navigation/navigation.component';
@@ -46,8 +48,13 @@ import { QRCodeModule } from 'angularx-qrcode';
     MatFormFieldModule,
     MatButtonModule,
     MatIconModule,
-    NgSelectModule,QRCodeModule
-  ] , providers: [DatePipe] // ✅ Add this
+    NgSelectModule,
+    QRCodeModule,
+    NgxEchartsModule.forRoot({
+      echarts: () => import('echarts')
+    })
+  ],
+  providers: [DatePipe]
 
 })
 export class AdminModule { }

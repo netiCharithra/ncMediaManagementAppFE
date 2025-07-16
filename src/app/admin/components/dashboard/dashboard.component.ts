@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { StorageService } from '../../services/storage.service';
 import { AdminService } from '../../services/admin.service';
+import { EChartsOption } from 'echarts';
 
 @Component({
   selector: 'app-dashboard',
@@ -10,64 +11,64 @@ import { AdminService } from '../../services/admin.service';
 })
 export class DashboardComponent implements OnInit {
   userName: string = '';
-  selectedTimeframe: 'week' | 'month' | 'year' = 'week';
+  selectedTimeframe: any = 'total';
+
+
+
+
+  public dashboardStats: any = {};
+
+  // Define timeframe type
+  public timeframes: any[] = ['day', 'week', 'month', 'year', 'total'];
+
+  // Chart options
+  // Default chart options
+  private getBaseChartOptions(title: string): EChartsOption {
+    return {
+      title: {
+        text: title,
+        left: 'center',
+        textStyle: {
+          fontSize: 14
+        }
+      },
+      tooltip: {
+        trigger: 'axis'
+      },
+      grid: {
+        left: '3%',
+        right: '3%',
+        bottom: '3%',
+        top: '25%',
+        containLabel: true
+      },
+      xAxis: {
+        type: 'category',
+        boundaryGap: false,
+        data: []
+      },
+      yAxis: {
+        type: 'value'
+      },
+      series: [
+        {
+          name: title,
+          type: 'line',
+          data: []
+        }
+      ]
+    };
+  }
+
+  // Chart options for Visitors
+  public chartOptionVisitors: EChartsOption = this.getBaseChartOptions('Visitors');
   
-  stats = {
-    articles: {
-      total: 2547,
-      change: 12.5,
-      trend: 'up'
-    },
-    users: {
-      total: 14289,
-      change: 8.2,
-      trend: 'up'
-    },
-    pageViews: {
-      total: '892K',
-      change: 23.1,
-      trend: 'up'
-    },
-    comments: {
-      total: 4651,
-      change: -3.2,
-      trend: 'down'
-    }
-  };
-
-  categories = [
-    { name: 'Politics', count: 452, percentage: 75 },
-    { name: 'Technology', count: 385, percentage: 65 },
-    { name: 'Business', count: 328, percentage: 55 },
-    { name: 'Sports', count: 287, percentage: 45 }
-  ];
+  // Chart options for Visits
+  public chartOptionVisits: EChartsOption = this.getBaseChartOptions('Visits Traffic');
 
 
 
-  public dashboardStats:any={}
-
-  recentActivity = [
-    {
-      type: 'article',
-      action: 'New article published',
-      icon: 'plus-circle',
-      time: '2 minutes ago'
-    },
-    {
-      type: 'edit',
-      action: 'Article updated',
-      icon: 'edit',
-      time: '15 minutes ago'
-    },
-    {
-      type: 'user',
-      action: 'New user registered',
-      icon: 'user-plus',
-      time: '1 hour ago'
-    }
-  ];
-
-  constructor(private authService: AuthService, private storageService: StorageService, private adminService: AdminService,private storage: StorageService) {}
+  constructor(private authService: AuthService, private storageService: StorageService, private adminService: AdminService, private storage: StorageService) { }
 
   ngOnInit() {
     this.loadUserData();
@@ -75,8 +76,13 @@ export class DashboardComponent implements OnInit {
     this.getDashboardArticlesStatsInfo();
     this.getArticlesByCategory();
     this.getActiveEmployeeStats();
+    this.getChartData(this.selectedTimeframe)
   }
 
+  getChartData = (timeFrame: any) => {
+    this.getVisitorTimeSeries(timeFrame)
+    this.getVisitsTimeSeries(timeFrame)
+  }
   private loadUserData() {
     const userData = this.storageService.getStoredUser();
     if (userData) {
@@ -84,9 +90,45 @@ export class DashboardComponent implements OnInit {
     }
   }
 
-  changeTimeframe(timeframe: 'week' | 'month' | 'year') {
+  onTimeframeChange(timeframe: any): void {
+    // this.selectedTimeframe = timeframe;
+    // this.updateChartData(timeframe);
+    this.getChartData(timeframe)
+  }
+
+  private updateChartData(timeframe: any): void {
     this.selectedTimeframe = timeframe;
-    // Here you would typically fetch new data based on the timeframe
+
+
+    // Update chart options
+    this.chartOptionVisitors = {
+      ...this.chartOptionVisitors,
+      xAxis: {
+        ...(this.chartOptionVisitors.xAxis as any),
+        data: this.dashboardStats['visitorTimeSeries']['periods'] || []
+      },
+      series: [
+        {
+          ...(this.chartOptionVisitors.series as any[])[0],
+          data: this.dashboardStats['visitorTimeSeries']['counts'] || []
+        }
+      ]
+    };
+
+    // Update chart options
+    this.chartOptionVisits = {
+      ...this.chartOptionVisits,
+      xAxis: {
+        ...(this.chartOptionVisits.xAxis as any),
+        data: this.dashboardStats['visitsTimeSeries']['periods'] || []
+      },
+      series: [
+        {
+          ...(this.chartOptionVisits.series as any[])[0],
+          data: this.dashboardStats['visitsTimeSeries']['counts'] || []
+        }
+      ]
+    };
   }
 
   formatNumber(num: number): string {
@@ -107,11 +149,11 @@ export class DashboardComponent implements OnInit {
   getPageViewsCount = () => {
     try {
       this.adminService.loaderService = true;
-      const userData= this.storage.getStoredUser();
-      this.adminService.getDashboardVisitorStatsInfo({...userData}).subscribe((response:any) => {
+      const userData = this.storage.getStoredUser();
+      this.adminService.getDashboardVisitorStatsInfo({ ...userData }).subscribe((response: any) => {
         if (response) {
-          this.dashboardStats['pageVisistCounts']=response || {}
-        } 
+          this.dashboardStats['pageVisistCounts'] = response || {}
+        }
         this.adminService.loaderService = false;
       })
     } catch (error) {
@@ -122,11 +164,11 @@ export class DashboardComponent implements OnInit {
   getDashboardArticlesStatsInfo = () => {
     try {
       this.adminService.loaderService = true;
-      const userData= this.storage.getStoredUser();
-      this.adminService.getDashboardArticlesStatsInfo({...userData}).subscribe((response:any) => {
+      const userData = this.storage.getStoredUser();
+      this.adminService.getDashboardArticlesStatsInfo({ ...userData }).subscribe((response: any) => {
         if (response) {
-          this.dashboardStats['pageArticlesCount']=response || {}
-        } 
+          this.dashboardStats['pageArticlesCount'] = response || {}
+        }
         this.adminService.loaderService = false;
       })
     } catch (error) {
@@ -134,15 +176,15 @@ export class DashboardComponent implements OnInit {
       console.error(error)
     }
   }
- 
+
   getArticlesByCategory = () => {
     try {
       this.adminService.loaderService = true;
-      const userData= this.storage.getStoredUser();
-      this.adminService.getArticlesByCategory({...userData}).subscribe((response:any) => {
+      const userData = this.storage.getStoredUser();
+      this.adminService.getArticlesByCategory({ ...userData }).subscribe((response: any) => {
         if (response) {
-          this.dashboardStats['articlesByCategory']=response || {}
-        } 
+          this.dashboardStats['articlesByCategory'] = response || {}
+        }
         this.adminService.loaderService = false;
       })
     } catch (error) {
@@ -153,11 +195,45 @@ export class DashboardComponent implements OnInit {
   getActiveEmployeeStats = () => {
     try {
       this.adminService.loaderService = true;
-      const userData= this.storage.getStoredUser();
-      this.adminService.getActiveEmployeeStats({...userData}).subscribe((response:any) => {
+      const userData = this.storage.getStoredUser();
+      this.adminService.getActiveEmployeeStats({ ...userData }).subscribe((response: any) => {
         if (response) {
-          this.dashboardStats['activeEmployeeStats']=response || {}
-        } 
+          this.dashboardStats['activeEmployeeStats'] = response || {}
+        }
+        this.adminService.loaderService = false;
+      })
+    } catch (error) {
+      this.adminService.loaderService = false;
+      console.error(error)
+    }
+  }
+  getVisitorTimeSeries = (timeframe: any) => {
+    try {
+      this.adminService.loaderService = true;
+      const userData = this.storage.getStoredUser();
+      this.adminService.getVisitorTimeSeries({ ...userData, ...{ period: timeframe } }).subscribe((response: any) => {
+        if (response) {
+          console.log("respo chart", response)
+          this.dashboardStats['visitorTimeSeries'] = response || {}
+          this.updateChartData(timeframe)
+        }
+        this.adminService.loaderService = false;
+      })
+    } catch (error) {
+      this.adminService.loaderService = false;
+      console.error(error)
+    }
+  }
+  getVisitsTimeSeries = (timeframe: any) => {
+    try {
+      this.adminService.loaderService = true;
+      const userData = this.storage.getStoredUser();
+      this.adminService.getVisitsTimeSeries({ ...userData, ...{ period: timeframe } }).subscribe((response: any) => {
+        if (response) {
+          console.log("respo chart", response)
+          this.dashboardStats['visitsTimeSeries'] = response || {}
+          this.updateChartData(timeframe)
+        }
         this.adminService.loaderService = false;
       })
     } catch (error) {
