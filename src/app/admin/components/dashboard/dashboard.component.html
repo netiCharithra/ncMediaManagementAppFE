@@ -11,10 +11,18 @@
         <h3>Total Articles</h3>
       </div>
       <div class="stat-content">
-        <div class="stat-value">2,547</div>
-        <div class="stat-change positive">
-          <i class="fas fa-arrow-up"></i>
-          <span>12.5% vs last month</span>
+        <div class="stat-value">{{dashboardStats['pageArticlesCount']['totalRecords']}}</div>
+        <div class="stat-change" [ngClass]="{
+          'positive': dashboardStats['pageArticlesCount']['percentChange'] >= 0,
+          'negative': dashboardStats['pageArticlesCount']['percentChange'] < 0
+        }">
+          <i class="fas" [ngClass]="{
+            'fa-arrow-up': dashboardStats['pageArticlesCount']['percentChange'] >= 0,
+            'fa-arrow-down': dashboardStats['pageArticlesCount']['percentChange'] < 0
+          }"></i>
+          <span>
+            {{ dashboardStats['pageArticlesCount']['percentChange'] }}% vs last month
+          </span>
         </div>
       </div>
     </div>
@@ -22,13 +30,21 @@
     <div class="stat-card">
       <div class="stat-header">
         <i class="fas fa-users"></i>
-        <h3>Active Users</h3>
+        <h3> Visitors</h3>
       </div>
       <div class="stat-content">
-        <div class="stat-value">14,289</div>
-        <div class="stat-change positive">
-          <i class="fas fa-arrow-up"></i>
-          <span>8.2% vs last month</span>
+        <div class="stat-value">{{dashboardStats['pageVisistCounts']['totalVisits']}}</div>
+        <div class="stat-change" [ngClass]="{
+          'positive': dashboardStats['pageVisistCounts']['percentChange'] >= 0,
+          'negative': dashboardStats['pageVisistCounts']['percentChange'] < 0
+        }">
+          <i class="fas" [ngClass]="{
+            'fa-arrow-up': dashboardStats['pageVisistCounts']['percentChange'] >= 0,
+            'fa-arrow-down': dashboardStats['pageVisistCounts']['percentChange'] < 0
+          }"></i>
+          <span>
+            {{ dashboardStats['pageVisistCounts']['percentChange'] }}% vs last month
+          </span>
         </div>
       </div>
     </div>
@@ -36,13 +52,21 @@
     <div class="stat-card">
       <div class="stat-header">
         <i class="fas fa-eye"></i>
-        <h3>Page Views</h3>
+        <h3>Active Employees</h3>
       </div>
       <div class="stat-content">
-        <div class="stat-value">892K</div>
-        <div class="stat-change positive">
-          <i class="fas fa-arrow-up"></i>
-          <span>23.1% vs last month</span>
+        <div class="stat-value">{{dashboardStats['activeEmployeeStats']['totalActive']}}</div>
+        <div class="stat-change" [ngClass]="{
+          'positive': dashboardStats['activeEmployeeStats']['percentChange'] >= 0,
+          'negative': dashboardStats['activeEmployeeStats']['percentChange'] < 0
+        }">
+          <i class="fas" [ngClass]="{
+            'fa-arrow-up': dashboardStats['activeEmployeeStats']['percentChange'] >= 0,
+            'fa-arrow-down': dashboardStats['activeEmployeeStats']['percentChange'] < 0
+          }"></i>
+          <span>
+            {{ dashboardStats['activeEmployeeStats']['percentChange'] }}% vs last month
+          </span>
         </div>
       </div>
     </div>
@@ -86,44 +110,18 @@
           <h3>Top Categories</h3>
         </div>
         <div class="categories-list">
-          <div class="category-item">
+          <div class="category-item" *ngFor="let category of dashboardStats['articlesByCategory']">
             <div class="category-info">
-              <span class="category-name">Politics</span>
-              <span class="category-count">452 articles</span>
+              <span class="category-name">{{category.name}}</span>
+              <span class="category-count">{{category.count}} articles</span>
             </div>
             <div class="progress-bar">
-              <div class="progress" style="width: 75%"></div>
-            </div>
-          </div>
-          <div class="category-item">
-            <div class="category-info">
-              <span class="category-name">Technology</span>
-              <span class="category-count">385 articles</span>
-            </div>
-            <div class="progress-bar">
-              <div class="progress" style="width: 65%"></div>
-            </div>
-          </div>
-          <div class="category-item">
-            <div class="category-info">
-              <span class="category-name">Business</span>
-              <span class="category-count">328 articles</span>
-            </div>
-            <div class="progress-bar">
-              <div class="progress" style="width: 55%"></div>
-            </div>
-          </div>
-          <div class="category-item">
-            <div class="category-info">
-              <span class="category-name">Sports</span>
-              <span class="category-count">287 articles</span>
-            </div>
-            <div class="progress-bar">
-              <div class="progress" style="width: 45%"></div>
+              <div class="progress" [ngStyle]="{ width: category.percentage + '%' }"></div>
             </div>
           </div>
         </div>
       </div>
+
 
       <div class="content-card">
         <div class="card-header">

@@ -24,6 +24,10 @@ export class AdminService {
     EMPLOYEE_TRACING:'/admin/employeeTracingListing',
     MANIPULATE_EMPLOYEE_TRACING:'/admin/employeeTracingManagement',
     EMPLOYEE_TRACING_ACTIVE_EMPLOYEE_LIST:'/admin/employeeTracingActiveEmployeeList',
+    DASHBOARD_VISITER_STATS_INFO:'/admin/getPageViewDashboardInfo',
+    DASHBOARD_ARTICLES_STATS_INFO:'/admin/getArticlesDashbordInfo',
+    GET_ARTICLES_BY_CATEGORY:'/admin/getArticlesByCategory',
+    GET_ACTIVE_EMPLOYEE_STATS:'/admin/getActiveEmployeeStats',
 
 
     NEWS_APPROVE: `/admin/news/approve`,
@@ -290,5 +294,33 @@ export class AdminService {
       default:
         throw new Error(`Unknown manipulation type: ${type}`);
     }
+  }
+
+  /**
+   * Get dashboard visitor stats info
+   */
+  getDashboardVisitorStatsInfo(params: any): Observable<any> {
+    return this.httpService.post(this.API_ENDPOINTS.DASHBOARD_VISITER_STATS_INFO, { ...params });
+  }
+
+  /**
+   * Get dashboard articles stats info
+   */
+  getDashboardArticlesStatsInfo(params: any): Observable<any> {
+    return this.httpService.post(this.API_ENDPOINTS.DASHBOARD_ARTICLES_STATS_INFO, { ...params });
+  }
+
+  /**
+   * Get articles by category
+   */
+  getArticlesByCategory(params: any): Observable<any> {
+    return this.httpService.post(this.API_ENDPOINTS.GET_ARTICLES_BY_CATEGORY, { ...params });
+  }
+
+  /**
+   * Get active employee stats
+   */
+  getActiveEmployeeStats(params: any): Observable<any> {
+    return this.httpService.post(this.API_ENDPOINTS.GET_ACTIVE_EMPLOYEE_STATS, { ...params });
   }
 }

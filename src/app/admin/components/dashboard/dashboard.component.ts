@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { StorageService } from '../../services/storage.service';
+import { AdminService } from '../../services/admin.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -41,6 +42,10 @@ export class DashboardComponent implements OnInit {
     { name: 'Sports', count: 287, percentage: 45 }
   ];
 
+
+
+  public dashboardStats:any={}
+
   recentActivity = [
     {
       type: 'article',
@@ -62,10 +67,14 @@ export class DashboardComponent implements OnInit {
     }
   ];
 
-  constructor(private authService: AuthService, private storageService: StorageService) {}
+  constructor(private authService: AuthService, private storageService: StorageService, private adminService: AdminService,private storage: StorageService) {}
 
   ngOnInit() {
     this.loadUserData();
+    this.getPageViewsCount();
+    this.getDashboardArticlesStatsInfo();
+    this.getArticlesByCategory();
+    this.getActiveEmployeeStats();
   }
 
   private loadUserData() {
@@ -92,5 +101,68 @@ export class DashboardComponent implements OnInit {
 
   getChangeClass(change: number): string {
     return change >= 0 ? 'positive' : 'negative';
+  }
+
+
+  getPageViewsCount = () => {
+    try {
+      this.adminService.loaderService = true;
+      const userData= this.storage.getStoredUser();
+      this.adminService.getDashboardVisitorStatsInfo({...userData}).subscribe((response:any) => {
+        if (response) {
+          this.dashboardStats['pageVisistCounts']=response || {}
+        } 
+        this.adminService.loaderService = false;
+      })
+    } catch (error) {
+      this.adminService.loaderService = false;
+      console.error(error)
+    }
+  }
+  getDashboardArticlesStatsInfo = () => {
+    try {
+      this.adminService.loaderService = true;
+      const userData= this.storage.getStoredUser();
+      this.adminService.getDashboardArticlesStatsInfo({...userData}).subscribe((response:any) => {
+        if (response) {
+          this.dashboardStats['pageArticlesCount']=response || {}
+        } 
+        this.adminService.loaderService = false;
+      })
+    } catch (error) {
+      this.adminService.loaderService = false;
+      console.error(error)
+    }
+  }
+ 
+  getArticlesByCategory = () => {
+    try {
+      this.adminService.loaderService = true;
+      const userData= this.storage.getStoredUser();
+      this.adminService.getArticlesByCategory({...userData}).subscribe((response:any) => {
+        if (response) {
+          this.dashboardStats['articlesByCategory']=response || {}
+        } 
+        this.adminService.loaderService = false;
+      })
+    } catch (error) {
+      this.adminService.loaderService = false;
+      console.error(error)
+    }
+  }
+  getActiveEmployeeStats = () => {
+    try {
+      this.adminService.loaderService = true;
+      const userData= this.storage.getStoredUser();
+      this.adminService.getActiveEmployeeStats({...userData}).subscribe((response:any) => {
+        if (response) {
+          this.dashboardStats['activeEmployeeStats']=response || {}
+        } 
+        this.adminService.loaderService = false;
+      })
+    } catch (error) {
+      this.adminService.loaderService = false;
+      console.error(error)
+    }
   }
 }
