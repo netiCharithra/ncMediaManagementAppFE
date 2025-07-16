@@ -62,8 +62,7 @@ export class EmployeeTracingComponent implements OnInit{
   getAllEmployees = () => {
     try {
       this.adminService.loaderService = true;
-      const userData= this.storage.getStoredUser();
-      this.adminService.getEmployeeTracingActiveEmployeeList({...userData, ...{ page: this.pageNumber, employeeId: userData.employeeId }}).subscribe((response:any) => {
+      this.adminService.getEmployeeTracingActiveEmployeeList({...{ page: this.pageNumber}}).subscribe((response:any) => {
         if (response) {
           this.metaData['employees'] = response || []
           // this.employeeTables = this.employeeTablesCopy = response['data'] || [];

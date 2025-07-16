@@ -101,20 +101,20 @@ export class AdminService {
    * Get approved news with pagination
    */
   getApprovedNews(params: any): Observable<any> {
-    return this.httpService.post(this.API_ENDPOINTS.APPROVED_NEWS, { ...params });
+    return this.httpService.post(this.API_ENDPOINTS.APPROVED_NEWS, { ...params }, undefined, undefined, true);
   }
   /**
    * Get employees list with pagination
    */
   getEmployeesList(params: any): Observable<any> {
-    return this.httpService.post(this.API_ENDPOINTS.EMPLOYEES_LIST, { ...params });
+    return this.httpService.post(this.API_ENDPOINTS.EMPLOYEES_LIST, { ...params }, undefined, undefined, true);
   }
 
   /**
    * Get employee information by ID
    */
   getEmployeeData(params: any): Observable<any> {
-    return this.httpService.post(this.API_ENDPOINTS.EMPLOYEE_INFO, { ...params });
+    return this.httpService.post(this.API_ENDPOINTS.EMPLOYEE_INFO, { ...params }, undefined, undefined, true);
   }
 
   /**
@@ -129,7 +129,7 @@ export class AdminService {
    * Get news information by ID
    */
   getNewsInfo(params: any): Observable<any> {
-    return this.httpService.post(this.API_ENDPOINTS.NEWS_INFO, { ...params });
+    return this.httpService.post(this.API_ENDPOINTS.NEWS_INFO, { ...params }, undefined, undefined, true);
   }
 
   /**
@@ -174,12 +174,6 @@ export class AdminService {
     return this.httpService.post(this.API_ENDPOINTS.DELETE_S3_IMAGES, { ...params });
   }
 
-  /**
-   * Feature or unfeature a news article
-   */
-  featureNews(params: any): Observable<any> {
-    return this.httpService.post(this.API_ENDPOINTS.NEWS_FEATURE, { ...params });
-  }
 
   /**
    * Upload images for a news article
@@ -189,94 +183,31 @@ export class AdminService {
   }
 
   /**
-   * Get all categories
-   */
-  getCategories(params: any): Observable<any> {
-    return this.httpService.post(this.API_ENDPOINTS.CATEGORIES, { ...params });
-  }
-
-  /**
-   * Create a new category
-   */
-  createCategory(params: any): Observable<any> {
-    return this.httpService.post(this.API_ENDPOINTS.CATEGORY_CREATE, { ...params });
-  }
-
-  /**
-   * Update an existing category
-   */
-  updateCategory(params: any): Observable<any> {
-    return this.httpService.post(this.API_ENDPOINTS.CATEGORY_UPDATE, { ...params });
-  }
-
-  /**
-   * Delete a category
-   */
-  deleteCategory(params: any): Observable<any> {
-    return this.httpService.post(this.API_ENDPOINTS.CATEGORY_DELETE, { ...params });
-  }
-
-  /**
-   * Get all users
-   */
-  getUsers(params: any): Observable<any> {
-    return this.httpService.post(this.API_ENDPOINTS.USERS, { ...params });
-  }
-
-  /**
-   * Create a new user
-   */
-  createUser(params: any): Observable<any> {
-    return this.httpService.post(this.API_ENDPOINTS.USER_CREATE, { ...params });
-  }
-
-  /**
-   * Update an existing user
-   */
-  updateUser(params: any): Observable<any> {
-    return this.httpService.post(this.API_ENDPOINTS.USER_UPDATE, { ...params });
-  }
-
-  /**
-   * Delete a user
-   */
-  deleteUser(params: any): Observable<any> {
-    return this.httpService.post(this.API_ENDPOINTS.USER_DELETE, { ...params });
-  }
-
-  /**
-   * Get dashboard statistics
-   */
-  getDashboardStats(): Observable<any> {
-    return this.httpService.get(this.API_ENDPOINTS.DASHBOARD_STATS);
-  }
-
-  /**
    * Get metadata for admin operations
    */
   getMetaData(params: any): Observable<any> {
-    return this.httpService.post(this.API_ENDPOINTS.META_DATA, { ...params });
+    return this.httpService.post(this.API_ENDPOINTS.META_DATA,{ ...params }, undefined, undefined, true);
   }
 
   /**
    * Get employee tracing list
    */
   getEmployeTracingList(params: any): Observable<any> {
-    return this.httpService.post(this.API_ENDPOINTS.EMPLOYEE_TRACING, { ...params });
+    return this.httpService.post(this.API_ENDPOINTS.EMPLOYEE_TRACING, { ...params }, undefined, undefined, true);
   }
 
   /**
    * Manipulate employee tracing
    */
   manipulateEmployeTracing(params: any): Observable<any> {
-    return this.httpService.post(this.API_ENDPOINTS.MANIPULATE_EMPLOYEE_TRACING, { ...params },undefined,undefined,false,true);
+    return this.httpService.post(this.API_ENDPOINTS.MANIPULATE_EMPLOYEE_TRACING, { ...params },undefined,undefined,true,true);
   }
 
   /**
    * Get all employeeTracingActiveEmployeeList
    */
   getEmployeeTracingActiveEmployeeList(params: any): Observable<any> {
-    return this.httpService.post(this.API_ENDPOINTS.EMPLOYEE_TRACING_ACTIVE_EMPLOYEE_LIST, { ...params });
+    return this.httpService.post(this.API_ENDPOINTS.EMPLOYEE_TRACING_ACTIVE_EMPLOYEE_LIST, { ...params }, undefined, undefined, true);
   }
 
   /**
@@ -303,48 +234,48 @@ export class AdminService {
    * Get dashboard visitor stats info
    */
   getDashboardVisitorStatsInfo(params: any): Observable<any> {
-    return this.httpService.post(this.API_ENDPOINTS.DASHBOARD_VISITER_STATS_INFO, { ...params });
+    return this.httpService.post(this.API_ENDPOINTS.DASHBOARD_VISITER_STATS_INFO, { ...params }, undefined, undefined, true);
   }
 
   /**
    * Get dashboard articles stats info
    */
   getDashboardArticlesStatsInfo(params: any): Observable<any> {
-    return this.httpService.post(this.API_ENDPOINTS.DASHBOARD_ARTICLES_STATS_INFO, { ...params });
+    return this.httpService.post(this.API_ENDPOINTS.DASHBOARD_ARTICLES_STATS_INFO, { ...params }, undefined, undefined, true);
   }
 
   /**
    * Get articles by category
    */
   getArticlesByCategory(params: any): Observable<any> {
-    return this.httpService.post(this.API_ENDPOINTS.GET_ARTICLES_BY_CATEGORY, { ...params });
+    return this.httpService.post(this.API_ENDPOINTS.GET_ARTICLES_BY_CATEGORY, { ...params }, undefined, undefined, true);
   }
 
   /**
    * Get active employee stats
    */
   getActiveEmployeeStats(params: any): Observable<any> {
-    return this.httpService.post(this.API_ENDPOINTS.GET_ACTIVE_EMPLOYEE_STATS, { ...params });
+    return this.httpService.post(this.API_ENDPOINTS.GET_ACTIVE_EMPLOYEE_STATS, { ...params }, undefined, undefined, true);
   }
 
   /**
    * Get visitor time series
    */
   getVisitorTimeSeries(params: any): Observable<any> {
-    return this.httpService.post(this.API_ENDPOINTS.GET_VISITOR_TIME_SERIES, { ...params });
+    return this.httpService.post(this.API_ENDPOINTS.GET_VISITOR_TIME_SERIES, { ...params }, undefined, undefined, true);
   }
 
   /**
    * Get visits time series
    */
   getVisitsTimeSeries(params: any): Observable<any> {
-    return this.httpService.post(this.API_ENDPOINTS.GET_VISITS_TIME_SERIES, { ...params });
+    return this.httpService.post(this.API_ENDPOINTS.GET_VISITS_TIME_SERIES, { ...params }, undefined, undefined, true);
   }
 
   /**
    * Get visitor locations
    */
   getVisitorLocations(params: any): Observable<any> {
-    return this.httpService.post(this.API_ENDPOINTS.GET_VISITOR_LOCATIONS, { ...params });
+    return this.httpService.post(this.API_ENDPOINTS.GET_VISITOR_LOCATIONS, { ...params }, undefined, undefined, true);
   }
 }

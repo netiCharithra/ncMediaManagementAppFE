@@ -97,8 +97,7 @@ export class EmployeeManagementComponent implements OnInit {
       // this.pageData=null;
       let payload = {}
       this.internalLoader = true;
-      const userData = this.storage.getStoredUser()
-      this.adminService.getEmployeesList({ ...this.employeeListData, ...userData }).subscribe((response: any) => {
+      this.adminService.getEmployeesList({ ...this.employeeListData }).subscribe((response: any) => {
         console.log("response", response)
         if (response) {
           if (response) {

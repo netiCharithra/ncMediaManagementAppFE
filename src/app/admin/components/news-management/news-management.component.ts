@@ -79,7 +79,27 @@ export class NewsManagementComponent implements OnInit {
       this.newsForm.form.updateValueAndValidity();
     }
   }
-
+  getNewsActiveEmployees = (data: any) => {
+    try {
+      console.log("ac",data)
+      if(data?.label !== 'Neti Charithra'){
+        return
+      }
+      const payload={
+        employeeId:this.loggedUserDetails?.employeeId,
+        role:this.loggedUserDetails?.role
+      }
+      this.appService.loaderService = true;
+      this.appService.fetchNewsActiveEmployees(payload).subscribe((response) => {
+        console.log('empResp',response)
+        this.employeesList = response || [];
+        this.appService.loaderService = false;
+      });
+    } catch (error) {
+      console.error(error);
+      this.appService.loaderService = false;
+    }
+  };
   fetchNewsList = () => {
     const category = this.newsCategories[this.selectedTab];
     
@@ -101,7 +121,7 @@ export class NewsManagementComponent implements OnInit {
           fetchMethod = this.appService.fetchPendingNewsList(this.newsData);
       }
       
-      fetchMethod.subscribe((response) => {
+      fetchMethod.subscribe((response:any) => {
         console.log("RESPONSE",response)
         if(response){
           
@@ -119,11 +139,11 @@ export class NewsManagementComponent implements OnInit {
           this.messageService.showError(response.msg || "Failed!");
         }
         this.showLoader = false;
-      }, (error) => {
+      }, (error:any) => {
         console.error(error);
         this.showLoader = false;
       });
-    } catch (error) {
+    } catch (error:any) {
       this.showLoader = false;
       console.error(error);
     }
@@ -198,27 +218,6 @@ export class NewsManagementComponent implements OnInit {
     }
   }
 
-  getNewsActiveEmployees = (data: any) => {
-    try {
-      console.log("ac",data)
-      if(data?.label !== 'Neti Charithra'){
-        return
-      }
-      const payload={
-        employeeId:this.loggedUserDetails?.employeeId,
-        role:this.loggedUserDetails?.role
-      }
-      this.appService.loaderService = true;
-      this.appService.fetchNewsActiveEmployees(payload).subscribe((response) => {
-        console.log('empResp',response)
-        this.employeesList = response || [];
-        this.appService.loaderService = false;
-      });
-    } catch (error) {
-      console.error(error);
-      this.appService.loaderService = false;
-    }
-  };
 
   getMetaData = (stateId?: any, callFurtercalls?: any, eventRowData?: any) => {
     try {
@@ -226,6 +225,7 @@ export class NewsManagementComponent implements OnInit {
       // 'AP_DISTRICTS', 'AP_DISTRICT_MANDALS'
       console.log('hi')
       const metaList = stateId ? [stateId + '_DISTRICTS', stateId + '_DISTRICT_MANDALS'] : ['NEWS_CATEGORIES', 'STATES', 'ROLE', 'NEWS_TYPE', 'NEWS_SOURCES'];
+      console.log("metaList", metaList)
       this.appService.getMetaData({ metaList }).subscribe((response) => {
         this.metaData = { ...this.metaData, ...response || {} };
         console.log(this.metaData);

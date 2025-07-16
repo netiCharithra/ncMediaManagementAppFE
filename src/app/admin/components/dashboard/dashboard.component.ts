@@ -150,8 +150,7 @@ export class DashboardComponent implements OnInit {
   getPageViewsCount = () => {
     try {
       this.adminService.loaderService = true;
-      const userData = this.storage.getStoredUser();
-      this.adminService.getDashboardVisitorStatsInfo({ ...userData }).subscribe((response: any) => {
+      this.adminService.getDashboardVisitorStatsInfo({}).subscribe((response: any) => {
         if (response) {
           this.dashboardStats['pageVisistCounts'] = response || {}
         }
@@ -165,8 +164,7 @@ export class DashboardComponent implements OnInit {
   getDashboardArticlesStatsInfo = () => {
     try {
       this.adminService.loaderService = true;
-      const userData = this.storage.getStoredUser();
-      this.adminService.getDashboardArticlesStatsInfo({ ...userData }).subscribe((response: any) => {
+      this.adminService.getDashboardArticlesStatsInfo({}).subscribe((response: any) => {
         if (response) {
           this.dashboardStats['pageArticlesCount'] = response || {}
         }
@@ -181,8 +179,7 @@ export class DashboardComponent implements OnInit {
   getArticlesByCategory = () => {
     try {
       this.adminService.loaderService = true;
-      const userData = this.storage.getStoredUser();
-      this.adminService.getArticlesByCategory({ ...userData }).subscribe((response: any) => {
+      this.adminService.getArticlesByCategory({}).subscribe((response: any) => {
         if (response) {
           this.dashboardStats['articlesByCategory'] = response || {}
         }
@@ -196,8 +193,7 @@ export class DashboardComponent implements OnInit {
   getActiveEmployeeStats = () => {
     try {
       this.adminService.loaderService = true;
-      const userData = this.storage.getStoredUser();
-      this.adminService.getActiveEmployeeStats({ ...userData }).subscribe((response: any) => {
+      this.adminService.getActiveEmployeeStats({}).subscribe((response: any) => {
         if (response) {
           this.dashboardStats['activeEmployeeStats'] = response || {}
         }
@@ -211,8 +207,7 @@ export class DashboardComponent implements OnInit {
   getVisitorTimeSeries = (timeframe: any) => {
     try {
       this.adminService.loaderService = true;
-      const userData = this.storage.getStoredUser();
-      this.adminService.getVisitorTimeSeries({ ...userData, ...{ period: timeframe } }).subscribe((response: any) => {
+      this.adminService.getVisitorTimeSeries({ ...{ period: timeframe } }).subscribe((response: any) => {
         if (response) {
           console.log("respo chart", response)
           this.dashboardStats['visitorTimeSeries'] = response || {}
@@ -228,8 +223,7 @@ export class DashboardComponent implements OnInit {
   getVisitsTimeSeries = (timeframe: any) => {
     try {
       this.adminService.loaderService = true;
-      const userData = this.storage.getStoredUser();
-      this.adminService.getVisitsTimeSeries({ ...userData, ...{ period: timeframe } }).subscribe((response: any) => {
+      this.adminService.getVisitsTimeSeries({ ...{ period: timeframe } }).subscribe((response: any) => {
         if (response) {
           this.dashboardStats['visitsTimeSeries'] = response || {}
           this.updateChartData(timeframe)
@@ -244,8 +238,7 @@ export class DashboardComponent implements OnInit {
   getVisitorLocations = () => {
     try {
       this.adminService.loaderService = true;
-      const userData = this.storage.getStoredUser();
-      this.adminService.getVisitorLocations({ ...userData }).subscribe((response: any) => {
+      this.adminService.getVisitorLocations({}).subscribe((response: any) => {
         if (response) {
           console.log("respo chart", response)
           this.dashboardStats['visitorLocations'] = response || {}
