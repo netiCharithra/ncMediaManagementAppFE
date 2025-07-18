@@ -3,7 +3,7 @@ name: Angular CI/CD to Firebase Hosting # Name of your workflow
 on:
   push:
     branches:
-      - main # This workflow will run on pushes to the 'main' branch
+      - main_v4 # This workflow will run on pushes to the 'main' branch
 
 jobs:
   build-and-deploy:
