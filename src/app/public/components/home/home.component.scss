@@ -48,6 +48,72 @@
       gap: 20px;
     }
 
+    /* Skeleton Loader Styles */
+    .skeleton-loader {
+      width: 100%;
+      
+      .skeleton-header {
+        height: 24px;
+        width: 200px;
+        background: #f0f0f0;
+        margin-bottom: 20px;
+        border-radius: 4px;
+        animation: pulse 1.5s infinite;
+      }
+      
+      .skeleton-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 20px;
+        margin-top: 15px;
+      }
+      
+      .skeleton-card {
+        background: #fff;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        
+        .skeleton-image {
+          height: 160px;
+          background: #f0f0f0;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          
+          .skeleton-logo {
+            width: 80px;
+            height: 80px;
+            opacity: 0.7;
+            animation: pulse 1.5s infinite;
+          }
+        }
+        
+        .skeleton-content {
+          padding: 16px;
+          
+          .skeleton-line {
+            height: 12px;
+            background: #f0f0f0;
+            margin-bottom: 8px;
+            border-radius: 4px;
+            animation: pulse 1.5s infinite;
+            
+            &.w-100 { width: 100%; }
+            &.w-75 { width: 75%; }
+            &.w-50 { width: 50%; }
+            &.w-25 { width: 25%; }
+          }
+        }
+      }
+    }
+    
+    @keyframes pulse {
+      0% { opacity: 0.6; }
+      50% { opacity: 1; }
+      100% { opacity: 0.6; }
+    }
+
     .compact-news-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -89,6 +155,10 @@
       .compact-news-grid {
         grid-template-columns: repeat(2, 1fr);
       }
+      
+      .skeleton-loader .skeleton-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
     }
   }
 }
@@ -103,6 +173,16 @@
       .compact-news-grid {
         grid-template-columns: 1fr;
       }
+      
+      .skeleton-loader {
+        .skeleton-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+        
+        .skeleton-card .skeleton-image {
+          height: 120px;
+        }
+      }
     }
   }
 }
@@ -113,5 +193,11 @@
   }
   .home-container .news-section .news-grid {
     grid-template-columns: 1fr;
+  }
+  
+  .home-container .news-section {
+    .skeleton-loader .skeleton-grid {
+      grid-template-columns: 1fr;
+    }
   }
 }

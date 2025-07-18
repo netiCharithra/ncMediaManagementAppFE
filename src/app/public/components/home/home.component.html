@@ -7,46 +7,105 @@
         <a routerLink="/latest-news" class="view-all">{{languageService.getString('viewAll')}}</a>
       </div>
      
-      <div class="news-grid latest-news-grid" *ngIf="!isMobile">
-        <app-news-card *ngFor="let news of latestNews.slice(0, 4)" [news]="news"></app-news-card>
+      <!-- Latest News Skeleton Loader -->
+      <div class="skeleton-loader" *ngIf="isLoadingLatestNews">
+        <div class="skeleton-header"></div>
+        <div class="skeleton-grid">
+          <div class="skeleton-card" *ngFor="let item of [1,2,3,4]">
+            <div class="skeleton-image">
+              <img src="assets/images/logos/fullLogo.png" alt="Loading..." class="skeleton-logo">
+            </div>
+            <div class="skeleton-content">
+              <div class="skeleton-line w-75"></div>
+              <div class="skeleton-line w-50"></div>
+              <div class="skeleton-line w-25"></div>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="compact-news-grid" >
-        <app-compact-news-card *ngFor="let news of isMobile ? latestNews.slice(0, 4) : latestNews.slice(4, 13)" [news]="news"></app-compact-news-card>
-      </div>
-     
+
+      <!-- Latest News Content -->
+      <ng-container *ngIf="!isLoadingLatestNews">
+        <div class="news-grid latest-news-grid" *ngIf="!isMobile">
+          <app-news-card *ngFor="let news of latestNews.slice(0, 4)" [news]="news"></app-news-card>
+        </div>
+        <div class="compact-news-grid">
+          <app-compact-news-card *ngFor="let news of isMobile ? latestNews.slice(0, 4) : latestNews.slice(4, 13)" [news]="news"></app-compact-news-card>
+        </div>
+      </ng-container>
     </div>
   </section>
 
-  <!-- Regional News Section -->
+  <!-- News by Type Section -->
   <section class="news-section regional-news" *ngFor="let news of categoryWiseNews">
     <div class="container">
       <div class="section-header">
         <h2>{{news['type'][currentLanguage] || news['type']['value']}}</h2>
         <a [routerLink]="'/type/'+news['type']['value']" class="view-all">{{languageService.getString('viewAll')}}</a>
       </div>
-      <div class="news-grid" *ngIf="!isMobile">
-        <app-news-card *ngFor="let news of news['records']" [news]="news"></app-news-card>
+      
+      <!-- News by Type Skeleton Loader -->
+      <div class="skeleton-loader" *ngIf="isLoadingNewsTypes">
+        <div class="skeleton-header"></div>
+        <div class="skeleton-grid">
+          <div class="skeleton-card" *ngFor="let item of [1,2,3,4]">
+            <div class="skeleton-image">
+              <img src="assets/images/logos/fullLogo.png" alt="Loading..." class="skeleton-logo">
+            </div>
+            <div class="skeleton-content">
+              <div class="skeleton-line w-75"></div>
+              <div class="skeleton-line w-50"></div>
+              <div class="skeleton-line w-25"></div>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="compact-news-grid" *ngIf="isMobile" >
-        <app-compact-news-card *ngFor="let news of news['records']" [news]="news"></app-compact-news-card>
-      </div>
-    
+
+      <!-- News by Type Content -->
+      <ng-container *ngIf="!isLoadingNewsTypes">
+        <div class="news-grid" *ngIf="!isMobile">
+          <app-news-card *ngFor="let newsItem of news['records']" [news]="newsItem"></app-news-card>
+        </div>
+        <div class="compact-news-grid" *ngIf="isMobile">
+          <app-compact-news-card *ngFor="let newsItem of news['records']" [news]="newsItem"></app-compact-news-card>
+        </div>
+      </ng-container>
     </div>
   </section>
-  <!-- Regional News Section -->
+  <!-- News by Category Section -->
   <section class="news-section regional-news" *ngFor="let news of categoryCategorisedNews">
     <div class="container">
       <div class="section-header">
         <h2>{{getCategoryLabel(news['category'])}}</h2>
         <a [routerLink]="'/category/'+news['category']" class="view-all">{{languageService.getString('viewAll')}}</a>
       </div>
-      <div class="news-grid" *ngIf="!isMobile">
-        <app-news-card *ngFor="let news of news['news']" [news]="news"></app-news-card>
+      
+      <!-- News by Category Skeleton Loader -->
+      <div class="skeleton-loader" *ngIf="isLoadingNewsCategories">
+        <div class="skeleton-header"></div>
+        <div class="skeleton-grid">
+          <div class="skeleton-card" *ngFor="let item of [1,2,3,4]">
+            <div class="skeleton-image">
+              <img src="assets/images/logos/fullLogo.png" alt="Loading..." class="skeleton-logo">
+            </div>
+            <div class="skeleton-content">
+              <div class="skeleton-line w-75"></div>
+              <div class="skeleton-line w-50"></div>
+              <div class="skeleton-line w-25"></div>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="compact-news-grid" *ngIf="isMobile" >
-        <app-compact-news-card *ngFor="let news of news['news']" [news]="news"></app-compact-news-card>
-      </div>
-    
+
+      <!-- News by Category Content -->
+      <ng-container *ngIf="!isLoadingNewsCategories">
+        <div class="news-grid" *ngIf="!isMobile">
+          <app-news-card *ngFor="let newsItem of news['news']" [news]="newsItem"></app-news-card>
+        </div>
+        <div class="compact-news-grid" *ngIf="isMobile">
+          <app-compact-news-card *ngFor="let newsItem of news['news']" [news]="newsItem"></app-compact-news-card>
+        </div>
+      </ng-container>
     </div>
   </section>
 

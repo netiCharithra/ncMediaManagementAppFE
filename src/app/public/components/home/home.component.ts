@@ -17,6 +17,14 @@ export class HomeComponent implements OnInit {
   latestNews: any[] = [];
   regionalNews: any[] = [];
   internationalNews: any[] = [];
+  categoryWiseNews: any[] = [];
+  categoryCategorisedNews: any[] = [];
+  categoryMetaList: any[] = [];
+
+  // Loading states
+  isLoadingLatestNews = true;
+  isLoadingNewsTypes = true;
+  isLoadingNewsCategories = true;
 
   latestHasMore = false;
   regionalHasMore = false;
@@ -24,17 +32,11 @@ export class HomeComponent implements OnInit {
 
   isMobile = window.innerWidth <= 768;
 
-
-  public categoryWiseNews:any[]=[];
-  public categoryCategorisedNews:any[]=[];
-  public categoryMetaList:any[]=[];
-
   currentLanguage: 'te' | 'en';
 
-  constructor(private publicService: PublicService, public languageService:LanguageService) { 
+  constructor(private publicService: PublicService, public languageService: LanguageService) { 
     this.currentLanguage = this.languageService.getCurrentLanguage();
   }
-
 
   ngOnInit(): void {
     
@@ -44,35 +46,53 @@ export class HomeComponent implements OnInit {
     this.getMetaData()
   }
 
-
-
   loadLatestNews(): void {
-
+    this.isLoadingLatestNews = true;
     this.publicService.getLatestNews({})
-      .subscribe(response => {
-        this.latestNews = response ||[];
+      .subscribe({
+        next: (response) => {
+          this.latestNews = response || [];
+        },
+        error: (error) => {
+          console.error('Error loading latest news:', error);
+        },
+        complete: () => {
+          this.isLoadingLatestNews = false;
+        }
       });
-
   }
+
   loadNewsTypeCategorizedNews(): void {
-
+    this.isLoadingNewsTypes = true;
     this.publicService.getNewsTypeCategorizedNews({})
-      .subscribe(response => {
-        this.categoryWiseNews=response[0]?.['types'] || []
-        console.log("loadNewsTypeCategorizedNews",response)
+      .subscribe({
+        next: (response) => {
+          this.categoryWiseNews = response[0]?.['types'] || [];
+        },
+        error: (error) => {
+          console.error('Error loading news by type:', error);
+        },
+        complete: () => {
+          this.isLoadingNewsTypes = false;
+        }
       });
-
   }
+
   getNewsCategoryCategorizedNews(): void {
-
+    this.isLoadingNewsCategories = true;
     this.publicService.getNewsCategoryCategorizedNews({})
-      .subscribe(response => {
-        this.categoryCategorisedNews=response|| []
-        console.log("getNewsCategoryCategorizedNews",response)
+      .subscribe({
+        next: (response) => {
+          this.categoryCategorisedNews = response || [];
+        },
+        error: (error) => {
+          console.error('Error loading news by category:', error);
+        },
+        complete: () => {
+          this.isLoadingNewsCategories = false;
+        }
       });
-
   }
-
 
   getMetaData(): void {
     
