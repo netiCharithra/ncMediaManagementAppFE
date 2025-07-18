@@ -14,8 +14,70 @@
       </div>
     </div>
 
-    <!-- News Content -->
-    <div class="news-expanded-container" *ngIf="!loading && news">
+    <!-- Skeleton Loader -->
+    <div class="skeleton-loader" *ngIf="isLoadingContent">
+      <div class="skeleton-main-content">
+        <!-- Title Skeleton -->
+        <div class="skeleton-title"></div>
+        
+        <!-- Metadata Skeleton -->
+        <div class="skeleton-metadata">
+          <div class="skeleton-line short"></div>
+          <div class="skeleton-line short"></div>
+        </div>
+        
+        <!-- Image Gallery Skeleton -->
+        <div class="skeleton-gallery">
+          <div class="skeleton-main-image">
+            <div class="skeleton-image"></div>
+          </div>
+          <div class="skeleton-secondary-images">
+            <div class="skeleton-image"></div>
+            <div class="skeleton-image"></div>
+          </div>
+        </div>
+        
+        <!-- Content Skeleton -->
+        <div class="skeleton-content">
+          <div class="skeleton-line"></div>
+          <div class="skeleton-line"></div>
+          <div class="skeleton-line"></div>
+          <div class="skeleton-line half"></div>
+        </div>
+        
+        <!-- Action Buttons Skeleton -->
+        <div class="skeleton-actions">
+          <div class="skeleton-button"></div>
+        </div>
+      </div>
+      
+      <div class="skeleton-sidebar">
+        <!-- Latest News Skeleton -->
+        <div class="skeleton-section">
+          <div class="skeleton-heading"></div>
+          <div class="skeleton-news-list">
+            <div class="skeleton-news-item" *ngFor="let item of [1,2,3]">
+              <div class="skeleton-thumbnail"></div>
+              <div class="skeleton-news-content">
+                <div class="skeleton-line short"></div>
+                <div class="skeleton-line shorter"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Social Media Skeleton -->
+        <div class="skeleton-section">
+          <div class="skeleton-heading"></div>
+          <div class="skeleton-social-links">
+            <div class="skeleton-social-icon" *ngFor="let item of [1,2,3,4,5]"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Actual News Content -->
+    <div class="news-expanded-container" *ngIf="!isLoadingContent && news">
       <div class="main-content">
         <div class="news-content">
           <h1 class="title">{{news.title}}</h1>
@@ -141,8 +203,15 @@
       </div>
     </div>
 
-    <div class="loading" *ngIf="loading">
-      <div class="spinner"></div>
+    <!-- Error State -->
+    <div class="error-message" *ngIf="error && !isLoadingContent">
+      <div class="error-content">
+        <i class="fas fa-exclamation-circle"></i>
+        <p>{{ error }}</p>
+        <button class="retry-btn" (click)="retryLoading()">
+          <i class="fas fa-sync-alt"></i> Try Again
+        </button>
+      </div>
     </div>
 
     

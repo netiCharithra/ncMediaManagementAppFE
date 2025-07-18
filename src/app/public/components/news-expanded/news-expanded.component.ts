@@ -4,6 +4,7 @@ import { trigger, state, style, animate, transition } from '@angular/animations'
 import { NewsService } from '../../../news.service';
 import { LanguageService } from '../../../services/language.service';
 import { PublicService } from '../../services/public.service';
+import { formatDate } from '@angular/common';
 
 @Component({
   selector: 'app-news-expanded',
@@ -34,6 +35,10 @@ export class NewsExpandedComponent implements OnInit {
   latestNews: any[] = [];
   loading = true;
   error: string | null = null;
+  
+  // Skeleton loader states
+  isLoadingContent = true;
+  isLoadingRelatedNews = true;
   socialLinks = {
     facebook: 'https://facebook.com/neticharithra',
     twitter: 'https://twitter.com/neticharithra',
@@ -82,6 +87,8 @@ export class NewsExpandedComponent implements OnInit {
 
   private fetchNews(id: string, language: string): void {
     this.loading = true;
+    this.isLoadingContent = true;
+    this.error = null;
     
     const params = {
       newsId: id,
@@ -89,22 +96,36 @@ export class NewsExpandedComponent implements OnInit {
     };
 
     this.publicService.getNewsInfo(params).subscribe({
-      next: (response) => {
-        console.log("LJHLI")
-        if (response && response?.specificRecord) {
-          this.news = response?.specificRecord?.[0];
-          this.latestNews = response?.recentRecords || [];
+      next: (response: any) => {
+        if (response && response.specificRecord) {
+          this.news = response.specificRecord[0];
+          this.latestNews = response.recentRecords || [];
         } else {
           this.error = 'News not found';
         }
         this.loading = false;
+        // Small delay to show skeleton animation
+        setTimeout(() => {
+          this.isLoadingContent = false;
+        }, 500);
       },
-      error: (error) => {
-        console.error('Error fetching news:', error);
-        this.error = 'Error loading news';
+      error: (err: any) => {
+        console.error('Error fetching news:', err);
+        this.error = 'Failed to load news. Please try again later.';
         this.loading = false;
+        this.isLoadingContent = false;
       }
     });
+  }
+
+  // Retry loading the news
+  retryLoading(): void {
+    const newsId = this.route.snapshot.paramMap.get('id');
+    const language = this.route.snapshot.paramMap.get('language');
+    
+    if (newsId && language) {
+      this.fetchNews(newsId, language);
+    }
   }
 
   navigateToHome(): void {
