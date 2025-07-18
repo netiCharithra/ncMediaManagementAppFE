@@ -13,17 +13,17 @@
         <h3>Total Articles</h3>
       </div>
       <div class="stat-content">
-        <div class="stat-value">{{dashboardStats['pageArticlesCount']['totalRecords']}}</div>
+        <div class="stat-value">{{dashboardStats?.['pageArticlesCount']?.['totalRecords']}}</div>
         <div class="stat-change" [ngClass]="{
-          'positive': dashboardStats['pageArticlesCount']['percentChange'] >= 0,
-          'negative': dashboardStats['pageArticlesCount']['percentChange'] < 0
+          'positive': dashboardStats?.['pageArticlesCount']?.['percentChange'] >= 0,
+          'negative': dashboardStats?.['pageArticlesCount']?.['percentChange'] < 0
         }">
           <i class="fas" [ngClass]="{
-            'fa-arrow-up': dashboardStats['pageArticlesCount']['percentChange'] >= 0,
-            'fa-arrow-down': dashboardStats['pageArticlesCount']['percentChange'] < 0
+            'fa-arrow-up': dashboardStats?.['pageArticlesCount']?.['percentChange'] >= 0,
+            'fa-arrow-down': dashboardStats?.['pageArticlesCount']?.['percentChange'] < 0
           }"></i>
           <span>
-            {{ dashboardStats['pageArticlesCount']['percentChange'] }}% vs last month
+            {{ dashboardStats?.['pageArticlesCount']?.['percentChange'] }}% vs last month
           </span>
         </div>
       </div>
@@ -35,17 +35,17 @@
         <h3> Visitors</h3>
       </div>
       <div class="stat-content">
-        <div class="stat-value">{{dashboardStats['pageVisistCounts']['totalVisits']}}</div>
+        <div class="stat-value">{{dashboardStats?.['pageVisistCounts']?.['totalVisits']}}</div>
         <div class="stat-change" [ngClass]="{
-          'positive': dashboardStats['pageVisistCounts']['percentChange'] >= 0,
-          'negative': dashboardStats['pageVisistCounts']['percentChange'] < 0
+          'positive': dashboardStats?.['pageVisistCounts']?.['percentChange'] >= 0,
+          'negative': dashboardStats?.['pageVisistCounts']?.['percentChange'] < 0
         }">
           <i class="fas" [ngClass]="{
-            'fa-arrow-up': dashboardStats['pageVisistCounts']['percentChange'] >= 0,
-            'fa-arrow-down': dashboardStats['pageVisistCounts']['percentChange'] < 0
+            'fa-arrow-up': dashboardStats?.['pageVisistCounts']?.['percentChange'] >= 0,
+            'fa-arrow-down': dashboardStats?.['pageVisistCounts']?.['percentChange'] < 0
           }"></i>
           <span>
-            {{ dashboardStats['pageVisistCounts']['percentChange'] }}% vs last month
+            {{ dashboardStats?.['pageVisistCounts']?.['percentChange'] }}% vs last month
           </span>
         </div>
       </div>
@@ -57,17 +57,17 @@
         <h3>Active Employees</h3>
       </div>
       <div class="stat-content">
-        <div class="stat-value">{{dashboardStats['activeEmployeeStats']['totalActive']}}</div>
+        <div class="stat-value">{{dashboardStats?.['activeEmployeeStats']?.['totalActive']}}</div>
         <div class="stat-change" [ngClass]="{
-          'positive': dashboardStats['activeEmployeeStats']['percentChange'] >= 0,
-          'negative': dashboardStats['activeEmployeeStats']['percentChange'] < 0
+          'positive': dashboardStats?.['activeEmployeeStats']?.['percentChange'] >= 0,
+          'negative': dashboardStats?.['activeEmployeeStats']?.['percentChange'] < 0
         }">
           <i class="fas" [ngClass]="{
-            'fa-arrow-up': dashboardStats['activeEmployeeStats']['percentChange'] >= 0,
-            'fa-arrow-down': dashboardStats['activeEmployeeStats']['percentChange'] < 0
+            'fa-arrow-up': dashboardStats?.['activeEmployeeStats']?.['percentChange'] >= 0,
+            'fa-arrow-down': dashboardStats?.['activeEmployeeStats']?.['percentChange'] < 0
           }"></i>
           <span>
-            {{ dashboardStats['activeEmployeeStats']['percentChange'] }}% vs last month
+            {{ dashboardStats?.['activeEmployeeStats']?.['percentChange'] }}% vs last month
           </span>
         </div>
       </div>
@@ -118,7 +118,7 @@
 
       <div class="content-card">
         <div  style="height: 450px !important;">
-          <app-dashboard-map [visitorLocations]="dashboardStats['visitorLocations']"></app-dashboard-map>
+          <app-dashboard-map [visitorLocations]="dashboardStats?.['visitorLocations']"></app-dashboard-map>
         </div>
       </div>
 
@@ -129,7 +129,7 @@
           <h3>Top Categories</h3>
         </div>
         <div class="categories-list">
-          <div class="category-item" *ngFor="let category of dashboardStats['articlesByCategory']">
+          <div class="category-item" *ngFor="let category of dashboardStats?.['articlesByCategory']">
             <div class="category-info">
               <span class="category-name">{{category.name}}</span>
               <span class="category-count">{{category.count}} articles</span>

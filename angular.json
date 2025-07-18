@@ -13,20 +13,15 @@
       "root": "",
       "sourceRoot": "src",
       "prefix": "app",
-      "i18n": {
-        "sourceLocale": "te",
-        "locales": {
-          "en": {
-            "translation": "src/locale/messages.en.xlf"
-          }
-        }
-      },
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
             "outputPath": "dist/news-website",
+            "baseHref": "/",
+            "deployUrl": "/",
             "index": "src/index.html",
+            "outputHashing": "all",
             "browser": "src/main.ts",
             "polyfills": [
               "zone.js",
@@ -52,27 +47,34 @@
             },
             "scripts": [
               "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"
-            ],
-            "localize": [
-              "en"
             ]
           },
           "configurations": {
             "production": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.prod.ts"
+                }
+              ],
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "500kb",
-                  "maximumError": "1mb"
+                  "maximumWarning": "2mb",
+                  "maximumError": "2.5mb"
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "2kb",
-                  "maximumError": "4kb"
+                  "maximumWarning": "8kb",
+                  "maximumError": "15kb"
+                },
+                {
+                  "type": "any",
+                  "maximumWarning": "3mb",
+                  "maximumError": "4mb"
                 }
               ],
-              "outputHashing": "all",
-              "localize": true
+              "outputHashing": "all"
             },
             "development": {
               "optimization": false,
@@ -94,12 +96,7 @@
           },
           "defaultConfiguration": "development"
         },
-        "extract-i18n": {
-          "builder": "@angular-devkit/build-angular:extract-i18n",
-          "options": {
-            "buildTarget": "news-website:build"
-          }
-        },
+
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {

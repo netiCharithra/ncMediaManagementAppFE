@@ -106,12 +106,12 @@ export class DashboardComponent implements OnInit {
       ...this.chartOptionVisitors,
       xAxis: {
         ...(this.chartOptionVisitors.xAxis as any),
-        data: this.dashboardStats['visitorTimeSeries']['periods'] || []
+        data: this.dashboardStats?.['visitorTimeSeries']?.['periods'] || []
       },
       series: [
         {
           ...(this.chartOptionVisitors.series as any[])[0],
-          data: this.dashboardStats['visitorTimeSeries']['counts'] || []
+          data: this.dashboardStats?.['visitorTimeSeries']?.['counts'] || []
         }
       ]
     };
@@ -121,12 +121,12 @@ export class DashboardComponent implements OnInit {
       ...this.chartOptionVisits,
       xAxis: {
         ...(this.chartOptionVisits.xAxis as any),
-        data: this.dashboardStats['visitsTimeSeries']['periods'] || []
+        data: this.dashboardStats?.['visitsTimeSeries']?.['periods'] || []
       },
       series: [
         {
           ...(this.chartOptionVisits.series as any[])[0],
-          data: this.dashboardStats['visitsTimeSeries']['counts'] || []
+          data: this.dashboardStats?.['visitsTimeSeries']?.['counts'] || []
         }
       ]
     };

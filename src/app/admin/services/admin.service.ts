@@ -8,6 +8,13 @@ import { environment } from '../../../environments/environment';
 })
 export class AdminService {
   public readonly API_ENDPOINTS = {
+
+
+    // OTP Management for LOGIN
+    OTP_SEND_OTP: `/public/login/send-otp`,
+    OTP_VERIFY_OTP: `/public/login/verify-otp`,
+
+
     // News Management
     PENDING_NEWS: `/admin/news/pending`,
     APPROVED_NEWS: `/admin/news/approved`,
@@ -277,5 +284,19 @@ export class AdminService {
    */
   getVisitorLocations(params: any): Observable<any> {
     return this.httpService.post(this.API_ENDPOINTS.GET_VISITOR_LOCATIONS, { ...params }, undefined, undefined, true);
+  }
+
+  /**
+   * OTP Management for LOGIN
+   */
+  sendOtp(params: any): Observable<any> {
+    return this.httpService.post(this.API_ENDPOINTS.OTP_SEND_OTP, { ...params }, undefined, undefined, true);
+  }
+
+  /**
+   * OTP Management for LOGIN
+   */
+  verifyOtp(params: any): Observable<any> {
+    return this.httpService.post(this.API_ENDPOINTS.OTP_VERIFY_OTP, { ...params }, undefined, undefined, true);
   }
 }
