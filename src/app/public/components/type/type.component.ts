@@ -23,7 +23,7 @@ export class TypeComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private publicService: PublicService
-  ) {}
+  ) { }
 
   @HostListener('window:resize')
   onResize() {
@@ -48,7 +48,7 @@ export class TypeComponent implements OnInit {
   resetPagination() {
     this.pagination = {
       page: 1,
-      count: 12,
+      count: 6,
       endOfRecords: false,
       loading: false
     };
@@ -57,21 +57,19 @@ export class TypeComponent implements OnInit {
 
   loadNews() {
     if (this.pagination.loading || this.pagination.endOfRecords) return;
-    
+
     this.pagination.loading = true;
-    this.publicService.getNewsTypeCategorizedNews({
+    this.publicService.getTypeNewsPaginatedOnly({
       type: this.type,
       page: this.pagination.page,
-      size: this.pagination.count
+      count: this.pagination.count
     }).subscribe({
       next: (response: any) => {
-        if (response?.data?.length) {
-          this.newsList = [...this.newsList, ...response.data];
-          this.pagination.endOfRecords = response.data.length < this.pagination.count;
-          this.pagination.page++;
-        } else {
-          this.pagination.endOfRecords = true;
-        }
+        console.log('Category News Response:', response);
+        this.newsList = [...this.newsList, ...response?.records || []];
+        this.pagination.endOfRecords = response?.records?.length < this.pagination.count;
+        this.pagination.page++;
+
         this.pagination.loading = false;
       },
       error: () => {

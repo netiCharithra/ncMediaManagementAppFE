@@ -60,12 +60,24 @@ export class NewsExpandedComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    // Initial fetch
     const newsId = this.route.snapshot.paramMap.get('id');
     const language = this.route.snapshot.paramMap.get('language');
     
     if (newsId && language) {
       this.fetchNews(newsId, language);
     }
+
+    // Subscribe to route parameter changes
+    this.route.paramMap.subscribe(params => {
+      const updatedNewsId = params.get('id');
+      const updatedLanguage = params.get('language');
+      
+      if (updatedNewsId && updatedLanguage && 
+          (updatedNewsId !== newsId || updatedLanguage !== language)) {
+        this.fetchNews(updatedNewsId, updatedLanguage);
+      }
+    });
   }
 
   private fetchNews(id: string, language: string): void {
