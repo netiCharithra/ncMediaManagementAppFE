@@ -21,10 +21,13 @@ jobs:
 
       - name: Install Dependencies
         run: npm install # Install your Angular project's dependencies
-
+  
+      - name: Install Angular CLI (globally for the runner)
+        run: npm install -g @angular/cli # This makes 'ng' command available
+  
       - name: Build Angular App
-        run: ng build --configuration production # Build your Angular application for production.
- 
+        run: ng build --configuration production # Now 'ng' should be recognized
+  
 
       - name: Deploy to Firebase Hosting
         uses: w9jds/firebase-action@v2.0.0 # Use a pre-built GitHub action for Firebase deployment
