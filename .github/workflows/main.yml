@@ -33,13 +33,8 @@ jobs:
         run: ls -la dist/
 
       - name: Deploy to Firebase
-        uses: FirebaseExtended/action-hosting-deploy@v0
-        with:
-          repoToken: '${{ github.token }}'
-          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT }}'
-          projectId: 'nc-media-news'  # Your Firebase project ID
-          channelId: live
-          target: 'hosting'
-        env:
-          DEBUG: '*'  # Enable debug logging
-        continue-on-error: false
+        run: |
+          echo "Setting up Firebase..."
+          npx firebase --version
+          npx firebase use nc-media-news --token "${{ secrets.FIREBASE_TOKEN }}"
+          npx firebase deploy --only hosting --token "${{ secrets.FIREBASE_TOKEN }}"
