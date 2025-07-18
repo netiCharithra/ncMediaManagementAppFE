@@ -16,19 +16,30 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 18  # Match your project
+          node-version: '18.x'  # Match your project
+          cache: 'npm'
 
       - name: Install dependencies
-        run: npm ci
+        run: |
+          npm ci
+          npm install -g firebase-tools
 
       - name: Build Angular app
-        run: npm run build -- --configuration=production
+        run: |
+          echo "Building Angular application..."
+          npm run build -- --configuration=production
+
+      - name: List build files (debug)
+        run: ls -la dist/
 
       - name: Deploy to Firebase
         uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: '${{ github.token }}'
           firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT }}'
-          projectId: nc-media-news  # Your Firebase project ID
+          projectId: 'nc-media-news'  # Your Firebase project ID
           channelId: live
           target: 'hosting'
+        env:
+          DEBUG: '*'  # Enable debug logging
+        continue-on-error: false
