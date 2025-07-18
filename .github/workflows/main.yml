@@ -25,8 +25,10 @@ jobs:
         run: npm run build -- --configuration=production
 
       - name: Deploy to Firebase
-        uses: w9jds/firebase-action@v2.0.2
+        uses: FirebaseExtended/action-hosting-deploy@v0
         with:
-          args: deploy --only hosting
-        env:
-          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+          repoToken: '${{ github.token }}'
+          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT }}'
+          projectId: nc-media-news  # Your Firebase project ID
+          channelId: live
+          target: 'hosting'
