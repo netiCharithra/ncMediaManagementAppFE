@@ -7,10 +7,12 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppComponent } from './app.component';
 import { PublicModule } from './public/public.module';
 import { AppRoutingModule } from './app-routing.module';
+import { SplashScreenComponent } from './components/splash-screen/splash-screen.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    SplashScreenComponent
   ],
   imports: [
     BrowserModule,
