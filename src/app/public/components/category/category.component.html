@@ -1,0 +1,31 @@
+<div class="container mt-4">
+  <h2 class="mb-4">{{ category | titlecase }} News</h2>
+  
+  <div class="row g-4">
+    <div *ngFor="let news of newsList" [class]="isMobile ? 'col-12' : 'col-md-3'">
+      <app-news-card
+        *ngIf="!isMobile"
+        [news]="news"
+      ></app-news-card>
+      <app-compact-news-card
+        *ngIf="isMobile"
+        [news]="news"
+      ></app-compact-news-card>
+    </div>
+  </div>
+
+  <div *ngIf="pagination.loading" class="text-center mt-4">
+    <div class="spinner-border" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+    <p class="mt-2">Loading next {{ pagination.count }} news items...</p>
+  </div>
+
+  <div *ngIf="!pagination.loading && pagination.endOfRecords && newsList.length > 0" class="text-center mt-4">
+    <p>You've reached the end.</p>
+  </div>
+
+  <div *ngIf="!pagination.loading && newsList.length === 0" class="text-center mt-4">
+    <p>No news found for this category.</p>
+  </div>
+</div>

@@ -1,0 +1,53 @@
+<div class="home-container">
+  <!-- Latest News Section -->
+  <section class="news-section latest-news">
+    <div class="container">
+      <div class="section-header">
+        <h2>{{languageService.getString('latestNews')}}</h2>
+        <a routerLink="/latest-news" class="view-all">{{languageService.getString('viewAll')}}</a>
+      </div>
+     
+      <div class="news-grid latest-news-grid" *ngIf="!isMobile">
+        <app-news-card *ngFor="let news of latestNews.slice(0, 4)" [news]="news"></app-news-card>
+      </div>
+      <div class="compact-news-grid" >
+        <app-compact-news-card *ngFor="let news of isMobile ? latestNews.slice(0, 4) : latestNews.slice(4, 13)" [news]="news"></app-compact-news-card>
+      </div>
+     
+    </div>
+  </section>
+
+  <!-- Regional News Section -->
+  <section class="news-section regional-news" *ngFor="let news of categoryWiseNews">
+    <div class="container">
+      <div class="section-header">
+        <h2>{{news['type'][currentLanguage] || news['type']['value']}}</h2>
+        <a [routerLink]="'/type/'+news['type']['value']" class="view-all">{{languageService.getString('viewAll')}}</a>
+      </div>
+      <div class="news-grid" *ngIf="!isMobile">
+        <app-news-card *ngFor="let news of news['records']" [news]="news"></app-news-card>
+      </div>
+      <div class="compact-news-grid" *ngIf="isMobile" >
+        <app-compact-news-card *ngFor="let news of news['records']" [news]="news"></app-compact-news-card>
+      </div>
+    
+    </div>
+  </section>
+  <!-- Regional News Section -->
+  <section class="news-section regional-news" *ngFor="let news of categoryCategorisedNews">
+    <div class="container">
+      <div class="section-header">
+        <h2>{{getCategoryLabel(news['category'])}}</h2>
+        <a [routerLink]="'/category/'+news['category']" class="view-all">{{languageService.getString('viewAll')}}</a>
+      </div>
+      <div class="news-grid" *ngIf="!isMobile">
+        <app-news-card *ngFor="let news of news['news']" [news]="news"></app-news-card>
+      </div>
+      <div class="compact-news-grid" *ngIf="isMobile" >
+        <app-compact-news-card *ngFor="let news of news['news']" [news]="news"></app-compact-news-card>
+      </div>
+    
+    </div>
+  </section>
+
+</div>

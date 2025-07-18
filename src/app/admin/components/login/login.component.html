@@ -1,0 +1,138 @@
+<div class="login-container">
+  <div class="login-box">
+    <div class="logo">
+      <h2>Admin Login</h2>
+    </div>
+
+    <!-- Step 1: Request OTP -->
+    <form [formGroup]="requestForm" (ngSubmit)="requestOtp()" *ngIf="!otpSent">
+      <div class="form-group">
+        <label for="identifier">Email, Mobile, or Employee ID</label>
+        <input
+          type="text"
+          id="identifier"
+          class="form-control"
+          formControlName="identifier"
+          placeholder="Enter your identifier"
+          [ngClass]="{ 'is-invalid': requestForm.get('identifier')?.invalid && requestForm.get('identifier')?.touched }"
+        />
+        <div *ngIf="requestForm.get('identifier')?.invalid && requestForm.get('identifier')?.touched" class="invalid-feedback">
+          <div *ngIf="requestForm.get('identifier')?.errors?.['required']">Identifier is required.</div>
+        </div>
+      </div>
+
+      <div class="error-message" *ngIf="error">
+        {{ error }}
+      </div>
+
+      <button type="submit" class="btn-primary" [disabled]="requestForm.invalid || loading">
+        {{ loading ? 'Sending OTP...' : 'Get OTP' }}
+      </button>
+    </form>
+
+    <!-- Step 2: Verify OTP -->
+    <div *ngIf="otpSent">
+      <div class="otp-info">
+        <p *ngIf="!isOtpExpired">An OTP has been sent to your registered contact. Please enter it below.</p>
+        <p *ngIf="isOtpExpired" class="expired-message">OTP has expired. Please request a new one.</p>
+      </div>
+
+      <form [formGroup]="verifyForm" (ngSubmit)="verifyOtp()">
+        <div class="otp-inputs" [class.disabled]="isOtpExpired">
+          <input 
+            type="text" 
+            formControlName="otp1" 
+            #otp1 
+            maxlength="1" 
+            (keyup)="!isOtpExpired && onOtpInput(otp1, otp2)"
+            [disabled]="isOtpExpired"
+          />
+          <input 
+            type="text" 
+            formControlName="otp2" 
+            #otp2 
+            maxlength="1" 
+            (keyup)="!isOtpExpired && onOtpInput(otp2, otp3)"
+            [disabled]="isOtpExpired"
+          />
+          <input 
+            type="text" 
+            formControlName="otp3" 
+            #otp3 
+            maxlength="1" 
+            (keyup)="!isOtpExpired && onOtpInput(otp3, otp4)"
+            [disabled]="isOtpExpired"
+          />
+          <input 
+            type="text" 
+            formControlName="otp4" 
+            #otp4 
+            maxlength="1" 
+            (keyup)="!isOtpExpired && onOtpInput(otp4, otp5)"
+            [disabled]="isOtpExpired"
+          />
+          <input 
+            type="text" 
+            formControlName="otp5" 
+            #otp5 
+            maxlength="1" 
+            (keyup)="!isOtpExpired && onOtpInput(otp5, otp6)"
+            [disabled]="isOtpExpired"
+          />
+          <input 
+            type="text" 
+            formControlName="otp6" 
+            #otp6 
+            maxlength="1"
+            [disabled]="isOtpExpired"
+          />
+        </div>
+
+        <div class="touchpad" [class.disabled]="isOtpExpired">
+          <ng-container *ngFor="let row of touchpadLayout">
+            <button
+              type="button"
+              *ngFor="let key of row"
+              [ngClass]="{ 
+                'touchpad-btn': key !== 'Clear' && key !== 'Del', 
+                'touchpad-btn-util': key === 'Clear' || key === 'Del',
+                'disabled': isOtpExpired
+              }"
+              (click)="!isOtpExpired && (key === 'Clear' ? clearOtp() : onKeypadClick(key))"
+              [disabled]="isOtpExpired"
+            >
+              {{ key }}
+            </button>
+          </ng-container>
+        </div>
+
+        <div class="error-alert" *ngIf="error">
+          {{ error }}
+        </div>
+
+        <div class="timer-section">
+          <p *ngIf="!isOtpExpired" class="otp-timer">OTP expires in: {{ timeLeft }}</p>
+          <p *ngIf="isOtpExpired" class="expired-message">OTP has expired</p>
+          <button 
+            type="button" 
+            class="resend-button" 
+            (click)="resendOtp()" 
+            [disabled]="!isOtpExpired || loading"
+          >
+            {{ loading ? 'Sending...' : 'Resend OTP' }}
+          </button>
+        </div>
+
+        <button 
+          type="submit" 
+          class="btn-primary" 
+          [disabled]="verifyForm.invalid || loading || isOtpExpired"
+        >
+          {{ loading ? 'Logging in...' : 'Login' }}
+        </button>
+
+        <a href="javascript:void(0)" class="back-link" (click)="goBack()">Go Back</a>
+      </form>
+    </div>
+  </div>
+</div>

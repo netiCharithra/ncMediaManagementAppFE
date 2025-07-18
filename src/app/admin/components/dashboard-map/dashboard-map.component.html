@@ -1,0 +1,6 @@
+<div class="map-container">
+  <div *ngIf="isLoading" class="loading-overlay">
+    <div class="loading-text">Loading map data<span class="loading-dots"></span></div>
+  </div>
+  <div id="map" [class.loading]="isLoading"></div>
+</div>

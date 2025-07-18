@@ -1,0 +1,50 @@
+@import "../../../../styles/theme/theme";
+
+.international-container {
+  padding: 2rem 0;
+
+  .section-header {
+    margin-bottom: 2rem;
+
+    h1 {
+      font-size: 2rem;
+      color: $text-dark;
+      margin: 0;
+    }
+  }
+
+  .news-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-bottom: 2rem;
+  }
+
+  .load-more {
+    text-align: center;
+
+    button {
+      padding: 0.5rem 2rem;
+      font-weight: 500;
+    }
+  }
+}
+
+// Responsive styles
+@media (max-width: $breakpoint-md) {
+  .international-container {
+    padding: 1rem 0;
+
+    .section-header {
+      margin-bottom: 1.5rem;
+
+      h1 {
+        font-size: 1.75rem;
+      }
+    }
+
+    .news-grid {
+      gap: 1rem;
+    }
+  }
+}

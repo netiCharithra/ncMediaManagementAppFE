@@ -1,0 +1,312 @@
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #f0f2f5;
+  padding: 20px;
+}
+
+.login-box {
+  background: #fff;
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 450px;
+  text-align: center;
+}
+
+.logo h2 {
+  font-size: 1.8rem;
+  color: #333;
+  margin-bottom: 30px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+  text-align: left;
+
+  label {
+    display: block;
+    margin-bottom: 8px;
+    color: #555;
+    font-weight: 500;
+  }
+}
+
+.form-control {
+  height: 50px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  padding: 0 15px;
+  font-size: 1rem;
+  width: 100%;
+  box-sizing: border-box;
+  transition: border-color 0.2s, box-shadow 0.2s;
+
+  &:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2);
+    outline: none;
+  }
+
+  &.is-invalid {
+    border-color: #dc3545;
+  }
+}
+
+.invalid-feedback {
+  color: #dc3545;
+  font-size: 0.875rem;
+  margin-top: 5px;
+}
+
+.btn-primary {
+  width: 100%;
+  padding: 15px;
+  font-size: 1.1rem;
+  border-radius: 8px;
+  border: none;
+  background-color: #007bff;
+  color: #fff;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background-color 0.3s, transform 0.2s;
+
+  &:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+  }
+
+  &:disabled {
+    background-color: #a0c7ff;
+    cursor: not-allowed;
+    transform: none;
+  }
+}
+
+.error-message {
+  color: #721c24;
+  background-color: #f8d7da;
+  border: 1px solid #f5c6cb;
+  border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+// OTP Screen Specifics
+.otp-info p {
+  margin-bottom: 25px;
+  color: #555;
+}
+
+.otp-inputs {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 25px;
+  position: relative;
+  
+  &.disabled {
+    opacity: 0.6;
+    pointer-events: none;
+  }
+
+  input {
+    width: 50px;
+    height: 60px;
+    text-align: center;
+    font-size: 1.8rem;
+    font-weight: bold;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    transition: border-color 0.2s, box-shadow 0.2s;
+
+    &:focus {
+      border-color: #007bff;
+      box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2);
+      outline: none;
+    }
+  }
+}
+
+.touchpad {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+  margin-bottom: 25px;
+  position: relative;
+  
+  &.disabled {
+    opacity: 0.6;
+    pointer-events: none;
+  }
+  
+  button.disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+}
+
+.touchpad-row {
+  display: contents; // Allows buttons to be direct children of the grid
+
+  &:last-child {
+    grid-column: 1 / -1; // Span full width
+    display: flex;
+    justify-content: space-around;
+  }
+}
+
+.touchpad-btn, .touchpad-btn-util {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 60px;
+  font-size: 1.6rem;
+  font-weight: 500;
+  border-radius: 12px;
+  border: none;
+  background-color: #f8f9fa;
+  color: #212529;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  transition: all 0.2s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
+    background-color: #fff;
+  }
+
+  &:active {
+    transform: translateY(1px) scale(0.98);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  }
+}
+
+.touchpad-btn-util {
+  background-color: transparent;
+  box-shadow: none;
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: #6c757d;
+
+  &:hover {
+    background-color: #e9ecef;
+    color: #212529;
+    transform: translateY(0);
+    box-shadow: none;
+  }
+
+  &:active {
+    transform: scale(0.95);
+    background-color: #d6dade;
+  }
+}
+
+.expired-message {
+  color: #dc3545;
+  font-weight: 500;
+  margin: 10px 0;
+}
+
+.timer-section {
+  margin: 25px 0;
+  text-align: center;
+  
+  .otp-timer {
+    font-size: 1rem;
+    color: #ff6b6b;
+    font-weight: 500;
+    margin-bottom: 10px;
+    
+    span {
+      font-family: monospace;
+      font-size: 1.1em;
+      font-weight: bold;
+    }
+  }
+  
+  .resend-button {
+    background: none;
+    border: none;
+    color: #007bff;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    padding: 8px 16px;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+    
+    &:hover:not(:disabled) {
+      background-color: rgba(0, 123, 255, 0.1);
+      text-decoration: underline;
+    }
+    
+    &:disabled {
+      color: #adb5bd;
+      cursor: not-allowed;
+      text-decoration: none;
+    }
+    
+    &:focus {
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.3);
+    }
+  }
+}
+
+.back-link {
+  display: inline-block;
+  margin-top: 20px;
+  color: #6c757d;
+  text-decoration: none;
+  font-size: 0.95rem;
+  transition: color 0.2s;
+
+  &:hover {
+    color: #0056b3;
+    text-decoration: underline;
+  }
+}
+
+.error-alert {
+  color: #721c24;
+  background-color: #f8d7da;
+  border: 1px solid #f5c6cb;
+  border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 20px;
+  text-align: center;
+  font-size: 0.95rem;
+}
+
+// Responsive adjustments
+@media (max-width: 480px) {
+  .login-box {
+    padding: 30px 20px;
+  }
+
+  .otp-inputs {
+    gap: 8px;
+
+    input {
+      width: 40px;
+      height: 50px;
+      font-size: 1.5rem;
+    }
+  }
+
+  .touchpad-btn, .touchpad-btn-util {
+    height: 50px;
+    font-size: 1.4rem;
+  }
+
+  .btn-primary {
+    padding: 14px;
+    font-size: 1rem;
+  }
+}

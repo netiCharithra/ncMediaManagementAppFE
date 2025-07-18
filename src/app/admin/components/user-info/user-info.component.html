@@ -1,0 +1,29 @@
+<div class="user-info-container">
+  <div class="user-info-header">
+    <h1>User Profile</h1>
+  </div>
+
+  <div class="user-info-card" *ngIf="userData ">
+    <div class="user-avatar">
+      <i class="fas fa-user-circle"></i>
+    </div>
+    
+    <div class="user-details">
+      <div class="info-row">
+        <label>Name</label>
+        <p>{{ userData?.name }}</p>
+      </div>
+      
+      <div class="info-row">
+        <label>Email</label>
+        <p>{{ userData?.email }}</p>
+      </div>
+      
+      <div class="info-row">
+        <label>Role</label>
+        <p>{{ userData?.role }}</p>
+      </div>
+    </div>
+  </div>
+
+</div>

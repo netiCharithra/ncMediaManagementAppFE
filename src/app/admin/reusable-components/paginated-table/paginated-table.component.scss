@@ -1,0 +1,214 @@
+@import '../../styles/theme';
+
+.table-container {
+  background-color: $bg-primary;
+  border-radius: $border-radius-md;
+  @include elevation(2);
+  margin-bottom: $spacing-lg;
+  overflow: hidden;
+}
+
+.table-responsive {
+  padding: $spacing-md;
+  margin: 0;
+  
+  @media (max-width: $breakpoint-sm) {
+    padding: $spacing-sm;
+  }
+}
+
+.table {
+  width: 100%;
+  margin-bottom: 0;
+  color: $text-primary;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: $font-size-sm;
+
+  thead {
+    background-color: $primary;
+    
+    th {
+      padding: $spacing-md;
+      color: $text-light;
+      font-weight: $font-weight-bold;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      white-space: nowrap;
+      border: none;
+      position: relative;
+      background-color: $primary;
+
+      &.action-column {
+        width: 120px;
+        min-width: 120px;
+        @media (max-width: $breakpoint-md) {
+          width: 100px;
+          min-width: 100px;
+        }
+      }
+
+      @media (max-width: $breakpoint-sm) {
+        padding: $spacing-sm;
+        font-size: $font-size-xs;
+      }
+    }
+  }
+
+  tbody {
+    tr {
+      transition: background-color $transition-normal;
+      
+      &:hover {
+        background-color: $hover-light;
+      }
+
+      td {
+        padding: $spacing-md;
+        vertical-align: middle;
+        border-top: 1px solid $border-light;
+        @include truncate;
+
+        &.action-column {
+          width: 120px;
+          min-width: 120px;
+          @media (max-width: $breakpoint-md) {
+            width: 100px;
+            min-width: 100px;
+          }
+        }
+
+        .action-buttons {
+          display: flex;
+          gap: $spacing-xs;
+          flex-wrap: wrap;
+
+          .action-btn {
+            padding: $spacing-xs $spacing-sm;
+            font-size: $font-size-sm;
+            line-height: 1;
+            border-radius: $border-radius-sm;
+            
+            i {
+              margin-right: $spacing-xs;
+            }
+
+            .action-label {
+              @media (max-width: $breakpoint-md) {
+                display: none;
+              }
+            }
+          }
+        }
+
+        .data-cell {
+          display: block;
+          @include truncate;
+          
+          @media (max-width: $breakpoint-sm) {
+            font-size: $font-size-xs;
+          }
+        }
+
+        @media (max-width: $breakpoint-sm) {
+          padding: $spacing-sm;
+        }
+      }
+    }
+  }
+}
+
+// Pagination styles
+.pagination-container {
+  padding: $spacing-md;
+  border-top: 1px solid $border-light;
+  background-color: $bg-secondary;
+
+  .pagination {
+    display: flex;
+    justify-content: center;
+    gap: $spacing-xs;
+    margin: 0;
+
+    .page-item {
+      .page-link {
+        min-width: 32px;
+        height: 32px;
+        padding: 0;
+        @include flex-center;
+        color: $primary;
+        background-color: transparent;
+        border: 1px solid $border-light;
+        border-radius: $border-radius-sm;
+        font-size: $font-size-sm;
+        transition: all $transition-normal;
+        cursor: pointer;
+
+        &:hover {
+          background-color: $hover-light;
+          border-color: $primary-light;
+        }
+      }
+
+      &.active .page-link {
+        background-color: $primary;
+        border-color: $primary;
+        color: $text-light;
+      }
+
+      &.disabled .page-link {
+        color: $text-muted;
+        pointer-events: none;
+        background-color: $bg-secondary;
+        border-color: $border-light;
+      }
+    }
+  }
+
+  @media (max-width: $breakpoint-sm) {
+    padding: $spacing-sm;
+  }
+}
+
+// No records message
+.no-records {
+  padding: $spacing-xl !important;
+  text-align: center;
+
+  .no-records-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: $spacing-sm;
+    color: $text-muted;
+
+    i {
+      font-size: $font-size-xl;
+      margin-bottom: $spacing-xs;
+    }
+
+    p {
+      margin: 0;
+      font-size: $font-size-sm;
+    }
+  }
+}
+
+::-webkit-scrollbar {
+  width: 5px !important;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1; 
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888; 
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555; 
+}

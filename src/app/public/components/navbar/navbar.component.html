@@ -1,0 +1,75 @@
+<nav class="navbar navbar-expand-lg">
+  <div class="container">
+    <a class="navbar-brand" routerLink="/">
+      <img [src]="logoPath$ | async" alt="NC Media" class="logo">
+    </a>
+    <button class="navbar-toggler" type="button" (click)="toggleMenu()" [class.active]="!isMenuCollapsed">
+      <span class="toggler-icon"></span>
+      <span class="toggler-icon"></span>
+      <span class="toggler-icon"></span>
+    </button>
+
+    <!-- Desktop Menu -->
+    <div class="navbar-collapse desktop-menu" [class.show]="!isMenuCollapsed">
+      <ul class="navbar-nav me-auto">
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">{{ getString('home') }}</a>
+        </li>
+        <li class="nav-item" *ngFor="let category of NEWS_CATEGORIES_REGIONAL">
+          <a class="nav-link" routerLink="category/{{category['label']}}" routerLinkActive="active">{{ category[currentLanguage] || category['label'] }}</a>
+        </li>
+        <!-- <li class="nav-item">
+          <a class="nav-link" routerLink="/international" routerLinkActive="active">{{ getString('international') }}</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/latest-news" routerLinkActive="active">{{ getString('latestNews') }}</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/top-news" routerLinkActive="active">{{ getString('topNews') }}</a>
+        </li> -->
+      </ul>
+      <div class="navbar-nav">
+        <select (change)="switchLanguage($event)" class="language-select" [value]="currentLang$ | async">
+          <option value="te">తెలుగు</option>
+          <option value="en">English</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" [class.show]="!isMenuCollapsed">
+      <div class="mobile-menu-container">
+        <div class="mobile-menu-header">
+          <img [src]="logoPath$ | async" alt="NC Media" class="mobile-logo">
+          <button class="close-menu" (click)="toggleMenu()">
+            <span class="close-icon"></span>
+          </button>
+        </div>
+        <ul class="mobile-nav">
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" (click)="toggleMenu()">{{ getString('home') }}</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/regional" routerLinkActive="active" (click)="toggleMenu()">{{ getString('regional') }}</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/international" routerLinkActive="active" (click)="toggleMenu()">{{ getString('international') }}</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/latest-news" routerLinkActive="active" (click)="toggleMenu()">{{ getString('latestNews') }}</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/top-news" routerLinkActive="active" (click)="toggleMenu()">{{ getString('topNews') }}</a>
+          </li>
+        </ul>
+        <div class="mobile-menu-footer">
+          <select (change)="switchLanguage($event)" class="language-select" [value]="currentLang$ | async">
+            <option value="te">తెలుగు</option>
+            <option value="en">English</option>
+          </select>
+        </div>
+      </div>
+      <div class="mobile-menu-backdrop" (click)="toggleMenu()"></div>
+    </div>
+  </div>
+</nav>

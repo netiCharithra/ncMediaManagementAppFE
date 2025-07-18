@@ -1,0 +1,17 @@
+<div class="news-card" (click)="navigateToFullNews()">
+  <div class="card-image">
+    <img [src]="news.imageUrl" alt="Failed To Load Image">
+    <span class="category-badge">{{news.newsType | titlecase}}</span>
+  </div>
+  <div class="card-content">
+    <h3 class="title">{{news.title}}</h3>
+    <p class="description">{{news.description}}</p>
+    <div class="metadata">
+      <span class="date">{{news.createdDate | date:'mediumDate'}}</span>
+      <div class="stats">
+        <span class="views"><i class="fas fa-eye"></i> {{news.views}}</span>
+        <span class="likes"><i class="fas fa-heart"></i> {{news.likes}}</span>
+      </div>
+    </div>
+  </div>
+</div>

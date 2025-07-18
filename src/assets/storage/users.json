@@ -1,0 +1,25 @@
+{
+  "users": [
+    {
+      "id": "1",
+      "username": "admin",
+      "email": "admin@neticharithra.com",
+      "role": "admin",
+      "firstName": "Admin",
+      "lastName": "User",
+      "password": "admin123",
+      "lastLogin": "2025-04-15T09:27:47.000Z"
+    },
+    {
+      "id": "2",
+      "username": "editor",
+      "email": "editor@neticharithra.com",
+      "role": "editor",
+      "firstName": "Editor",
+      "lastName": "User",
+      "password": "editor123",
+      "lastLogin": "2025-04-15T09:27:47.000Z"
+    }
+  ],
+  "currentUser": null
+}

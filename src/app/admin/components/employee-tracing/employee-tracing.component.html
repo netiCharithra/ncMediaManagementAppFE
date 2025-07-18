@@ -1,0 +1,176 @@
+<div class="news-management">
+    <app-admin-loader [show]="adminService.loaderService"></app-admin-loader>
+    <div class="news-header">
+        <div class="header-content">
+            <h2>
+                Employee Tracing
+
+            </h2>
+            <div class="controls">
+                <mat-form-field appearance="outline">
+                    <mat-select [(ngModel)]="employeeTracingList['action']" (selectionChange)="changeOfNewsType()">
+                        <ng-container *ngFor="let data of actions">
+                            <mat-option [value]="data.value">{{data.label}}</mat-option>
+                        </ng-container>
+                    </mat-select>
+                </mat-form-field>
+                <button mat-flat-button color="primary" class="report-news-btn" (click)="onAddEmployeeClick()">
+                    <i class="fa-solid fa-plus"></i>
+                    Add Employee Tracing
+                </button>
+            </div>
+        </div>
+    </div>
+    
+
+
+    <nc-web-paginated-table *ngIf="employeeTracingList.tableLoaded" [columns]="employeeTracingList.header"
+        [data]="employeeTracingList.body" [page]="employeeTracingList.page" [itemsPerPage]="employeeTracingList.count"
+        [totalItems]="employeeTracingList.totalNumberOfRecords" [metaData]="employeeTracingList.metaData"
+        (pageChange)="onPageChangeRejectedNews($event)" (actionEmitter)="actionEmitter($event)"
+        [noRecordsMessage]="'No Approved News available in records'"></nc-web-paginated-table>
+</div>
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="employeeTracingModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header justify-content-between">
+                <h5 class="modal-title" id="staticBackdropLabel">Employee Tracing Maniuplation</h5>
+                <button type="button" class="close btn" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form (ngSubmit)="signUpForm.form.valid && signUpCreds()" #signUpForm="ngForm" novalidate
+                class="col-12 row m-0 p-0">
+                <div class="modal-body col-12 row custom-form-body">
+
+
+                    <div class="col-12 mb-3">
+                        <label class="form-label" for="loginState">Select Employee</label>
+                        <ng-select [items]="metaData['employees']" bindLabel="name" bindValue="employeeId"
+                            name="employeeId" required placeholder="Select Employee"
+                            [(ngModel)]="employeeTracingFormValues['employeeId']" #employeeId="ngModel"
+                            [clearable]="false"
+                            [ngClass]="{ 'is-invalid': signUpForm.submitted && employeeId.invalid }">
+                        </ng-select>
+
+                        <div *ngIf="signUpForm.submitted && employeeId.invalid" class="invalid-feedback">
+                            <div *ngIf="employeeId?.errors?.['required']">This field is required</div>
+                        </div>
+                    </div>
+
+
+                    <div class="col-12 mb-4">
+                        <label class="form-label" for="startDate">Start Date</label>
+                        <input type="date" id="startDate" class="form-control form-control-lg"
+                            placeholder="Enter a valid name" name="startDate"
+                            [(ngModel)]="employeeTracingFormValues['startDate']" #startDate="ngModel" required
+                            [ngClass]="{ 'is-invalid': signUpForm.submitted && startDate.invalid }" />
+                        <div *ngIf="signUpForm.submitted && startDate.invalid" class="invalid-feedback">
+                            <div *ngIf="startDate?.errors?.['required']">This field is required</div>
+                        </div>
+                    </div>
+                    <!-- [max]="today" -->
+                    <div class="col-12 mb-4">
+                        <label class="form-label" for="endDate">Start Date</label>
+                        <input type="date" id="endDate" class="form-control form-control-lg"
+                            placeholder="Enter a valid name" name="endDate"
+                            [(ngModel)]="employeeTracingFormValues['endDate']" #endDate="ngModel" required
+                            [min]="employeeTracingFormValues['startDate']"
+                            [ngClass]="{ 'is-invalid': signUpForm.submitted && endDate.invalid }" />
+                        <div *ngIf="signUpForm.submitted && endDate.invalid" class="invalid-feedback">
+                            <div *ngIf="endDate?.errors?.['required']">This field is required</div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer col-12 row">
+                    <button type="button" class="btn btn-secondary col" data-bs-dismiss="modal"
+                        id="closeEmployeeTracingModalBtn">Close</button>
+                    <!-- <button type="button" class="btn btn-primary">Understood</button> -->
+                    <button type="submit" class="btn btn-primary btn-lg col"
+                        style="padding-left: 2.5rem; padding-right: 2.5rem;">
+
+                        Save
+
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- Modal -->
+<div
+  class="modal fade"
+  id="qrCodeModal"
+  data-bs-backdrop="static"
+  data-bs-keyboard="false"
+  tabindex="-1"
+  aria-labelledby="qrCodeModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content shadow-lg rounded-4">
+      <!-- Modal Header -->
+      <div class="modal-header border-bottom-0 pb-0">
+        <h4 class="modal-title fw-semibold text-primary" id="qrCodeModalLabel">
+          Scan the QR Code
+        </h4>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+
+      <!-- Modal Body -->
+      <div class="modal-body d-flex flex-column align-items-center py-4">
+        <div class="qr-wrapper" style="
+        position: relative;
+        width: 200px;
+        height: 200px;
+      
+        border-radius: 12px;
+        padding: 4px;
+        box-sizing: border-box;
+      ">
+          <qrcode [qrdata]="'https://your-url.com'" [width]="192" colorDark="#8B0000" [errorCorrectionLevel]="'H'">
+          </qrcode>
+          <img src="assets/images/logos/fullLogo.png" alt="logo" style="
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          width: 60%;
+          transform: translate(-50%, -50%);
+          border-radius: 8px;
+          opacity: 0.3;
+        " />
+      </div>
+
+        <p class="mt-4 text-muted text-center px-3">
+          Scan this QR code using your mobile device to quickly access the application.
+        </p>
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="modal-footer border-top-0 justify-content-center">
+        <button
+          type="button"
+          class="btn btn-outline-secondary px-4"
+          data-bs-dismiss="modal"
+          id="closeQrCodeModalBtn"
+        >
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

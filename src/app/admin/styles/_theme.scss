@@ -1,0 +1,116 @@
+// Brand Colors
+$primary: #1976d2;
+$primary-light: lighten($primary, 10%);
+$primary-dark: darken($primary, 10%);
+$secondary: #455a64;
+$accent: #ffd740;
+
+// Text Colors
+$text-primary: #2c3e50;
+$text-secondary: #546e7a;
+$text-muted: #90a4ae;
+$text-light: #ffffff;
+$text-dark: #000000;
+
+// Background Colors
+$bg-primary: #ffffff;
+$bg-secondary: #f8f9fa;
+$bg-light: #eceff1;
+$bg-dark: #263238;
+
+// Status Colors
+$success: #4caf50;
+$warning: #ff9800;
+$error: #f44336;
+$info: #2196f3;
+
+// Border Colors
+$border-light: #e0e0e0;
+$border-dark: #cfd8dc;
+
+// Shadow Colors
+$shadow-color: rgba(0, 0, 0, 0.1);
+
+// Hover States
+$hover-light: rgba($primary, 0.05);
+$hover-dark: rgba($primary, 0.1);
+
+// Gradients
+$gradient-primary: linear-gradient(135deg, $primary, $primary-dark);
+$gradient-secondary: linear-gradient(135deg, $secondary, $bg-dark);
+
+// Spacing
+$spacing-xs: 4px;
+$spacing-sm: 8px;
+$spacing-md: 16px;
+$spacing-lg: 24px;
+$spacing-xl: 32px;
+
+// Border Radius
+$border-radius-sm: 4px;
+$border-radius-md: 8px;
+$border-radius-lg: 12px;
+$border-radius-xl: 16px;
+
+// Font Sizes
+$font-size-xs: 12px;
+$font-size-sm: 14px;
+$font-size-md: 16px;
+$font-size-lg: 18px;
+$font-size-xl: 24px;
+
+// Font Weights
+$font-weight-normal: 400;
+$font-weight-medium: 500;
+$font-weight-bold: 600;
+
+// Transitions
+$transition-fast: 0.2s ease;
+$transition-normal: 0.3s ease;
+$transition-slow: 0.4s ease;
+
+// Z-index
+$z-index-dropdown: 1000;
+$z-index-sticky: 1020;
+$z-index-fixed: 1030;
+$z-index-modal-backdrop: 1040;
+$z-index-modal: 1050;
+$z-index-popover: 1060;
+$z-index-tooltip: 1070;
+
+// Breakpoints
+$breakpoint-sm: 576px;
+$breakpoint-md: 768px;
+$breakpoint-lg: 992px;
+$breakpoint-xl: 1200px;
+
+// Mixins
+@mixin elevation($level) {
+  @if $level == 1 {
+    box-shadow: 0 2px 4px $shadow-color;
+  } @else if $level == 2 {
+    box-shadow: 0 4px 8px $shadow-color;
+  } @else if $level == 3 {
+    box-shadow: 0 8px 16px $shadow-color;
+  } @else if $level == 4 {
+    box-shadow: 0 12px 24px $shadow-color;
+  }
+}
+
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@mixin responsive($breakpoint) {
+  @media (min-width: $breakpoint) {
+    @content;
+  }
+}

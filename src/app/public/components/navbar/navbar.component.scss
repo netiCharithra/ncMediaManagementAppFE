@@ -1,0 +1,284 @@
+@import "../../../../styles/theme/theme";
+
+.navbar {
+  background-color: $bg-white;
+  box-shadow: $shadow-sm;
+  padding: 0.75rem 0;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: $z-fixed;
+
+  .navbar-brand {
+    .logo {
+      height: 40px;
+      width: auto;
+    }
+  }
+
+  // Custom hamburger menu
+  .navbar-toggler {
+    border: none;
+    padding: 0.5rem;
+    width: 40px;
+    height: 40px;
+    position: relative;
+    background: transparent;
+    
+    &:focus {
+      box-shadow: none;
+      outline: none;
+    }
+
+    .toggler-icon {
+      display: block;
+      position: absolute;
+      height: 2px;
+      width: 24px;
+      background: $text-dark;
+      border-radius: 2px;
+      opacity: 1;
+      left: 8px;
+      transform: rotate(0deg);
+      transition: $transition-base;
+
+      &:nth-child(1) {
+        top: 12px;
+      }
+
+      &:nth-child(2) {
+        top: 19px;
+      }
+
+      &:nth-child(3) {
+        top: 26px;
+      }
+    }
+
+    &.active {
+      .toggler-icon {
+        &:nth-child(1) {
+          top: 19px;
+          transform: rotate(45deg);
+        }
+
+        &:nth-child(2) {
+          opacity: 0;
+        }
+
+        &:nth-child(3) {
+          top: 19px;
+          transform: rotate(-45deg);
+        }
+      }
+    }
+  }
+
+  // Desktop menu
+  .desktop-menu {
+    @media (max-width: $breakpoint-lg) {
+      display: none;
+    }
+
+    .navbar-nav {
+      .nav-item {
+        margin: 0 0.5rem;
+
+        .nav-link {
+          color: $text-dark;
+          font-weight: 500;
+          padding: 0.5rem 1rem;
+          border-radius: $border-radius-sm;
+          transition: $transition-base;
+
+          &:hover {
+            color: $primary-red;
+            background-color: rgba($primary-red, 0.1);
+          }
+
+          &.active {
+            color: $primary-red;
+            background-color: rgba($primary-red, 0.1);
+          }
+        }
+      }
+    }
+
+    .language-select {
+      padding: 0.5rem 1rem;
+      border: 1px solid $border-dark;
+      border-radius: $border-radius-sm;
+      background-color: $bg-white;
+      color: $text-dark;
+      font-weight: 500;
+      cursor: pointer;
+      transition: $transition-base;
+
+      &:hover, &:focus {
+        border-color: $primary-red;
+        outline: none;
+        box-shadow: $shadow-sm;
+      }
+
+      option {
+        padding: 0.5rem;
+        background-color: $bg-white;
+        color: $text-dark;
+      }
+    }
+  }
+
+  // Mobile menu
+  .mobile-menu {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: $z-modal;
+    pointer-events: none;
+
+    @media (max-width: $breakpoint-lg) {
+      display: block;
+    }
+
+    &.show {
+      pointer-events: auto;
+
+      .mobile-menu-container {
+        transform: translateX(0);
+      }
+
+      .mobile-menu-backdrop {
+        opacity: 1;
+      }
+    }
+
+    .mobile-menu-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 300px;
+      height: 100%;
+      background: $bg-white;
+      box-shadow: $shadow-md;
+      display: flex;
+      flex-direction: column;
+      transform: translateX(-100%);
+      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      z-index: $z-modal;
+
+      .mobile-menu-header {
+        padding: 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-bottom: 1px solid $border-dark;
+
+        .mobile-logo {
+          height: 32px;
+          width: auto;
+        }
+
+        .close-menu {
+          width: 32px;
+          height: 32px;
+          border: none;
+          background: transparent;
+          position: relative;
+          cursor: pointer;
+
+          &:focus {
+            outline: none;
+          }
+
+          .close-icon {
+            &:before, &:after {
+              content: '';
+              position: absolute;
+              width: 20px;
+              height: 2px;
+              background-color: $text-dark;
+              border-radius: 2px;
+              top: 15px;
+              left: 6px;
+            }
+
+            &:before {
+              transform: rotate(45deg);
+            }
+
+            &:after {
+              transform: rotate(-45deg);
+            }
+          }
+        }
+      }
+
+      .mobile-nav {
+        flex: 1;
+        list-style: none;
+        margin: 0;
+        padding: 1rem 0;
+        overflow-y: auto;
+
+        .nav-item {
+          .nav-link {
+            display: block;
+            padding: 0.75rem 1rem;
+            color: $text-dark;
+            font-weight: 500;
+            text-decoration: none;
+            transition: $transition-base;
+
+            &:hover, &.active {
+              color: $primary-red;
+              background-color: rgba($primary-red, 0.1);
+            }
+          }
+        }
+      }
+
+      .mobile-menu-footer {
+        padding: 1rem;
+        border-top: 1px solid $border-dark;
+
+        .language-select {
+          width: 100%;
+          padding: 0.75rem;
+          border: 1px solid $border-dark;
+          border-radius: $border-radius-sm;
+          background-color: $bg-white;
+          color: $text-dark;
+          font-weight: 500;
+          cursor: pointer;
+          transition: $transition-base;
+
+          &:hover, &:focus {
+            border-color: $primary-red;
+            outline: none;
+          }
+        }
+      }
+    }
+
+    .mobile-menu-backdrop {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: $bg-overlay;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+  }
+}
+
+// Add margin to the main content to prevent it from being hidden behind the fixed navbar
+:host {
+  display: block;
+  height: 72px; // Height of the navbar
+}

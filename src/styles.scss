@@ -1,0 +1,155 @@
+/* You can add global styles to this file, and also import other style files */
+@import "@angular/material/prebuilt-themes/indigo-pink.css";
+
+// Custom theme colors
+$primary-red: #dc3545;
+$dark-red: darken($primary-red, 10%);
+$light-red: lighten($primary-red, 40%);
+
+// Import Bootstrap
+@import "bootstrap/scss/bootstrap";
+
+// Global theme overrides
+:root {
+  --bs-primary: #{$primary-red};
+  --bs-link-color: #{$primary-red};
+  --bs-link-hover-color: #{$dark-red};
+  --primary-color: #007bff;
+  --secondary-color: #6c757d;
+  --background-color: #f8f9fa;
+}
+
+// Global styles
+body {
+  background-color: var(--background-color);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  margin: 0;
+}
+
+// Material Form Field styles
+.mat-form-field {
+  width: 100%;
+}
+
+// Custom button styles
+.btn-primary {
+  background-color: $primary-red;
+  border-color: $primary-red;
+  
+  &:hover, &:focus {
+    background-color: $dark-red;
+    border-color: $dark-red;
+  }
+}
+
+// Active states
+.active {
+  color: $primary-red !important;
+}
+
+// Form control focus states
+.form-control:focus {
+  border-color: $primary-red;
+  box-shadow: 0 0 0 0.2rem rgba($primary-red, 0.25);
+}
+
+.card {
+  transition: transform 0.2s;
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  }
+}
+
+.card-img-top {
+  height: 200px;
+  object-fit: cover;
+}
+
+.navbar {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+  color: var(--primary-color);
+  font-weight: 600;
+}
+
+@media (max-width: 768px) {
+  .card-img-top {
+    height: 150px;
+  }
+}
+
+@media (max-width: 576px) {
+  .container {
+    padding: 10px;
+  }
+}
+
+// Snackbar styles
+.error-snackbar {
+  background: #f44336;
+  color: white;
+  
+  .mat-simple-snackbar-action {
+    color: white;
+  }
+}
+
+.info-snackbar {
+  background: #2196f3;
+  color: white;
+  
+  .mat-simple-snackbar-action {
+    color: white;
+  }
+}
+
+// News Management styles
+.news-management-container {
+  .news-controls-section {
+    background-color: #fff;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+
+    .news-filter {
+      flex: 0 0 300px;
+      
+      h5 {
+        color: var(--secondary-color);
+        font-weight: 500;
+      }
+    }
+
+    .news-actions {
+      .report-news-btn {
+        height: 45px;
+        padding: 0 24px;
+        
+        i {
+          margin-right: 8px;
+          font-size: 14px;
+        }
+      }
+    }
+  }
+
+  .mat-form-field {
+    width: 100%;
+  }
+}
+
+.news-category-selector {
+  max-width: 300px;
+  margin: 0 auto;
+}
+::ng-deep .cdk-overlay-container {
+  z-index: 1000; // Or higher than your dialog
+}
+
+::ng-deep .cdk-global-overlay-wrapper,
+::ng-deep .cdk-overlay-pane {
+  z-index: 1000 !important;
+}
