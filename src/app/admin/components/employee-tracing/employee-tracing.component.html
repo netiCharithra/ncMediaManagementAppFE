@@ -1,27 +1,30 @@
 <div class="news-management">
     <app-admin-loader [show]="adminService.loaderService"></app-admin-loader>
-    <div class="news-header">
-        <div class="header-content">
-            <h2>
-                Employee Tracing
 
+    <div class="news-header">
+        <div class="header-content row">
+            <h2 class="col-12 col-md-7">
+              Employee Tracing
             </h2>
-            <div class="controls">
-                <mat-form-field appearance="outline">
+            <div class="controls col-12 col-md-5 row mt-2">
+                <mat-form-field appearance="outline" class="col-7">
                     <mat-select [(ngModel)]="employeeTracingList['action']" (selectionChange)="changeOfNewsType()">
                         <ng-container *ngFor="let data of actions">
                             <mat-option [value]="data.value">{{data.label}}</mat-option>
                         </ng-container>
                     </mat-select>
                 </mat-form-field>
-                <button mat-flat-button color="primary" class="report-news-btn" (click)="onAddEmployeeClick()">
+              
+                <button mat-flat-button color="primary" class="report-news-btn col-5" (click)="onAddEmployeeClick()">
                     <i class="fa-solid fa-plus"></i>
-                    Add Employee Tracing
+                    Add <br>
+                    Employee Tracing
                 </button>
             </div>
         </div>
     </div>
-    
+
+
 
 
     <nc-web-paginated-table *ngIf="employeeTracingList.tableLoaded" [columns]="employeeTracingList.header"

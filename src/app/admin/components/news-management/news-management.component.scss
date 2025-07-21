@@ -151,6 +151,10 @@
 .news-management {
   padding: 20px;
 
+  @media (max-width: 768px) {
+    padding: 0px;padding-top:5px;
+  }
+
   .news-header {
     margin-bottom: 20px;
     
@@ -205,6 +209,11 @@
           i {
             margin-right: $spacing-xs;
           }
+
+          @media (max-width: 768px) {
+            padding: 5px;
+          }
+        
         }
       }
     }

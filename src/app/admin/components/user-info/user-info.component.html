@@ -5,7 +5,12 @@
 
   <div class="user-info-card" *ngIf="userData ">
     <div class="user-avatar">
-      <i class="fas fa-user-circle"></i>
+      <ng-container *ngIf="userData?.profilePicture?.tempURL; else defaultIcon">
+        <img [src]="userData.profilePicture?.tempURL" alt="Profile Image" class="profile-image">
+      </ng-container>
+      <ng-template #defaultIcon>
+        <i class="fas fa-user-circle"></i>
+      </ng-template>
     </div>
     
     <div class="user-details">

@@ -40,7 +40,7 @@ $transition-slow: 0.5s ease;
   padding: $spacing-xl;
   
   @media (max-width: 768px) {
-    padding: $spacing-md;
+    padding: 0px;padding-top:5px;
   }
 }
 

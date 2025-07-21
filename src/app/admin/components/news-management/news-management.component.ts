@@ -51,8 +51,7 @@ export class NewsManagementComponent implements OnInit {
   ) {
     this.loggedUserDetails = this.storage.getStoredUser();
     console.log("loggedUserDetails", this.loggedUserDetails);
-   this.newsData['employeeId']=this.loggedUserDetails?.employeeId;
-   this.newsData['role']=this.loggedUserDetails?.role;
+    this.newsData = {...this.newsData, ...this.loggedUserDetails}
     _activatedRoute.queryParams.subscribe(
       params => {
         console.log('queryParams', params);
