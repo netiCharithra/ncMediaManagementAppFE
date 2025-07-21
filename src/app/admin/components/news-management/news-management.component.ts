@@ -375,6 +375,7 @@ export class NewsManagementComponent implements OnInit {
     }
 
     formData.append('fileName', "original");
+    formData.append('bucketType', "articles");
 
     this.appService.uploadNewsImages(formData).subscribe(
       (response: any) => {
