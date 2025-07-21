@@ -55,8 +55,11 @@ export class NavigationComponent implements OnInit {
   }
 
   logout(): void {
-    this.authService.logout();
-    this.router.navigate(['/admin/login']);
+    const confirmLogout = confirm('Are you sure you want to logout?');
+    if (confirmLogout) {
+      this.authService.logout();
+      this.router.navigate(['/admin/login']);
+    }
   }
 
   switchLanguage(event: Event): void {

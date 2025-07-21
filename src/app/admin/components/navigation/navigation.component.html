@@ -56,7 +56,7 @@
     <div class="sidebar-footer">
       <!-- Language Selector -->
       <div class="language-selector">
-        <select [value]="currentLanguage" (change)="switchLanguage($event)" class="form-select">
+        <select [(ngModel)]="currentLanguage" (change)="switchLanguage($event)" class="form-select">
           <option value="en">English</option>
           <option value="te">తెలుగు</option>
         </select>
