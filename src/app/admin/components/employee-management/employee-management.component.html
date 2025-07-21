@@ -120,7 +120,7 @@
                             <span class="text-muted" style="font-size: 0.6rem;">Only 1 Image is allowed</span>
                         </label>
                         <button class="btn pull-right col" type="button" [disabled]="disableFields"
-                            (click)="openImageUpload('loginimages')">Click or
+                            (click)="openImageUpload('loginimages', 'profilePicture')">Click or
                             touch
                             here
                             to upload Profile Picture </button>
@@ -133,9 +133,9 @@
                                         class="custom_upload_image">
                                  
                                     <span *ngIf="(actionType === 'create' || actionType === 'edit')"
-                                        class="text-center h6 font-weight-bold text-center w-100 m-0 pt-1 pb-0"
+                                        class="text-center h6 font-weight-bold text-center w-100 m-0 pt-1 pb-0 px-2"
                                         (click)="removeImage('profilePicture', signUpFormValues['profilePicture'])">
-                                        <i class="bi bi-trash-fill"></i></span>
+                                        <i class="fas fa-trash text-danger"></i></span>
                                 </span>
                             </div>
                         </ng-container>
@@ -156,7 +156,7 @@
                             <span class="text-muted" style="font-size: 0.6rem;">Only 1 Image is allowed</span>
                         </label>
                         <button class="btn pull-right col" type="button" [disabled]="disableFields"
-                            (click)="openImageUpload('identityProofUploader')">Click or
+                            (click)="openImageUpload('identityProofUploader', 'identityProof')">Click or
                             touch
                             here
                             to upload Aadhar Card </button>
@@ -168,10 +168,10 @@
                                     <img [src]="signUpFormValues['identityProof'].tempURL" alt="Failed to load Images"
                                         class="custom_upload_image">
                                 
-                                    <span *ngIf="(actionType === 'create' || actionType === 'update')"
-                                        class="text-center h6 font-weight-bold text-center w-100 m-0 pt-1 pb-0"
+                                    <span *ngIf="(actionType === 'create' || actionType === 'edit')"
+                                        class="text-center h6 font-weight-bold text-center w-100 m-0 pt-1 pb-0 px-2"
                                         (click)="removeImage('identityProof', signUpFormValues['identityProof'])"><i
-                                            class="material-icons text-danger">delete_forever</i></span>
+                                            class="fas fa-trash text-danger"></i></span>
                                 </span>
                             </div>
                         </ng-container>

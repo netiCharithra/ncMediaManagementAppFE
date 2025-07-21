@@ -1,5 +1,7 @@
 @import '../../styles/theme';
 
+$error-color: #dc3545;
+$primary-color: #007bff;
 // Common image styles mixin
 @mixin image-preview-styles {
   display: grid;
@@ -48,25 +50,89 @@
       padding: 0;
       transition: all 0.2s ease;
       box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-      z-index: 2;
-
+      background-color: $error-color;
+      color: white;
+      
       &:hover {
-        background: #dc3545;
-        transform: scale(1.1);
-        
-        i {
-          color: white;
-        }
-      }
-
-      i {
-        font-size: 14px;
-        color: #dc3545;
-        line-height: 1;
+        background-color: darken($error-color, 10%);
       }
     }
   }
 }
+
+// Profile picture styles
+.image-holder {
+  position: relative;
+  width: 100%;
+  max-width: 200px;
+  height: 200px;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid #ddd;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  margin: 10px 0;
+  
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    transition: transform 0.3s ease;
+  }
+  
+  &:hover {
+    img {
+      transform: scale(1.05);
+    }
+  }
+  
+  .remove-image {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 28px;
+    height: 28px;
+    border: none;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.95);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    padding: 0;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    background-color: $error-color;
+    color: white;
+    
+    &:hover {
+      background-color: darken($error-color, 10%);
+    }
+  }
+}
+
+// Identity proof styles
+.identity-proof-image {
+  @include image-preview-styles;
+  
+  .image-item {
+    width: 150px;
+    height: 150px;
+    
+    img {
+      border: 2px solid $primary-color;
+    }
+  }
+}
+
+//       i {
+//         font-size: 14px;
+//         color: #dc3545;
+//         line-height: 1;
+//       }
+//     }
+//   }
+// }
 
 .news-management-container {
   padding: 2rem;
@@ -336,4 +402,8 @@ input[type=number] {
     padding: 5px;
   }
 
+}
+
+.custom_upload_image{
+  width: 100px;
 }

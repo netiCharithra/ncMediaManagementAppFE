@@ -133,7 +133,13 @@ export class EmployeeManagementComponent implements OnInit {
   public actionType: any = '';
   public disableFields: boolean = false;
   public identityVerificationRejectionReason: any;
-  openImageUpload(key: any) {
+  openImageUpload(key: any, bindingKey:any) {
+
+    if(this.signUpFormValues[bindingKey]){
+      this.alertService.showError("Only One File Is allowed or Remove Existing Image");
+      alert("Only One File Is allowed or Remove Existing Image");
+      return;
+    }
 
     // if (this.publishNewsForm['images'] && this.publishNewsForm['images'].length > 3) {
     //   // alert("You have reached maximum limit of images!");
@@ -161,6 +167,9 @@ export class EmployeeManagementComponent implements OnInit {
       selectedFiles.push(files.item(i));
       formData.append('images', files.item(i), userData.employeeId + '_' + new Date().getTime() + '_' + i + '.' + files.item(i).type.split('/').at(-1));
     }
+
+
+    formData.append('bucketType', "employeeDOCS");
 
 
     this.http.post(`${this.baseUrl}${this.adminService.API_ENDPOINTS.NEWS_UPLOAD_IMAGES}`, formData).subscribe(
@@ -191,10 +200,10 @@ export class EmployeeManagementComponent implements OnInit {
   }
 
   removeImage = (key: any, imageInfo: any) => {
-    console.log('imageInfo', imageInfo)
-    this.adminService.deleteS3Images(imageInfo).subscribe(
+    console.log('imageInfo', imageInfo, key)
+    this.adminService.removeImagesS3(imageInfo).subscribe(
       (response: any) => {
-        if (response.status === "success") {
+        if (response) {
           this.signUpFormValues[key] = null;
         } else {
           this.alertService.showError(response.msg || "Failed !")
