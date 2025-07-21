@@ -161,9 +161,42 @@ export class NewsManagementComponent implements OnInit {
     }
   }
 
+  closeImageUploadModal(): void {
+    const modalElement = document.getElementById('myModal');
+    const modal = bootstrap.Modal.getInstance(modalElement) || new bootstrap.Modal(modalElement);
+    modal.hide();
+  }
+
   removeImage(index: number, image: any): void {
-    this.publishNewsForm['images'].splice(index, 1);
-    // If array is empty after removal, initialize it as empty array to maintain type
+
+    console.log(image)
+    const payload = {
+      bucketType:'articles',
+      fileName:image.fileName,
+    }
+    try {
+      this.appService.loaderService = true;
+      this.appService.removeImagesS3(payload).subscribe((response) => {
+        if (response) {
+          if(response?.fileName){
+            this.publishNewsForm['images'].splice(index, 1);
+            if (this.publishNewsForm['images'].length === 0) {
+              this.publishNewsForm['images'] = [];
+            }
+          }
+         console.log(response)
+        } else {
+          this.messageService.showError(response.msg || "Failed!");
+        }
+        this.appService.loaderService = false;
+      });
+    } catch (error) {
+      console.error(error);
+      this.appService.loaderService = false;
+    }
+
+    // this.publishNewsForm['images'].splice(index, 1);
+    // // If array is empty after removal, initialize it as empty array to maintain type
     if (this.publishNewsForm['images'].length === 0) {
       this.publishNewsForm['images'] = [];
     }
@@ -354,13 +387,16 @@ export class NewsManagementComponent implements OnInit {
   upload(event: any) {
     const files = event.target.files;
     if (this.publishNewsForm['images'] && this.publishNewsForm['images'].length > 3) {
+      alert("Maximum 3 files can be uploaded!");
       this.messageService.showError("Maximum 3 files can be uploaded!");
       return;
     }
     if ((this.publishNewsForm?.images && this.publishNewsForm['images'].length + files.length) > 3) {
+      alert(this.publishNewsForm['images'].length + " file(s) already uploaded.. Only " + (3 - this.publishNewsForm['images'].length) + ' image(s) are allowed..');
       this.messageService.showError(this.publishNewsForm['images'].length + " file(s) already uploaded.. Only " + (3 - this.publishNewsForm['images'].length) + ' image(s) are allowed..');
       return;
     } else if (files.length > 3) {
+      alert("Maximum 3 files can be uploaded!");
       this.messageService.showError("Maximum 3 files can be uploaded!");
       return;
     }
@@ -379,13 +415,15 @@ export class NewsManagementComponent implements OnInit {
 
     this.appService.uploadNewsImages(formData).subscribe(
       (response: any) => {
-        if (response.status === "success") {
+        console.log("responseresponseresponse", response)
+        if (response?.length>0) {
           if (!this.publishNewsForm['images']) {
             this.publishNewsForm['images'] = [];
           }
-          response.data.forEach((element: any) => {
+          response.forEach((element: any) => {
             this.publishNewsForm['images'].push(element);
           });
+          this.closeImageUploadModal();
         } else {
           this.messageService.showError(response.msg || "Failed!");
         }

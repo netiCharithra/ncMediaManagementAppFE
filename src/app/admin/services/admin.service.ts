@@ -20,6 +20,7 @@ export class AdminService {
     APPROVED_NEWS: `/admin/news/approved`,
     REJECTED_NEWS: `/admin/news/rejected`,
     NEWS_UPLOAD_IMAGES: `/uploadFiles`,
+    REMOVE_IMAGES_S3:`/deleteS3`,
 
     NEWS_ACTIVE_EMPLOYEES: `/admin/news/active-employees`,
     MANIPULATE_NEWS:'/admin/manipulateNews',
@@ -188,6 +189,14 @@ export class AdminService {
   uploadNewsImages(formData: any): Observable<any> {
     return this.httpService.post(this.API_ENDPOINTS.NEWS_UPLOAD_IMAGES, null, undefined, formData);
   }
+
+  /**
+   * Remove images from S3
+   */
+  removeImagesS3(params: any): Observable<any> {
+    return this.httpService.post(this.API_ENDPOINTS.REMOVE_IMAGES_S3, { ...params });
+  }
+
 
   /**
    * Get metadata for admin operations

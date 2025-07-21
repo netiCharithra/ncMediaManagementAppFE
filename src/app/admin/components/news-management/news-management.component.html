@@ -43,8 +43,8 @@
             <form (ngSubmit)="newsForm.form.valid && signUpCreds()" #newsForm="ngForm" class="custom-form">
                 <div class="modal-body" style="max-height: 80vh; overflow-y: auto;">
                     <div class="form-grid">
-                        <h1>Form Valid : {{newsForm.form.valid}}</h1>
-                        <button (click)="logForm(newsForm.form)">Log Form</button>
+                        <!-- <h1>Form Valid : {{newsForm.form.valid}}</h1>
+                        <button (click)="logForm(newsForm.form)">Log Form</button> -->
 
                         <!-- Title -->
                         <div class="form-group full-width">
@@ -167,7 +167,7 @@
                         </div>
 
                         <!-- Images Upload -->
-                        <div class="form-group full-width ">
+                        <div class="form-group full-width mt-2">
                             <label class="form-label" for="images">{{ languageService.getString('photos') }}</label>
                             <button type="button" class="btn btn-outline-primary upload-button"
                                 (click)="openImageUploadModal()" [disabled]="disableFields">
@@ -175,15 +175,23 @@
                                 {{ languageService.getString('clickToUpload') }}
                             </button>
                             <div class="image-upload-section">
-                                <div class="image-preview" *ngIf="publishNewsForm?.['images']?.length > 0">
+                                <div class="image-preview" *ngIf="publishNewsForm?.['images']?.length > 0; else emptyState">
                                     <div class="image-item" *ngFor="let image of publishNewsForm['images']; let i = index">
-                                        <img [src]="image?.externalURL || image" alt="News image" class="w-100" />
+                                        <img [src]="image?.externalURL || image['tempURL']" alt="News image" />
                                         <button type="button" class="remove-image" *ngIf="!disableFields"
-                                            (click)="removeImage(i, image)">
+                                            (click)="$event.stopPropagation(); removeImage(i, image)">
                                             <i class="fa-solid fa-xmark"></i>
                                         </button>
                                     </div>
                                 </div>
+                                
+                                <ng-template #emptyState>
+                                    <div class="empty-state">
+                                        <i class="fa-regular fa-images"></i>
+                                        <p>No images uploaded yet</p>
+                                        <!-- <p>{{ languageService.getString('noImagesUploaded') || 'No images uploaded yet' }}</p> -->
+                                    </div>
+                                </ng-template>
                             </div>
                         </div>
 
@@ -268,16 +276,37 @@
             </div>
             <div class="modal-body">
                 <div class="row mx-3">
-                    <div class="row col-12">
-                        <input type="text" class="form-control form-control-lg col-9" name="title"
-                            placeholder="Enter URL" [(ngModel)]="uploadOnlineTempURL" [disabled]="disableFields">
-                        <button class="btn btn-primary col-3" (click)="addImageURL()" [disabled]="disableFields">GET</button>
-                    </div>
-                    <button class="btn btn-secondary col-12 mt-2" (click)="openUploadImageLocal()" [disabled]="disableFields">
-                        Click here to Upload Images from your Device
+                  <div class="col-9">
+                    <input
+                      type="text"
+                      class="form-control form-control-lg"
+                      name="title"
+                      placeholder="Enter URL"
+                      [(ngModel)]="uploadOnlineTempURL"
+                      [disabled]="disableFields"
+                    />
+                  </div>
+                  <div class="col-3">
+                    <button
+                      class="btn btn-primary w-100 h-100"
+                      (click)="addImageURL()"
+                      [disabled]="disableFields"
+                    >
+                      GET
                     </button>
+                  </div>
+              
+                  <div class="col-12 mt-2">
+                    <button
+                      class="btn btn-secondary w-100"
+                      (click)="openUploadImageLocal()"
+                      [disabled]="disableFields"
+                    >
+                      Click here to Upload Images from your Device
+                    </button>
+                  </div>
                 </div>
-            </div>
+              </div>
         </div>
     </div>
 </div>
