@@ -29,9 +29,8 @@ jobs:
         run: ng build --configuration production # Now 'ng' should be recognized
   
 
-      - name: Deploy to Firebase Hosting
-        uses: w9jds/firebase-action@v2.0.0 # Use a pre-built GitHub action for Firebase deployment
-        with:
-          args: deploy --only hosting # Deploy only the hosting part of your Firebase project.
-        env:
-          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }} # Use the Firebase token stored as a GitHub Secret.
+      - name: Install Firebase Tools
+        run: npm install -g firebase-tools
+
+      - name: Deploy to Firebase
+        run: firebase deploy --token "${{ secrets.FIREBASE_TOKEN }}" --only hosting
