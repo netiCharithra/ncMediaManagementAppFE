@@ -23,22 +23,22 @@ export class AdminService {
     REMOVE_IMAGES_S3:`/deleteS3`,
 
     NEWS_ACTIVE_EMPLOYEES: `/admin/news/active-employees`,
-    MANIPULATE_NEWS:'/admin/manipulateNews',
+    MANIPULATE_NEWS:'/admin/news/manipulateNews',
 
-    NEWS_INFO: `/admin/getIndividualNewsInfo`,
+    NEWS_INFO: `/admin/news/getIndividualNewsInfo`,
     EMPLOYEES_LIST: `/admin/employeesData`,
     EMPLOYEE_INFO: `/admin/individualEmployeeData`,
     MANIPULATE_INDIVIDUAL_EMPLOYEE:'/admin/manipulateIndividualEmployee',
     EMPLOYEE_TRACING:'/admin/employeeTracingListing',
     MANIPULATE_EMPLOYEE_TRACING:'/admin/employeeTracingManagement',
     EMPLOYEE_TRACING_ACTIVE_EMPLOYEE_LIST:'/admin/employeeTracingActiveEmployeeList',
-    DASHBOARD_VISITER_STATS_INFO:'/admin/getPageViewDashboardInfo',
-    DASHBOARD_ARTICLES_STATS_INFO:'/admin/getArticlesDashbordInfo',
-    GET_ARTICLES_BY_CATEGORY:'/admin/getArticlesByCategory',
-    GET_ACTIVE_EMPLOYEE_STATS:'/admin/getActiveEmployeeStats',
-    GET_VISITOR_TIME_SERIES:'/admin/getVisitorTimeSeries',
-    GET_VISITS_TIME_SERIES:'/admin/getVisitsTimeSeries',
-    GET_VISITOR_LOCATIONS:'/admin/getVisitorLocations',
+    DASHBOARD_VISITER_STATS_INFO:'/admin/dashboard/page-views',
+    DASHBOARD_ARTICLES_STATS_INFO:'/admin/dashboard/articles',
+    GET_ARTICLES_BY_CATEGORY:'/admin/dashboard/articles-by-category',
+    GET_ACTIVE_EMPLOYEE_STATS:'/admin/dashboard/active-employee-stats',
+    GET_VISITOR_TIME_SERIES:'/admin/dashboard/visitor-time-series',
+    GET_VISITS_TIME_SERIES:'/admin/dashboard/visits-time-series',
+    GET_VISITOR_LOCATIONS:'/admin/dashboard/visitor-locations',
 
 
     NEWS_APPROVE: `/admin/news/approve`,
@@ -65,7 +65,7 @@ export class AdminService {
     DASHBOARD_STATS: `/admin/dashboard/stats`,
     
     // Metadata
-    META_DATA: `/admin/metaData`
+    META_DATA: `/public/metaData`
   };
 
   // Loader service to track loading state
