@@ -25,6 +25,8 @@ export class AdminService {
     NEWS_ACTIVE_EMPLOYEES: `/admin/news/active-employees`,
     MANIPULATE_NEWS:'/admin/news/manipulateNews',
 
+    PRE_SIGNED_URL_TO_BASE64:'/utils/presigned-url-to-base64',  
+
     NEWS_INFO: `/admin/news/getIndividualNewsInfo`,
     EMPLOYEES_LIST: `/admin/employeesData`,
     EMPLOYEE_INFO: `/admin/individualEmployeeData`,
@@ -307,5 +309,12 @@ export class AdminService {
    */
   verifyOtp(params: any): Observable<any> {
     return this.httpService.post(this.API_ENDPOINTS.OTP_VERIFY_OTP, { ...params }, undefined, undefined, true);
+  }
+
+  /**
+   * Get presigned URL to base64
+   */
+  getPresignedUrlToBase64(params: any): Observable<any> {
+    return this.httpService.post(this.API_ENDPOINTS.PRE_SIGNED_URL_TO_BASE64, { ...params }, undefined, undefined, true);
   }
 }

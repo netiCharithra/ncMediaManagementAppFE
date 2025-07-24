@@ -310,3 +310,171 @@
         </div>
     </div>
 </div>
+
+<!-- WhatsApp Share Modal -->
+<div class="modal fade" id="whatsappShareModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="whatsappShareModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="whatsappShareModalLabel">
+                    <i class="fab fa-whatsapp text-success me-2"></i>
+                    Share on WhatsApp
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="whatsapp-share-content">
+                    <!-- Template Selector -->
+                    <div class="template-selector mb-3">
+                        <h6 class="fw-bold mb-2">Select Template</h6>
+                        <div class="form-group">
+                            <select class="form-select" [(ngModel)]="selectedTemplate" (change)="onTemplateChange($event)">
+                                <option value="">Choose a template...</option>
+                                <option *ngFor="let template of whatsappTemplates" [value]="template.id">
+                                    {{ template.name }}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+               
+                    <!-- Template Preview -->
+                    <div *ngIf="selectedTemplateObj && selectedTemplateObj.image" class="template-preview mb-3">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <h6 class="fw-bold mb-0">Template Preview</h6>
+                            <button type="button" class="btn btn-outline-secondary btn-sm" 
+                                    (click)="resetFontAdjustments()" title="Reset font sizes">
+                                <i class="fas fa-undo"></i> Reset
+                            </button>
+                        </div>
+                        
+                        <!-- Template Preview Container -->
+                        <div class="template-preview-wrapper" >
+                            <div class="template-image-container" id="templateImageContainer"
+                                 [style.background-image]="'url(' + selectedTemplateObj.base64 + ')'"
+                                 style="background-size: cover; background-position: center; background-repeat: no-repeat; border-radius: 8px; position: relative; width: 382px; height: 540px; padding: 15px; margin: 0 auto;">
+       
+                                 <div class="news-container-section" style="position: absolute; top: 120px; width: 92%;">
+                                   
+                                    <div class="news-title-section" style="height: 40px;">
+                                        <p [style.font-size.px]="getDynamicTitleFontSize()" 
+                                           [style.line-height.px]="getDynamicTitleLineHeight()"
+                                           [style.-webkit-line-clamp]="getMaxLinesForTitle()"
+                                           [style.line-clamp]="getMaxLinesForTitle()">
+                                           {{selectedNewsForShare?.title}}
+                                        </p>
+                                     </div>
+                                     <div class="news-image-section" style="height: 150px;">
+                                        <img [src]="selectedNewsForShare?.images?.[0]?.base64?.base64" alt="News Image" style="width: 100%; height: 100%; object-fit: cover;">
+                                     </div>
+                                     <div class="news-content-section" style="height: 200px;">
+                                        <p [style.font-size.px]="getDynamicContentFontSize()" 
+                                           [style.line-height.px]="getDynamicContentLineHeight()"
+                                           [style.-webkit-line-clamp]="getMaxLinesForContent()"
+                                           [style.line-clamp]="getMaxLinesForContent()">
+                                           {{selectedNewsForShare?.description}}
+                                        </p>
+                                     </div>
+                                  </div>
+                                  
+                                  <!-- Legend/Footer Section -->
+                                  <div class="legend-footer-section" style="position: absolute; bottom: 10px; width: 92%; text-align: center;">
+                                      <div style="font-size: 7px; color: #666; line-height: 1.1;">
+                                          📰 Visit www.neticharithra.com to read more news | 📱 Now app is available in Android
+                                      </div>
+                                  </div>
+                                 
+                            </div>
+                        </div>
+                        
+                        <!-- Compact Font Controls -->
+                        <div class="font-controls-compact mt-3">
+                            <div class="controls-header">
+                                <span class="controls-title">
+                                    <i class="fas fa-text-height"></i> Font Controls
+                                </span>
+                                <button type="button" class="btn btn-outline-secondary btn-xs" 
+                                        (click)="resetFontAdjustments()" title="Reset font sizes">
+                                    <i class="fas fa-undo"></i>
+                                </button>
+                            </div>
+                            
+                            <div class="controls-row">
+                                <!-- Title Controls -->
+                                <div class="control-item">
+                                    <div class="control-label">
+                                        <i class="fas fa-heading"></i>
+                                        <span class="label-text">Title</span>
+                                        <span class="current-size">{{getDynamicTitleFontSize()}}px</span>
+                                    </div>
+                                    <div class="control-buttons">
+                                        <button type="button" class="btn btn-outline-danger btn-xs" 
+                                                (click)="adjustTitleFontSize(-0.5)" title="Decrease">
+                                            <i class="fas fa-minus"></i>
+                                        </button>
+                                        <span class="adjustment-badge" 
+                                              [class.positive]="titleFontAdjustment > 0"
+                                              [class.negative]="titleFontAdjustment < 0">
+                                            {{titleFontAdjustment > 0 ? '+' : ''}}{{titleFontAdjustment}}
+                                        </span>
+                                        <button type="button" class="btn btn-outline-success btn-xs" 
+                                                (click)="adjustTitleFontSize(0.5)" title="Increase">
+                                            <i class="fas fa-plus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                
+                                <!-- Description Controls -->
+                                <div class="control-item">
+                                    <div class="control-label">
+                                        <i class="fas fa-align-left"></i>
+                                        <span class="label-text">Description</span>
+                                        <span class="current-size">{{getDynamicContentFontSize()}}px</span>
+                                    </div>
+                                    <div class="control-buttons">
+                                        <button type="button" class="btn btn-outline-danger btn-xs" 
+                                                (click)="adjustDescriptionFontSize(-0.5)" title="Decrease">
+                                            <i class="fas fa-minus"></i>
+                                        </button>
+                                        <span class="adjustment-badge" 
+                                              [class.positive]="descriptionFontAdjustment > 0"
+                                              [class.negative]="descriptionFontAdjustment < 0">
+                                            {{descriptionFontAdjustment > 0 ? '+' : ''}}{{descriptionFontAdjustment}}
+                                        </span>
+                                        <button type="button" class="btn btn-outline-success btn-xs" 
+                                                (click)="adjustDescriptionFontSize(0.5)" title="Increase">
+                                            <i class="fas fa-plus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                            <!-- Quick Actions -->
+                            <div class="quick-actions">
+                                <button type="button" class="btn btn-primary btn-xs" 
+                                        (click)="adjustTitleFontSize(1); adjustDescriptionFontSize(1)" title="Increase both">
+                                    <i class="fas fa-plus"></i> Both
+                                </button>
+                                <button type="button" class="btn btn-warning btn-xs" 
+                                        (click)="adjustTitleFontSize(-1); adjustDescriptionFontSize(-1)" title="Decrease both">
+                                    <i class="fas fa-minus"></i> Both
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                  
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    {{ languageService.getString('cancel') || 'Cancel' }}
+                </button>
+                <button type="button" class="btn btn-success" (click)="shareOnWhatsAppWithImage()">
+                    <i class="fab fa-whatsapp me-2"></i>
+                    Share Now
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

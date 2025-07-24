@@ -545,6 +545,299 @@ textarea[readonly] {
   cursor: not-allowed;
 }
 
+// Template Preview Styles
+.template-preview {
+  .template-image-container {
+    border: 1px solid #dee2e6;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease;
+    
+    &:hover {
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+    }
+    
+    .news-container-section {
+      // background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(5px);
+      border-radius: 6px;
+      // box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      
+      .news-title-section {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0px;
+        // background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        border-bottom: 1px solid #dee2e6;
+        
+        p {
+          margin: 0;
+          font-weight: 600;
+          color: #2c3e50;
+          overflow: hidden;
+          display: -webkit-box;
+          -webkit-box-orient: vertical;
+          word-wrap: break-word;
+          hyphens: auto;
+          text-overflow: ellipsis;
+          
+          // Dynamic font size and line height will be set via TypeScript
+          // Line clamp will be dynamically calculated based on content
+        }
+      }
+      
+      .news-image-section {
+        position: relative;
+        overflow: hidden;
+        background: #f8f9fa;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          transition: transform 0.3s ease;
+          
+          &:hover {
+            transform: scale(1.02);
+          }
+        }
+        
+        // Fallback for missing images
+        &:empty::before {
+          content: '📷';
+          font-size: 2rem;
+          color: #6c757d;
+          opacity: 0.5;
+        }
+      }
+      
+      .news-content-section {
+        padding: 0px;
+        // background: #ffffff;
+        // border-top: 1px solid #dee2e6;
+        
+        p {
+          margin: 0;
+          color: #495057;
+          overflow: hidden;
+          display: -webkit-box;
+          -webkit-box-orient: vertical;
+          word-wrap: break-word;
+          hyphens: auto;
+          text-align: justify;
+          text-overflow: ellipsis;
+          
+          // Dynamic font size, line height, and line clamp will be set via TypeScript
+          // This allows for truly responsive text that adapts to content length
+        }
+      }
+    }
+  }
+  
+  // Enhanced responsive design
+  @media (max-width: 768px) {
+    .template-image-container {
+      // width: 100% !important;
+      // max-width: 320px;
+      // height: auto;
+      // aspect-ratio: 9/16;
+      // margin: 0 auto;
+      
+      // Font sizes and line clamps are now dynamically calculated
+      // No need for hardcoded responsive values
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .template-image-container {
+      .news-container-section {
+        .news-title-section {
+          padding: 6px 10px;
+        }
+        
+        .news-content-section {
+          padding: 0px;
+        }
+      }
+    }
+  }
+  
+  // Template Preview Wrapper
+  .template-preview-wrapper {
+    text-align: center;
+    margin-bottom: 1rem;
+  }
+  
+  // Compact Font Controls - Modal Optimized
+  .font-controls-compact {
+    background: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 6px;
+    padding: 0.75rem;
+    max-width: 100%;
+    overflow: hidden;
+    
+    .controls-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.75rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid #dee2e6;
+      
+      .controls-title {
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: #495057;
+        
+        i {
+          color: #007bff;
+          margin-right: 0.4rem;
+          font-size: 0.8rem;
+        }
+      }
+      
+      .btn-xs {
+        padding: 0.2rem 0.4rem;
+        font-size: 0.7rem;
+        line-height: 1;
+        border-radius: 3px;
+      }
+    }
+    
+    .controls-row {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      
+      // Always stack in modal for better space utilization
+      @media (min-width: 1200px) {
+        flex-direction: row;
+        align-items: center;
+      }
+    }
+    
+    .control-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.5rem;
+      background: #fff;
+      border: 1px solid #e9ecef;
+      border-radius: 4px;
+      margin-bottom: 0.5rem;
+      box-sizing: border-box;
+      
+      &:last-child {
+        margin-bottom: 0;
+      }
+      
+      .control-label {
+        display: flex;
+        align-items: center;
+        gap: 0.3rem;
+        font-size: 0.75rem;
+        font-weight: 500;
+        color: #495057;
+        flex: 1;
+        min-width: 0;
+        
+        i {
+          color: #007bff;
+          width: 12px;
+          text-align: center;
+          font-size: 0.7rem;
+          flex-shrink: 0;
+        }
+        
+        .label-text {
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+        
+        .current-size {
+          color: #007bff;
+          font-weight: 600;
+          font-size: 0.7rem;
+          background: #e7f3ff;
+          padding: 0.1rem 0.3rem;
+          border-radius: 2px;
+          margin-left: 0.3rem;
+          flex-shrink: 0;
+        }
+      }
+      
+      .control-buttons {
+        display: flex;
+        align-items: center;
+        gap: 0.3rem;
+        flex-shrink: 0;
+        
+        .btn-xs {
+          width: 20px;
+          height: 20px;
+          padding: 0;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border-radius: 2px;
+          
+          i {
+            font-size: 0.6rem;
+          }
+        }
+        
+        .adjustment-badge {
+          font-size: 0.65rem;
+          font-weight: 600;
+          padding: 0.1rem 0.25rem;
+          border-radius: 2px;
+          background: #e9ecef;
+          color: #6c757d;
+          min-width: 24px;
+          text-align: center;
+          
+          &.positive {
+            color: #28a745;
+            background: #d4edda;
+          }
+          
+          &.negative {
+            color: #dc3545;
+            background: #f8d7da;
+          }
+        }
+      }
+    }
+    
+    .quick-actions {
+      display: flex;
+      gap: 0.3rem;
+      justify-content: center;
+      margin-top: 0.5rem;
+      padding-top: 0.5rem;
+      border-top: 1px solid #e9ecef;
+      
+      .btn-xs {
+        padding: 0.25rem 0.5rem;
+        font-size: 0.65rem;
+        line-height: 1.2;
+        border-radius: 2px;
+        white-space: nowrap;
+        
+        i {
+          margin-right: 0.2rem;
+          font-size: 0.6rem;
+        }
+      }
+    }
+  }
+}
+
 // Add disabled styles for ng-select
 ::ng-deep .ng-select.ng-select-disabled {
   .ng-select-container {
