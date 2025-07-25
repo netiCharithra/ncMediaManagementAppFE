@@ -8,6 +8,8 @@ import { environment } from '../../../../environments/environment';
 import { LanguageService } from '../../../services/language.service'; 
 import { CommonFunctionalityService } from '../../services/common-functionality.service';
 import html2canvas from 'html2canvas';
+import { timeout, Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 declare var bootstrap: any;
 
 @Component({
@@ -100,54 +102,40 @@ export class NewsManagementComponent implements OnInit {
     this.getMetaData();
     this.fetchNewsList();
 
-    // this.openWhatsAppShareModal({
-    //   rowData:{
-    //     "newsId": 20,
-    //     "title": "మన పంచాయతీ  మన సాధికారికత గ్రామసభ ",
-    //     "category": "Political",
-    //     "sub_title": "మన పంచాయతీ  మన సాధికారికత గ్రామసభ ",
-    //     "description": " బి కొత్తకోట మండలం గుడిపల్లి గ్రామంలో శుక్రవారం నిర్వహించిన మన పంచాయతీ మన సాధికారిక గ్రామసభ నిర్వహించారు. ఈ కార్యక్రమంలో ముఖ్యఅతిథిగా పాల్గొన్నటీడీపీ మండల కన్వీనర్ నారాయణస్వామి రెడ్డి మాట్లాడుతూ మహాత్మా గాంధీ జాతీయ ఉపాధి హామీ పథకం కింద ప్రతి గ్రామంలో నిర్వహించు ఈ గ్రామ సభలను గ్రామంలో ఉన్న ప్రతి రైతు గ్రామవాసులు వీటిని సద్వినియోగపరుచుకోవాలని  గ్రామంలో ఉన్న సమస్యలను సంబంధిత అధికారుల దృష్టికి తీసుకెళ్లి  పరిష్కారం కొరకు ప్రతి ఒక్క అధికారి కృషి చేయాలని ప్రతి రైతు ఉపాధి హామీ పనులు ఫారం ఫండ్స్  అవసరమైన అన్ని అధికారుల దగ్గర నుండి తెలుసుకోని  తీసుకోవలసిన జాగ్రత్తలను ఆయన క్షుణ్ణంగా ప్రజలకు తెలిపారు మహాత్మా గాంధీ జాతీయ గ్రామీణ ఉపాధి హామీ పథకం కింద ప్రతి ఒక్కరు ఈ కార్యక్రమాన్ని సద్వినియోగపరుచుకోవాలని ఆయన తెలిపారు. ఈ కార్యక్రమం లో పంచాయతీ కార్యదర్శి మానస, సర్పంచ్ గిరిజమ్మ రఘునాథ్ రెడ్డి, vro వరదరాజాలు, గుడిపల్లి గ్రామ ప్రజలు కార్యకర్తలు తదితరలు పాల్గొన్నారు.",
-    //     "images": [
-    //         {
-    //             "fileName": "NC-AP-1_1724408059929_0",
-    //             "ContentType": "image/jpeg",
-    //             "externalURL": null,
-    //             "_id": "66c861103227eddc3a81c793"
-    //         }
-    //     ],
-    //     "employeeId": "NC-AP-1",
-    //     "newsType": "Regional",
-    //     "language": "te",
-    //     "state": "Andhra Pradesh",
-    //     "district": "Annamayya",
-    //     "mandal": "B.Kothakota",
-    //     "approved": true,
-    //     "approvedBy": "NC-AP-1",
-    //     "approvedOn": 1724408083772,
-    //     "createdDate": 1724408079961,
-    //     "rejected": false,
-    //     "rejectedOn": null,
-    //     "rejectedReason": "",
-    //     "rejectedBy": "",
-    //     "viewCount": 29,
-    //     "publicUserId": "",
-    //     "deleted": false,
-    //     "priorityIndex": 17,
-    //     "source": "Neti Charithra",
-    //     "sourceLink": null,
-    //     "reportedBy": {
-    //         "name": "KONAPALLI CHAKRAPANI",
-    //         "profilePicture": {
-    //             "ContentType": "image/jpeg",
-    //             "fileName": "FileNew1707407022218_0"
-    //         },
-    //         "role": "CONSTITUTION INCHARGE",
-    //         "employeeId": "NC-AP-37"
-    //     }
-    // }
-    // })
   }
 
+
+  getPresignedFiletoBase64(presignedUrl: string, timeoutMs: number): Observable<string> {
+    return this.http.get(presignedUrl, {
+      responseType: 'arraybuffer' as 'json',
+      observe: 'response',
+    })
+    .pipe(
+      timeout(timeoutMs),
+      map((response: any) => {
+        console.log('Image Fetch Success:', response);
+        console.log('Image Fetch Data:', response.body); // ArrayBuffer
+        
+        const contentType = response.headers.get('content-type') || 'application/octet-stream';
+        
+        // Convert to base64
+        const uint8Array = new Uint8Array(response.body as ArrayBuffer);
+        let binaryString = '';
+        const chunkSize = 8192; // Process in chunks to avoid stack overflow
+        for (let i = 0; i < uint8Array.length; i += chunkSize) {
+          const chunk = uint8Array.subarray(i, i + chunkSize);
+          binaryString += String.fromCharCode(...chunk);
+        }
+        const base64Data = btoa(binaryString);
+        const base64String = `data:${contentType};base64,${base64Data}`;
+        
+        console.log('Content Type:', contentType);
+        console.log('Base64 String:', base64String);
+        
+        return base64String;
+      })
+    );
+  } 
   ngAfterViewInit() {
     if (this.newsForm) {
       this.newsForm.form.updateValueAndValidity();
@@ -321,7 +309,30 @@ export class NewsManagementComponent implements OnInit {
           
           if(type === 'whatsapp-share'){
             // this.getPresignedUrlToBase64()
-            this.openWhatsAppShareModal(response ? { ...response } : {});
+
+            let resp = response? {...response} : {};
+            if(resp?.images?.[0]?.tempURL){
+              // Subscribe to the Observable to get the actual base64 string
+              this.getPresignedFiletoBase64(resp?.images?.[0]?.tempURL, 30000).subscribe({
+                next: (base64String) => {
+                  // Ensure the object structure exists before assignment
+                  if (resp && resp.images && resp.images[0]) {
+                    resp.images[0]['base64'] = base64String;
+                  }
+                  console.log("BS54 - Base64 received:", base64String);
+                  // Open modal after base64 is loaded
+                  this.openWhatsAppShareModal(resp);
+                },
+                error: (error) => {
+                  console.error("Error getting base64:", error);
+                  // Open modal even if base64 fails
+                  this.openWhatsAppShareModal(resp);
+                }
+              });
+            } else {
+              // No image, open modal directly
+              this.openWhatsAppShareModal(resp);
+            }
 
           }
           else {
@@ -803,71 +814,37 @@ export class NewsManagementComponent implements OnInit {
     return processedTemplate;
   }
 
-  getWhatsAppMessage(): string {
-    if (!this.selectedNewsForShare) return '';
+  // Helper method for template preview date formatting
+  formatNewsDateForTemplate(timestamp: number): string {
+    if (!timestamp) return '';
     
-    let message = '';
+    const date = new Date(timestamp);
+    const day = date.getDate();
+    const monthIndex = date.getMonth();
+    const year = date.getFullYear();
     
-    // Add news title
-    message += `📰 ${this.selectedNewsForShare.title}\n\n`;
+    // Telugu month names
+    const teluguMonths = [
+      'జనవరి',    // January
+      'ఫిబ్రవరి',   // February
+      'మార్చి',    // March
+      'ఏప్రిల్',   // April
+      'మే',       // May
+      'జూన్',     // June
+      'జూలై',     // July
+      'ఆగస్టు',    // August
+      'సెప్టెంబర్', // September
+      'అక్టోబర్',  // October
+      'నవంబర్',   // November
+      'డిసెంబర్'   // December
+    ];
     
-    // Add subtitle if available
-    if (this.selectedNewsForShare.sub_title) {
-      message += `${this.selectedNewsForShare.sub_title}\n\n`;
-    }
+    const teluguMonth = teluguMonths[monthIndex];
     
-    // Add description (truncated if too long)
-    if (this.selectedNewsForShare.description) {
-      const description = this.selectedNewsForShare.description.length > 200 
-        ? this.selectedNewsForShare.description.substring(0, 200) + '...'
-        : this.selectedNewsForShare.description;
-      message += `${description}\n\n`;
-    }
-    
-    // Add source link if available
-    if (this.selectedNewsForShare.sourceLink) {
-      message += `🔗 Read more: ${this.selectedNewsForShare.sourceLink}\n\n`;
-    }
-    
-    // Add footer
-    message += '📱 Shared via Neti Charithra News';
-    
-    return message;
+    return `${day} ${teluguMonth} ${year}`;
   }
 
-  shareOnWhatsApp(): void {
-    try {
-      const message = this.whatsappShareData.customMessage || this.getWhatsAppMessage();
-      const encodedMessage = encodeURIComponent(message);
-      
-      let whatsappUrl = '';
-      
-      if (this.whatsappShareData.phoneNumber?.trim()) {
-        // Share to specific phone number
-        const phoneNumber = this.whatsappShareData.phoneNumber.replace(/\D/g, ''); // Remove non-digits
-        whatsappUrl = `https://wa.me/91${phoneNumber}?text=${encodedMessage}`;
-      } else {
-        // Open WhatsApp without specific contact
-        whatsappUrl = `https://wa.me/?text=${encodedMessage}`;
-      }
-      
-      // Open WhatsApp in new tab
-      window.open(whatsappUrl, '_blank');
-      
-      // Close the modal
-      const modalElement = document.getElementById('whatsappShareModal');
-      if (modalElement) {
-        const modal = bootstrap.Modal.getInstance(modalElement);
-        modal?.hide();
-      }
-      
-      // Success message - WhatsApp opened successfully
-      console.log('WhatsApp share link opened successfully!');
-    } catch (error) {
-      console.error('Error sharing on WhatsApp:', error);
-      this.messageService.showError('Failed to share on WhatsApp');
-    }
-  }
+
 
   /**
    * Captures the template image container as a base64 image with proper image handling
@@ -907,19 +884,25 @@ export class NewsManagementComponent implements OnInit {
         // Wait for images to load
         await new Promise(resolve => setTimeout(resolve, 2000));
         
-        // Capture with improved settings for better external image handling and styling
+        // Capture with maximum quality settings - keeping original div size
         const canvas = await html2canvas(clonedElement, {
           allowTaint: true,
           useCORS: true,
-          logging: true, // Enable logging to see what's happening
-          width: clonedElement.offsetWidth,
-          height: clonedElement.offsetHeight
-        });
+          logging: true,
+          width: clonedElement.offsetWidth, // Keep exact div width
+          height: clonedElement.offsetHeight, // Keep exact div height
+          x: 0,
+          y: 0,
+          scrollX: 0,
+          scrollY: 0,
+          pixelRatio: window.devicePixelRatio || 1 // Use device pixel ratio for clarity
+        } as any);
 
         console.log('Canvas created successfully:', canvas.width, 'x', canvas.height);
         
-        // Convert to base64
-        const base64Image = canvas.toDataURL('image/png', 0.9);
+        // Convert to base64 with maximum quality
+        // Use PNG for lossless quality (no compression artifacts)
+        const base64Image = canvas.toDataURL('image/png');
         console.log('Template captured successfully, size:', base64Image.length);
         
         return base64Image;
@@ -965,12 +948,10 @@ export class NewsManagementComponent implements OnInit {
           console.log('Processing background image:', imageUrl);
           
           try {
-            // Convert to base64
-            const base64Image = await this.imageToBase64(imageUrl);
-            
-            // Create img element to replace background
+            // Create img element with original URL (avoid double conversion for better quality)
             const imgElement = document.createElement('img');
-            imgElement.src = base64Image;
+            imgElement.src = imageUrl;
+            imgElement.crossOrigin = 'anonymous'; // Enable CORS for external images
             imgElement.style.width = '100%';
             imgElement.style.height = '100%';
             imgElement.style.objectFit = 'cover';
@@ -978,6 +959,23 @@ export class NewsManagementComponent implements OnInit {
             imgElement.style.top = '0';
             imgElement.style.left = '0';
             imgElement.style.zIndex = '-1';
+            
+            // Wait for image to load before proceeding
+            await new Promise((resolve) => {
+              imgElement.onload = () => {
+                console.log('✅ Background image loaded successfully:', imageUrl);
+                resolve(true);
+              };
+              imgElement.onerror = () => {
+                console.error('❌ Failed to load background image:', imageUrl);
+                resolve(true); // Continue anyway
+              };
+              // Set timeout to avoid hanging
+              setTimeout(() => {
+                console.warn('⏰ Background image load timeout:', imageUrl);
+                resolve(true); // Continue anyway
+              }, 5000);
+            });
             
             // Remove background and add img
             htmlEl.style.backgroundImage = 'none';
