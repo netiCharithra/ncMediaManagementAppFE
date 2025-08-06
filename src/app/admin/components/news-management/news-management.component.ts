@@ -814,6 +814,84 @@ export class NewsManagementComponent implements OnInit {
     return processedTemplate;
   }
 
+  /**
+   * Generate WhatsApp message with news title, subtitle and content
+   */
+  getWhatsAppMessage(): string {
+    if (!this.selectedNewsForShare) return '';
+    
+    const title = this.selectedNewsForShare.title || '';
+    const subtitle = this.selectedNewsForShare.sub_title || '';
+    const description = this.selectedNewsForShare.description || '';
+    const location = `${this.selectedNewsForShare.mandal || ''}, ${this.selectedNewsForShare.district || ''}, ${this.selectedNewsForShare.state || ''}`.replace(/^, |, $/g, '');
+    
+    let message = `📰 *${title}*\n\n`;
+    
+    if (subtitle) {
+      message += `📝 ${subtitle}\n\n`;
+    }
+    
+    if (description) {
+      const shortDescription = description.length > 200 ? description.substring(0, 200) + '...' : description;
+      message += `${shortDescription}\n\n`;
+    }
+    
+    if (location) {
+      message += `📍 ${location}\n\n`;
+    }
+    
+    message += `📱 *NC Media* - Your trusted news source`;
+    
+    return message;
+  }
+
+  /**
+   * Show instructions for sharing with image
+   */
+  showImageSharingInstructions(message: string): void {
+    // Show a toast or alert with instructions
+    this.messageService.showInfo(
+      'Image downloaded! Please manually attach the downloaded image to your WhatsApp message.'
+    );
+    
+    console.log('WhatsApp sharing instructions:', {
+      message: 'Image has been downloaded to your device',
+      instructions: [
+        '1. The news image has been downloaded to your device',
+        '2. WhatsApp will open with the text message',
+        '3. Manually attach the downloaded image to complete the share',
+        '4. Send the message with both image and text'
+      ],
+      textMessage: message
+    });
+  }
+
+  /**
+   * Convert base64 string to Blob for sharing
+   */
+  base64ToBlob(base64: string): Blob {
+    // Remove data URL prefix if present
+    const base64Data = base64.replace(/^data:image\/[a-z]+;base64,/, '');
+    
+    // Convert base64 to binary
+    const byteCharacters = atob(base64Data);
+    const byteNumbers = new Array(byteCharacters.length);
+    
+    for (let i = 0; i < byteCharacters.length; i++) {
+      byteNumbers[i] = byteCharacters.charCodeAt(i);
+    }
+    
+    const byteArray = new Uint8Array(byteNumbers);
+    return new Blob([byteArray], { type: 'image/png' });
+  }
+
+  /**
+   * Detect if the current device is mobile
+   */
+  isMobileDevice(): boolean {
+    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+  }
+
   // Helper method for template preview date formatting
   formatNewsDateForTemplate(timestamp: number): string {
     if (!timestamp) return '';
@@ -1257,7 +1335,8 @@ export class NewsManagementComponent implements OnInit {
   }
 
   /**
-   * Enhanced share method that captures template image and includes it in sharing
+   * Enhanced share method that captures template image and shares it with title
+   * Note: Due to WhatsApp limitations, images are downloaded and text is shared separately
    */
   async shareOnWhatsAppWithImage(): Promise<void> {
     try {
@@ -1267,29 +1346,82 @@ export class NewsManagementComponent implements OnInit {
       // Then capture the template as base64 image
       const templateImage = await this.captureTemplateAsImage();
       
-      console.log('Captured template image (base64):', templateImage);
+      // alert('✅ Template image captured successfully!');
       
-      // Download the image
+      // Download the image first
       this.downloadTemplateImage(templateImage);
+      // alert('💾 Image downloaded to your device!');
       
-      // Comment out WhatsApp sharing for now - focus on image capture
-      /*
-      // Get the text message
-      const message = this.whatsappShareData.customMessage || this.getWhatsAppMessage();
+      // Get only the title for sharing
+      const title = this.selectedNewsForShare?.title || 'News Update';
+      const message = this.whatsappShareData.customMessage || title;
       const encodedMessage = encodeURIComponent(message);
+      
+      // Check if Android and try direct sharing first
+      const isAndroid = /Android/.test(navigator.userAgent);
+      const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+      alert("isAndroid"+isAndroid)
+      if (isAndroid && navigator.share) {
+        // alert('🤖 Android detected - trying direct image sharing to WhatsApp...');
+        
+        try {
+          // Create blob for sharing
+          const imageBlob = this.base64ToBlob(templateImage);
+          const shareData = {
+            title: 'News from NC Media',
+            text: message,
+            files: [new File([imageBlob], 'news-image.png', { type: 'image/png' })]
+          };
+          
+          if (navigator.canShare && navigator.canShare(shareData)) {
+            await navigator.share(shareData);
+            // alert('✅ Successfully shared image and title directly!');
+            
+            // Close modal after successful share
+            const modalElement = document.getElementById('whatsappShareModal');
+            if (modalElement) {
+              const modal = bootstrap.Modal.getInstance(modalElement);
+              modal?.hide();
+            }
+            return; // Exit early on successful direct share
+          } else {
+            alert('⚠️ Direct file sharing not supported - using fallback...');
+          }
+        } catch (error: any) {
+          alert('❌ Direct sharing failed: ' + (error?.message || error) + ' - using fallback...');
+        }
+      }
+      
+      if (isIOS) {
+        alert('📋 iOS Instructions:\n1. Image downloaded to Chrome Downloads\n2. Find it in: Chrome menu → Downloads OR Files app → Downloads\n3. Tap & hold image → "Save to Photos" (if needed)\n4. WhatsApp will open with text message\n5. In WhatsApp: attach the image manually\n6. Send both together');
+      } else if (isAndroid) {
+        alert('📋 Android Instructions:\n1. Image has been downloaded to your device\n2. Allow popup when prompted (browser may ask permission to open WhatsApp)\n3. WhatsApp will open with the text message\n4. Manually attach the downloaded image in WhatsApp\n5. Send both image and text together');
+      } else {
+        alert('📋 Instructions:\n1. Image has been downloaded to your device\n2. WhatsApp will open with the text message\n3. Manually attach the downloaded image in WhatsApp\n4. Send both image and text together');
+      }
       
       let whatsappUrl = '';
       
       if (this.whatsappShareData.phoneNumber?.trim()) {
         const phoneNumber = this.whatsappShareData.phoneNumber.replace(/\D/g, '');
         whatsappUrl = `https://wa.me/91${phoneNumber}?text=${encodedMessage}`;
+        alert('📞 Opening WhatsApp for contact: ' + phoneNumber);
       } else {
-        whatsappUrl = `https://wa.me/?text=${encodedMessage}`;
+        // Use whatsapp://send for contact selection or fallback to web version
+        if (this.isMobileDevice()) {
+          whatsappUrl = `whatsapp://send?text=${encodedMessage}`;
+          alert('📱 Opening WhatsApp mobile app - choose your contact...');
+        } else {
+          whatsappUrl = `https://web.whatsapp.com/send?text=${encodedMessage}`;
+          alert('💻 Opening WhatsApp Web - choose your contact...');
+        }
       }
       
       // Open WhatsApp
       window.open(whatsappUrl, '_blank');
-      */
+      
+      // Show final success message
+      this.messageService.showInfo('Image downloaded! WhatsApp opened with text. Please attach the downloaded image manually.');
       
       // Close modal
       const modalElement = document.getElementById('whatsappShareModal');
