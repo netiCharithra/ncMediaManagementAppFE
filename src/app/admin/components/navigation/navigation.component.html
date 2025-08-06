@@ -51,6 +51,14 @@
           <span>{{ languageService.getString('employeeTracing') }}</span>
         </a>
       </li>
+
+      <!-- WhatsApp Bot Linking - Only for CEO and InCharge CEO -->
+      <li class="nav-item" routerLinkActive="active" >
+        <a routerLink="/admin/whatsapp-bot-linking" (click)="isMobile ? toggleMenu() : null">
+          <i class="fab fa-whatsapp"></i>
+          <span>WhatsApp Bot</span>
+        </a>
+      </li>
     </ul>
 
     <div class="sidebar-footer">

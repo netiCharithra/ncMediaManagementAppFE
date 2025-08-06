@@ -25,6 +25,7 @@ import { EmployeeManagementComponent } from './components/employee-management/em
 import { EmployeeTracingComponent } from './components/employee-tracing/employee-tracing.component';
 import { QRCodeModule } from 'angularx-qrcode';
 import { DashboardMapComponent } from './components/dashboard-map/dashboard-map.component';
+import { WhatsappBotLinkingComponent } from './components/whatsapp-bot-linking/whatsapp-bot-linking.component';
 import { GeocodingService } from './services/geocoding.service';
 
 
@@ -37,7 +38,10 @@ import { GeocodingService } from './services/geocoding.service';
     PaginatedTableComponent,
     NewsManagementComponent,
     AdminLoaderComponent,
-    EmployeeManagementComponent,EmployeeTracingComponent, DashboardMapComponent
+    EmployeeManagementComponent,
+    EmployeeTracingComponent,
+    DashboardMapComponent,
+    WhatsappBotLinkingComponent
   ],
   imports: [
     CommonModule,

@@ -41,6 +41,10 @@ export class AdminService {
     GET_VISITOR_TIME_SERIES:'/admin/dashboard/visitor-time-series',
     GET_VISITS_TIME_SERIES:'/admin/dashboard/visits-time-series',
     GET_VISITOR_LOCATIONS:'/admin/dashboard/visitor-locations',
+    
+    // WhatsApp Bot Management
+    WHATSAPP_QR_CODE: '/admin/whatsapp/qr-code',
+    WHATSAPP_STOP_BOT: '/admin/whatsapp/stop-bot',
 
 
     NEWS_APPROVE: `/admin/news/approve`,
@@ -316,5 +320,19 @@ export class AdminService {
    */
   getPresignedUrlToBase64(params: any): Observable<any> {
     return this.httpService.post(this.API_ENDPOINTS.PRE_SIGNED_URL_TO_BASE64, { ...params }, undefined, undefined, true);
+  }
+
+  /**
+   * Get WhatsApp QR code and bot status
+   */
+  getWhatsAppQRCode(): Observable<any> {
+    return this.httpService.post(this.API_ENDPOINTS.WHATSAPP_QR_CODE,null,undefined,undefined,true);
+  }
+
+   /**
+   * Stop WhatsApp Bot
+   */
+   stopWhatsAppBot(): Observable<any> {
+    return this.httpService.post(this.API_ENDPOINTS.WHATSAPP_STOP_BOT, null, undefined, undefined, true);
   }
 }

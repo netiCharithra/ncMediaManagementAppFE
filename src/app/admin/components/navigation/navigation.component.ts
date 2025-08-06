@@ -66,4 +66,13 @@ export class NavigationComponent implements OnInit {
     const select = event.target as HTMLSelectElement;
     this.languageService.setLanguage(select.value as 'en' | 'te');
   }
+
+  // Check if user has access to WhatsApp Bot Linking (CEO and InCharge CEO only)
+  canAccessWhatsAppBot(user: any): boolean {
+    if (!user || !user.role) {
+      return false;
+    }
+    const allowedRoles = ['CEO', 'InCharge CEO'];
+    return allowedRoles.includes(user.role);
+  }
 }

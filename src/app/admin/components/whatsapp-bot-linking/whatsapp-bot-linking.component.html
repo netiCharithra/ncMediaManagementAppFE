@@ -1,0 +1,125 @@
+<div class="whatsapp-bot-container">
+  <!-- Simple Header -->
+  <div class="page-header">
+    <div class="d-flex justify-content-between align-items-center">
+      <div>
+        <h2 class="mb-1">WhatsApp Bot Management</h2>
+        <p class="text-muted mb-0">Configure and monitor your WhatsApp Business API bot</p>
+      </div>
+      <div class="d-flex align-items-center gap-2">
+        <button class="btn btn-outline-primary btn-sm" (click)="refreshStatus()" [disabled]="isLoading">
+          <i class="fas fa-sync-alt" [class.fa-spin]="isLoading"></i>
+          Refresh
+        </button>
+        <button class="btn btn-outline-danger btn-sm" (click)="stopBot()" [disabled]="isLoading" 
+                *ngIf="whatsappData && whatsappData.botStatus?.isRunning">
+          <i class="fas fa-stop"></i>
+          Stop Bot
+        </button>
+        <div class="form-check form-switch mb-0">
+          <input class="form-check-input" type="checkbox" id="autoRefreshSwitch" 
+                 [(ngModel)]="autoRefreshEnabled" (change)="toggleAutoRefresh()">
+          <label class="form-check-label" for="autoRefreshSwitch">Auto Refresh</label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div *ngIf="whatsappData" class="row g-4">
+    <!-- QR Code Section -->
+    <div class="col-lg-6">
+      <div class="card h-100">
+        <div class="card-header">
+          <h5 class="mb-0"><i class="fas fa-qrcode me-2"></i>WhatsApp QR Code</h5>
+        </div>
+        <div class="card-body text-center">
+          <div *ngIf="getQRCodeImage(); else noQRCode">
+            <img [src]="getQRCodeImage()" 
+                 alt="WhatsApp QR Code" 
+                 class="img-fluid qr-code-image mb-3"
+                 style="max-width: 280px; border: 2px solid #e9ecef; border-radius: 12px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+            <p class="text-muted mb-0">Scan this QR code with WhatsApp to connect your bot</p>
+          </div>
+          <ng-template #noQRCode>
+            <div class="py-5">
+              <i class="fas fa-qrcode fa-4x text-muted mb-3"></i>
+              <h6 class="text-muted">No QR code available</h6>
+              <p class="text-muted small mb-0">QR code will appear when bot requires authentication</p>
+            </div>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bot Status Section -->
+    <div class="col-lg-6">
+      <div class="card h-100">
+        <div class="card-header">
+          <h5 class="mb-0"><i class="fas fa-robot me-2"></i>Bot Status</h5>
+        </div>
+        <div class="card-body">
+          <div class="status-grid">
+            <div class="status-item">
+              <label>Overall Status:</label>
+              <span class="badge" [ngClass]="getStatusBadgeClass()">
+                {{ getStatusText() }}
+              </span>
+            </div>
+            
+            <div class="status-item">
+              <label>Bot State:</label>
+              <span class="value">{{ whatsappData.botState || 'Unknown' }}</span>
+            </div>
+            
+            <div class="status-item">
+              <label>Is Running:</label>
+              <span class="value">
+                <i class="fas" [class.fa-check-circle]="whatsappData.botStatus?.isRunning" 
+                   [class.fa-times-circle]="!whatsappData.botStatus?.isRunning"
+                   [class.text-success]="whatsappData.botStatus?.isRunning"
+                   [class.text-danger]="!whatsappData.botStatus?.isRunning"></i>
+                {{ whatsappData.botStatus?.isRunning ? 'Yes' : 'No' }}
+              </span>
+            </div>
+            
+            <div class="status-item">
+              <label>Is Authenticated:</label>
+              <span class="value">
+                <i class="fas" [class.fa-check-circle]="whatsappData.isAuthenticated" 
+                   [class.fa-times-circle]="!whatsappData.isAuthenticated"
+                   [class.text-success]="whatsappData.isAuthenticated"
+                   [class.text-danger]="!whatsappData.isAuthenticated"></i>
+                {{ whatsappData.isAuthenticated ? 'Yes' : 'No' }}
+              </span>
+            </div>
+            
+            <div class="status-item">
+              <label>Has QR Code:</label>
+              <span class="value">
+                <i class="fas" [class.fa-check-circle]="whatsappData.botStatus?.hasQRCode" 
+                   [class.fa-times-circle]="!whatsappData.botStatus?.hasQRCode"
+                   [class.text-success]="whatsappData.botStatus?.hasQRCode"
+                   [class.text-danger]="!whatsappData.botStatus?.hasQRCode"></i>
+                {{ whatsappData.botStatus?.hasQRCode ? 'Yes' : 'No' }}
+              </span>
+            </div>
+            
+            <div class="status-item">
+              <label>Last Updated:</label>
+              <span class="value text-muted">{{ whatsappData.timestamp || 'N/A' }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- WhatsApp API Docs Link -->
+  <div class="mt-4">
+    <a href="https://developers.facebook.com/docs/whatsapp" target="_blank" class="btn btn-outline-primary btn-sm">
+      <i class="fas fa-external-link-alt me-2"></i>
+      WhatsApp API Docs
+    </a>
+  </div>
+</div>

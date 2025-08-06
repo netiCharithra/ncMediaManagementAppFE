@@ -1,0 +1,356 @@
+.whatsapp-bot-container {
+  padding: 1.5rem;
+  background: #f8f9fa;
+  min-height: calc(100vh - 80px);
+
+  @media (max-width: 768px) {
+    padding: 1rem;
+  }
+}
+
+// Simple Professional Header
+.page-header {
+  background: white;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  border: 1px solid #e9ecef;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+
+  h2 {
+    color: #2c3e50;
+    font-weight: 600;
+    font-size: 1.5rem;
+  }
+
+  .text-muted {
+    font-size: 0.9rem;
+  }
+
+  @media (max-width: 768px) {
+    .d-flex {
+      flex-direction: column;
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  overflow: hidden;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+          background-color: #fff;
+          transition: all 0.3s ease;
+
+          &:checked {
+            background-color: #25d366;
+            border-color: #25d366;
+          }
+
+          &:focus {
+            box-shadow: 0 0 0 0.2rem rgba(37, 211, 102, 0.25);
+          }
+        }
+
+        .form-check-label {
+          font-weight: 600;
+          color: #495057;
+          margin-left: 0.5rem;
+        }
+      }
+    }
+  }
+
+  .card-body {
+    padding: 2rem;
+  }
+
+
+// Form Styling
+.form-group {
+  .form-label {
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 0.75rem;
+    display: flex;
+    align-items: center;
+
+    i {
+      color: #25d366;
+      width: 20px;
+    }
+  }
+
+  .form-control {
+    border: 2px solid #e9ecef;
+    border-radius: 10px;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+
+    &:focus {
+      border-color: #25d366;
+      box-shadow: 0 0 0 0.2rem rgba(37, 211, 102, 0.15);
+    }
+
+    &::placeholder {
+      color: #adb5bd;
+    }
+  }
+
+  .input-group {
+    .btn {
+      border: 2px solid #e9ecef;
+      border-left: none;
+      border-radius: 0 10px 10px 0;
+    }
+  }
+
+  .form-text {
+    color: #6c757d;
+    font-size: 0.875rem;
+    margin-top: 0.5rem;
+  }
+}
+
+// Action Buttons
+.form-actions {
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #e9ecef;
+
+  .btn {
+    padding: 0.75rem 2rem;
+    font-weight: 600;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+
+    &.btn-success {
+      background: linear-gradient(135deg, #25d366, #128c7e);
+      border: none;
+
+      &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(37, 211, 102, 0.3);
+      }
+    }
+
+    &.btn-primary {
+      background: linear-gradient(135deg, #007bff, #0056b3);
+      border: none;
+
+      &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(0, 123, 255, 0.3);
+      }
+    }
+
+    &:disabled {
+      transform: none;
+      box-shadow: none;
+    }
+  }
+}
+
+// Status Card
+.status-card {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  border: none;
+  overflow: hidden;
+
+  .card-header {
+    background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+    border-bottom: 1px solid #dee2e6;
+    padding: 1.5rem;
+
+    .card-title {
+      margin: 0;
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: #2c3e50;
+      display: flex;
+      align-items: center;
+
+      i {
+        color: #25d366;
+      }
+    }
+  }
+
+  .card-body {
+    padding: 1.5rem;
+  }
+}
+
+.status-indicator {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+
+  &.status-connected {
+    background: linear-gradient(135deg, #d4edda, #c3e6cb);
+    border: 2px solid #28a745;
+  }
+
+  &.status-disconnected {
+    background: linear-gradient(135deg, #f8d7da, #f5c6cb);
+    border: 2px solid #dc3545;
+  }
+
+  .status-icon {
+    i {
+      font-size: 2rem;
+
+      &.fa-check-circle {
+        color: #28a745;
+      }
+
+      &.fa-times-circle {
+        color: #dc3545;
+      }
+    }
+  }
+
+  .status-text {
+    flex: 1;
+
+    h5 {
+      margin: 0 0 0.25rem;
+      font-weight: 600;
+      color: #2c3e50;
+    }
+
+    p {
+      margin: 0;
+      font-size: 0.875rem;
+      color: #6c757d;
+    }
+  }
+}
+
+// Info Card
+.info-card {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  border: none;
+  overflow: hidden;
+
+  .card-header {
+    background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+    border-bottom: 1px solid #dee2e6;
+    padding: 1.5rem;
+
+    .card-title {
+      margin: 0;
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: #2c3e50;
+      display: flex;
+      align-items: center;
+
+      i {
+        color: #17a2b8;
+      }
+    }
+  }
+
+  .card-body {
+    padding: 1.5rem;
+  }
+}
+
+// Setup Steps
+.setup-steps {
+  .step {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    .step-number {
+      width: 32px;
+      height: 32px;
+      background: linear-gradient(135deg, #25d366, #128c7e);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      font-size: 0.875rem;
+      flex-shrink: 0;
+    }
+
+    .step-content {
+      flex: 1;
+
+      h6 {
+        margin: 0 0 0.5rem;
+        font-weight: 600;
+        color: #2c3e50;
+      }
+
+      p {
+        margin: 0;
+        font-size: 0.875rem;
+        color: #6c757d;
+        line-height: 1.4;
+      }
+    }
+  }
+}
+
+// Responsive Design
+@media (max-width: 992px) {
+  .whatsapp-bot-container {
+    .row {
+      flex-direction: column;
+    }
+
+    .col-lg-4 {
+      margin-top: 2rem;
+    }
+  }
+}
+
+@media (max-width: 576px) {
+  .config-card,
+  .status-card,
+  .info-card {
+    .card-header,
+    .card-body {
+      padding: 1rem;
+    }
+  }
+
+  .form-actions {
+    .btn {
+      width: 100%;
+      margin-bottom: 0.5rem;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+
+  .status-indicator {
+    flex-direction: column;
+    text-align: center;
+    gap: 0.5rem;
+
+    .status-icon i {
+      font-size: 3rem;
+    }
+  }
+}
