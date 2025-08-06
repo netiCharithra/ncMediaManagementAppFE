@@ -1,6 +1,57 @@
 <div class="admin-loader" *ngIf="show">
-  <div class="loader-content">
-    <img src="assets/images/logos/fullLogo.png" alt="Logo" class="loader-logo">
-    <div class="loading-text">{{ loadingText }}</div>
+  <div class="loader-backdrop"></div>
+  <div class="loader-container">
+    <div class="loader-content">
+      <!-- Professional spinner animation -->
+      <div class="spinner-container">
+        <div class="spinner">
+          <div class="spinner-ring"></div>
+          <div class="spinner-ring"></div>
+          <div class="spinner-ring"></div>
+        </div>
+        <div class="spinner-logo">
+          <img src="assets/images/logos/fullLogo.png" alt="Logo" class="loader-logo">
+        </div>
+      </div>
+      
+      <!-- Loading text with professional styling (shown when not in instruction mode) -->
+      <div class="loading-text-container" *ngIf="!showInstructions">
+        <div class="loading-text">{{ loadingText }}</div>
+        <div class="loading-dots">
+          <span class="dot"></span>
+          <span class="dot"></span>
+          <span class="dot"></span>
+        </div>
+      </div>
+      
+      <!-- Instruction display mode -->
+      <div class="instruction-container" *ngIf="showInstructions">
+        <div class="instruction-header">
+          <div class="instruction-icon">
+            <i class="fas fa-info-circle"></i>
+          </div>
+          <h3 class="instruction-title">{{ instructionTitle }}</h3>
+        </div>
+        
+        <div class="instruction-content">
+          <div class="instruction-text" [innerHTML]="instructionText"></div>
+        </div>
+        
+        <div class="instruction-actions">
+          <button class="continue-btn" (click)="onContinueClick()">
+            <i class="fas fa-arrow-right"></i>
+            {{ continueButtonText }}
+          </button>
+        </div>
+      </div>
+      
+      <!-- Progress indicator (shown when not in instruction mode) -->
+      <div class="progress-container" *ngIf="!showInstructions">
+        <div class="progress-bar">
+          <div class="progress-fill"></div>
+        </div>
+        <div class="progress-text">Processing...</div>
+      </div>
+    </div>
   </div>
 </div>

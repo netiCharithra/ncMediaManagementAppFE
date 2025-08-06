@@ -1,5 +1,14 @@
 <div class="news-management">
-    <app-admin-loader [show]="showLoader"></app-admin-loader>
+    <!-- Show loader with current WhatsApp share step -->
+    <app-admin-loader 
+      [show]="showLoader" 
+      [customMessage]="whatsappShareInProgress ? currentLogStep : ''"
+      [showInstructions]="showInstructions"
+      [instructionTitle]="instructionTitle"
+      [instructionText]="instructionText"
+      [continueButtonText]="continueButtonText"
+      (continueClicked)="onLoaderContinueClick()">
+    </app-admin-loader>
     <div class="news-header">
         <div class="header-content">
             <h2>
@@ -28,6 +37,8 @@
         (actionEmitter)="actionEmitterPendingNews($event)" [noRecordsMessage]="getNoRecordsMessage()">
     </nc-web-paginated-table>
 </div>
+
+
 
 <div class="modal fade" id="addEmployee" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
     aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -329,12 +340,17 @@
                     <div class="template-selector mb-3">
                         <h6 class="fw-bold mb-2">Select Template</h6>
                         <div class="form-group">
-                            <select class="form-select" [(ngModel)]="selectedTemplate" (change)="onTemplateChange($event)">
-                                <option value="">Choose a template...</option>
-                                <option *ngFor="let template of whatsappTemplates" [value]="template.id">
-                                    {{ template.name }}
-                                </option>
-                            </select>
+                            <ng-select 
+                                [(ngModel)]="selectedTemplateId"
+                                [items]="whatsappTemplates"
+                                bindLabel="name"
+                                bindValue="id"
+                                placeholder="Choose a template..."
+                                [clearable]="false"
+                                [searchable]="true"
+                                (change)="onTemplateChange()"
+                                class="custom-ng-select">
+                            </ng-select>
                         </div>
                     </div>
                
@@ -466,17 +482,100 @@
                         </div>
                     </div>
 
+                    <!-- WhatsApp Share Options -->
+                    <div class="whatsapp-share-options mt-4">
+                        <div class="share-header">
+                            <h6 class="share-title">
+                                <i class="fab fa-whatsapp me-2"></i>
+                                Choose Share Destination
+                            </h6>
+                            <p class="share-subtitle">Select where you'd like to send this news</p>
+                        </div>
+                        
+                        <!-- Modern Card-Based Share Options -->
+                        <div class="share-cards-container">
+                            <!-- Share to Self Card -->
+                            <div class="share-card" [class.active]="whatsappShareData.shareOption === 'self'" 
+                                 (click)="onShareOptionChange('self')">
+                                <input type="radio" name="shareOption" id="shareToSelf" value="self" 
+                                       [(ngModel)]="whatsappShareData.shareOption" class="share-radio">
+                                <div class="card-content">
+                                    <div class="card-icon self">
+                                        <i class="fas fa-user"></i>
+                                    </div>
+                                    <div class="card-info">
+                                        <h6 class="card-title">Share to Self</h6>
+                                        <p class="card-description">Send to your own number</p>
+                                    </div>
+                                    <div class="card-indicator">
+                                        <i class="fas fa-check-circle"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Share to Admin Card -->
+                            <div class="share-card recommended" [class.active]="whatsappShareData.shareOption === 'admin'" 
+                                 (click)="onShareOptionChange('admin')">
+                                <input type="radio" name="shareOption" id="shareToAdmin" value="admin" 
+                                       [(ngModel)]="whatsappShareData.shareOption" class="share-radio">
+                                <div class="recommended-badge">
+                                    <i class="fas fa-star"></i> Recommended
+                                </div>
+                                <div class="card-content">
+                                    <div class="card-icon admin">
+                                        <i class="fas fa-user-shield"></i>
+                                    </div>
+                                    <div class="card-info">
+                                        <h6 class="card-title">Share to Admin</h6>
+                                        <p class="card-description">Direct to admin (9441573950)</p>
+                                    </div>
+                                    <div class="card-indicator">
+                                        <i class="fas fa-check-circle"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Choose Contact Card -->
+                            <div class="share-card" [class.active]="whatsappShareData.shareOption === 'custom'" 
+                                 (click)="onShareOptionChange('custom')">
+                                <input type="radio" name="shareOption" id="shareToCustom" value="custom" 
+                                       [(ngModel)]="whatsappShareData.shareOption" class="share-radio">
+                                <div class="card-content">
+                                    <div class="card-icon custom">
+                                        <i class="fas fa-users"></i>
+                                    </div>
+                                    <div class="card-info">
+                                        <h6 class="card-title">Choose Contact</h6>
+                                        <p class="card-description">Select from your contacts</p>
+                                    </div>
+                                    <div class="card-indicator">
+                                        <i class="fas fa-check-circle"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                   
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                    {{ languageService.getString('cancel') || 'Cancel' }}
-                </button>
-                <button type="button" class="btn btn-success" (click)="shareOnWhatsAppWithImage()">
-                    <i class="fab fa-whatsapp me-2"></i>
-                    Share Now
-                </button>
+                <!-- Validation Error Display -->
+                <div class="validation-error-container" *ngIf="whatsappShareValidationError">
+                    <div class="alert alert-danger mb-3" role="alert">
+                        <i class="fas fa-exclamation-triangle me-2"></i>
+                        {{ whatsappShareValidationError }}
+                    </div>
+                </div>
+                
+                <div class="modal-footer-buttons">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        {{ languageService.getString('cancel') || 'Cancel' }}
+                    </button>
+                    <button type="button" class="btn btn-success" (click)="shareOnWhatsAppWithImage()">
+                        <i class="fab fa-whatsapp me-2"></i>
+                        Share Now
+                    </button>
+                </div>
             </div>
         </div>
     </div>

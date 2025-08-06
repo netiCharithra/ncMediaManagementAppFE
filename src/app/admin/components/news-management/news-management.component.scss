@@ -838,10 +838,526 @@ textarea[readonly] {
   }
 }
 
+// Modern WhatsApp Share Options Styling
+.whatsapp-share-options {
+  border-top: 1px solid #e9ecef;
+  padding-top: 1.5rem;
+  
+  .share-header {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    
+    .share-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #1f2937;
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      
+      i {
+        color: #25d366; // WhatsApp green
+        font-size: 1.2rem;
+      }
+    }
+    
+    .share-subtitle {
+      font-size: 0.9rem;
+      color: #6b7280;
+      margin: 0;
+    }
+  }
+  
+  .share-cards-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  
+  .share-card {
+    position: relative;
+    border: 2px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: linear-gradient(135deg, #ffffff 0%, #f9fafb 100%);
+    
+    &:hover {
+      border-color: #25d366;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(37, 211, 102, 0.15);
+    }
+    
+    &.active {
+      border-color: #25d366;
+      background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%);
+      box-shadow: 0 4px 20px rgba(37, 211, 102, 0.2);
+      
+      .card-indicator {
+        opacity: 1;
+        transform: scale(1);
+      }
+      
+      .card-icon {
+        transform: scale(1.1);
+      }
+    }
+    
+    &.recommended {
+      border-color: #fbbf24;
+      
+      &:hover {
+        border-color: #f59e0b;
+        box-shadow: 0 8px 25px rgba(245, 158, 11, 0.15);
+      }
+      
+      &.active {
+        border-color: #f59e0b;
+        background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+        box-shadow: 0 4px 20px rgba(245, 158, 11, 0.2);
+      }
+      
+      .recommended-badge {
+        position: absolute;
+        top: -8px;
+        right: 12px;
+        background: linear-gradient(135deg, #f59e0b, #d97706);
+        color: white;
+        font-size: 0.7rem;
+        font-weight: 600;
+        padding: 0.25rem 0.5rem;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        gap: 0.25rem;
+        box-shadow: 0 2px 8px rgba(245, 158, 11, 0.3);
+        
+        i {
+          font-size: 0.6rem;
+        }
+      }
+    }
+    
+    .share-radio {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+    
+    .card-content {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      position: relative;
+    }
+    
+    .card-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      color: white;
+      transition: all 0.3s ease;
+      flex-shrink: 0;
+      
+      &.self {
+        background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+        box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+      }
+      
+      &.admin {
+        background: linear-gradient(135deg, #10b981, #059669);
+        box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+      }
+      
+      &.custom {
+        background: linear-gradient(135deg, #f59e0b, #d97706);
+        box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+      }
+    }
+    
+    .card-info {
+      flex: 1;
+      
+      .card-title {
+        font-size: 1rem;
+        font-weight: 600;
+        color: #1f2937;
+        margin: 0 0 0.25rem 0;
+        line-height: 1.2;
+      }
+      
+      .card-description {
+        font-size: 0.85rem;
+        color: #6b7280;
+        margin: 0;
+        line-height: 1.3;
+      }
+    }
+    
+    .card-indicator {
+      opacity: 0;
+      transform: scale(0.8);
+      transition: all 0.3s ease;
+      color: #25d366;
+      font-size: 1.2rem;
+      flex-shrink: 0;
+    }
+  }
+  
+  // Responsive design
+  @media (max-width: 576px) {
+    .share-card {
+      padding: 0.875rem;
+      
+      .card-content {
+        gap: 0.75rem;
+      }
+      
+      .card-icon {
+        width: 42px;
+        height: 42px;
+        font-size: 1.1rem;
+      }
+      
+      .card-info {
+        .card-title {
+          font-size: 0.95rem;
+        }
+        
+        .card-description {
+          font-size: 0.8rem;
+        }
+      }
+    }
+  }
+}
+
+// Platform-Specific Instructions Styling
+::ng-deep .platform-instructions {
+  margin: 1rem 0;
+  
+  .platform-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+    padding: 0.75rem;
+    border-radius: 8px;
+    font-size: 1rem;
+    
+    i {
+      font-size: 1.2rem;
+    }
+    
+    &.android {
+      background: linear-gradient(135deg, #a4c639, #8bc34a);
+      color: white;
+    }
+    
+    &.ios {
+      background: linear-gradient(135deg, #007aff, #5856d6);
+      color: white;
+    }
+    
+    &.desktop {
+      background: linear-gradient(135deg, #6c757d, #495057);
+      color: white;
+    }
+  }
+  
+  &.android .platform-header {
+    background: linear-gradient(135deg, #a4c639, #8bc34a);
+  }
+  
+  &.ios .platform-header {
+    background: linear-gradient(135deg, #007aff, #5856d6);
+  }
+  
+  &.desktop .platform-header {
+    background: linear-gradient(135deg, #6c757d, #495057);
+  }
+  
+  .instruction-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  
+  .step {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding: 0.75rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    border-left: 3px solid transparent;
+    transition: all 0.3s ease;
+    
+    &:hover {
+      background: rgba(255, 255, 255, 0.1);
+      transform: translateX(2px);
+    }
+    
+    .step-number {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #007bff, #0056b3);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      font-weight: 600;
+      flex-shrink: 0;
+      margin-top: 0.1rem;
+    }
+    
+    .step-content {
+      flex: 1;
+      
+      strong {
+        color: #1f2937;
+        font-size: 0.9rem;
+        line-height: 1.4;
+      }
+      
+      small {
+        color: #6b7280;
+        font-size: 0.8rem;
+        line-height: 1.3;
+        margin-top: 0.25rem;
+        display: block;
+      }
+    }
+  }
+  
+  // Platform-specific step styling
+  &.android .step {
+    border-left-color: #a4c639;
+    
+    .step-number {
+      background: linear-gradient(135deg, #a4c639, #8bc34a);
+    }
+  }
+  
+  &.ios .step {
+    border-left-color: #007aff;
+    
+    .step-number {
+      background: linear-gradient(135deg, #007aff, #5856d6);
+    }
+  }
+  
+  &.desktop .step {
+    border-left-color: #6c757d;
+    
+    .step-number {
+      background: linear-gradient(135deg, #6c757d, #495057);
+    }
+  }
+  
+  // Responsive design
+  @media (max-width: 576px) {
+    .platform-header {
+      padding: 0.5rem;
+      font-size: 0.9rem;
+      
+      i {
+        font-size: 1rem;
+      }
+    }
+    
+    .step {
+      padding: 0.5rem;
+      gap: 0.5rem;
+      
+      .step-number {
+        width: 20px;
+        height: 20px;
+        font-size: 0.7rem;
+      }
+      
+      .step-content {
+        strong {
+          font-size: 0.85rem;
+        }
+        
+        small {
+          font-size: 0.75rem;
+        }
+      }
+    }
+  }
+}
+
+// WhatsApp Modal Validation Error Styling
+.modal-footer {
+  .validation-error-container {
+    width: 100%;
+    margin-bottom: 0;
+    
+    .alert {
+      margin-bottom: 1rem;
+      border: none;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #fee2e2, #fecaca);
+      border-left: 4px solid #dc2626;
+      color: #991b1b;
+      font-size: 0.9rem;
+      padding: 0.75rem 1rem;
+      
+      i {
+        color: #dc2626;
+        margin-right: 0.5rem;
+      }
+    }
+  }
+  
+  .modal-footer-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+    width: 100%;
+  }
+  
+  // Responsive design
+  @media (max-width: 576px) {
+    .validation-error-container .alert {
+      font-size: 0.85rem;
+      padding: 0.6rem 0.8rem;
+    }
+    
+    .modal-footer-buttons {
+      flex-direction: column;
+      gap: 0.75rem;
+      
+      .btn {
+        width: 100%;
+      }
+    }
+  }
+}
+
 // Add disabled styles for ng-select
 ::ng-deep .ng-select.ng-select-disabled {
   .ng-select-container {
     background-color: #e9ecef;
     cursor: not-allowed;
+  }
+}
+
+// Custom ng-select styling for WhatsApp template selector
+.custom-ng-select {
+  ::ng-deep .ng-select {
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    min-height: 42px;
+    font-size: 14px;
+    transition: all 0.2s ease;
+    
+    &:hover {
+      border-color: #0d6efd;
+      box-shadow: 0 0 0 0.1rem rgba(13, 110, 253, 0.1);
+    }
+    
+    &.ng-select-focused {
+      border-color: #0d6efd;
+      box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+    }
+    
+    .ng-select-container {
+      background-color: #fff;
+      border-radius: 8px;
+      padding: 0 12px;
+      
+      .ng-value-container {
+        padding: 8px 0;
+        
+        .ng-placeholder {
+          color: #6c757d;
+          font-style: italic;
+        }
+        
+        .ng-value {
+          color: #212529;
+          font-weight: 500;
+          
+          .ng-value-label {
+            display: flex;
+            align-items: center;
+            
+            &::before {
+              content: '\f15c'; // FontAwesome file-alt icon
+              font-family: 'Font Awesome 5 Free';
+              font-weight: 900;
+              color: #0d6efd;
+              margin-right: 8px;
+            }
+          }
+        }
+      }
+      
+      .ng-arrow-wrapper {
+        .ng-arrow {
+          border-color: #6c757d transparent transparent;
+          border-style: solid;
+          border-width: 5px 5px 0;
+        }
+        
+        &.ng-arrow-wrapper-focused .ng-arrow {
+          border-color: #0d6efd transparent transparent;
+        }
+      }
+    }
+  }
+  
+  ::ng-deep .ng-dropdown-panel {
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    margin-top: 4px;
+    
+    .ng-dropdown-panel-items {
+      .ng-option {
+        padding: 12px 16px;
+        font-size: 14px;
+        transition: background-color 0.2s ease;
+        
+        &:hover {
+          background-color: #f8f9fa;
+        }
+        
+        &.ng-option-selected {
+          background-color: #e7f3ff;
+          color: #0d6efd;
+          font-weight: 500;
+        }
+        
+        &.ng-option-highlighted {
+          background-color: #0d6efd;
+          color: white;
+        }
+        
+        // Add icon to each option
+        &::before {
+          content: '\f15c'; // FontAwesome file-alt icon
+          font-family: 'Font Awesome 5 Free';
+          font-weight: 900;
+          color: #0d6efd;
+          margin-right: 8px;
+        }
+        
+        &.ng-option-highlighted::before {
+          color: white;
+        }
+      }
+    }
   }
 }
