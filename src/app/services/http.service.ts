@@ -85,7 +85,7 @@ export class HttpService {
     headers?: HttpHeaders,
     formData: any = null,
     loggedUserDetails?: boolean,
-    returnEntireResponse?: boolean
+    returnEntireResponse?: boolean, baseApiUrl?: string
   ): Observable<any> {
     const options: any = {};
     if (headers) {
@@ -113,7 +113,7 @@ export class HttpService {
           };
         }
   
-        return this.http.post(`${this.baseUrl}${endpoint}`, formData || bodyWithLanguage, options).pipe(
+        return this.http.post(`${baseApiUrl || this.baseUrl}${endpoint}`, formData || bodyWithLanguage, options).pipe(
           map((response: any) => {
             if (response?.status === 'success') {
               return returnEntireResponse ? response : response.data;

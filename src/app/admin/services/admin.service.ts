@@ -7,6 +7,9 @@ import { environment } from '../../../environments/environment';
   providedIn: 'root'
 })
 export class AdminService {
+
+  public readonly BE_BASE_URL_WHATSAPP_BOT = environment.BE_BASE_URL_WHATSAPP_BOT;
+  
   public readonly API_ENDPOINTS = {
 
 
@@ -44,7 +47,7 @@ export class AdminService {
     
     // WhatsApp Bot Management
     WHATSAPP_QR_CODE: '/admin/whatsapp/qr-code',
-    WHATSAPP_STOP_BOT: '/admin/whatsapp/stop-bot',
+    WHATSAPP_STOP_BOT: '/admin/whatsapp/stop',
 
 
     NEWS_APPROVE: `/admin/news/approve`,
@@ -326,13 +329,13 @@ export class AdminService {
    * Get WhatsApp QR code and bot status
    */
   getWhatsAppQRCode(): Observable<any> {
-    return this.httpService.post(this.API_ENDPOINTS.WHATSAPP_QR_CODE,null,undefined,undefined,true);
+    return this.httpService.post(this.API_ENDPOINTS.WHATSAPP_QR_CODE,null,undefined,undefined,true,false,this.BE_BASE_URL_WHATSAPP_BOT);
   }
 
    /**
    * Stop WhatsApp Bot
    */
    stopWhatsAppBot(): Observable<any> {
-    return this.httpService.post(this.API_ENDPOINTS.WHATSAPP_STOP_BOT, null, undefined, undefined, true);
+    return this.httpService.post(this.API_ENDPOINTS.WHATSAPP_STOP_BOT, null, undefined, undefined, true,false,this.BE_BASE_URL_WHATSAPP_BOT);
   }
 }

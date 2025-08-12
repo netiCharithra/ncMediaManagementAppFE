@@ -1,4 +1,8 @@
 export const environment = {
   production: true,
-  BE_BASE_URL: 'https://ho6nistug6promwrubxbyinjhy0ttskw.lambda-url.ap-south-1.on.aws/api/v3'
-};
+
+  BE_BASE_URL: 'https://api.neticharithra.com/api/v3',
+  // BE_BASE_URL_WHATSAPP_BOT: 'http://localhost:3005'
+  BE_BASE_URL_WHATSAPP_BOT: 'https://api.neticharithra.com/whatsapp-api'
+  // BE_BASE_URL: 'http://localhost:3000/api/v3'
+  };
