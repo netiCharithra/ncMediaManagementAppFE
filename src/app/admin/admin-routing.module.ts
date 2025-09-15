@@ -9,6 +9,7 @@ import { NewsManagementComponent } from './components/news-management/news-manag
 import { EmployeeManagementComponent } from './components/employee-management/employee-management.component';
 import { EmployeeTracingComponent } from './components/employee-tracing/employee-tracing.component';
 import { WhatsappBotLinkingComponent } from './components/whatsapp-bot-linking/whatsapp-bot-linking.component';
+import { NewsFrameManagementComponent } from './components/news-frame-management/news-frame-management.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent, canActivate: [AuthGuard] },
@@ -23,6 +24,7 @@ const routes: Routes = [
       { path: 'employee-management', component: EmployeeManagementComponent },
       { path: 'employee-tracing', component: EmployeeTracingComponent },
       { path: 'whatsapp-bot-linking', component: WhatsappBotLinkingComponent },
+      { path: 'news-frame-management', component: NewsFrameManagementComponent },
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
     ]
   }

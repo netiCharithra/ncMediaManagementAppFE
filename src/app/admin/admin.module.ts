@@ -27,6 +27,7 @@ import { QRCodeModule } from 'angularx-qrcode';
 import { DashboardMapComponent } from './components/dashboard-map/dashboard-map.component';
 import { WhatsappBotLinkingComponent } from './components/whatsapp-bot-linking/whatsapp-bot-linking.component';
 import { GeocodingService } from './services/geocoding.service';
+import { NewsFrameManagementComponent } from './components/news-frame-management/news-frame-management.component';
 
 
 @NgModule({
@@ -41,7 +42,8 @@ import { GeocodingService } from './services/geocoding.service';
     EmployeeManagementComponent,
     EmployeeTracingComponent,
     DashboardMapComponent,
-    WhatsappBotLinkingComponent
+    WhatsappBotLinkingComponent,
+    NewsFrameManagementComponent
   ],
   imports: [
     CommonModule,

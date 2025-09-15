@@ -257,7 +257,7 @@
                             placeholder="Enter a valid images" name="images" [(ngModel)]="images" #image="ngModel"
                             [disabled]="disableFields"
                             [ngClass]="{ 'is-invalid': newsForm.submitted && images.invalid }" type="file"
-                            (change)="upload($event)" multiple accept=".png, .jpg, .jpeg, .gif" />
+                            (change)="upload($event)" multiple accept=".png, .jpg, .jpeg, .gif, .webp" />
                     </div>
                 </div>
                 <div class="modal-footer">

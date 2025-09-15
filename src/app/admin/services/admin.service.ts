@@ -24,6 +24,7 @@ export class AdminService {
     REJECTED_NEWS: `/admin/news/rejected`,
     NEWS_UPLOAD_IMAGES: `/uploadFiles`,
     REMOVE_IMAGES_S3:`/deleteS3`,
+    GET_IMAGE_TEMP_URL:`/admin/utils/get-image-url`,
 
     NEWS_ACTIVE_EMPLOYEES: `/admin/news/active-employees`,
     MANIPULATE_NEWS:'/admin/news/manipulateNews',
@@ -49,6 +50,11 @@ export class AdminService {
     WHATSAPP_QR_CODE: '/admin/whatsapp/qr-code',
     WHATSAPP_STOP_BOT: '/admin/whatsapp/stop',
 
+    // News Frame Management
+    NEWS_FRAME_LIST: '/mobile/getNewsFrames',
+    NEWS_FRAME_CREATE: '/mobile/createFrame',
+    NEWS_FRAME_UPDATE: '/mobile/updateFrame',
+    GET_FRAME_BY_ID: '/mobile/getFrameById',
 
     NEWS_APPROVE: `/admin/news/approve`,
     NEWS_REJECT: `/admin/news/reject`,
@@ -206,6 +212,13 @@ export class AdminService {
     return this.httpService.post(this.API_ENDPOINTS.REMOVE_IMAGES_S3, { ...params });
   }
 
+  /**
+   * Remove a news frame image
+   */
+  removeNewsImage(formData: FormData): Observable<any> {
+    return this.httpService.post(this.API_ENDPOINTS.REMOVE_IMAGES_S3, null, undefined, formData);
+  }
+
 
   /**
    * Get metadata for admin operations
@@ -337,5 +350,40 @@ export class AdminService {
    */
    stopWhatsAppBot(): Observable<any> {
     return this.httpService.post(this.API_ENDPOINTS.WHATSAPP_STOP_BOT, null, undefined, undefined, true,false,this.BE_BASE_URL_WHATSAPP_BOT);
+  }
+
+  /**
+   * Get news frame list
+   */
+  getNewsFrameList(params: any): Observable<any> {
+    return this.httpService.post(this.API_ENDPOINTS.NEWS_FRAME_LIST, { ...params }, undefined, undefined, true);
+  }
+
+  /**
+   * Save news frame
+   */
+  saveNewsFrame(params: any): Observable<any> {
+    return this.httpService.post(this.API_ENDPOINTS.NEWS_FRAME_CREATE, { ...params }, undefined, undefined, true);
+  }
+
+  /**
+   * Get image temp url
+   */
+  getImageTempUrl(params: any): Observable<any> {
+    return this.httpService.post(this.API_ENDPOINTS.GET_IMAGE_TEMP_URL, { ...params }, undefined, undefined, true);
+  }
+
+  /**
+   * Get news frame by id
+   */
+  getNewsFrameById(params: any): Observable<any> {
+    return this.httpService.post(this.API_ENDPOINTS.GET_FRAME_BY_ID, { ...params }, undefined, undefined, true);
+  }
+
+  /**
+   * Update news frame
+   */
+  updateNewsFrame(params: any): Observable<any> {
+    return this.httpService.post(this.API_ENDPOINTS.NEWS_FRAME_UPDATE, { ...params }, undefined, undefined, true);
   }
 }

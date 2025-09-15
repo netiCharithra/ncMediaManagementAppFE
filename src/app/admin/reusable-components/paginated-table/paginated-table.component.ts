@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MessageService } from '../../services/message.service';
 import { StorageService } from '../../services/storage.service';
 
@@ -8,7 +8,7 @@ import { StorageService } from '../../services/storage.service';
   templateUrl: './paginated-table.component.html',
   styleUrls: ['./paginated-table.component.scss']
 })
-export class PaginatedTableComponent {
+export class PaginatedTableComponent implements OnInit, AfterViewInit{
   @Input() columns: any[] = [];
   @Input() data: any[] = [];
   @Input() itemsPerPage: number = 10;
@@ -26,6 +26,13 @@ export class PaginatedTableComponent {
 
   constructor(private messageService: MessageService, private storage: StorageService) {}
 
+  ngOnInit(): void {
+  }
+  ngAfterViewInit() {
+    console.log('Component view fully initialized');
+    console.log("TOJS", this.metaData)
+    // You can safely access DOM elements here
+  }
   onPageChange(page: number): void {
     if (page >= 1 && page <= this.totalPages) {
       this.page = page;
