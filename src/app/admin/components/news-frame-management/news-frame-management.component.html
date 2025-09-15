@@ -314,4 +314,193 @@
       </div>
     </div>
   </div>
+</div><!-- Configure Frame Modal -->
+
+<div class="modal fade" id="configureFrameModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+  aria-labelledby="configureFrameModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content shadow">
+      <div class="modal-header bg-light justify-content-between align-items-center py-3">
+        <h5 class="modal-title fw-bold" id="configureFrameModalLabel">
+          <i class="fa-solid fa-sliders me-2"></i>
+          Configure Frame: {{configFrameValues?.['frameName']}}
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form (ngSubmit)="saveFrameConfiguration()" #configFrameForm="ngForm" novalidate class="col-12 row m-0 p-0">
+        <div class="modal-body col-12 row p-4">
+          <div class="col-12 mb-4">
+            <div class="d-flex align-items-center justify-content-between">
+              <h6 class="text-muted fw-bold mb-0 border-bottom pb-2">
+                <i class="fas fa-ruler me-2"></i>Frame Dimensions
+              </h6>
+              <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" id="previewChanges" [(ngModel)]="previewChanges" name="previewChanges">
+                <label class="form-check-label" for="previewChanges">Preview Changes</label>
+              </div>
+            </div>
+          </div>
+
+          <!-- Container Height -->
+          <div class="col-12 col-md-6 mb-3">
+            <label class="form-label fw-medium" for="configContainerHeight">Container Height</label>
+            <div class="input-group">
+              <span class="input-group-text bg-light"><i class="fas fa-arrows-alt-v"></i></span>
+              <input type="number" id="configContainerHeight" class="form-control" placeholder="Enter Container Height"
+                name="containerHeight" [(ngModel)]="configFrameValues['containerHeight']" #configContainerHeight="ngModel" required
+                [ngClass]="{ 'is-invalid': configFrameForm.submitted && configContainerHeight.invalid }" />
+              <span class="input-group-text bg-light">px</span>
+            </div>
+            <div *ngIf="configFrameForm.submitted && configContainerHeight.invalid" class="invalid-feedback d-block mt-1 ms-1">
+              <small *ngIf="configContainerHeight?.errors?.['required']"><i class="fas fa-exclamation-circle me-1"></i>Container height is required</small>
+            </div>
+          </div>
+
+          <!-- Frame Height -->
+          <div class="col-12 col-md-6 mb-3">
+            <label class="form-label fw-medium" for="configFrameHeight">Frame Height</label>
+            <div class="input-group">
+              <span class="input-group-text bg-light"><i class="fas fa-crop-alt"></i></span>
+              <input type="number" id="configFrameHeight" class="form-control" placeholder="Enter Frame Height"
+                name="frameHeight" [(ngModel)]="configFrameValues['frameHeight']" #configFrameHeight="ngModel" required
+                [ngClass]="{ 'is-invalid': configFrameForm.submitted && configFrameHeight.invalid }" />
+              <span class="input-group-text bg-light">px</span>
+            </div>
+            <div *ngIf="configFrameForm.submitted && configFrameHeight.invalid" class="invalid-feedback d-block mt-1 ms-1">
+              <small *ngIf="configFrameHeight?.errors?.['required']"><i class="fas fa-exclamation-circle me-1"></i>Frame height is required</small>
+            </div>
+          </div>
+
+          <div class="col-12 mb-4 mt-2">
+            <h6 class="text-muted fw-bold mb-3 border-bottom pb-2"><i class="fas fa-align-left me-2"></i>Text Position Settings</h6>
+          </div>
+
+          <!-- Text Position - Top Percent -->
+          <div class="col-12 col-md-6 mb-3">
+            <label class="form-label fw-medium" for="configTopPercent">Text Position - Top</label>
+            <div class="input-group">
+              <span class="input-group-text bg-light"><i class="fas fa-arrow-down"></i></span>
+              <input type="number" id="configTopPercent" class="form-control" placeholder="Enter Top Position"
+                name="topPercent" [(ngModel)]="(configFrameValues['textPosition'] = configFrameValues['textPosition'] || {}).topPercent" #configTopPercent="ngModel" required
+                [ngClass]="{ 'is-invalid': configFrameForm.submitted && configTopPercent.invalid }" />
+              <span class="input-group-text bg-light">%</span>
+            </div>
+            <div *ngIf="configFrameForm.submitted && configTopPercent.invalid" class="invalid-feedback d-block mt-1 ms-1">
+              <small *ngIf="configTopPercent?.errors?.['required']"><i class="fas fa-exclamation-circle me-1"></i>Top position percentage is required</small>
+            </div>
+          </div>
+
+          <!-- Text Position - Left Percent -->
+          <div class="col-12 col-md-6 mb-3">
+            <label class="form-label fw-medium" for="configLeftPercent">Text Position - Left</label>
+            <div class="input-group">
+              <span class="input-group-text bg-light"><i class="fas fa-arrow-right"></i></span>
+              <input type="number" id="configLeftPercent" class="form-control" placeholder="Enter Left Position"
+                name="leftPercent" [(ngModel)]="(configFrameValues['textPosition'] = configFrameValues['textPosition'] || {}).leftPercent" #configLeftPercent="ngModel" required
+                [ngClass]="{ 'is-invalid': configFrameForm.submitted && configLeftPercent.invalid }" />
+              <span class="input-group-text bg-light">%</span>
+            </div>
+            <div *ngIf="configFrameForm.submitted && configLeftPercent.invalid" class="invalid-feedback d-block mt-1 ms-1">
+              <small *ngIf="configLeftPercent?.errors?.['required']"><i class="fas fa-exclamation-circle me-1"></i>Left position percentage is required</small>
+            </div>
+          </div>
+
+          <!-- Frame Reduction Width Percent -->
+          <div class="col-12 col-md-6 mb-3">
+            <label class="form-label fw-medium" for="configFrameReductionWidthPercent">Frame Reduction Width</label>
+            <div class="input-group">
+              <span class="input-group-text bg-light"><i class="fas fa-compress-arrows-alt"></i></span>
+              <input type="number" id="configFrameReductionWidthPercent" class="form-control" placeholder="Enter Frame Reduction Width"
+                name="frameReductionWidthPercent" [(ngModel)]="(configFrameValues['textPosition'] = configFrameValues['textPosition'] || {}).frameReductionWidthPercent" #configFrameReductionWidthPercent="ngModel" required
+                [ngClass]="{ 'is-invalid': configFrameForm.submitted && configFrameReductionWidthPercent.invalid }" />
+              <span class="input-group-text bg-light">%</span>
+            </div>
+            <div *ngIf="configFrameForm.submitted && configFrameReductionWidthPercent.invalid" class="invalid-feedback d-block mt-1 ms-1">
+              <small *ngIf="configFrameReductionWidthPercent?.errors?.['required']"><i class="fas fa-exclamation-circle me-1"></i>Frame reduction width percentage is required</small>
+            </div>
+          </div>
+
+          <!-- Content Height -->
+          <div class="col-12 col-md-6 mb-3">
+            <label class="form-label fw-medium" for="configContentHeight">Content Height</label>
+            <div class="input-group">
+              <span class="input-group-text bg-light"><i class="fas fa-text-height"></i></span>
+              <input type="number" id="configContentHeight" class="form-control" placeholder="Enter Content Height"
+                name="contentHeight" [(ngModel)]="(configFrameValues['textPosition'] = configFrameValues['textPosition'] || {}).contentHeight" #configContentHeight="ngModel" required
+                [ngClass]="{ 'is-invalid': configFrameForm.submitted && configContentHeight.invalid }" />
+              <span class="input-group-text bg-light">%</span>
+            </div>
+            <div *ngIf="configFrameForm.submitted && configContentHeight.invalid" class="invalid-feedback d-block mt-1 ms-1">
+              <small *ngIf="configContentHeight?.errors?.['required']"><i class="fas fa-exclamation-circle me-1"></i>Content height percentage is required</small>
+            </div>
+          </div>
+
+          <!-- Preview Section -->
+          <div class="col-12 mt-3" *ngIf="previewChanges && configFrameValues?.['frameData']?.['tempURL']">
+            <div class="card border">
+              <div class="card-header bg-light">
+                <h6 class="mb-0"><i class="fas fa-eye me-2"></i>Live Preview</h6>
+              </div>
+              <div class="card-body p-0 text-center bg-dark">
+                <!-- Frame container with fixed dimensions -->
+                <div class="d-flex justify-content-center align-items-center bg-dark">
+                  <!-- Frame with proper dimensions using aspect ratio preservation -->
+                  <div class="position-relative" 
+                    [ngStyle]="{
+                      'width': 'auto',
+                      'height': (configFrameValues?.['frameHeight'] || 515) + 'px',
+                      'max-height': '400px',
+                      'max-width': '100%'
+                    }">
+                    <!-- Actual frame image -->
+                    <img [src]="configFrameValues?.['frameData']?.['tempURL']" alt="Frame Preview" 
+                      [ngStyle]="{
+                        'height': '100%',
+                        'max-width': '100%',
+                        'object-fit': 'contain'
+                      }">
+                    
+                    <!-- Overlay showing text position inside the frame -->
+                    <div class="position-absolute" 
+                      [ngStyle]="{
+                        'top': (configFrameValues?.['textPosition']?.topPercent || 0) + '%', 
+                        'left': (configFrameValues?.['textPosition']?.leftPercent || 0) + '%',
+                        'width': 'calc(100% - ' + ((configFrameValues?.['textPosition']?.frameReductionWidthPercent || 0) * 2) + '%)',
+                        'height': (configFrameValues?.['textPosition']?.contentHeight || 0) + '%',
+                        'border': '2px dashed rgba(255,255,255,0.8)',
+                        'background-color': 'rgba(0,123,255,0.2)',
+                        'pointer-events': 'none'
+                      }">
+                      <div class="d-flex justify-content-center align-items-center h-100">
+                        <span class="badge bg-primary">Text Area</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="mt-2 p-2 text-start">
+                  <small class="text-muted">
+                    <i class="fas fa-info-circle me-1"></i> Container: {{configFrameValues?.['containerHeight'] || 535}}px | 
+                    Frame: {{configFrameValues?.['frameHeight'] || 515}}px | 
+                    Text Position: {{configFrameValues?.['textPosition']?.topPercent || 0}}% from top, 
+                    {{configFrameValues?.['textPosition']?.leftPercent || 0}}% from left
+                  </small>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer bg-light py-3">
+          <div class="d-flex justify-content-end w-100 gap-2">
+            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+              <i class="fas fa-times me-1"></i> Cancel
+            </button>
+            <button type="submit" class="btn btn-primary px-4">
+              <i class="fas fa-save me-1"></i> Save Configuration
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
 </div>

@@ -13,11 +13,11 @@ declare var bootstrap: any;
 export class NewsFrameManagementComponent {
 
   public loggedUserDetails: any = {}
+  public configFrameValues: any = {};
+  public previewChanges: boolean = false;
+  
   constructor(public adminService: AdminService, private messageService: MessageService, private storage: StorageService) {
-
-
     this.loggedUserDetails = this.storage.getStoredUser();
-
   }
 
 
@@ -116,6 +116,8 @@ export class NewsFrameManagementComponent {
         this.getImageTempUrl(event.rowData.frameData)
       } else if (event.type === 'edit') {
         this.getNewsFrameById(event.rowData.frameId);
+      } else if (event.type === 'configure') {
+        this.getFrameForConfiguration(event.rowData.frameId);
       }
     } catch (error) {
       console.error(error)
@@ -357,5 +359,128 @@ export class NewsFrameManagementComponent {
         this.formModalShowHide('show');
       }
     });
+  }
+  
+  /**
+   * Get frame data for configuration
+   */
+  getFrameForConfiguration(id: any) {
+    this.adminService.getNewsFrameById({ frameId: id }).subscribe((response: any) => {
+      if (response) {
+        this.configFrameValues = { ...response };
+        
+        // Initialize default values for fields if they don't exist
+        if (!this.configFrameValues['containerHeight']) {
+          this.configFrameValues['containerHeight'] = 535;
+        }
+        
+        if (!this.configFrameValues['frameHeight']) {
+          this.configFrameValues['frameHeight'] = 515;
+        }
+        
+        if (!this.configFrameValues['textPosition']) {
+          this.configFrameValues['textPosition'] = {
+            topPercent: 23,
+            leftPercent: 3,
+            frameReductionWidthPercent: 6,
+            contentHeight: 75
+          };
+        }
+        
+        // Get image URL for preview
+        if (this.configFrameValues?.['frameData']) {
+          this.getConfigImageTempUrl(this.configFrameValues['frameData']);
+        } else {
+          this.showConfigureModal();
+        }
+      }
+    });
+  }
+  
+  /**
+   * Get image temp URL for configuration modal
+   */
+  getConfigImageTempUrl = (payload: any) => {
+    this.adminService.getImageTempUrl({ ...payload, bucketName: 'news-frames' }).subscribe((response: any) => {
+      if (response) {
+        if (!this.configFrameValues['frameData']) {
+          this.configFrameValues['frameData'] = {};
+        }
+        this.configFrameValues['frameData']['tempURL'] = response?.downloadUrl;
+        this.showConfigureModal();
+      }
+      else {
+        this.messageService.showError('Failed to get image temp url');
+        this.showConfigureModal();
+      }
+    });
+  }
+  
+  /**
+   * Shows the configure modal
+   */
+  showConfigureModal() {
+    const modalElement = document.getElementById('configureFrameModal');
+    // Close existing modal instance if any
+    const existingModal = bootstrap.Modal.getInstance(modalElement);
+    if (existingModal) {
+      existingModal.dispose();
+    }
+    // Create and show new modal
+    const modal = new bootstrap.Modal(modalElement);
+    modal.show();
+  }
+  
+  /**
+   * Save frame configuration
+   */
+  saveFrameConfiguration = () => {
+    try {
+      if (!this.configFrameValues?.['frameData']?.['fileName']) {
+        this.messageService.showError("Frame image is required!");
+        return;
+      }
+      else {
+        console.log("proceed to save configuration", this.configFrameValues);
+        
+        // Create a complete payload with all necessary fields
+        const payload = { ...this.configFrameValues };
+        
+        // If validFrom and validTo exist, format them properly
+        if (payload['validFrom']) {
+          // Start of the day (00:00:00)
+          payload['validFrom'] = new Date(payload['validFrom']);
+          payload['validFrom'].setHours(0, 0, 0, 0);
+          payload['validFrom'] = payload['validFrom'].getTime();
+        }
+        
+        if (payload['validTo']) {
+          // End of the day (23:59:59.999)
+          payload['validTo'] = new Date(payload['validTo']);
+          payload['validTo'].setHours(23, 59, 59, 999);
+          payload['validTo'] = payload['validTo'].getTime();
+        }
+        
+        // Use updateNewsFrame API directly
+        this.adminService.updateNewsFrame({ ...this.loggedUserDetails, data: { ...payload } }).subscribe(
+          (response: any) => {
+            if (Object.keys(response).length > 0) {
+              console.log("configuration updated", response);
+              // Close modal
+              const modal = bootstrap.Modal.getInstance(document.getElementById('configureFrameModal'));
+              modal.hide();
+              // Refresh list
+              this.fetchNewsFrameList();
+            }
+          },
+          (error: any) => {
+            this.messageService.showError(error.msg || "Failed to update frame configuration!");
+          }
+        );
+      }
+    } catch (error) {
+      console.error(error);
+      this.messageService.showError('An error occurred while saving frame configuration');
+    }
   }
 }

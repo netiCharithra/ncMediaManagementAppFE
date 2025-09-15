@@ -386,4 +386,11 @@ export class AdminService {
   updateNewsFrame(params: any): Observable<any> {
     return this.httpService.post(this.API_ENDPOINTS.NEWS_FRAME_UPDATE, { ...params }, undefined, undefined, true);
   }
+
+  /**
+   * Update frame configuration (dimensions and text position)
+   */
+  updateFrameConfiguration(params: any): Observable<any> {
+    return this.httpService.post(this.API_ENDPOINTS.NEWS_FRAME_UPDATE, { ...params }, undefined, undefined, true);
+  }
 }
