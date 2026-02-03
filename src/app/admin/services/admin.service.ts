@@ -144,7 +144,7 @@ export class AdminService {
    * Manipulate individual employee
    */
   manipulateIndividualEmployee(params: any): Observable<any> {
-    return this.httpService.post(this.API_ENDPOINTS.MANIPULATE_INDIVIDUAL_EMPLOYEE, { ...params },undefined,undefined,false,true);
+    return this.httpService.post(this.API_ENDPOINTS.MANIPULATE_INDIVIDUAL_EMPLOYEE, { ...params },undefined,undefined,true,true);
   }
 
 

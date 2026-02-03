@@ -3,7 +3,7 @@
     <div class="news-header">
         <div class="header-content row">
             <h2 class="col-12 col-md-7">
-              Employee Management
+                Employee Management
             </h2>
             <div class="controls col-12 col-md-5 row mt-2">
                 <mat-form-field appearance="outline" class="col-7">
@@ -13,7 +13,7 @@
                         <mat-option value="Disabled">Disabled</mat-option>
                     </mat-select>
                 </mat-form-field>
-              
+
                 <button mat-flat-button color="primary" class="report-news-btn col-5"
                     (click)="actionEmitter({type:'create'})">
                     <i class="fa-solid fa-plus"></i>
@@ -59,8 +59,8 @@
                     <div class="col-12 col-md-6 my-1">
                         <label class="form-label" for="loginName">Name</label>
                         <input type="text" id="loginName" class="form-control form-control-lg"
-                            placeholder="Enter a name as per Documents" name="name" [(ngModel)]="signUpFormValues['name']"
-                            #name="ngModel" required [disabled]="disableFields"
+                            placeholder="Enter a name as per Documents" name="name"
+                            [(ngModel)]="signUpFormValues['name']" #name="ngModel" required [disabled]="disableFields"
                             [ngClass]="{ 'is-invalid': signUpForm.submitted && name.invalid }" />
                         <div *ngIf="signUpForm.submitted && name.invalid" class="invalid-feedback">
                             <div *ngIf="name?.errors?.['required']">This field is required</div>
@@ -82,24 +82,16 @@
                     <div class="col-12 col-md-6 my-1">
                         <label class="form-label" for="loginMobile">Mobile</label>
                         <div class="input-group">
-                          <span class="input-group-text">+91</span>
-                          <input
-                            type="number"
-                            id="loginMobile"
-                            placeholder="Enter your 10-digit mobile number"
-                            name="mobile"
-                            class="form-control form-control-lg"
-                            [(ngModel)]="signUpFormValues['mobile']"
-                            [disabled]="disableFields"
-                            #mobile="ngModel"
-                            required
-                            [ngClass]="{ 'is-invalid': signUpForm.submitted && mobile.invalid }"
-                          />
+                            <span class="input-group-text">+91</span>
+                            <input type="number" id="loginMobile" placeholder="Enter your 10-digit mobile number"
+                                name="mobile" class="form-control form-control-lg"
+                                [(ngModel)]="signUpFormValues['mobile']" [disabled]="disableFields" #mobile="ngModel"
+                                required [ngClass]="{ 'is-invalid': signUpForm.submitted && mobile.invalid }" />
                         </div>
                         <div *ngIf="signUpForm.submitted && mobile.invalid" class="invalid-feedback">
-                          <div *ngIf="mobile?.errors?.['required']">This field is required</div>
+                            <div *ngIf="mobile?.errors?.['required']">This field is required</div>
                         </div>
-                      </div>
+                    </div>
 
                     <div class="col-12 col-md-6 my-1">
                         <label class="form-label" for="loginEmail">Email address</label>
@@ -124,14 +116,14 @@
                             touch
                             here
                             to upload Profile Picture </button>
-                      
+
                         <ng-container *ngIf="signUpFormValues && signUpFormValues['profilePicture']">
                             <div class="col-12 d-flex">
                                 <span class="mx-1 cursor-pointer border rounded px-1 pt-1 image_holder">
 
                                     <img [src]="signUpFormValues['profilePicture'].tempURL" alt="Failed to load Images"
                                         class="custom_upload_image">
-                                 
+
                                     <span *ngIf="(actionType === 'create' || actionType === 'edit')"
                                         class="text-center h6 font-weight-bold text-center w-100 m-0 pt-1 pb-0 px-2"
                                         (click)="removeImage('profilePicture', signUpFormValues['profilePicture'])">
@@ -160,14 +152,14 @@
                             touch
                             here
                             to upload Aadhar Card </button>
-                  
+
                         <ng-container *ngIf="signUpFormValues && signUpFormValues['identityProof']">
                             <div class="col-12 d-flex">
                                 <span class="mx-1 cursor-pointer border rounded px-1 pt-1 image_holder">
 
                                     <img [src]="signUpFormValues['identityProof'].tempURL" alt="Failed to load Images"
                                         class="custom_upload_image">
-                                
+
                                     <span *ngIf="(actionType === 'create' || actionType === 'edit')"
                                         class="text-center h6 font-weight-bold text-center w-100 m-0 pt-1 pb-0 px-2"
                                         (click)="removeImage('identityProof', signUpFormValues['identityProof'])"><i
@@ -252,7 +244,7 @@
                             <div *ngIf="constituency?.errors?.['required']">This field is required</div>
                         </div>
                     </div>
-                                          
+
                     <div class="col-12 col-md-6 my-1">
                         <label class="form-label" for="BloodGroup">Blood Group</label>
                         <ng-select [items]="metaData['BLOOD_GROUP']" name="bloodGroup" bindLabel="label"
@@ -265,7 +257,7 @@
                             <div *ngIf="bloodGroup?.errors?.['required']">This field is required</div>
                         </div>
                     </div>
-                   
+
 
                     <div class="col-12 col-md-6 my-1">
                         <label class="form-label" for="loginRole">Role</label>
@@ -278,14 +270,28 @@
                             <div *ngIf="role?.errors?.['required']">This field is required</div>
                         </div>
                     </div>
-                    <!-- <div class="col-12 text-center text-lg-start mt-4 pt-2">
-                        <button type="submit" class="btn btn-primary btn-lg"
-                            style="padding-left: 2.5rem; padding-right: 2.5rem;">Login</button>
-                    </div> -->
+
+
+                    <div class="col-12 col-md-6 my-1">
+                        <div class="form-check">
+                            <input type="checkbox" id="rootUser" name="rootUser" class="form-check-input"
+                                [(ngModel)]="signUpFormValues.rootUser" #rootUser="ngModel" [disabled]="disableFields"
+                                [ngClass]="{ 'is-invalid': signUpForm.submitted && rootUser.invalid }" />
+
+                            <label class="form-check-label" for="rootUser">
+                                Root User
+                            </label>
+
+                            <div *ngIf="signUpForm.submitted && rootUser.invalid" class="invalid-feedback d-block">
+                                This field is required
+                            </div>
+                        </div>
+                    </div>
                 </div>
+                
                 <div class="modal-footer col-12 row">
-                    <button type="button" class="btn btn-secondary col" data-bs-dismiss="modal" id="closeFormModalBtn">Close</button>
-                    <!-- <button type="button" class="btn btn-primary">Understood</button> -->
+                    <button type="button" class="btn btn-secondary col" data-bs-dismiss="modal"
+                        id="closeFormModalBtn">Close</button>
                     <button type="submit" class="btn btn-primary btn-lg col"
                         style="padding-left: 2.5rem; padding-right: 2.5rem;">
 
