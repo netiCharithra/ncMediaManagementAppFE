@@ -1,0 +1,14 @@
+[
+    {
+        "relation": [
+            "delegate_permission/common.handle_all_urls"
+        ],
+        "target": {
+            "namespace": "android_app",
+            "package_name": "com.ncmediauserapp",
+            "sha256_cert_fingerprints": [
+                "68:E3:16:B1:68:80:E6:0D:60:AA:ED:D0:0B:5E:7C:9A:90:81:50:A0:87:FD:95:9D:35:0A:CA:A3:BC:39:A3:33"
+            ]
+        }
+    }
+]
