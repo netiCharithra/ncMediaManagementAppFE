@@ -52,11 +52,20 @@
     <ul class="mobile-nav-list">
       <li><a routerLink="/home" (click)="toggleMenu()">{{ getString('home') }}</a></li>
       <li *ngFor="let category of NEWS_CATEGORIES_REGIONAL">
-        <a [routerLink]="['/category', category.label]" (click)="toggleMenu()">
+        <a [routerLink]="['/category', category.label]" routerLinkActive="active" (click)="toggleMenu()">
           {{ category[currentLanguage] || category.label }}
         </a>
       </li>
     </ul>
+
+    <!-- Added Branded Footer to Drawer -->
+    <div class="drawer-footer">
+      <span class="lang-label">{{ currentLanguage === 'te' ? 'భాషను మార్చండి' : 'Switch Language' }}</span>
+      <select (change)="switchLanguage($event)" class="language-select-mobile" [value]="currentLang$ | async">
+        <option value="te">తెలుగు</option>
+        <option value="en">English</option>
+      </select>
+    </div>
   </div>
   <div class="drawer-overlay" *ngIf="!isMenuCollapsed" (click)="toggleMenu()"></div>
 </nav>
