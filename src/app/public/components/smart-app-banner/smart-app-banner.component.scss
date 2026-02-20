@@ -106,21 +106,54 @@
         }
     }
 
-    .open-btn {
-        background: #dc3545; // Primary red
-        color: white;
-        border: none;
-        padding: 8px 20px;
-        border-radius: 20px;
-        font-size: 13px;
-        font-weight: 700;
-        cursor: pointer;
-        flex-shrink: 0;
-        transition: all 0.2s;
+    .actions {
+        display: flex;
+        align-items: center;
 
-        &:active {
-            background: #bd2130;
-            transform: scale(0.95);
+        .open-btn {
+            background: #dc3545; // Primary red
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            flex-shrink: 0;
+            transition: all 0.2s;
+
+            &:active {
+                background: #bd2130;
+                transform: scale(0.95);
+            }
+        }
+
+        .desktop-store-btns {
+            display: flex;
+            gap: 10px;
+
+            .store-link {
+                width: 34px;
+                height: 34px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background: #f0f0f0;
+                border-radius: 50%;
+                color: #333;
+                text-decoration: none;
+                transition: all 0.2s;
+
+                &:hover {
+                    background: #dc3545;
+                    color: white;
+                    transform: translateY(-2px);
+                }
+
+                i {
+                    font-size: 16px;
+                }
+            }
         }
     }
 }

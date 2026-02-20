@@ -13,7 +13,8 @@ export class SmartAppBannerComponent implements OnInit {
 
     isVisible = false;
     isDevMode = !environment.production;
-    platform: 'android' | 'ios' = 'android';
+    isDesktop = false;
+    platform: 'android' | 'ios' | 'desktop' = 'android';
 
     // Platform Specifics
     appTitle = 'Neti Charithra App';
@@ -39,16 +40,22 @@ export class SmartAppBannerComponent implements OnInit {
             this.platform = 'ios';
             this.appTitle = 'Neti Charithra iOS App';
             this.appSubtitle = 'Get it on App Store';
-            this.appId = '6443685250'; // TODO: Replace with actual App Store ID
-        } else {
+            this.appId = '6443685250';
+        } else if (isAndroid) {
             this.platform = 'android';
             this.appTitle = 'Neti Charithra Android App';
             this.appSubtitle = 'Get it on Google Play';
             this.appId = 'com.ncmediauserapp';
+        } else {
+            // Desktop or other
+            this.isDesktop = true;
+            this.platform = 'desktop';
+            this.appTitle = 'Neti Charithra App';
+            this.appSubtitle = 'Available on mobile';
         }
 
-        // Show on Android/iOS, NOT in WebView, and if not dismissed in last 24h
-        if (!environment.production || ((isAndroid || isIOS) && !isWebView && !isDismissed)) {
+        // Show on Android/iOS/Desktop (if not dismissed)
+        if (!environment.production || ((isAndroid || isIOS || this.isDesktop) && !isWebView && !isDismissed)) {
             // Small delay for smooth entry
             setTimeout(() => {
                 this.isVisible = true;

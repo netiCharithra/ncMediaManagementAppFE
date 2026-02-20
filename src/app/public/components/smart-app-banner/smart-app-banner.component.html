@@ -20,8 +20,23 @@
       </div>
     </div>
 
-    <button class="open-btn" (click)="openApp()">
-      OPEN
-    </button>
+    <div class="actions" [class.dual-actions]="isDesktop">
+      <ng-container *ngIf="!isDesktop; else desktopActions">
+        <button class="open-btn" (click)="openApp()">
+          OPEN
+        </button>
+      </ng-container>
+
+      <ng-template #desktopActions>
+        <div class="desktop-store-btns">
+          <a href="https://play.google.com/store/apps/details?id=com.ncmediauserapp" target="_blank" class="store-link">
+            <i class="fab fa-google-play"></i>
+          </a>
+          <a href="https://apps.apple.com/app/id6443685250" target="_blank" class="store-link">
+            <i class="fab fa-apple"></i>
+          </a>
+        </div>
+      </ng-template>
+    </div>
   </div>
 </div>
