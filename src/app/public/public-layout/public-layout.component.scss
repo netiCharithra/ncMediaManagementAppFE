@@ -6,11 +6,19 @@
 
   .main-content {
     flex: 1;
-    padding-top: 80px;
+    padding-top: 10px; // 80px + 44px
     transition: padding-top 0.4s ease;
+
+    @media (max-width: 992px) {
+      padding-top: 64px;
+    }
   }
 
   &.banner-visible .main-content {
-    padding-top: 140px; // 80px + 60px banner
+    padding-top: 140px; // 124px + 60px banner
+
+    @media (max-width: 992px) {
+      padding-top: 124px;
+    }
   }
 }

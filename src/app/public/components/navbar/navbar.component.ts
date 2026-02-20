@@ -15,6 +15,8 @@ export class NavbarComponent implements OnInit {
   currentLang$: Observable<'te' | 'en'>;
   currentLanguage = 'te';
   isBannerVisible = false;
+  today: Date = new Date();
+  private clockInterval: any;
 
   // Define all possible metadata properties
   public NEWS_CATEGORIES_REGIONAL: any[] = [];
@@ -31,8 +33,10 @@ export class NavbarComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // Set Telugu as default language
-    // this.languageService.setLanguage('te');
+    // Start Live Clock
+    this.clockInterval = setInterval(() => {
+      this.today = new Date();
+    }, 1000);
 
     // Subscribe to language changes
     this.currentLang$.subscribe(lang => {
@@ -46,6 +50,12 @@ export class NavbarComponent implements OnInit {
 
     const metaDataList = ['NEWS_CATEGORIES_REGIONAL'];
     this.getMetaData(metaDataList);
+  }
+
+  ngOnDestroy(): void {
+    if (this.clockInterval) {
+      clearInterval(this.clockInterval);
+    }
   }
 
   toggleMenu(): void {
