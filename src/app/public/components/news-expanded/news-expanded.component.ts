@@ -69,14 +69,14 @@ export class NewsExpandedComponent implements OnInit {
     const newsId = this.route.snapshot.paramMap.get('id');
     const language = this.route.snapshot.paramMap.get('language');
 
-    const id = this.route.snapshot.paramMap.get('id');
+    // const id = this.route.snapshot.paramMap.get('id');
 
-    if (this.isAndroid()) {
-      const intentUrl =
-        `intent://neticharithra.com/news/te/${id}#Intent;scheme=https;package=com.ncmediauserapp;end;`;
+    // if (this.isAndroid()) {
+    //   const intentUrl =
+    //     `intent://neticharithra.com/news/te/${id}#Intent;scheme=https;package=com.ncmediauserapp;end;`;
 
-      window.location.href = intentUrl;
-    }
+    //   window.location.href = intentUrl;
+    // }
 
     if (newsId && language) {
       this.fetchNews(newsId, language);
