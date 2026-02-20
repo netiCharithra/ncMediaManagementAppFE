@@ -1,0 +1,38 @@
+.category-page {
+    background: var(--bg-surface);
+    min-height: 80vh;
+    padding-top: 24px;
+
+    .featured-news {
+        max-width: 960px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .category-header {
+        h1 {
+            font-family: var(--font-heading);
+            color: var(--brand-slate);
+            margin-bottom: 12px;
+        }
+
+        .header-line {
+            width: 80px;
+            height: 4px;
+            background: var(--brand-primary);
+            border-radius: 2px;
+        }
+    }
+
+    .news-list-grid {
+        display: flex;
+        flex-direction: column;
+        gap: 32px;
+    }
+
+    @media (max-width: 768px) {
+        .category-header h1 {
+            font-size: 2.5rem;
+        }
+    }
+}

@@ -1,17 +1,38 @@
-<div class="news-card" (click)="navigateToFullNews()">
-  <div class="card-image">
-    <img [src]="news?.images?.[0]?.tempURL || news?.images?.[0]?.externalURL" alt="Failed to Load Image">
-    <span class="category-badge">{{news.newsType | titlecase}}</span>
+<div class="news-card" [class]="'variant-' + variant" (click)="navigateToFullNews()">
+  <div class="card-image" *ngIf="variant !== 'minimal'">
+    <img [src]="news?.images?.[0]?.tempURL || news?.images?.[0]?.externalURL" [alt]="news.title">
+    <span class="category-badge" *ngIf="variant === 'hero'">{{news.newsType | titlecase}}</span>
   </div>
+
   <div class="card-content">
+    <div class="top-meta" *ngIf="variant !== 'minimal'">
+      <span class="category">{{news.newsType}}</span>
+      <span class="dot" *ngIf="variant === 'horizontal'">•</span>
+      <span class="date" *ngIf="variant === 'horizontal'">{{news.createdDate | date:'mediumDate'}}</span>
+    </div>
+
     <h3 class="title">{{news.title}}</h3>
-    <p class="description">{{news.description}}</p>
-    <div class="metadata">
+
+    <p class="description" *ngIf="variant === 'hero' || variant === 'horizontal'">
+      {{news.description}}
+    </p>
+
+    <div class="metadata" *ngIf="variant !== 'horizontal'">
       <span class="date">{{news.createdDate | date:'mediumDate'}}</span>
       <div class="stats">
         <span class="views"><i class="fas fa-eye"></i> {{news.views}}</span>
         <span class="likes"><i class="fas fa-heart"></i> {{news.likes}}</span>
+        <button class="share-icon-btn" (click)="shareNews($event)" title="Share Article">
+          <i class="fas fa-share-alt"></i>
+        </button>
       </div>
+    </div>
+
+    <!-- Add share to horizontal as well -->
+    <div class="horizontal-share" *ngIf="variant === 'horizontal'">
+      <button class="share-icon-btn" (click)="shareNews($event)" title="Share Article">
+        <i class="fas fa-share-alt"></i>
+      </button>
     </div>
   </div>
 </div>

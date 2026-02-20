@@ -1,14 +1,17 @@
-@import "../../../styles/theme/theme";
-
 .public-layout {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background-color: $bg-light;
+  background-color: var(--bg-surface);
 
   .main-content {
     flex: 1;
-    padding: 2rem 0;
+    // We'll handle top padding in the components or a more controlled way
+    padding-top: 72px;
+    transition: padding-top 0.4s ease;
+  }
+
+  &.banner-visible .main-content {
+    padding-top: 132px;
   }
 }
-

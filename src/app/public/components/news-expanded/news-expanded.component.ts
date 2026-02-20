@@ -255,7 +255,6 @@ export class NewsExpandedComponent implements OnInit {
     if (navigator.share) {
       navigator.share({
         title: this.news.title,
-        text: this.news.description,
         url: window.location.href
       })
         .catch((error) => console.error('Error sharing:', error));
