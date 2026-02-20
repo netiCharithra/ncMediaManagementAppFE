@@ -35,7 +35,7 @@ export class NewsExpandedComponent implements OnInit {
   latestNews: any[] = [];
   loading = true;
   error: string | null = null;
-  
+
   // Skeleton loader states
   isLoadingContent = true;
   isLoadingRelatedNews = true;
@@ -62,13 +62,22 @@ export class NewsExpandedComponent implements OnInit {
     private newsService: NewsService,
     public languageService: LanguageService,
     private publicService: PublicService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     // Initial fetch
     const newsId = this.route.snapshot.paramMap.get('id');
     const language = this.route.snapshot.paramMap.get('language');
-    
+
+    const id = this.route.snapshot.paramMap.get('id');
+
+    if (this.isAndroid()) {
+      const intentUrl =
+        `intent://neticharithra.com/news/te/${id}#Intent;scheme=https;package=com.ncmediauserapp;end;`;
+
+      window.location.href = intentUrl;
+    }
+
     if (newsId && language) {
       this.fetchNews(newsId, language);
     }
@@ -77,19 +86,23 @@ export class NewsExpandedComponent implements OnInit {
     this.route.paramMap.subscribe(params => {
       const updatedNewsId = params.get('id');
       const updatedLanguage = params.get('language');
-      
-      if (updatedNewsId && updatedLanguage && 
-          (updatedNewsId !== newsId || updatedLanguage !== language)) {
+
+      if (updatedNewsId && updatedLanguage &&
+        (updatedNewsId !== newsId || updatedLanguage !== language)) {
         this.fetchNews(updatedNewsId, updatedLanguage);
       }
     });
   }
+  isAndroid(): boolean {
+    return /Android/i.test(navigator.userAgent);
+  }
+
 
   private fetchNews(id: string, language: string): void {
     this.loading = true;
     this.isLoadingContent = true;
     this.error = null;
-    
+
     const params = {
       newsId: id,
       language: language
@@ -122,7 +135,7 @@ export class NewsExpandedComponent implements OnInit {
   retryLoading(): void {
     const newsId = this.route.snapshot.paramMap.get('id');
     const language = this.route.snapshot.paramMap.get('language');
-    
+
     if (newsId && language) {
       this.fetchNews(newsId, language);
     }
@@ -156,7 +169,7 @@ export class NewsExpandedComponent implements OnInit {
 
   navigateImage(direction: number): void {
     if (this.selectedImageIndex === null || !this.news) return;
-    
+
     const newIndex = this.selectedImageIndex + direction;
     if (newIndex >= 0 && newIndex < this.news.images.length) {
       this.slideDirection = direction > 0 ? 'left' : 'right';
@@ -171,7 +184,7 @@ export class NewsExpandedComponent implements OnInit {
 
   startDrag(event: MouseEvent | TouchEvent): void {
     if (this.isImageZoomed) return;
-    
+
     this.isDragging = true;
     this.dragStartX = this.getEventX(event);
     this.currentDragX = 0;
@@ -184,7 +197,7 @@ export class NewsExpandedComponent implements OnInit {
 
     const currentX = this.getEventX(event);
     this.currentDragX = currentX - this.dragStartX;
-    
+
     // Calculate drag percentage relative to screen width
     const dragPercentage = (this.currentDragX / window.innerWidth) * 100;
     this.dragTransform = `translateX(${dragPercentage}%)`;
@@ -225,7 +238,7 @@ export class NewsExpandedComponent implements OnInit {
   handleKeyboardEvent(event: KeyboardEvent): void {
     if (this.selectedImageIndex === null) return;
 
-    switch(event.key) {
+    switch (event.key) {
       case 'Escape':
         if (this.isImageZoomed) {
           this.isImageZoomed = false;
@@ -253,7 +266,7 @@ export class NewsExpandedComponent implements OnInit {
         text: this.news.description,
         url: window.location.href
       })
-      .catch((error) => console.error('Error sharing:', error));
+        .catch((error) => console.error('Error sharing:', error));
     } else {
       // Fallback: Copy URL to clipboard
       const dummy = document.createElement('input');
