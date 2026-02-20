@@ -13,12 +13,12 @@
     <div class="navbar-collapse desktop-menu" [class.show]="!isMenuCollapsed">
       <ul class="navbar-nav me-auto">
         <li class="nav-item">
-          <a class="nav-link" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">{{
+          <a class="nav-link" routerLink="/home" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">{{
             getString('home') }}</a>
         </li>
         <li class="nav-item" *ngFor="let category of NEWS_CATEGORIES_REGIONAL">
-          <a class="nav-link" routerLink="category/{{category['label']}}" routerLinkActive="active">{{
-            category[currentLanguage] || category['label'] }}</a>
+          <a class="nav-link" [routerLink]="['/category', category.label]" routerLinkActive="active">{{
+            category[currentLanguage] || category.label }}</a>
         </li>
         <!-- <li class="nav-item">
           <a class="nav-link" routerLink="/international" routerLinkActive="active">{{ getString('international') }}</a>
@@ -49,7 +49,7 @@
         </div>
         <ul class="mobile-nav">
           <li class="nav-item">
-            <a class="nav-link" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"
+            <a class="nav-link" routerLink="/home" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"
               (click)="toggleMenu()">{{ getString('home') }}</a>
           </li>
           <li class="nav-item">

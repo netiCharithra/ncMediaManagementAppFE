@@ -6,12 +6,11 @@
 
   .main-content {
     flex: 1;
-    // We'll handle top padding in the components or a more controlled way
-    padding-top: 72px;
+    padding-top: 80px;
     transition: padding-top 0.4s ease;
   }
 
   &.banner-visible .main-content {
-    padding-top: 132px;
+    padding-top: 140px; // 80px + 60px banner
   }
 }
