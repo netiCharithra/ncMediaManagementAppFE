@@ -9,6 +9,11 @@
   left: 0;
   right: 0;
   z-index: $z-fixed;
+  transition: top 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+
+  &.banner-visible {
+    top: 60px;
+  }
 
   .navbar-brand {
     .logo {
@@ -25,7 +30,7 @@
     height: 40px;
     position: relative;
     background: transparent;
-    
+
     &:focus {
       box-shadow: none;
       outline: none;
@@ -115,7 +120,8 @@
       cursor: pointer;
       transition: $transition-base;
 
-      &:hover, &:focus {
+      &:hover,
+      &:focus {
         border-color: $primary-red;
         outline: none;
         box-shadow: $shadow-sm;
@@ -195,7 +201,9 @@
           }
 
           .close-icon {
-            &:before, &:after {
+
+            &:before,
+            &:after {
               content: '';
               position: absolute;
               width: 20px;
@@ -233,7 +241,8 @@
             text-decoration: none;
             transition: $transition-base;
 
-            &:hover, &.active {
+            &:hover,
+            &.active {
               color: $primary-red;
               background-color: rgba($primary-red, 0.1);
             }
@@ -256,7 +265,8 @@
           cursor: pointer;
           transition: $transition-base;
 
-          &:hover, &:focus {
+          &:hover,
+          &:focus {
             border-color: $primary-red;
             outline: none;
           }

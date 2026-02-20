@@ -17,6 +17,7 @@ import { CompactNewsCardComponent } from './components/compact-news-card/compact
 import { TypeComponent } from './components/type/type.component';
 import { CategoryComponent } from './components/category/category.component';
 import { EmployeeActiveTracingComponent } from './employee-active-tracing/employee-active-tracing.component';
+import { SmartAppBannerComponent } from './components/smart-app-banner/smart-app-banner.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,9 @@ import { EmployeeActiveTracingComponent } from './employee-active-tracing/employ
     LatestNewsComponent,
     CompactNewsCardComponent,
     TypeComponent,
-    CategoryComponent, EmployeeActiveTracingComponent
+    CategoryComponent,
+    EmployeeActiveTracingComponent,
+    SmartAppBannerComponent
   ],
   imports: [
     CommonModule,

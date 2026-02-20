@@ -35,6 +35,8 @@ export class NewsExpandedComponent implements OnInit {
   latestNews: any[] = [];
   loading = true;
   error: string | null = null;
+  newsId: string | null = null;
+  language: string | null = null;
 
   // Skeleton loader states
   isLoadingContent = true;
@@ -66,30 +68,20 @@ export class NewsExpandedComponent implements OnInit {
 
   ngOnInit(): void {
     // Initial fetch
-    const newsId = this.route.snapshot.paramMap.get('id');
-    const language = this.route.snapshot.paramMap.get('language');
+    this.newsId = this.route.snapshot.paramMap.get('id');
+    this.language = this.route.snapshot.paramMap.get('language');
 
-    // const id = this.route.snapshot.paramMap.get('id');
-
-    // if (this.isAndroid()) {
-    //   const intentUrl =
-    //     `intent://neticharithra.com/news/te/${id}#Intent;scheme=https;package=com.ncmediauserapp;end;`;
-
-    //   window.location.href = intentUrl;
-    // }
-
-    if (newsId && language) {
-      this.fetchNews(newsId, language);
+    if (this.newsId && this.language) {
+      this.fetchNews(this.newsId, this.language);
     }
 
     // Subscribe to route parameter changes
     this.route.paramMap.subscribe(params => {
-      const updatedNewsId = params.get('id');
-      const updatedLanguage = params.get('language');
+      this.newsId = params.get('id');
+      this.language = params.get('language');
 
-      if (updatedNewsId && updatedLanguage &&
-        (updatedNewsId !== newsId || updatedLanguage !== language)) {
-        this.fetchNews(updatedNewsId, updatedLanguage);
+      if (this.newsId && this.language) {
+        this.fetchNews(this.newsId, this.language);
       }
     });
   }

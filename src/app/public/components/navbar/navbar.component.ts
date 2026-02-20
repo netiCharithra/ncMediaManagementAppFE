@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { LanguageService } from '../../../services/language.service';
+import { BannerService } from '../../../services/banner.service';
 import { Observable, map } from 'rxjs';
 import { PublicService } from '../../services/public.service';
 
@@ -13,11 +14,16 @@ export class NavbarComponent implements OnInit {
   logoPath$: Observable<string>;
   currentLang$: Observable<'te' | 'en'>;
   currentLanguage = 'te';
-  
+  isBannerVisible = false;
+
   // Define all possible metadata properties
   public NEWS_CATEGORIES_REGIONAL: any[] = [];
 
-  constructor(private languageService: LanguageService, private publicService: PublicService) {
+  constructor(
+    private languageService: LanguageService,
+    private publicService: PublicService,
+    private bannerService: BannerService
+  ) {
     this.currentLang$ = this.languageService.currentLang$;
     this.logoPath$ = this.currentLang$.pipe(
       map(lang => `assets/images/branding/${lang}.png`)
@@ -32,6 +38,10 @@ export class NavbarComponent implements OnInit {
     this.currentLang$.subscribe(lang => {
       this.currentLanguage = lang;
       console.log('Current Language:', this.currentLanguage);
+    });
+
+    this.bannerService.bannerVisible$.subscribe(visible => {
+      this.isBannerVisible = visible;
     });
 
     const metaDataList = ['NEWS_CATEGORIES_REGIONAL'];
@@ -54,7 +64,7 @@ export class NavbarComponent implements OnInit {
 
   getMetaData(list: string[]): void {
     type MetaDataKey = 'NEWS_CATEGORIES_REGIONAL';
-    
+
     this.publicService.getMetaData({ metaList: list })
       .subscribe(response => {
         list.forEach((key: string) => {

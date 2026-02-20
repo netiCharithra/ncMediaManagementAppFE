@@ -1,0 +1,27 @@
+<div class="smart-banner" [class.show]="isVisible" [class.dev-mode]="isDevMode" *ngIf="isVisible">
+  <div class="banner-content">
+    <button class="close-btn" (click)="dismiss()" aria-label="Close banner">
+      <i class="close-icon">✕</i>
+    </button>
+
+    <div class="app-info">
+      <div class="app-logo">
+        <img src="assets/images/logos/fullLogo.png" [alt]="appTitle"
+          onerror="this.src='https://via.placeholder.com/40'">
+      </div>
+      <div class="app-text">
+        <div class="title-row">
+          <span class="app-title">{{appTitle}}</span>
+        </div>
+        <div class="subtitle-row">
+          <i class="fab" [class.fa-google-play]="platform === 'android'" [class.fa-apple]="platform === 'ios'"></i>
+          <span class="app-subtitle">{{appSubtitle}}</span>
+        </div>
+      </div>
+    </div>
+
+    <button class="open-btn" (click)="openApp()">
+      OPEN
+    </button>
+  </div>
+</div>
