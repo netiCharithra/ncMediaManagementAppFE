@@ -10,6 +10,10 @@ import { NewsExpandedComponent } from './components/news-expanded/news-expanded.
 import { TypeComponent } from './components/type/type.component';
 import { CategoryComponent } from './components/category/category.component';
 import { EmployeeActiveTracingComponent } from './employee-active-tracing/employee-active-tracing.component';
+import { GrievanceComponent } from './components/grievance/grievance.component';
+import { GrievanceTrackComponent } from './components/grievance-track/grievance-track.component';
+import { GrievanceAdminComponent } from './components/grievance-admin/grievance-admin.component';
+import { GrievanceReportsComponent } from './components/grievance-reports/grievance-reports.component';
 
 const routes: Routes = [
   {
@@ -28,9 +32,29 @@ const routes: Routes = [
       {
         path: 'news/:language/:id',
         component: NewsExpandedComponent
-      }
+      },
     ]
   },
+  {
+    path: 'grievance',
+    component: GrievanceComponent
+  },
+  {
+    path: 'grievance/admin',
+    component: GrievanceAdminComponent
+  },
+  {
+    path: 'grievance/compliance-reports',
+    component: GrievanceReportsComponent
+  },
+  {
+    path: 'grievance/track',
+    component: GrievanceTrackComponent
+  },
+  {
+    path: 'grievance/:ticketId/track',
+    component: GrievanceTrackComponent
+  }
 ];
 
 @NgModule({

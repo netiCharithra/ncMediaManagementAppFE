@@ -10,7 +10,7 @@ export class AdminHttpService {
   private baseUrl = environment.BE_BASE_URL;
   private adminApiPath = '/admin'; // Admin-specific API path prefix
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   /**
    * Generic GET request method for admin endpoints
@@ -21,11 +21,11 @@ export class AdminHttpService {
    */
   get(endpoint: string, params?: any, headers?: HttpHeaders): Observable<any> {
     const options: any = {};
-    
+
     if (params) {
       options.params = new HttpParams({ fromObject: params });
     }
-    
+
     if (headers) {
       options.headers = headers;
     } else {
@@ -34,7 +34,7 @@ export class AdminHttpService {
     }
 
     const fullEndpoint = `${this.adminApiPath}${endpoint}`;
-    
+
     return this.http.get(`${this.baseUrl}${fullEndpoint}`, options).pipe(
       map((response: any) => {
         if (response && response.status === 'success') {
@@ -60,7 +60,7 @@ export class AdminHttpService {
    */
   post(endpoint: string, body: any = {}, headers?: HttpHeaders): Observable<any> {
     const options: any = {};
-    
+
     if (headers) {
       options.headers = headers;
     } else {
@@ -95,7 +95,7 @@ export class AdminHttpService {
    */
   put(endpoint: string, body: any = {}, headers?: HttpHeaders): Observable<any> {
     const options: any = {};
-    
+
     if (headers) {
       options.headers = headers;
     } else {
@@ -129,11 +129,10 @@ export class AdminHttpService {
    */
   delete(endpoint: string, headers?: HttpHeaders): Observable<any> {
     const options: any = {};
-    
+
     if (headers) {
       options.headers = headers;
     } else {
-      // Set default headers for admin requests
       options.headers = this.getDefaultHeaders();
     }
 
@@ -156,19 +155,49 @@ export class AdminHttpService {
   }
 
   /**
+   * Generic PATCH request method for admin endpoints
+   */
+  patch(endpoint: string, body: any = {}, headers?: HttpHeaders): Observable<any> {
+    const options: any = {};
+
+    if (headers) {
+      options.headers = headers;
+    } else {
+      options.headers = this.getDefaultHeaders();
+    }
+
+    const fullEndpoint = `${this.adminApiPath}${endpoint}`;
+
+    return this.http.patch(`${this.baseUrl}${fullEndpoint}`, body, options).pipe(
+      map((response: any) => {
+        if (response && response.status === 'success') {
+          return response.data;
+        } else {
+          console.error('Admin API Error:', response.message || 'Operation failed');
+          return throwError(() => new Error(response.message || 'Operation failed'));
+        }
+      }),
+      catchError(error => {
+        console.error('Admin API Error:', error.message || 'Operation failed');
+        return throwError(() => error);
+      })
+    );
+  }
+
+  /**
    * Get default headers for admin API requests
    * This can include auth tokens, content type, etc.
    */
   private getDefaultHeaders(): HttpHeaders {
     let headers = new HttpHeaders();
     headers = headers.set('Content-Type', 'application/json');
-    
+
     // Get auth token from localStorage or other storage mechanism
     const authToken = localStorage.getItem('admin_auth_token');
     if (authToken) {
       headers = headers.set('Authorization', `Bearer ${authToken}`);
     }
-    
+
     return headers;
   }
 

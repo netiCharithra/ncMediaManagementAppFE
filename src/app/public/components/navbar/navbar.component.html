@@ -14,7 +14,11 @@
         </a>
 
         <div class="masthead-actions">
-          <select (change)="switchLanguage($event)" class="language-select-minimal" [value]="currentLang$ | async">
+          <a routerLink="/grievance" routerLinkActive="active" class="grievance-btn-masthead d-none d-lg-flex">
+            <i class="fa-solid fa-shield-halved me-1"></i>
+            {{ getString('grievance') }}
+          </a>
+          <select (change)='switchLanguage($event)' class='language-select-minimal' [value]='currentLang$ | async'>
             <option value="te">తెలుగు</option>
             <option value="en">English</option>
           </select>
@@ -55,6 +59,9 @@
         <a [routerLink]="['/category', category.label]" routerLinkActive="active" (click)="toggleMenu()">
           {{ category[currentLanguage] || category.label }}
         </a>
+      </li>
+      <li>
+        <a routerLink="/grievance" routerLinkActive="active" (click)="toggleMenu()">{{ getString('grievance') }}</a>
       </li>
     </ul>
 

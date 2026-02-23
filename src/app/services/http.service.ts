@@ -38,11 +38,11 @@ export class HttpService {
    */
   get(endpoint: string, params?: any, headers?: HttpHeaders): Observable<any> {
     const options: any = {};
-    
+
     if (params) {
       options.params = new HttpParams({ fromObject: params });
     }
-    
+
     if (headers) {
       options.headers = headers;
     }
@@ -91,10 +91,10 @@ export class HttpService {
     if (headers) {
       options.headers = headers;
     }
-  
+
     // Get visitorId (sync) and location (async)
     const visitorId = this.visitorsService.getOrCreateVisitorId();
-  
+
     return from(this.locationService.getLocation()).pipe(
       switchMap((location) => {
         console.log("location", location)
@@ -105,7 +105,7 @@ export class HttpService {
           location: location ? [location.lat, location.lon] : null,
           requestTime: new Date().getTime(),
         };
-  
+
         if (loggedUserDetails) {
           bodyWithLanguage = {
             ...this.storage.getStoredUser(),
@@ -113,14 +113,17 @@ export class HttpService {
           };
         }
 
-        console.log("dontChangeBody", formData )
-  
+        console.log("dontChangeBody", formData)
+
         return this.http.post(`${baseApiUrl || this.baseUrl}${endpoint}`, formData || bodyWithLanguage, options).pipe(
           map((response: any) => {
-            if (response?.status === 'success') {
-              return returnEntireResponse ? response : response.data;
+            // Handle both wrapped {status, data} and flat objects
+            const isSuccess = response?.status === 'success' || (response && !response.status);
+
+            if (isSuccess) {
+              return returnEntireResponse ? response : (response.data || response);
             } else {
-              const errorMsg = response?.msg || response.message || 'Operation failed';
+              const errorMsg = response?.msg || response?.message || 'Operation failed';
               console.error('API Error:', errorMsg);
               this.messageService.showError(errorMsg);
               return null;
@@ -136,7 +139,7 @@ export class HttpService {
       })
     );
   }
-  
+
 
   /**
    * Generic PUT request method
@@ -147,7 +150,7 @@ export class HttpService {
    */
   put(endpoint: string, body: any = {}, headers?: HttpHeaders): Observable<any> {
     const options: any = {};
-    
+
     if (headers) {
       options.headers = headers;
     }
@@ -183,7 +186,7 @@ export class HttpService {
    */
   delete(endpoint: string, headers?: HttpHeaders): Observable<any> {
     const options: any = {};
-    
+
     if (headers) {
       options.headers = headers;
     }
@@ -197,6 +200,42 @@ export class HttpService {
           return response;
         } else {
           console.error('API Error:', response.message || 'Operation failed');
+          throw new Error(response.message || 'Operation failed');
+        }
+      }),
+      catchError(error => {
+        console.error('API Error:', error.message || 'Operation failed');
+        throw error;
+      })
+    );
+  }
+
+  /**
+   * Generic PATCH request method
+   * @param endpoint - API endpoint
+   * @param body - Request body
+   * @param headers - Optional custom headers
+   * @returns Observable of type any
+   */
+  patch(endpoint: string, body: any = {}, headers?: HttpHeaders): Observable<any> {
+    const options: any = {};
+
+    if (headers) {
+      options.headers = headers;
+    }
+
+    const bodyWithLanguage = {
+      ...body,
+      language: this.selectedLanguage,
+    };
+
+    return this.http.patch(`${this.baseUrl}${endpoint}`, bodyWithLanguage, options).pipe(
+      map((response: any) => {
+        if (response && response.status === 'success') {
+          return response.data ?? response;
+        } else {
+          console.error('API Error:', response.message || 'Operation failed');
+          this.messageService.showError(response.message || 'Operation failed');
           throw new Error(response.message || 'Operation failed');
         }
       }),

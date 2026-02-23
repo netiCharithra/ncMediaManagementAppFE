@@ -133,6 +133,40 @@
     }
   }
 
+  .grievance-btn-masthead {
+    text-decoration: none;
+    font-family: var(--font-ui);
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--brand-primary);
+    background: white;
+    border: 1.5px solid var(--brand-primary);
+    padding: 6px 14px;
+    border-radius: 100px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+
+    i {
+      font-size: 0.85rem;
+    }
+
+    &:hover {
+      background: var(--brand-primary);
+      color: white;
+      box-shadow: 0 4px 8px rgba(211, 47, 47, 0.2);
+    }
+
+    &.active {
+      background: var(--brand-primary);
+      color: white;
+      border-color: var(--brand-primary);
+    }
+  }
+
   .language-select-minimal {
     border: 1px solid var(--border-light);
     background: white;

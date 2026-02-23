@@ -1,0 +1,415 @@
+<div class="grievance-page">
+
+    <!-- ────────── Quick Nav ────────── -->
+    <div class="quick-nav">
+        <div class="container d-flex justify-content-between align-items-center">
+            <div class="d-flex gap-2">
+                <button class="nav-btn back-btn" (click)="goBack()">
+                    <i class="fa-solid fa-arrow-left"></i>
+                    <span>Back</span>
+                </button>
+                <button class="nav-btn home-btn" (click)="goHome()">
+                    <i class="fa-solid fa-house"></i>
+                    <span>Home</span>
+                </button>
+            </div>
+            <a routerLink="/grievance/track" class="nav-btn track-btn" id="nav-track-complaint-btn">
+                <i class="fa-solid fa-radar"></i>
+                <span>Track Complaint</span>
+            </a>
+            <a routerLink="/grievance/compliance-reports" class="nav-btn" id="nav-reports-btn">
+                <i class="fa-solid fa-chart-column"></i>
+                <span>Compliance Reports</span>
+            </a>
+            <a routerLink="/grievance/admin" class="nav-btn admin-btn" id="nav-admin-dashboard-btn">
+                <i class="fa-solid fa-shield-halved"></i>
+                <span>Officer Portal</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- ────────── Page Hero Header ────────── -->
+    <div class="page-hero">
+        <div class="container">
+            <div class="hero-badge">
+                <i class="fa-solid fa-shield-halved"></i>
+                IT Rules, 2021
+            </div>
+            <h1 class="hero-title">Grievance Redressal</h1>
+            <p class="hero-subtitle">
+                We are committed to a transparent and timely resolution of all content-related grievances.
+                Submit your complaint and receive a unique tracking reference within seconds.
+            </p>
+            <div class="hero-track-cta">
+                <span class="hero-track-label">Already filed a complaint?</span>
+                <a routerLink="/grievance/track" class="hero-track-link" id="hero-track-complaint-btn">
+                    <i class="fa-solid fa-radar"></i> Track Your Complaint
+                    <i class="fa-solid fa-arrow-right cta-arrow"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ────────── Main Body ────────── -->
+    <div class="container main-body">
+        <div class="layout-grid">
+
+            <!-- ═══ LEFT COLUMN: Officers Info + Compliance ═══ -->
+            <aside class="sidebar">
+
+                <!-- ── Grievance Officers Panel ── -->
+                <div class="officers-panel">
+
+                    <div class="officers-panel__header">
+                        <i class="fa-solid fa-certificate"></i>
+                        <span>Grievance Officers</span>
+                    </div>
+
+                    <!-- Officer 1 -->
+                    <div class="officer-mini-card">
+                        <div class="officer-mini-avatar">
+                            <i class="fa-solid fa-user-tie"></i>
+                        </div>
+                        <div class="officer-mini-info">
+                            <span class="officer-mini-name">Sri Shaik Mohammad Muzmil</span>
+                            <span class="officer-mini-role">Chief Editor &amp; Compliance Officer</span>
+                        </div>
+                    </div>
+
+                    <div class="officers-divider">
+                        <span>&amp;</span>
+                    </div>
+
+                    <!-- Officer 2 -->
+                    <div class="officer-mini-card">
+                        <div class="officer-mini-avatar">
+                            <i class="fa-solid fa-user-tie"></i>
+                        </div>
+                        <div class="officer-mini-info">
+                            <span class="officer-mini-name">Badvel Shaik Mohammad Thousif</span>
+                            <span class="officer-mini-role">Incharge Director</span>
+                        </div>
+                    </div>
+
+                    <!-- Shared Contact Strip -->
+                    <div class="shared-contact-strip">
+                        <a href="mailto:grievance@neticharithra.com" class="contact-item">
+                            <span class="contact-icon"><i class="fa-solid fa-envelope"></i></span>
+                            <div>
+                                <span class="contact-label">Shared Email</span>
+                                <span class="contact-value">grievance&#64;neticharithra.com</span>
+                            </div>
+                        </a>
+                        <div class="contact-item">
+                            <span class="contact-icon"><i class="fa-solid fa-clock"></i></span>
+                            <div>
+                                <span class="contact-label">Response Time</span>
+                                <span class="contact-value">Within 15 working days</span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Compliance Notice -->
+                <div class="compliance-notice">
+                    <div class="compliance-icon">
+                        <i class="fa-solid fa-scale-balanced"></i>
+                    </div>
+                    <p class="compliance-text">
+                        This grievance portal is maintained in accordance with
+                        <strong>Rule 11</strong> of the Information Technology
+                        (Intermediary Guidelines and Digital Media Ethics Code)
+                        Rules, 2021.
+                    </p>
+                </div>
+
+                <!-- What to Expect -->
+                <div class="steps-card">
+                    <h3 class="steps-title">What happens next?</h3>
+                    <ul class="steps-list">
+                        <li>
+                            <span class="step-num">1</span>
+                            <span>Your complaint is logged with a unique reference ID.</span>
+                        </li>
+                        <li>
+                            <span class="step-num">2</span>
+                            <span>Our team reviews the content within 72 hours.</span>
+                        </li>
+                        <li>
+                            <span class="step-num">3</span>
+                            <span>Resolution communicated within 15 working days.</span>
+                        </li>
+                    </ul>
+                </div>
+
+            </aside>
+
+            <!-- ═══ RIGHT COLUMN: Form / Success State ═══ -->
+            <main class="form-column">
+
+                <!-- ───── SUCCESS STATE ───── -->
+                <div class="success-panel" *ngIf="submissionSuccess">
+                    <div class="success-icon-wrap">
+                        <i class="fa-solid fa-circle-check"></i>
+                    </div>
+                    <h2 class="success-title">Grievance Submitted!</h2>
+                    <p class="success-body">
+                        Your complaint has been received and logged. Please save your reference ID for tracking.
+                    </p>
+                    <div class="ref-id-box">
+                        <span class="ref-label">Your Reference ID</span>
+                        <span class="ref-value">{{ referenceId }}</span>
+                        <button class="copy-btn" (click)="copyRefId()" title="Copy to clipboard">
+                            <i class="fa-regular fa-copy"></i>
+                        </button>
+                    </div>
+                    <p class="success-note">
+                        <i class="fa-solid fa-info-circle"></i>
+                        A confirmation will be sent to <strong>{{ grievanceForm.get('complainantEmail')?.value
+                            }}</strong>
+                        within 24 hours.
+                    </p>
+                    <div class="success-actions">
+                        <a class="btn-track" [routerLink]="['/grievance', referenceId, 'track']" id="go-to-track-btn">
+                            <i class="fa-solid fa-radar"></i> Track Your Complaint
+                        </a>
+                        <button class="btn-reset" (click)="resetForm()">
+                            <i class="fa-solid fa-arrow-rotate-left"></i> Submit another
+                        </button>
+                    </div>
+                </div>
+
+                <!-- ───── FORM STATE ───── -->
+                <div class="form-panel" *ngIf="!submissionSuccess">
+
+                    <div class="form-header">
+                        <h2 class="form-title">File a Grievance</h2>
+                        <p class="form-subtitle">
+                            All fields marked <span class="required-star">*</span> are required.
+                            Your information is kept strictly confidential.
+                        </p>
+                    </div>
+
+                    <!-- Global error banner -->
+                    <div class="error-banner" *ngIf="serverError" role="alert">
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+                        <span>{{ serverError }}</span>
+                        <button class="close-btn" (click)="serverError = null" aria-label="Dismiss">
+                            <i class="fa-solid fa-xmark"></i>
+                        </button>
+                    </div>
+
+                    <form [formGroup]="grievanceForm" (ngSubmit)="onSubmit()" novalidate id="grievance-form"
+                        class="grievance-form">
+
+                        <!-- ── Section 1: Complainant Details ── -->
+                        <fieldset class="form-section">
+                            <legend class="section-legend">
+                                <i class="fa-regular fa-circle-user"></i> Complainant Details
+                            </legend>
+
+                            <div class="input-row two-col">
+                                <!-- Full Name -->
+                                <div class="form-field" [class.has-error]="isInvalid('complainantName')">
+                                    <label for="complainantName">Full Name <span class="required-star">*</span></label>
+                                    <div class="input-wrap">
+                                        <i class="fa-solid fa-user input-icon"></i>
+                                        <input id="complainantName" type="text" formControlName="complainantName"
+                                            placeholder="e.g. Ravi Kumar" autocomplete="name" />
+                                    </div>
+                                    <span class="field-error" *ngIf="isInvalid('complainantName')">
+                                        Full name is required.
+                                    </span>
+                                </div>
+
+                                <!-- Email -->
+                                <div class="form-field" [class.has-error]="isInvalid('complainantEmail')">
+                                    <label for="complainantEmail">Email Address <span
+                                            class="required-star">*</span></label>
+                                    <div class="input-wrap">
+                                        <i class="fa-solid fa-envelope input-icon"></i>
+                                        <input id="complainantEmail" type="email" formControlName="complainantEmail"
+                                            placeholder="you@example.com" autocomplete="email" />
+                                    </div>
+                                    <span class="field-error"
+                                        *ngIf="isInvalid('complainantEmail') && grievanceForm.get('complainantEmail')?.errors?.['required']">
+                                        Email is required.
+                                    </span>
+                                    <span class="field-error"
+                                        *ngIf="isInvalid('complainantEmail') && grievanceForm.get('complainantEmail')?.errors?.['email']">
+                                        Please enter a valid email address.
+                                    </span>
+                                </div>
+                            </div>
+
+                            <!-- Phone (optional) -->
+                            <div class="form-field" [class.has-error]="isInvalid('complainantPhone')">
+                                <label for="complainantPhone">Phone Number <span
+                                        class="optional-tag">(optional)</span></label>
+                                <div class="input-wrap">
+                                    <i class="fa-solid fa-phone input-icon"></i>
+                                    <input id="complainantPhone" type="tel" formControlName="complainantPhone"
+                                        placeholder="+91 98765 43210" autocomplete="tel" />
+                                </div>
+                            </div>
+                        </fieldset>
+
+                        <!-- ── Section 2: Grievance Details ── -->
+                        <fieldset class="form-section">
+                            <legend class="section-legend">
+                                <i class="fa-solid fa-flag"></i> Grievance Details
+                            </legend>
+
+                            <!-- Category -->
+                            <div class="form-field" [class.has-error]="isInvalid('grievanceCategory')">
+                                <label for="grievanceCategory">Grievance Category <span
+                                        class="required-star">*</span></label>
+                                <div class="input-wrap select-wrap">
+                                    <i class="fa-solid fa-list input-icon"></i>
+                                    <select id="grievanceCategory" formControlName="grievanceCategory">
+                                        <option value="" disabled>Select a category...</option>
+                                        <option value="MISINFORMATION">Misinformation</option>
+                                        <option value="PRIVACY_VIOLATION">Privacy Violation</option>
+                                        <option value="DEFAMATION">Defamation</option>
+                                        <option value="HATE_SPEECH">Hate Speech</option>
+                                        <option value="COPYRIGHT_INFRINGEMENT">Copyright Infringement</option>
+                                        <option value="HARASSMENT">Harassment</option>
+                                        <option value="FAKE_NEWS">Fake News</option>
+                                        <option value="OTHER">Other</option>
+                                    </select>
+                                    <i class="fa-solid fa-chevron-down select-arrow"></i>
+                                </div>
+                                <span class="field-error" *ngIf="isInvalid('grievanceCategory')">
+                                    Please select a category.
+                                </span>
+                            </div>
+
+                            <!-- Content URL -->
+                            <div class="form-field" [class.has-error]="isInvalid('contentUrl')">
+                                <label for="contentUrl">
+                                    URL of the Content in Question <span class="required-star">*</span>
+                                </label>
+                                <div class="input-wrap">
+                                    <i class="fa-solid fa-link input-icon"></i>
+                                    <input id="contentUrl" type="url" formControlName="contentUrl"
+                                        placeholder="https://neticharithra.com/news/..." />
+                                </div>
+                                <span class="field-error"
+                                    *ngIf="isInvalid('contentUrl') && grievanceForm.get('contentUrl')?.errors?.['required']">
+                                    Content URL is required.
+                                </span>
+                                <span class="field-error"
+                                    *ngIf="isInvalid('contentUrl') && grievanceForm.get('contentUrl')?.errors?.['invalidUrl']">
+                                    Please enter a valid URL (must start with http:// or https://).
+                                </span>
+                            </div>
+
+                            <!-- Description -->
+                            <div class="form-field" [class.has-error]="isInvalid('description')">
+                                <label for="description">
+                                    Description of Grievance <span class="required-star">*</span>
+                                </label>
+                                <textarea id="description" formControlName="description" rows="5"
+                                    placeholder="Please describe the issue clearly, including why you believe the content violates guidelines..."></textarea>
+                                <div class="field-footer">
+                                    <span class="field-error" *ngIf="isInvalid('description')">
+                                        A description is required (min. 20 characters).
+                                    </span>
+                                    <span class="char-count" [class.over-limit]="description.length > 2000">
+                                        {{ description.length }} / 2000
+                                    </span>
+                                </div>
+                            </div>
+                        </fieldset>
+
+                        <!-- ── Section 3: Supporting Evidence ── -->
+                        <fieldset class="form-section">
+                            <legend class="section-legend">
+                                <i class="fa-solid fa-paperclip"></i> Supporting Evidence
+                                <span class="optional-tag">(optional)</span>
+                            </legend>
+
+                            <div class="upload-area" [class.drag-over]="isDragOver" (dragover)="onDragOver($event)"
+                                (dragleave)="isDragOver = false" (drop)="onDrop($event)" (click)="fileInput.click()"
+                                role="button" tabindex="0" (keydown.enter)="fileInput.click()"
+                                aria-label="Click or drag to upload files">
+                                <input #fileInput type="file" id="evidenceFile"
+                                    accept="image/png,image/jpeg,image/gif,application/pdf" multiple
+                                    (change)="onFileSelected($event)" style="display: none;" />
+                                <div class="upload-icon">
+                                    <i class="fa-solid fa-cloud-arrow-up"></i>
+                                </div>
+                                <p class="upload-primary">
+                                    <strong>Click to upload</strong> or drag &amp; drop
+                                </p>
+                                <p class="upload-secondary">PNG, JPG, GIF, PDF · Max 5 MB per file · Up to 3 files</p>
+                            </div>
+
+                            <!-- Selected files list -->
+                            <ul class="file-list" *ngIf="selectedFiles.length > 0">
+                                <li class="file-item" *ngFor="let f of selectedFiles; let i = index">
+                                    <i class="fa-regular {{ getFileIcon(f.name) }}"></i>
+                                    <div class="file-info">
+                                        <span class="file-name">{{ f.name }}</span>
+                                        <span class="file-size">{{ formatFileSize(f.size) }}</span>
+                                    </div>
+                                    <button type="button" class="remove-file-btn" (click)="removeFile(i)"
+                                        aria-label="Remove file">
+                                        <i class="fa-solid fa-xmark"></i>
+                                    </button>
+                                </li>
+                            </ul>
+
+                            <p class="file-error" *ngIf="fileError">
+                                <i class="fa-solid fa-triangle-exclamation"></i> {{ fileError }}
+                            </p>
+                        </fieldset>
+
+                        <!-- Declaration + Submit -->
+                        <div class="submit-section">
+                            <label class="declaration-check">
+                                <input type="checkbox" formControlName="declaration" id="declaration" />
+                                <span class="checkbox-box"></span>
+                                <span class="declaration-text">
+                                    I declare that the information provided is true and accurate to the best of my
+                                    knowledge,
+                                    and I am submitting this grievance in good faith.
+                                </span>
+                            </label>
+                            <span class="field-error" *ngIf="isInvalid('declaration')">
+                                You must accept the declaration to proceed.
+                            </span>
+
+                            <button type="submit" id="submit-grievance-btn" class="btn-submit"
+                                [disabled]="isSubmitting">
+                                <span *ngIf="!isSubmitting">
+                                    <i class="fa-solid fa-paper-plane"></i> Submit Grievance
+                                </span>
+                                <span *ngIf="isSubmitting" class="spinner-wrap">
+                                    <span class="submit-spinner"></span> Submitting...
+                                </span>
+                            </button>
+                        </div>
+
+                    </form>
+                </div>
+
+            </main>
+        </div>
+    </div>
+
+    <!-- ────────── Compliance Footer ────────── -->
+    <footer class="compliance-footer">
+        <div class="container">
+            <i class="fa-solid fa-scale-balanced footer-icon"></i>
+            <p>
+                This grievance portal is maintained in accordance with <strong>Rule 11</strong> of the
+                Information Technology (Intermediary Guidelines and Digital Media Ethics Code) Rules, 2021.
+                Neti Charithra Media Pvt. Ltd. is committed to ensuring freedom of speech and expression whilst
+                maintaining the lawful obligations of a digital media intermediary.
+            </p>
+        </div>
+    </footer>
+
+</div>

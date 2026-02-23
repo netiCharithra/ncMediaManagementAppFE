@@ -1,4 +1,4 @@
-export type StringKey = 
+export type StringKey =
   | 'home'
   | 'regional'
   | 'international'
@@ -75,4 +75,5 @@ export type StringKey =
   | 'dashboard'
   | 'userInfo'
   | 'logout'
-  | 'employeeTracing';
+  | 'employeeTracing'
+  | 'grievance';

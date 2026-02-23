@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { ReactiveFormsModule } from '@angular/forms';
 import { NgbCarouselModule, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { PublicRoutingModule } from './public-routing.module';
@@ -18,6 +19,10 @@ import { TypeComponent } from './components/type/type.component';
 import { CategoryComponent } from './components/category/category.component';
 import { EmployeeActiveTracingComponent } from './employee-active-tracing/employee-active-tracing.component';
 import { SmartAppBannerComponent } from './components/smart-app-banner/smart-app-banner.component';
+import { GrievanceComponent } from './components/grievance/grievance.component';
+import { GrievanceTrackComponent } from './components/grievance-track/grievance-track.component';
+import { GrievanceAdminComponent } from './components/grievance-admin/grievance-admin.component';
+import { GrievanceReportsComponent } from './components/grievance-reports/grievance-reports.component';
 
 @NgModule({
   declarations: [
@@ -34,14 +39,22 @@ import { SmartAppBannerComponent } from './components/smart-app-banner/smart-app
     TypeComponent,
     CategoryComponent,
     EmployeeActiveTracingComponent,
-    SmartAppBannerComponent
+    SmartAppBannerComponent,
+    GrievanceComponent,
+    GrievanceTrackComponent,
+    GrievanceAdminComponent,
+    GrievanceReportsComponent
   ],
   imports: [
     CommonModule,
     RouterModule,
     PublicRoutingModule,
+    ReactiveFormsModule,
     NgbModule,
     NgbCarouselModule
+  ],
+  providers: [
+    DatePipe
   ],
   exports: [
     PublicLayoutComponent

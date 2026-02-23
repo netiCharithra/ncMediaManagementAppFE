@@ -1,0 +1,558 @@
+<div class="op-page">
+
+    <!-- ══════════════════════════════════════════════════════════════════════
+       LOGIN GATE  (shown when not authenticated)
+  ═══════════════════════════════════════════════════════════════════════ -->
+    <div class="login-gate" *ngIf="!isAuthenticated">
+
+        <div class="login-bg">
+            <div class="login-blob login-blob--1"></div>
+            <div class="login-blob login-blob--2"></div>
+        </div>
+
+        <!-- Step 1: Identifier Form -->
+        <div class="login-card fade-in" [formGroup]="identifierForm" *ngIf="authStep === 'IDENTIFIER'">
+
+            <!-- Branding -->
+            <div class="login-brand">
+                <div class="login-shield">
+                    <i class="fa-solid fa-shield-halved"></i>
+                </div>
+                <div>
+                    <h1 class="login-title">Grievance Officer Login</h1>
+                    <p class="login-subtitle">IT Rules 2021 — Authorised Personnel Only</p>
+                </div>
+            </div>
+
+            <!-- Error Banner -->
+            <div class="login-error" *ngIf="sendOtpError">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+                {{ sendOtpError }}
+            </div>
+
+            <!-- Identifier Field -->
+            <div class="login-field">
+                <label class="login-label" for="login-identifier">
+                    <i class="fa-solid fa-id-badge"></i> Email / Mobile Number / Employee ID
+                </label>
+                <input id="login-identifier" formControlName="identifier" type="text" class="login-input"
+                    placeholder="Enter details..." autocomplete="username" (keydown.enter)="sendOtp()">
+                <span class="login-field-error"
+                    *ngIf="identifierForm.get('identifier')?.invalid && identifierForm.get('identifier')?.touched">
+                    <i class="fa-solid fa-circle-exclamation"></i> Field cannot be empty
+                </span>
+            </div>
+
+            <!-- Submit -->
+            <button class="login-btn" type="button" (click)="sendOtp()" [disabled]="isSendOtpLoading" id="send-otp-btn">
+                <ng-container *ngIf="!isSendOtpLoading">
+                    <i class="fa-solid fa-paper-plane"></i> Send OTP
+                </ng-container>
+                <ng-container *ngIf="isSendOtpLoading">
+                    <span class="mini-spinner"></span> Sending…
+                </ng-container>
+            </button>
+
+            <!-- Footer note -->
+            <p class="login-note">
+                <i class="fa-solid fa-circle-info"></i>
+                Access restricted to authorised Grievance Officers under the IT Rules, 2021.
+                Unauthorised access attempts are logged and reported.
+            </p>
+
+        </div><!-- /login-card -->
+
+        <!-- Step 2: OTP Form -->
+        <div class="login-card fade-in" [formGroup]="otpForm" *ngIf="authStep === 'OTP'">
+
+            <!-- Branding -->
+            <div class="login-brand">
+                <div class="login-shield">
+                    <i class="fa-solid fa-unlock-keyhole"></i>
+                </div>
+                <div>
+                    <h1 class="login-title">Verify OTP</h1>
+                    <p class="login-subtitle">An OTP has been sent to your registered contact.</p>
+                </div>
+            </div>
+
+            <!-- Error Banner -->
+            <div class="login-error" *ngIf="verifyOtpError">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+                {{ verifyOtpError }}
+            </div>
+
+            <!-- OTP Field -->
+            <div class="login-field">
+                <label class="login-label" for="login-otp">
+                    <i class="fa-solid fa-key"></i> 6-Digit OTP
+                </label>
+                <div class="otp-input-wrap">
+                    <input id="login-otp" formControlName="otp" type="text" class="login-input login-input--otp"
+                        placeholder="••••••" maxlength="6" autocomplete="one-time-code" (keydown.enter)="verifyOtp()">
+                </div>
+                <div class="login-otp-meta">
+                    <span class="login-field-error" *ngIf="otpForm.get('otp')?.invalid && otpForm.get('otp')?.touched">
+                        <i class="fa-solid fa-circle-exclamation"></i> Required (6 digits)
+                    </span>
+                    <span class="otp-timer" [class.otp-timer--warn]="otpTimer <= 30">
+                        <i class="fa-regular fa-clock"></i> Expires in {{ formattedOtpTimer }}
+                    </span>
+                </div>
+            </div>
+
+            <!-- Submit -->
+            <button class="login-btn" type="button" (click)="verifyOtp()" [disabled]="isVerifyOtpLoading"
+                id="verify-otp-btn">
+                <ng-container *ngIf="!isVerifyOtpLoading">
+                    <i class="fa-solid fa-right-to-bracket"></i> Verify & Login
+                </ng-container>
+                <ng-container *ngIf="isVerifyOtpLoading">
+                    <span class="mini-spinner"></span> Verifying…
+                </ng-container>
+            </button>
+
+            <!-- Resend Link -->
+            <div class="resend-wrap">
+                <button class="resend-btn" type="button" (click)="resendOtp()"
+                    [disabled]="otpTimer > 0 || isSendOtpLoading">
+                    <i class="fa-solid fa-rotate-right"></i> Resend OTP
+                </button>
+                <button class="back-btn" type="button" (click)="authStep = 'IDENTIFIER'; stopOtpTimer();">
+                    <i class="fa-solid fa-arrow-left"></i> Change ID
+                </button>
+            </div>
+
+        </div><!-- /login-card -->
+    </div><!-- /login-gate -->
+
+
+    <!-- ══════════════════════════════════════════════════════════════════════
+       DASHBOARD  (shown after authentication)
+  ═══════════════════════════════════════════════════════════════════════ -->
+    <div class="dashboard" *ngIf="isAuthenticated">
+
+        <!-- ── Top Nav ── -->
+        <div class="op-nav">
+            <div class="op-nav__inner">
+
+                <div class="op-nav__brand">
+                    <div class="op-nav__icon">
+                        <i class="fa-solid fa-shield-halved"></i>
+                    </div>
+                    <div>
+                        <span class="op-nav__title">Grievance Officer Portal</span>
+                        <span class="op-nav__rule">IT Rules 2021</span>
+                    </div>
+                </div>
+
+                <div class="op-nav__right">
+                    <a routerLink="/grievance/compliance-reports" class="op-nav__link" id="nav-reports-link">
+                        <i class="fa-solid fa-chart-column"></i>
+                        <span>Compliance Reports</span>
+                    </a>
+                    <a routerLink="/grievance" class="op-nav__link" id="nav-public-link">
+                        <i class="fa-solid fa-house"></i>
+                        <span>Grievance Portal</span>
+                    </a>
+                    <div class="op-nav__officer">
+                        <i class="fa-solid fa-circle-user"></i>
+                        <span>{{ officerName }}</span>
+                    </div>
+                    <button class="op-nav__logout" (click)="logout()" id="logout-btn">
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                        <span>Sign Out</span>
+                    </button>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- ── Page Header ── -->
+        <div class="dash-header">
+            <div class="dash-header__inner">
+                <div class="dash-header__text">
+                    <div class="dash-header__badge">
+                        <i class="fa-solid fa-list-check"></i> Complaint Management
+                    </div>
+                    <h2 class="dash-header__title">All Complaints</h2>
+                    <p class="dash-header__sub">
+                        Review, investigate and update the status of every complaint filed under IT Rules, 2021.
+                    </p>
+                </div>
+                <div class="dash-header__stats" *ngIf="!isListLoading">
+                    <div class="dstat">
+                        <span class="dstat__num">{{ pagination.totalRecords }}</span>
+                        <span class="dstat__lbl">Total</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ── Main ── -->
+        <div class="dash-body">
+
+            <!-- Filters -->
+            <div class="filter-panel" [formGroup]="filterForm">
+                <div class="filter-panel__title">
+                    <i class="fa-solid fa-filter"></i> Filters
+                </div>
+                <div class="filter-panel__fields">
+
+                    <div class="fp-field">
+                        <label class="fp-label"><i class="fa-solid fa-circle-half-stroke"></i> Status</label>
+                        <select formControlName="status" class="fp-select" id="fp-status">
+                            <option value="">All Statuses</option>
+                            <option *ngFor="let s of ALL_STATUSES" [value]="s">
+                                {{ getStatusCfg(s).label }}
+                            </option>
+                        </select>
+                    </div>
+
+                    <div class="fp-field">
+                        <label class="fp-label"><i class="fa-solid fa-envelope"></i> Email</label>
+                        <input formControlName="email" type="email" class="fp-input" placeholder="complainant@email.com"
+                            id="fp-email" autocomplete="off">
+                    </div>
+
+                    <div class="fp-field">
+                        <label class="fp-label"><i class="fa-solid fa-ticket"></i> Ticket ID</label>
+                        <input formControlName="ticketId" type="text" class="fp-input" placeholder="NC-GR-YYYY-NNNN"
+                            id="fp-ticketId" autocomplete="off">
+                    </div>
+                    <div class="fp-field">
+                        <label class="fp-label"><i class="fa-solid fa-user-tag"></i> Employee ID</label>
+                        <input formControlName="employeeId" type="text" class="fp-input" placeholder="e.g. EMP001"
+                            id="fp-employeeId" autocomplete="off">
+                    </div>
+
+                    <button class="fp-clear" type="button" (click)="clearFilters()" id="fp-clear-btn">
+                        <i class="fa-solid fa-xmark"></i> Clear
+                    </button>
+
+                </div>
+            </div>
+
+            <!-- Complaints Table Card -->
+            <div class="complaints-card">
+
+                <!-- Skeleton -->
+                <div class="skeleton-wrap" *ngIf="isListLoading">
+                    <div class="skel-row" *ngFor="let i of [1,2,3,4,5]">
+                        <div class="skel-cell skel-cell--w40"></div>
+                        <div class="skel-cell skel-cell--w25"></div>
+                        <div class="skel-cell skel-cell--w15"></div>
+                        <div class="skel-cell skel-cell--w10"></div>
+                        <div class="skel-cell skel-cell--w10"></div>
+                    </div>
+                </div>
+
+                <!-- Error state -->
+                <div class="empty-state" *ngIf="!isListLoading && listError">
+                    <i class="fa-solid fa-triangle-exclamation empty-state__icon empty-state__icon--error"></i>
+                    <p class="empty-state__text">{{ listError }}</p>
+                    <button class="retry-btn" (click)="loadGrievances()">
+                        <i class="fa-solid fa-rotate-right"></i> Retry
+                    </button>
+                </div>
+
+                <!-- Empty state -->
+                <div class="empty-state" *ngIf="!isListLoading && !listError && grievances.length === 0">
+                    <i class="fa-solid fa-inbox empty-state__icon"></i>
+                    <p class="empty-state__text">No complaints match the current filters.</p>
+                </div>
+
+                <!-- Table -->
+                <div class="table-wrap" *ngIf="!isListLoading && !listError && grievances.length > 0">
+                    <table class="c-table">
+                        <thead>
+                            <tr>
+                                <th>Ticket ID</th>
+                                <th>Complainant</th>
+                                <th>Category</th>
+                                <th>Status</th>
+                                <th>Filed On</th>
+                                <th class="col-action">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let g of grievances; let i = index" [attr.id]="'row-' + i">
+                                <td class="td-ticket">{{ g.ticketId }}</td>
+                                <td>
+                                    <div class="td-name">{{ g.complainantName }}</div>
+                                    <div class="td-email">{{ g.complainantEmail }}</div>
+                                </td>
+                                <td class="td-cat">{{ getCategoryLabel(g.category) }}</td>
+                                <td>
+                                    <span class="status-chip" [style.background]="getStatusCfg(g.status).color + '15'"
+                                        [style.color]="getStatusCfg(g.status).color"
+                                        [style.border-color]="getStatusCfg(g.status).color + '35'">
+                                        <i class="fa-solid" [ngClass]="getStatusCfg(g.status).icon"></i>
+                                        {{ getStatusCfg(g.status).label }}
+                                    </span>
+                                </td>
+                                <td class="td-date">{{ formatDate(g.submittedAt) }}</td>
+                                <td class="col-action">
+                                    <button class="review-btn" (click)="openDetail(g.ticketId)" [attr.id]="'view-' + i">
+                                        <i class="fa-solid fa-eye"></i> Review
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Pagination -->
+                <div class="pagination" *ngIf="pagination.totalPages > 1">
+                    <button class="pg-btn" (click)="goToPage(1)" [disabled]="pagination.currentPage === 1"
+                        id="pg-first">
+                        <i class="fa-solid fa-angles-left"></i>
+                    </button>
+                    <button class="pg-btn" (click)="goToPage(pagination.currentPage - 1)"
+                        [disabled]="pagination.currentPage === 1" id="pg-prev">
+                        <i class="fa-solid fa-angle-left"></i>
+                    </button>
+                    <button *ngFor="let p of pageNumbers" class="pg-btn"
+                        [class.pg-btn--active]="p === pagination.currentPage" (click)="goToPage(p)"
+                        [attr.id]="'pg-' + p">{{ p }}</button>
+                    <button class="pg-btn" (click)="goToPage(pagination.currentPage + 1)"
+                        [disabled]="pagination.currentPage === pagination.totalPages" id="pg-next">
+                        <i class="fa-solid fa-angle-right"></i>
+                    </button>
+                    <button class="pg-btn" (click)="goToPage(pagination.totalPages)"
+                        [disabled]="pagination.currentPage === pagination.totalPages" id="pg-last">
+                        <i class="fa-solid fa-angles-right"></i>
+                    </button>
+                    <span class="pg-info">
+                        Page {{ pagination.currentPage }} / {{ pagination.totalPages }}
+                    </span>
+                </div>
+
+            </div><!-- /complaints-card -->
+        </div><!-- /dash-body -->
+
+        <!-- ── Drawer Overlay ── -->
+        <div class="drawer-overlay" [class.drawer-overlay--visible]="isDrawerOpen" (click)="closeDrawer()"></div>
+
+        <!-- ── Detail Drawer ── -->
+        <aside class="detail-drawer" [class.detail-drawer--open]="isDrawerOpen" id="detail-drawer">
+
+            <div class="drawer-head">
+                <div class="drawer-head__title">
+                    <i class="fa-solid fa-file-shield"></i>
+                    <span *ngIf="selectedGrievance">{{ selectedGrievance.ticketId }}</span>
+                    <span *ngIf="!selectedGrievance && !isDetailLoading">Complaint Detail</span>
+                    <span *ngIf="isDetailLoading">Loading…</span>
+                </div>
+                <button class="drawer-head__close" (click)="closeDrawer()" id="close-drawer-btn">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <!-- Loading -->
+            <div class="drawer-body" *ngIf="isDetailLoading">
+                <div class="drawer-loading">
+                    <div class="pulse-ring">
+                        <div class="pulse-inner"></div>
+                    </div>
+                    Loading complaint details…
+                </div>
+            </div>
+
+            <!-- Error -->
+            <div class="drawer-body" *ngIf="!isDetailLoading && detailError">
+                <div class="drawer-error">
+                    <i class="fa-solid fa-triangle-exclamation"></i> {{ detailError }}
+                </div>
+            </div>
+
+            <!-- Content -->
+            <div class="drawer-body" *ngIf="!isDetailLoading && selectedGrievance">
+
+                <!-- Locked banner -->
+                <div class="locked-banner" *ngIf="isFormLocked">
+                    <i class="fa-solid fa-lock"></i>
+                    Complaint is <strong>{{ getStatusCfg(selectedGrievance!.status).label }}</strong> — no further
+                    actions.
+                </div>
+
+                <!-- Summary -->
+                <div class="d-section">
+                    <div class="d-section__head">
+                        <i class="fa-solid fa-id-card"></i> Complainant Info
+                    </div>
+                    <ul class="kv-list">
+                        <li class="kv-item">
+                            <span class="kv-key"><i class="fa-solid fa-user"></i> Name</span>
+                            <span class="kv-val">{{ selectedGrievance!.complainantName }}</span>
+                        </li>
+                        <li class="kv-item">
+                            <span class="kv-key"><i class="fa-solid fa-envelope"></i> Email</span>
+                            <span class="kv-val">{{ selectedGrievance!.complainantEmail }}</span>
+                        </li>
+                        <li class="kv-item">
+                            <span class="kv-key"><i class="fa-solid fa-tag"></i> Category</span>
+                            <span class="kv-val">{{ getCategoryLabel(selectedGrievance!.category) }}</span>
+                        </li>
+                        <li class="kv-item">
+                            <span class="kv-key"><i class="fa-solid fa-calendar"></i> Filed On</span>
+                            <span class="kv-val">{{ formatDate(selectedGrievance!.submittedAt) }}</span>
+                        </li>
+                        <li class="kv-item">
+                            <span class="kv-key"><i class="fa-solid fa-circle-dot"></i> Status</span>
+                            <span class="status-chip"
+                                [style.background]="getStatusCfg(selectedGrievance!.status).color + '15'"
+                                [style.color]="getStatusCfg(selectedGrievance!.status).color"
+                                [style.border-color]="getStatusCfg(selectedGrievance!.status).color + '35'">
+                                <i class="fa-solid" [ngClass]="getStatusCfg(selectedGrievance!.status).icon"></i>
+                                {{ getStatusCfg(selectedGrievance!.status).label }}
+                            </span>
+                        </li>
+                        <li class="kv-item" *ngIf="selectedGrievance!.description">
+                            <span class="kv-key"><i class="fa-solid fa-align-left"></i> Description</span>
+                            <p class="kv-desc">{{ selectedGrievance!.description }}</p>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Evidence -->
+                <div class="d-section" *ngIf="(selectedGrievance?.evidenceFiles?.length || 0) > 0">
+                    <div class="d-section__head">
+                        <i class="fa-solid fa-paperclip"></i> Evidence Files
+                        <span class="d-section__count">{{ selectedGrievance?.evidenceFiles?.length }}</span>
+                    </div>
+                    <div class="evidence-grid">
+                        <div *ngFor="let file of (selectedGrievance?.evidenceFiles || []); let fi = index"
+                            class="evidence-item" [attr.id]="'evidence-' + fi">
+                            <ng-container *ngIf="isImageFile(file)">
+                                <a [href]="file" target="_blank" rel="noopener">
+                                    <img [src]="file" [alt]="getFileName(file)" class="ev-img">
+                                </a>
+                            </ng-container>
+                            <ng-container *ngIf="!isImageFile(file)">
+                                <a [href]="file" target="_blank" rel="noopener" class="ev-doc">
+                                    <i class="fa-solid fa-file-lines"></i>
+                                    <span>{{ getFileName(file) }}</span>
+                                    <i class="fa-solid fa-arrow-up-right-from-square ev-open"></i>
+                                </a>
+                            </ng-container>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Audit Timeline -->
+                <div class="d-section">
+                    <div class="d-section__head">
+                        <i class="fa-solid fa-timeline"></i> Audit Trail
+                        <span class="d-section__count" *ngIf="(selectedGrievance?.timeline?.length || 0) > 0">
+                            {{ selectedGrievance?.timeline?.length }}
+                        </span>
+                    </div>
+
+                    <ul class="timeline" *ngIf="(selectedGrievance?.timeline?.length || 0) > 0">
+                        <li *ngFor="let e of (selectedGrievance?.timeline || []); let last = last; let ti = index"
+                            class="tl-item" [attr.id]="'tl-' + ti">
+                            <div class="tl-dot" [style.background]="getStatusCfg(e.status).color">
+                                <i class="fa-solid" [ngClass]="getStatusCfg(e.status).icon"></i>
+                            </div>
+                            <div class="tl-line" *ngIf="!last"></div>
+                            <div class="tl-body">
+                                <div class="tl-row">
+                                    <span class="tl-chip" [style.background]="getStatusCfg(e.status).color + '15'"
+                                        [style.color]="getStatusCfg(e.status).color">
+                                        {{ getStatusCfg(e.status).label }}
+                                    </span>
+                                    <span class="tl-time">
+                                        <i class="fa-regular fa-clock"></i> {{ formatDate(e.timestamp) }}
+                                    </span>
+                                </div>
+                                <p class="tl-action">{{ e.actionTaken }}</p>
+                                <p class="tl-remark" *ngIf="e.remarks">
+                                    <i class="fa-solid fa-quote-left"></i> {{ e.remarks }}
+                                </p>
+                                <p class="tl-by" *ngIf="e.updatedBy || e.officerName">
+                                    <i class="fa-solid fa-user-shield"></i> By
+                                    <strong *ngIf="e.officerName">{{ e.officerName }}</strong>
+                                    <code *ngIf="e.updatedBy" [class.ms-2]="e.officerName">({{ e.updatedBy }})</code>
+                                </p>
+                            </div>
+                        </li>
+                    </ul>
+
+                    <div class="tl-empty" *ngIf="(selectedGrievance?.timeline?.length || 0) === 0">
+                        <i class="fa-solid fa-hourglass-start"></i> Awaiting first review.
+                    </div>
+
+                </div>
+
+                <!-- Action Form -->
+                <div class="d-section" [formGroup]="actionForm">
+                    <div class="d-section__head">
+                        <i class="fa-solid fa-pen-to-square"></i>
+                        {{ isFormLocked ? 'No Further Actions' : 'Update Status & Log Action' }}
+                    </div>
+
+                    <div class="action-success" *ngIf="actionSuccess">
+                        <i class="fa-solid fa-circle-check"></i> Action recorded successfully.
+                    </div>
+                    <div class="action-error" *ngIf="actionError">
+                        <i class="fa-solid fa-triangle-exclamation"></i> {{ actionError }}
+                    </div>
+
+                    <div [class.form-locked]="isFormLocked">
+
+                        <div class="form-field">
+                            <label class="form-label" for="a-status">
+                                New Status <span class="req">*</span>
+                            </label>
+                            <select formControlName="newStatus" class="fp-select" id="a-status">
+                                <option [ngValue]="null" disabled>— Select Status —</option>
+                                <option *ngFor="let s of ALL_STATUSES_ACTION" [value]="s">
+                                    {{ getStatusCfg(s).label }}
+                                </option>
+                            </select>
+                            <span class="form-err" *ngIf="isFieldInvalid('newStatus')">
+                                <i class="fa-solid fa-circle-exclamation"></i> Select a status.
+                            </span>
+                        </div>
+
+                        <div class="form-field">
+                            <label class="form-label" for="a-action">
+                                Action Taken <span class="req">*</span>
+                            </label>
+                            <textarea formControlName="actionTaken" class="fp-textarea" id="a-action" rows="3"
+                                placeholder="Describe what action was performed on this complaint…"></textarea>
+                            <span class="form-err" *ngIf="isFieldInvalid('actionTaken')">
+                                <i class="fa-solid fa-circle-exclamation"></i> Required (min 5 chars).
+                            </span>
+                        </div>
+
+                        <div class="form-field">
+                            <label class="form-label" for="a-remarks">
+                                Officer Remarks <span class="req">*</span>
+                            </label>
+                            <textarea formControlName="remarks" class="fp-textarea" id="a-remarks" rows="3"
+                                placeholder="Internal notes for the audit trail…"></textarea>
+                            <span class="form-err" *ngIf="isFieldInvalid('remarks')">
+                                <i class="fa-solid fa-circle-exclamation"></i> Required (min 5 chars).
+                            </span>
+                        </div>
+
+                        <button class="submit-btn" type="button" [disabled]="isSubmitting || isFormLocked"
+                            (click)="submitAction()" id="submit-action-btn">
+                            <ng-container *ngIf="!isSubmitting">
+                                <i class="fa-solid fa-floppy-disk"></i> Record Action
+                            </ng-container>
+                            <ng-container *ngIf="isSubmitting">
+                                <span class="mini-spinner"></span> Submitting…
+                            </ng-container>
+                        </button>
+
+                    </div>
+                </div>
+
+            </div><!-- /drawer-body -->
+        </aside>
+
+    </div><!-- /dashboard -->
+</div>

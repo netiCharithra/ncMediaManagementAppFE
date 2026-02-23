@@ -85,7 +85,8 @@ export class LanguageService {
       active: 'Active',
       inactive: 'Inactive',
       save: 'Save',
-      reportedBy: 'Reported By'
+      reportedBy: 'Reported By',
+      grievance: 'Grievance'
     },
     te: {
       home: 'హోమ్',
@@ -162,7 +163,8 @@ export class LanguageService {
       active: 'యాక్టివ్',
       inactive: 'ఇన్యాక్టివ్',
       save: 'సేవ్ చేయండి',
-      reportedBy: 'ప్రమాణం'
+      reportedBy: 'ప్రమాణం',
+      grievance: 'ఫిర్యాదు'
     }
   };
 
@@ -170,7 +172,7 @@ export class LanguageService {
     return this.translations[this.currentLang.value][key];
   }
 
-  getCurrentLanguage(){
+  getCurrentLanguage() {
     return this.currentLang.value;
   }
 
