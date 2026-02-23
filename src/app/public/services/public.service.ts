@@ -140,6 +140,30 @@ export class PublicService {
   trackGrievance(ticketId: string): Observable<GrievanceTrackResponse> {
     return this.httpService.get(
       `${this.API_ENDPOINTS.GRIEVANCE_TRACK}/${ticketId}/track`
+    ).pipe(
+      map((res: any) => {
+        const item = res?.data || res;
+        const history = item.timeline || item.statusHistory || [];
+        const lastUpdate = history.length > 0 ? history[history.length - 1].updatedAt || history[history.length - 1].timestamp : 0;
+
+        return {
+          ticketId: item.ticketId,
+          currentStatus: item.currentStatus || 'SUBMITTED',
+          complainantName: item.complainantName || item.complainantDetails?.name || 'Anonymous',
+          complainantEmail: item.complainantEmail || item.complainantDetails?.email || '',
+          grievanceCategory: item.issue?.category || item.grievanceCategory || 'OTHER',
+          contentUrl: item.issue?.contentUrl || item.contentUrl || '',
+          description: item.issue?.description || item.description || '',
+          submittedAt: item.submittedOn || item.submittedAt || item.createdAt || 0,
+          updatedAt: item.updatedAt || lastUpdate || item.submittedOn || item.createdAt || 0,
+          timeline: history.map((t: any) => ({
+            status: t.status,
+            actionTaken: t.actionTaken || t.remarks || '',
+            timestamp: t.updatedAt || t.timestamp || 0,
+            updatedBy: t.officerName || t.processedBy || t.updatedBy || t.officerId || ''
+          }))
+        };
+      })
     );
   }
 
