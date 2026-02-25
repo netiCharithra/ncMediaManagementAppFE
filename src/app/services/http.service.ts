@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Observable, map, catchError, of, switchMap, from } from 'rxjs';
+import { Observable, catchError, of, switchMap, from } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { LanguageService } from './language.service';
 import { StorageService } from '../admin/services/storage.service';
 import { MessageService } from '../admin/services/message.service';
 import { VisitorsService } from './visitors.service';
 import { LocationService } from './location.service';
+import { CryptoService } from './crypto.service';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +18,12 @@ export class HttpService {
 
   constructor(
     private http: HttpClient,
-    private languageService: LanguageService, private storage: StorageService, private messageService: MessageService, private visitorsService: VisitorsService, private locationService: LocationService
+    private languageService: LanguageService,
+    private storage: StorageService,
+    private messageService: MessageService,
+    private visitorsService: VisitorsService,
+    private locationService: LocationService,
+    private cryptoService: CryptoService
   ) {
     // Subscribe to language changes
     this.languageService.currentLang$.subscribe(lang => {
@@ -27,6 +33,22 @@ export class HttpService {
 
   setLanguage(lang: string) {
     this.selectedLanguage = lang;
+  }
+
+  private async decryptIfEncrypted(response: any): Promise<any> {
+    if (typeof response === 'string' && response.split('.').length === 3) {
+      return await this.cryptoService.decrypt(response);
+    } else if (response && typeof response.data === 'string' && response.data.split('.').length === 3) {
+      const decryptedData = await this.cryptoService.decrypt(response.data);
+      return { ...response, data: decryptedData };
+    } else if (response && typeof response.payload === 'string' && response.payload.split('.').length === 3) {
+      const decryptedData = await this.cryptoService.decrypt(response.payload);
+      return { ...response, payload: decryptedData };
+    } else if (response && typeof response.bundle === 'string' && response.bundle.split('.').length === 3) {
+      const decryptedData = await this.cryptoService.decrypt(response.bundle);
+      return { ...response, bundle: decryptedData, ...decryptedData };
+    }
+    return response;
   }
 
   /**
@@ -56,12 +78,13 @@ export class HttpService {
     options.params = new HttpParams({ fromObject: params });
 
     return this.http.get(`${this.baseUrl}${endpoint}`, options).pipe(
-      map((response: any) => {
-        if (response && response.status === 'success' && response?.data) {
-          return response?.data;
+      switchMap(async (response: any) => {
+        const decRes = await this.decryptIfEncrypted(response);
+        if (decRes && decRes.status === 'success' && decRes?.data) {
+          return decRes?.data;
         } else {
-          console.error('API Error:', response.message || 'Operation failed');
-          throw new Error(response.message || 'Operation failed');
+          console.error('API Error:', decRes.message || 'Operation failed');
+          throw new Error(decRes.message || 'Operation failed');
         }
       }),
       catchError(error => {
@@ -111,32 +134,38 @@ export class HttpService {
           };
         }
 
+        return from(this.cryptoService.encrypt(bodyWithLanguage)).pipe(
+          switchMap((encryptedBody) => {
+            const finalBody = formData ? formData : { payload: encryptedBody };
+            return this.http.post(`${baseApiUrl || this.baseUrl}${endpoint}`, finalBody, options).pipe(
+              switchMap(async (response: any) => {
+                const decResOriginal = await this.decryptIfEncrypted(response);
+                const decRes = await decResOriginal.payload;
+                console.log('decRes', decRes);
+                // Handle both wrapped {status, data} and flat objects
+                const isSuccess = decRes?.status === 'success' || (decRes && !decRes.status);
 
-        return this.http.post(`${baseApiUrl || this.baseUrl}${endpoint}`, formData || bodyWithLanguage, options).pipe(
-          map((response: any) => {
-            // Handle both wrapped {status, data} and flat objects
-            const isSuccess = response?.status === 'success' || (response && !response.status);
-
-            if (isSuccess) {
-              return returnEntireResponse ? response : (response.data || response);
-            } else {
-              const errorMsg = response?.msg || response?.message || 'Operation failed';
-              console.error('API Error:', errorMsg);
-              this.messageService.showError(errorMsg);
-              return null;
-            }
-          }),
-          catchError((error: any) => {
-            const errorMsg = error?.message || 'Operation failed';
-            console.error('API Error:', errorMsg);
-            this.messageService.showError(errorMsg);
-            return of(null);
+                if (isSuccess) {
+                  return returnEntireResponse ? decRes : (decRes.data || decRes);
+                } else {
+                  const errorMsg = decRes?.msg || decRes?.message || 'Operation failed';
+                  console.error('API Error:', errorMsg);
+                  this.messageService.showError(errorMsg);
+                  return null;
+                }
+              }),
+              catchError((error: any) => {
+                const errorMsg = error?.message || 'Operation failed';
+                console.error('API Error:', errorMsg);
+                this.messageService.showError(errorMsg);
+                return of(null);
+              })
+            );
           })
         );
       })
     );
   }
-
 
   /**
    * Generic PUT request method
@@ -158,19 +187,25 @@ export class HttpService {
       language: this.selectedLanguage
     };
 
-    return this.http.put(`${this.baseUrl}${endpoint}`, bodyWithLanguage, options).pipe(
-      map((response: any) => {
-        if (response && response.status === 'success') {
-          return response;
-        } else {
-          console.error('API Error:', response.message || 'Operation failed');
-          this.messageService.showError(response.message || 'Operation failed');
-          throw new Error(response.message || 'Operation failed');
-        }
-      }),
-      catchError(error => {
-        console.error('API Error:', error.message || 'Operation failed');
-        throw error;
+    return from(this.cryptoService.encrypt(bodyWithLanguage)).pipe(
+      switchMap((encryptedBody) => {
+        const finalBody = { payload: encryptedBody };
+        return this.http.put(`${this.baseUrl}${endpoint}`, finalBody, options).pipe(
+          switchMap(async (response: any) => {
+            const decRes = await this.decryptIfEncrypted(response);
+            if (decRes && decRes.status === 'success') {
+              return decRes;
+            } else {
+              console.error('API Error:', decRes.message || 'Operation failed');
+              this.messageService.showError(decRes.message || 'Operation failed');
+              throw new Error(decRes.message || 'Operation failed');
+            }
+          }),
+          catchError(error => {
+            console.error('API Error:', error.message || 'Operation failed');
+            throw error;
+          })
+        );
       })
     );
   }
@@ -192,12 +227,13 @@ export class HttpService {
     options.params = new HttpParams({ fromObject: { language: this.selectedLanguage } });
 
     return this.http.delete(`${this.baseUrl}${endpoint}`, options).pipe(
-      map((response: any) => {
-        if (response && response.status === 'success') {
-          return response;
+      switchMap(async (response: any) => {
+        const decRes = await this.decryptIfEncrypted(response);
+        if (decRes && decRes.status === 'success') {
+          return decRes;
         } else {
-          console.error('API Error:', response.message || 'Operation failed');
-          throw new Error(response.message || 'Operation failed');
+          console.error('API Error:', decRes.message || 'Operation failed');
+          throw new Error(decRes.message || 'Operation failed');
         }
       }),
       catchError(error => {
@@ -226,19 +262,25 @@ export class HttpService {
       language: this.selectedLanguage,
     };
 
-    return this.http.patch(`${this.baseUrl}${endpoint}`, bodyWithLanguage, options).pipe(
-      map((response: any) => {
-        if (response && response.status === 'success') {
-          return response.data ?? response;
-        } else {
-          console.error('API Error:', response.message || 'Operation failed');
-          this.messageService.showError(response.message || 'Operation failed');
-          throw new Error(response.message || 'Operation failed');
-        }
-      }),
-      catchError(error => {
-        console.error('API Error:', error.message || 'Operation failed');
-        throw error;
+    return from(this.cryptoService.encrypt(bodyWithLanguage)).pipe(
+      switchMap((encryptedBody) => {
+        const finalBody = { payload: encryptedBody };
+        return this.http.patch(`${this.baseUrl}${endpoint}`, finalBody, options).pipe(
+          switchMap(async (response: any) => {
+            const decRes = await this.decryptIfEncrypted(response);
+            if (decRes && decRes.status === 'success') {
+              return decRes.data ?? decRes;
+            } else {
+              console.error('API Error:', decRes.message || 'Operation failed');
+              this.messageService.showError(decRes.message || 'Operation failed');
+              throw new Error(decRes.message || 'Operation failed');
+            }
+          }),
+          catchError(error => {
+            console.error('API Error:', error.message || 'Operation failed');
+            throw error;
+          })
+        );
       })
     );
   }
