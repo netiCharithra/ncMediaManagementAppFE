@@ -32,7 +32,7 @@
           <nav aria-label="News Category Navigation">
             <ul class="footer-nav-list">
               <li *ngFor="let cat of categories">
-                <a [routerLink]="['/category', cat.label.toLowerCase()]" [title]="cat.te + ' వార్తలు – Neti Charithra'"
+                <a [routerLink]="['/category', cat.label]" [title]="cat.te + ' వార్తలు – Neti Charithra'"
                   class="footer-link">
                   <i [class]="'fas fa-' + cat.icon" aria-hidden="true"></i>
                   <span>{{ cat.te }} <small>{{ cat.label }}</small></span>
