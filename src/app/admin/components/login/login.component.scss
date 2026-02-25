@@ -1,312 +1,877 @@
-.login-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  background-color: #f0f2f5;
-  padding: 20px;
-}
+// ═══════════════════════════════════════════════════════════════
+//  NC Media Admin Login — Premium Redesign
+//  Typography: Inter (loaded globally via index.html)
+//  Palette: Slate navy primary + Action Blue CTA
+// ═══════════════════════════════════════════════════════════════
 
-.login-box {
-  background: #fff;
-  padding: 40px;
-  border-radius: 12px;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
-  width: 100%;
-  max-width: 450px;
-  text-align: center;
-}
+// ── Design Tokens ────────────────────────────────────────────
+$slate-950: #0a0f1e;
+$slate-900: #0f172a;
+$slate-800: #1e293b;
+$slate-700: #334155;
+$slate-500: #64748b;
+$slate-400: #94a3b8;
+$slate-300: #cbd5e1;
+$slate-200: #e2e8f0;
+$slate-100: #f1f5f9;
+$slate-50: #f8fafc;
 
-.logo h2 {
-  font-size: 1.8rem;
-  color: #333;
-  margin-bottom: 30px;
-}
+$blue-600: #2563eb;
+$blue-500: #3b82f6;
+$blue-400: #60a5fa;
+$blue-100: #dbeafe;
 
-.form-group {
-  margin-bottom: 20px;
-  text-align: left;
+$red-500: #ef4444;
+$red-100: #fee2e2;
+$amber-400: #fbbf24;
 
-  label {
-    display: block;
-    margin-bottom: 8px;
-    color: #555;
-    font-weight: 500;
+$radius-sm: 8px;
+$radius-md: 12px;
+$radius-lg: 20px;
+$radius-xl: 28px;
+
+$transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+$transition-base: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+$transition-slow: 400ms cubic-bezier(0.4, 0, 0.2, 1);
+
+// ── Animations ───────────────────────────────────────────────
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
   }
 }
 
-.form-control {
-  height: 50px;
-  border-radius: 8px;
-  border: 1px solid #ddd;
-  padding: 0 15px;
-  font-size: 1rem;
+@keyframes shake {
+
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+
+  15% {
+    transform: translateX(-7px);
+  }
+
+  30% {
+    transform: translateX(7px);
+  }
+
+  45% {
+    transform: translateX(-5px);
+  }
+
+  60% {
+    transform: translateX(5px);
+  }
+
+  75% {
+    transform: translateX(-3px);
+  }
+
+  90% {
+    transform: translateX(3px);
+  }
+}
+
+@keyframes float-up {
+  0% {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes blob-pulse {
+
+  0%,
+  100% {
+    transform: scale(1) translate(0, 0);
+  }
+
+  33% {
+    transform: scale(1.08) translate(6px, -8px);
+  }
+
+  66% {
+    transform: scale(0.95) translate(-6px, 5px);
+  }
+}
+
+@keyframes stat-float {
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+// ── Shell / Split Layout ─────────────────────────────────────
+.auth-shell {
+  display: flex;
+  min-height: 100vh;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background: $slate-950;
+  overflow: hidden;
+}
+
+// ── Left Brand Panel ─────────────────────────────────────────
+.brand-panel {
+  position: relative;
+  flex: 0 0 45%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+
+  @media (max-width: 900px) {
+    display: none;
+  }
+}
+
+.brand-panel__bg {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 80% 60% at 20% 30%, rgba($blue-500, 0.35) 0%, transparent 70%),
+    radial-gradient(ellipse 60% 80% at 80% 80%, rgba(139, 92, 246, 0.25) 0%, transparent 70%),
+    linear-gradient(135deg, $slate-900 0%, $slate-950 100%);
+}
+
+.brand-panel__content {
+  position: relative;
+  z-index: 2;
+  padding: 56px 48px;
+  max-width: 440px;
   width: 100%;
+  animation: float-up $transition-slow both;
+}
+
+.brand-logo-wrap {
+  margin-bottom: 36px;
+}
+
+.brand-logo {
+  height: 52px;
+  width: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 16px rgba($blue-400, 0.35));
+}
+
+.brand-headline {
+  font-size: clamp(1.6rem, 2.4vw, 2.2rem);
+  font-weight: 700;
+  line-height: 1.25;
+  color: #fff;
+  margin: 0 0 16px;
+  letter-spacing: -0.02em;
+
+  em {
+    font-style: normal;
+    background: linear-gradient(90deg, $blue-400, #a78bfa);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+}
+
+.brand-sub {
+  font-size: 1rem;
+  color: $slate-400;
+  margin: 0;
+  line-height: 1.6;
+}
+
+// Decorative blobs
+.blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(60px);
+  opacity: 0.18;
+  pointer-events: none;
+  animation: blob-pulse 8s ease-in-out infinite;
+
+  &--1 {
+    width: 380px;
+    height: 380px;
+    background: $blue-500;
+    top: -80px;
+    left: -60px;
+    animation-delay: 0s;
+  }
+
+  &--2 {
+    width: 300px;
+    height: 300px;
+    background: #7c3aed;
+    bottom: 40px;
+    right: -100px;
+    animation-delay: -3s;
+  }
+
+  &--3 {
+    width: 200px;
+    height: 200px;
+    background: $amber-400;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    animation-delay: -6s;
+  }
+}
+
+// Floating stat cards
+.stat-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  position: absolute;
+  background: rgba(255, 255, 255, 0.07);
+  backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: $radius-md;
+  padding: 14px 20px;
+  animation: stat-float 4s ease-in-out infinite;
+
+  &--top {
+    bottom: calc(50% + 80px);
+    right: -24px;
+    animation-delay: 0s;
+  }
+
+  &--bottom {
+    top: calc(50% + 60px);
+    right: -16px;
+    animation-delay: -2s;
+  }
+
+  .stat-icon {
+    font-size: 1.6rem;
+  }
+
+  .stat-value {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #fff;
+    line-height: 1.2;
+  }
+
+  .stat-label {
+    font-size: 0.72rem;
+    color: $slate-400;
+    line-height: 1.3;
+  }
+}
+
+// ── Right Form Panel ──────────────────────────────────────────
+.form-panel {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: $slate-50;
+  padding: 40px 24px;
+  overflow-y: auto;
+}
+
+.form-panel__inner {
+  width: 100%;
+  max-width: 420px;
+}
+
+// Mobile-only brand header
+.mobile-logo {
+  display: none;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 32px;
+
+  @media (max-width: 900px) {
+    display: flex;
+  }
+
+  img {
+    height: 36px;
+    width: auto;
+    object-fit: contain;
+  }
+
+  span {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: $slate-900;
+    letter-spacing: -0.02em;
+  }
+}
+
+// ── Auth Screen wrapper ───────────────────────────────────────
+.auth-screen {
+  animation: float-up $transition-slow both;
+}
+
+// ── Screen Header ─────────────────────────────────────────────
+.step-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 12px;
+  border-radius: 99px;
+  background: $blue-100;
+  color: $blue-600;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+
+.screen-title {
+  font-size: 1.9rem;
+  font-weight: 700;
+  color: $slate-900;
+  letter-spacing: -0.03em;
+  margin: 0 0 8px;
+}
+
+.screen-subtitle {
+  font-size: 0.9rem;
+  color: $slate-500;
+  margin: 0 0 28px;
+  line-height: 1.6;
+
+  &--danger {
+    color: $red-500;
+  }
+}
+
+// ── Floating-label Field ──────────────────────────────────────
+.field-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin-bottom: 6px;
+
+  &--error .field-input {
+    border-color: $red-500;
+    background: $red-100;
+  }
+}
+
+.field-icon {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 18px;
+  height: 18px;
+  color: $slate-400;
+  pointer-events: none;
+  transition: color $transition-base;
+  display: flex;
+  align-items: center;
+
+  svg {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.field-input {
+  width: 100%;
+  height: 58px;
+  padding: 18px 16px 6px 48px;
+  font-size: 0.95rem;
+  font-family: inherit;
+  color: $slate-900;
+  background: #fff;
+  border: 2px solid $slate-200;
+  border-radius: $radius-md;
   box-sizing: border-box;
-  transition: border-color 0.2s, box-shadow 0.2s;
+  outline: none;
+  transition: border-color $transition-base, box-shadow $transition-base;
+
+  &:not(:placeholder-shown)~.field-label,
+  &:focus~.field-label {
+    top: 10px;
+    font-size: 0.7rem;
+    color: $blue-600;
+    font-weight: 600;
+  }
 
   &:focus {
-    border-color: #007bff;
-    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2);
-    outline: none;
+    border-color: $blue-500;
+    box-shadow: 0 0 0 4px rgba($blue-500, 0.12);
+
+    +.field-icon {
+      color: $blue-500;
+    }
   }
 
-  &.is-invalid {
-    border-color: #dc3545;
+  &:focus~.field-icon {
+    color: $blue-500;
+  }
+
+  &--error {
+    border-color: $red-500;
+
+    &:focus {
+      box-shadow: 0 0 0 4px rgba($red-500, 0.12);
+    }
   }
 }
 
-.invalid-feedback {
-  color: #dc3545;
-  font-size: 0.875rem;
-  margin-top: 5px;
+.field-label {
+  position: absolute;
+  left: 48px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.9rem;
+  color: $slate-400;
+  pointer-events: none;
+  transition: top $transition-fast, font-size $transition-fast, color $transition-fast;
 }
 
+.field-error {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: $red-500;
+  font-size: 0.78rem;
+  margin-bottom: 14px;
+
+  svg {
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+  }
+}
+
+// ── API Error Alert ───────────────────────────────────────────
+.alert-error {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 14px 16px;
+  border-radius: $radius-sm;
+  background: $red-100;
+  color: $red-500;
+  font-size: 0.85rem;
+  font-weight: 500;
+  margin-bottom: 18px;
+  line-height: 1.5;
+
+  svg {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+}
+
+// ── Primary CTA Button ────────────────────────────────────────
 .btn-primary {
   width: 100%;
-  padding: 15px;
-  font-size: 1.1rem;
-  border-radius: 8px;
+  height: 54px;
   border: none;
-  background-color: #007bff;
+  border-radius: $radius-md;
+  background: linear-gradient(135deg, $blue-600 0%, $blue-500 100%);
   color: #fff;
+  font-size: 1rem;
+  font-weight: 600;
+  font-family: inherit;
   cursor: pointer;
-  margin-top: 10px;
-  transition: background-color 0.3s, transform 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 24px;
+  box-shadow: 0 4px 16px rgba($blue-600, 0.35), 0 1px 3px rgba($blue-600, 0.2);
+  transition: all $transition-base;
+  position: relative;
+  overflow: hidden;
 
-  &:hover {
-    background-color: #0056b3;
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(rgba(255, 255, 255, 0.1), transparent);
+    opacity: 0;
+    transition: opacity $transition-fast;
+  }
+
+  &:hover:not(:disabled) {
     transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba($blue-600, 0.45), 0 2px 6px rgba($blue-600, 0.25);
+
+    &::after {
+      opacity: 1;
+    }
+  }
+
+  &:active:not(:disabled) {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba($blue-600, 0.3);
   }
 
   &:disabled {
-    background-color: #a0c7ff;
+    background: linear-gradient(135deg, $slate-400 0%, $slate-300 100%);
+    color: rgba(255, 255, 255, 0.7);
     cursor: not-allowed;
+    box-shadow: none;
     transform: none;
   }
-}
 
-.error-message {
-  color: #721c24;
-  background-color: #f8d7da;
-  border: 1px solid #f5c6cb;
-  border-radius: 8px;
-  padding: 15px;
-  margin-bottom: 20px;
-  text-align: center;
-}
-
-// OTP Screen Specifics
-.otp-info p {
-  margin-bottom: 25px;
-  color: #555;
-}
-
-.otp-inputs {
-  display: flex;
-  justify-content: space-between;
-  gap: 10px;
-  margin-bottom: 25px;
-  position: relative;
-  
-  &.disabled {
-    opacity: 0.6;
+  &--loading {
     pointer-events: none;
   }
+}
 
-  input {
-    width: 50px;
-    height: 60px;
-    text-align: center;
-    font-size: 1.8rem;
-    font-weight: bold;
-    border-radius: 8px;
-    border: 1px solid #ccc;
-    transition: border-color 0.2s, box-shadow 0.2s;
+.btn-text {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
 
-    &:focus {
-      border-color: #007bff;
-      box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2);
-      outline: none;
+.btn-arrow {
+  width: 18px;
+  height: 18px;
+  transition: transform $transition-fast;
+
+  .btn-primary:hover & {
+    transform: translateX(4px);
+  }
+}
+
+.btn-spinner {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  svg {
+    width: 20px;
+    height: 20px;
+    animation: spin 0.8s linear infinite;
+  }
+}
+
+// ── Circular SVG Timer ────────────────────────────────────────
+$ring-r: 34;
+$ring-c: 2 * 3.14159 * $ring-r; // ≈ 213.6
+
+.timer-ring-wrap {
+  position: relative;
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 24px;
+}
+
+.timer-ring {
+  width: 80px;
+  height: 80px;
+  transform: rotate(-90deg);
+
+  &__track {
+    fill: none;
+    stroke: $slate-200;
+    stroke-width: 6;
+  }
+
+  &__progress {
+    fill: none;
+    stroke: $blue-500;
+    stroke-width: 6;
+    stroke-linecap: round;
+    stroke-dasharray: #{$ring-c};
+    transition: stroke-dashoffset 1s linear, stroke $transition-base;
+
+    &--warn {
+      stroke: $amber-400;
+    }
+
+    &--expired {
+      stroke: $red-500;
     }
   }
 }
 
-.touchpad {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 15px;
-  margin-bottom: 25px;
-  position: relative;
-  
-  &.disabled {
-    opacity: 0.6;
-    pointer-events: none;
+.timer-ring__label {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+.timer-ring__time {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: $blue-600;
+  font-variant-numeric: tabular-nums;
+  transition: color $transition-base;
+
+  &--warn {
+    color: darken($amber-400, 10%);
   }
-  
-  button.disabled {
-    cursor: not-allowed;
-    opacity: 0.6;
+
+  &--expired {
+    color: $red-500;
   }
 }
 
-.touchpad-row {
-  display: contents; // Allows buttons to be direct children of the grid
-
-  &:last-child {
-    grid-column: 1 / -1; // Span full width
-    display: flex;
-    justify-content: space-around;
-  }
+.timer-ring__sub {
+  font-size: 0.55rem;
+  color: $slate-400;
+  margin-top: 2px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
 }
 
-.touchpad-btn, .touchpad-btn-util {
+// ── OTP Slots ─────────────────────────────────────────────────
+.otp-slots {
   display: flex;
   justify-content: center;
-  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+
+  &--disabled {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+
+  &--shake {
+    animation: shake 0.5s ease-in-out;
+  }
+}
+
+.otp-slot {
+  width: 48px;
   height: 60px;
-  font-size: 1.6rem;
-  font-weight: 500;
-  border-radius: 12px;
-  border: none;
-  background-color: #f8f9fa;
-  color: #212529;
-  cursor: pointer;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-  transition: all 0.2s ease;
-
-  &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
-    background-color: #fff;
-  }
-
-  &:active {
-    transform: translateY(1px) scale(0.98);
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-  }
-}
-
-.touchpad-btn-util {
-  background-color: transparent;
-  box-shadow: none;
-  font-size: 1.1rem;
-  font-weight: 500;
-  color: #6c757d;
-
-  &:hover {
-    background-color: #e9ecef;
-    color: #212529;
-    transform: translateY(0);
-    box-shadow: none;
-  }
-
-  &:active {
-    transform: scale(0.95);
-    background-color: #d6dade;
-  }
-}
-
-.expired-message {
-  color: #dc3545;
-  font-weight: 500;
-  margin: 10px 0;
-}
-
-.timer-section {
-  margin: 25px 0;
+  border-radius: $radius-sm;
+  border: 2px solid $slate-200;
+  background: #fff;
   text-align: center;
-  
-  .otp-timer {
-    font-size: 1rem;
-    color: #ff6b6b;
-    font-weight: 500;
-    margin-bottom: 10px;
-    
-    span {
-      font-family: monospace;
-      font-size: 1.1em;
-      font-weight: bold;
-    }
+  font-size: 1.6rem;
+  font-weight: 700;
+  font-family: 'Inter', monospace;
+  color: $slate-900;
+  caret-color: $blue-500;
+  outline: none;
+  transition: border-color $transition-base, box-shadow $transition-base, transform $transition-fast;
+  -webkit-appearance: none;
+  appearance: none;
+
+  &:focus {
+    border-color: $blue-500;
+    box-shadow: 0 0 0 4px rgba($blue-500, 0.15);
+    transform: scale(1.05);
   }
-  
-  .resend-button {
-    background: none;
-    border: none;
-    color: #007bff;
-    font-size: 1rem;
-    font-weight: 500;
-    cursor: pointer;
-    padding: 8px 16px;
-    border-radius: 6px;
-    transition: all 0.2s ease;
-    
-    &:hover:not(:disabled) {
-      background-color: rgba(0, 123, 255, 0.1);
-      text-decoration: underline;
-    }
-    
-    &:disabled {
-      color: #adb5bd;
-      cursor: not-allowed;
-      text-decoration: none;
-    }
-    
-    &:focus {
-      outline: none;
-      box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.3);
-    }
+
+  &:not(:placeholder-shown):not(:focus) {
+    border-color: $blue-400;
+    background: $blue-100;
+    color: $blue-600;
+  }
+
+  @media (max-width: 420px) {
+    width: 40px;
+    height: 52px;
+    font-size: 1.3rem;
+    gap: 6px;
   }
 }
 
-.back-link {
-  display: inline-block;
-  margin-top: 20px;
-  color: #6c757d;
-  text-decoration: none;
-  font-size: 0.95rem;
-  transition: color 0.2s;
+// ── Ghost Numpad ──────────────────────────────────────────────
+.numpad {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 16px;
 
-  &:hover {
-    color: #0056b3;
+  &--disabled {
+    opacity: 0.4;
+    pointer-events: none;
+  }
+}
+
+.numpad__key {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 52px;
+  border-radius: $radius-sm;
+  border: 1.5px solid $slate-200;
+  background: transparent;
+  color: $slate-700;
+  font-size: 1.35rem;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all $transition-fast;
+  -webkit-tap-highlight-color: transparent;
+
+  svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  &:hover:not(:disabled) {
+    border-color: $blue-500;
+    color: $blue-600;
+    background: $blue-100;
+    transform: translateY(-1px);
+  }
+
+  &:active:not(:disabled) {
+    transform: scale(0.95);
+    background: rgb($blue-100, 0.6);
+  }
+
+  &--util {
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    color: $slate-500;
+    border-color: $slate-200;
+
+    &:hover:not(:disabled) {
+      color: $red-500;
+      border-color: $red-500;
+      background: $red-100;
+    }
+  }
+
+  &--del svg {
+    color: inherit;
+  }
+
+  &:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+  }
+}
+
+// ── Resend Row ────────────────────────────────────────────────
+.resend-row {
+  text-align: center;
+  margin-bottom: 4px;
+}
+
+.resend-btn {
+  background: none;
+  border: none;
+  padding: 6px 12px;
+  border-radius: $radius-sm;
+  font-family: inherit;
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: $blue-600;
+  cursor: pointer;
+  transition: all $transition-fast;
+
+  &:hover:not(:disabled) {
+    background: $blue-100;
     text-decoration: underline;
   }
+
+  &:disabled {
+    color: $slate-400;
+    cursor: not-allowed;
+  }
 }
 
-.error-alert {
-  color: #721c24;
-  background-color: #f8d7da;
-  border: 1px solid #f5c6cb;
-  border-radius: 8px;
-  padding: 15px;
-  margin-bottom: 20px;
-  text-align: center;
-  font-size: 0.95rem;
-}
+// ── Back Button ───────────────────────────────────────────────
+.back-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  margin-top: 14px;
+  padding: 10px;
+  border: none;
+  background: none;
+  font-family: inherit;
+  font-size: 0.88rem;
+  color: $slate-500;
+  cursor: pointer;
+  border-radius: $radius-sm;
+  transition: all $transition-fast;
 
-// Responsive adjustments
-@media (max-width: 480px) {
-  .login-box {
-    padding: 30px 20px;
+  svg {
+    width: 14px;
+    height: 14px;
   }
 
-  .otp-inputs {
-    gap: 8px;
+  &:hover {
+    color: $slate-800;
+    background: $slate-100;
+  }
+}
 
-    input {
-      width: 40px;
-      height: 50px;
-      font-size: 1.5rem;
+// ── Responsive ────────────────────────────────────────────────
+@media (max-width: 900px) {
+  .form-panel {
+    background: linear-gradient(160deg, $slate-900 0%, $slate-950 100%);
+  }
+
+  .screen-title {
+    color: #fff;
+  }
+
+  .screen-subtitle {
+    color: $slate-400;
+  }
+
+  .step-badge {
+    background: rgba($blue-400, 0.15);
+    color: $blue-400;
+  }
+
+  .field-input {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(255, 255, 255, 0.12);
+    color: #fff;
+
+    &:focus {
+      border-color: $blue-400;
+      background: rgba(255, 255, 255, 0.1);
     }
   }
 
-  .touchpad-btn, .touchpad-btn-util {
-    height: 50px;
-    font-size: 1.4rem;
+  .field-label {
+    color: $slate-400;
   }
 
-  .btn-primary {
-    padding: 14px;
-    font-size: 1rem;
+  .otp-slot {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(255, 255, 255, 0.12);
+    color: #fff;
+  }
+
+  .numpad__key {
+    border-color: rgba(255, 255, 255, 0.12);
+    color: #fff;
+  }
+
+  .back-btn {
+    color: $slate-400;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.05);
+      color: #fff;
+    }
+  }
+
+  .resend-btn {
+    color: $blue-400;
   }
 }

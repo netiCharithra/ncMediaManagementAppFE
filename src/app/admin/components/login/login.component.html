@@ -1,138 +1,241 @@
-<div class="login-container">
-  <div class="login-box">
-    <div class="logo">
-      <h2>Admin Login</h2>
-    </div>
+<div class="auth-shell">
 
-    <!-- Step 1: Request OTP -->
-    <form [formGroup]="requestForm" (ngSubmit)="requestOtp()" *ngIf="!otpSent">
-      <div class="form-group">
-        <label for="identifier">Email, Mobile, or Employee ID</label>
-        <input
-          type="text"
-          id="identifier"
-          class="form-control"
-          formControlName="identifier"
-          placeholder="Enter your identifier"
-          [ngClass]="{ 'is-invalid': requestForm.get('identifier')?.invalid && requestForm.get('identifier')?.touched }"
-        />
-        <div *ngIf="requestForm.get('identifier')?.invalid && requestForm.get('identifier')?.touched" class="invalid-feedback">
-          <div *ngIf="requestForm.get('identifier')?.errors?.['required']">Identifier is required.</div>
+  <!-- ═══════════════ LEFT PANEL — Brand / Illustration ═══════════════ -->
+  <div class="brand-panel" aria-hidden="true">
+    <div class="brand-panel__bg"></div>
+    <div class="brand-panel__content">
+      <div class="brand-logo-wrap">
+        <img src="assets/images/logos/fullLogo.png" alt="NC Media Logo" class="brand-logo" />
+      </div>
+      <h1 class="brand-headline">Your trusted source for&nbsp;Telugu&nbsp;news</h1>
+      <p class="brand-sub">Secure, private, one-click admin access.</p>
+
+      <!-- Decorative blobs -->
+      <div class="blob blob--1"></div>
+      <div class="blob blob--2"></div>
+      <div class="blob blob--3"></div>
+
+      <!-- Floating stat cards -->
+      <div class="stat-card stat-card--top">
+        <span class="stat-icon">📰</span>
+        <div>
+          <div class="stat-value">50K+</div>
+          <div class="stat-label">Articles published</div>
         </div>
       </div>
-
-      <div class="error-message" *ngIf="error">
-        {{ error }}
+      <div class="stat-card stat-card--bottom">
+        <span class="stat-icon">🛡️</span>
+        <div>
+          <div class="stat-value">256-bit</div>
+          <div class="stat-label">Encrypted access</div>
+        </div>
       </div>
-
-      <button type="submit" class="btn-primary" [disabled]="requestForm.invalid || loading">
-        {{ loading ? 'Sending OTP...' : 'Get OTP' }}
-      </button>
-    </form>
-
-    <!-- Step 2: Verify OTP -->
-    <div *ngIf="otpSent">
-      <div class="otp-info">
-        <p *ngIf="!isOtpExpired">An OTP has been sent to your registered contact. Please enter it below.</p>
-        <p *ngIf="isOtpExpired" class="expired-message">OTP has expired. Please request a new one.</p>
-      </div>
-
-      <form [formGroup]="verifyForm" (ngSubmit)="verifyOtp()">
-        <div class="otp-inputs" [class.disabled]="isOtpExpired">
-          <input 
-            type="text" 
-            formControlName="otp1" 
-            #otp1 
-            maxlength="1" 
-            (keyup)="!isOtpExpired && onOtpInput(otp1, otp2)"
-            [disabled]="isOtpExpired"
-          />
-          <input 
-            type="text" 
-            formControlName="otp2" 
-            #otp2 
-            maxlength="1" 
-            (keyup)="!isOtpExpired && onOtpInput(otp2, otp3)"
-            [disabled]="isOtpExpired"
-          />
-          <input 
-            type="text" 
-            formControlName="otp3" 
-            #otp3 
-            maxlength="1" 
-            (keyup)="!isOtpExpired && onOtpInput(otp3, otp4)"
-            [disabled]="isOtpExpired"
-          />
-          <input 
-            type="text" 
-            formControlName="otp4" 
-            #otp4 
-            maxlength="1" 
-            (keyup)="!isOtpExpired && onOtpInput(otp4, otp5)"
-            [disabled]="isOtpExpired"
-          />
-          <input 
-            type="text" 
-            formControlName="otp5" 
-            #otp5 
-            maxlength="1" 
-            (keyup)="!isOtpExpired && onOtpInput(otp5, otp6)"
-            [disabled]="isOtpExpired"
-          />
-          <input 
-            type="text" 
-            formControlName="otp6" 
-            #otp6 
-            maxlength="1"
-            [disabled]="isOtpExpired"
-          />
-        </div>
-
-        <div class="touchpad" [class.disabled]="isOtpExpired">
-          <ng-container *ngFor="let row of touchpadLayout">
-            <button
-              type="button"
-              *ngFor="let key of row"
-              [ngClass]="{ 
-                'touchpad-btn': key !== 'Clear' && key !== 'Del', 
-                'touchpad-btn-util': key === 'Clear' || key === 'Del',
-                'disabled': isOtpExpired
-              }"
-              (click)="!isOtpExpired && (key === 'Clear' ? clearOtp() : onKeypadClick(key))"
-              [disabled]="isOtpExpired"
-            >
-              {{ key }}
-            </button>
-          </ng-container>
-        </div>
-
-        <div class="error-alert" *ngIf="error">
-          {{ error }}
-        </div>
-
-        <div class="timer-section">
-          <p *ngIf="!isOtpExpired" class="otp-timer">OTP expires in: {{ timeLeft }}</p>
-          <p *ngIf="isOtpExpired" class="expired-message">OTP has expired</p>
-          <button 
-            type="button" 
-            class="resend-button" 
-            (click)="resendOtp()" 
-            [disabled]="!isOtpExpired || loading"
-          >
-            {{ loading ? 'Sending...' : 'Resend OTP' }}
-          </button>
-        </div>
-
-        <button 
-          type="submit" 
-          class="btn-primary" 
-          [disabled]="verifyForm.invalid || loading || isOtpExpired"
-        >
-          {{ loading ? 'Logging in...' : 'Login' }}
-        </button>
-
-        <a href="javascript:void(0)" class="back-link" (click)="goBack()">Go Back</a>
-      </form>
     </div>
   </div>
-</div>
+
+  <!-- ═══════════════ RIGHT PANEL — Auth Forms ═══════════════ -->
+  <div class="form-panel">
+    <div class="form-panel__inner">
+
+      <!-- Mobile-only logo -->
+      <div class="mobile-logo">
+        <img src="assets/images/logos/fullLogo.png" alt="NC Media" />
+        <span>NC Media Admin</span>
+      </div>
+
+      <!-- ─── SCREEN 1: Identifier entry ─── -->
+      <div class="auth-screen" *ngIf="!otpSent" [@screenSlide]="'enter'">
+        <div class="screen-header">
+          <div class="step-badge">Step 1 of 2</div>
+          <h2 class="screen-title">Admin Sign In</h2>
+          <p class="screen-subtitle">Enter your email, phone, or employee ID to receive a one-time passcode.</p>
+        </div>
+
+        <form [formGroup]="requestForm" (ngSubmit)="requestOtp()" novalidate>
+
+          <!-- Floating-label input -->
+          <div class="field-wrap"
+            [class.field-wrap--error]="requestForm.get('identifier')?.invalid && requestForm.get('identifier')?.touched">
+            <span class="field-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                <circle cx="12" cy="7" r="4" />
+              </svg>
+            </span>
+            <input type="text" id="identifier" class="field-input" formControlName="identifier" placeholder=" "
+              autocomplete="username"
+              [class.field-input--error]="requestForm.get('identifier')?.invalid && requestForm.get('identifier')?.touched" />
+            <label for="identifier" class="field-label">Email, Phone, or Employee ID</label>
+          </div>
+          <div class="field-error"
+            *ngIf="requestForm.get('identifier')?.invalid && requestForm.get('identifier')?.touched">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2">
+              <circle cx="12" cy="12" r="10" />
+              <line x1="12" y1="8" x2="12" y2="12" />
+              <line x1="12" y1="16" x2="12.01" y2="16" />
+            </svg>
+            Identifier is required.
+          </div>
+
+          <!-- API error -->
+          <div class="alert-error" *ngIf="error" role="alert">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2">
+              <circle cx="12" cy="12" r="10" />
+              <line x1="12" y1="8" x2="12" y2="12" />
+              <line x1="12" y1="16" x2="12.01" y2="16" />
+            </svg>
+            {{ error }}
+          </div>
+
+          <!-- Submit button -->
+          <button type="submit" id="btn-get-otp" class="btn-primary" [class.btn-primary--loading]="loading"
+            [disabled]="requestForm.invalid || loading">
+            <span class="btn-text" *ngIf="!loading">
+              Get OTP
+              <svg class="btn-arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="5" y1="12" x2="19" y2="12" />
+                <polyline points="12 5 19 12 12 19" />
+              </svg>
+            </span>
+            <span class="btn-spinner" *ngIf="loading">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <circle cx="12" cy="12" r="10" stroke-opacity="0.25" />
+                <path d="M12 2a10 10 0 0 1 10 10" />
+              </svg>
+              Sending OTP…
+            </span>
+          </button>
+        </form>
+      </div>
+
+      <!-- ─── SCREEN 2: OTP Verification ─── -->
+      <div class="auth-screen" *ngIf="otpSent" [@screenSlide]="'enter'">
+        <div class="screen-header">
+          <div class="step-badge">Step 2 of 2</div>
+          <h2 class="screen-title">Verify OTP</h2>
+          <p class="screen-subtitle" *ngIf="!isOtpExpired">
+            A 6-digit code was sent to your registered contact. It is valid for <strong>5 minutes</strong>.
+          </p>
+          <p class="screen-subtitle screen-subtitle--danger" *ngIf="isOtpExpired">
+            ⚠️ Your OTP has expired. Please request a new one.
+          </p>
+        </div>
+
+        <form [formGroup]="verifyForm" (ngSubmit)="verifyOtp()" novalidate>
+
+          <!-- SVG circular countdown timer -->
+          <div class="timer-ring-wrap">
+            <svg class="timer-ring" viewBox="0 0 80 80" aria-hidden="true">
+              <circle class="timer-ring__track" cx="40" cy="40" r="34" />
+              <circle class="timer-ring__progress" cx="40" cy="40" r="34"
+                [class.timer-ring__progress--warn]="isTimeWarn" [class.timer-ring__progress--expired]="isOtpExpired"
+                [style.stroke-dashoffset]="timerDashOffset" />
+            </svg>
+            <div class="timer-ring__label">
+              <span class="timer-ring__time" [class.timer-ring__time--warn]="isTimeWarn"
+                [class.timer-ring__time--expired]="isOtpExpired">{{ timeLeft }}</span>
+              <span class="timer-ring__sub">{{ isOtpExpired ? 'Expired' : 'remaining' }}</span>
+            </div>
+          </div>
+
+          <!-- OTP Slots -->
+          <div class="otp-slots" [class.otp-slots--disabled]="isOtpExpired" [class.otp-slots--shake]="otpShake">
+            <input type="text" inputmode="numeric" pattern="[0-9]*" id="otp1" #otp1 class="otp-slot"
+              formControlName="otp1" maxlength="1" (keyup)="!isOtpExpired && onOtpInput(otp1, otp2)"
+              (keydown)="onOtpKeydown($event, null, otp1)" [disabled]="isOtpExpired" autocomplete="one-time-code" />
+            <input type="text" inputmode="numeric" pattern="[0-9]*" id="otp2" #otp2 class="otp-slot"
+              formControlName="otp2" maxlength="1" (keyup)="!isOtpExpired && onOtpInput(otp2, otp3)"
+              (keydown)="onOtpKeydown($event, otp1, otp2)" [disabled]="isOtpExpired" />
+            <input type="text" inputmode="numeric" pattern="[0-9]*" id="otp3" #otp3 class="otp-slot"
+              formControlName="otp3" maxlength="1" (keyup)="!isOtpExpired && onOtpInput(otp3, otp4)"
+              (keydown)="onOtpKeydown($event, otp2, otp3)" [disabled]="isOtpExpired" />
+            <input type="text" inputmode="numeric" pattern="[0-9]*" id="otp4" #otp4 class="otp-slot"
+              formControlName="otp4" maxlength="1" (keyup)="!isOtpExpired && onOtpInput(otp4, otp5)"
+              (keydown)="onOtpKeydown($event, otp3, otp4)" [disabled]="isOtpExpired" />
+            <input type="text" inputmode="numeric" pattern="[0-9]*" id="otp5" #otp5 class="otp-slot"
+              formControlName="otp5" maxlength="1" (keyup)="!isOtpExpired && onOtpInput(otp5, otp6)"
+              (keydown)="onOtpKeydown($event, otp4, otp5)" [disabled]="isOtpExpired" />
+            <input type="text" inputmode="numeric" pattern="[0-9]*" id="otp6" #otp6 class="otp-slot"
+              formControlName="otp6" maxlength="1" (keydown)="onOtpKeydown($event, otp5, otp6)"
+              [disabled]="isOtpExpired" />
+          </div>
+
+          <!-- OTP error / API error -->
+          <div class="alert-error" *ngIf="error" role="alert">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2">
+              <circle cx="12" cy="12" r="10" />
+              <line x1="12" y1="8" x2="12" y2="12" />
+              <line x1="12" y1="16" x2="12.01" y2="16" />
+            </svg>
+            {{ error }}
+          </div>
+
+          <!-- Ghost-button numeric keypad -->
+          <div class="numpad" [class.numpad--disabled]="isOtpExpired">
+            <ng-container *ngFor="let row of touchpadLayout">
+              <button type="button" *ngFor="let key of row" class="numpad__key"
+                [class.numpad__key--util]="key === 'Clear' || key === 'Del'" [class.numpad__key--del]="key === 'Del'"
+                (click)="!isOtpExpired && (key === 'Clear' ? clearOtp() : key === 'Del' ? onKeypadClick('Del') : onKeypadClick(key))"
+                [disabled]="isOtpExpired" [attr.aria-label]="key">
+                <ng-container *ngIf="key === 'Del'; else normalKey">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 4H8l-7 8 7 8h13a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2z" />
+                    <line x1="18" y1="9" x2="12" y2="15" />
+                    <line x1="12" y1="9" x2="18" y2="15" />
+                  </svg>
+                </ng-container>
+                <ng-template #normalKey>{{ key }}</ng-template>
+              </button>
+            </ng-container>
+          </div>
+
+          <!-- Resend link -->
+          <div class="resend-row">
+            <button type="button" id="btn-resend" class="resend-btn" (click)="resendOtp()"
+              [disabled]="!isOtpExpired || loading">
+              {{ loading ? 'Sending…' : 'Resend OTP' }}
+            </button>
+          </div>
+
+          <!-- Primary action -->
+          <button type="submit" id="btn-login" class="btn-primary" [class.btn-primary--loading]="loading"
+            [disabled]="verifyForm.invalid || loading || isOtpExpired">
+            <span class="btn-text" *ngIf="!loading">
+              Login
+              <svg class="btn-arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="5" y1="12" x2="19" y2="12" />
+                <polyline points="12 5 19 12 12 19" />
+              </svg>
+            </span>
+            <span class="btn-spinner" *ngIf="loading">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <circle cx="12" cy="12" r="10" stroke-opacity="0.25" />
+                <path d="M12 2a10 10 0 0 1 10 10" />
+              </svg>
+              Verifying…
+            </span>
+          </button>
+
+          <!-- Back link -->
+          <button type="button" class="back-btn" (click)="goBack()">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="19" y1="12" x2="5" y2="12" />
+              <polyline points="12 19 5 12 12 5" />
+            </svg>
+            Change identifier
+          </button>
+        </form>
+      </div>
+
+    </div><!-- /form-panel__inner -->
+  </div><!-- /form-panel -->
+
+</div><!-- /auth-shell -->
