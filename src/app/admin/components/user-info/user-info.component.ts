@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { StorageService } from '../../services/storage.service';
+import { LanguageService } from '../../../services/language.service';
 
 @Component({
   selector: 'app-user-info',
@@ -8,13 +9,16 @@ import { StorageService } from '../../services/storage.service';
   styleUrls: ['./user-info.component.scss']
 })
 export class UserInfoComponent implements OnInit {
-  public userData: any={};
+  public userData: any = {};
 
-  constructor(private storageService: StorageService) {
+  constructor(
+    private storageService: StorageService,
+    public languageService: LanguageService
+  ) {
 
     this.userData = this.storageService.getStoredUser();
 
-    console.log(this.userData,'user data 2')
+    console.log(this.userData, 'user data 2')
   }
 
   ngOnInit(): void {

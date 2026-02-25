@@ -62,7 +62,7 @@ export class DashboardComponent implements OnInit {
 
   // Chart options for Visitors
   public chartOptionVisitors: EChartsOption = this.getBaseChartOptions('Visitors');
-  
+
   // Chart options for Visits
   public chartOptionVisits: EChartsOption = this.getBaseChartOptions('Visits Traffic');
 
@@ -92,9 +92,8 @@ export class DashboardComponent implements OnInit {
   }
 
   onTimeframeChange(timeframe: any): void {
-    // this.selectedTimeframe = timeframe;
-    // this.updateChartData(timeframe);
-    this.getChartData(timeframe)
+    this.selectedTimeframe = timeframe;
+    this.getChartData(timeframe);
   }
 
   private updateChartData(timeframe: any): void {

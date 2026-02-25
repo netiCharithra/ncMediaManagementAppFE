@@ -1,274 +1,242 @@
 <div class="news-management">
     <!-- Show loader with current WhatsApp share step -->
-    <app-admin-loader 
-      [show]="showLoader" 
-      [customMessage]="whatsappShareInProgress ? currentLogStep : ''"
-      [showInstructions]="showInstructions"
-      [instructionTitle]="instructionTitle"
-      [instructionText]="instructionText"
-      [continueButtonText]="continueButtonText"
-      (continueClicked)="onLoaderContinueClick()">
+    <app-admin-loader [show]="showLoader" [customMessage]="whatsappShareInProgress ? currentLogStep : ''"
+        [showInstructions]="showInstructions" [instructionTitle]="instructionTitle" [instructionText]="instructionText"
+        [continueButtonText]="continueButtonText" (continueClicked)="onLoaderContinueClick()">
     </app-admin-loader>
-    <div class="news-header">
-        <div class="header-content">
-            <h2>
-                <!-- {{ languageService.getString('newsManagement') }} -->
+    <app-page-header [title]="languageService.getString('newsManagement') || 'News Management'"
+        subtitle="Approve, reject, and publish news updates across the platform." eyebrow="CONTENT"
+        eyebrowIcon="fas fa-newspaper" class="mb-4 d-block">
 
-            </h2>
-            <div class="controls">
-                <mat-form-field appearance="outline">
-                    <mat-select [(ngModel)]="selectedTab" (selectionChange)="onTabChange($event.value)">
-                        <mat-option [value]="0">{{ languageService.getString('pendingNews') }}</mat-option>
-                        <mat-option [value]="1">{{ languageService.getString('approvedNews') }}</mat-option>
-                        <mat-option [value]="2">{{ languageService.getString('rejectedNews') }}</mat-option>
-                    </mat-select>
-                </mat-form-field>
-                <button mat-flat-button color="primary" class="report-news-btn" (click)="openReportNewsModal()">
-                    <i class="fa-solid fa-plus"></i>
-                    {{ languageService.getString('reportNews') }}
-                </button>
+        <div class="d-flex align-items-center gap-3">
+            <!-- Filter Dropdown -->
+            <div class="custom-select-wrapper" style="width: 180px;">
+                <ng-select [(ngModel)]="selectedTab" (change)="onTabChange($event)" [searchable]="false"
+                    [clearable]="false" class="enterprise-select">
+                    <ng-option [value]="0">{{ languageService.getString('pendingNews') || 'Pending News' }}</ng-option>
+                    <ng-option [value]="1">{{ languageService.getString('approvedNews') || 'Approved News'
+                        }}</ng-option>
+                    <ng-option [value]="2">{{ languageService.getString('rejectedNews') || 'Rejected News'
+                        }}</ng-option>
+                </ng-select>
             </div>
-        </div>
-    </div>
 
-    <nc-web-paginated-table *ngIf="newsData.header" [columns]="newsData.header" [data]="newsData.body"
-        [page]="newsData.page" [itemsPerPage]="newsData.count" [totalItems]="newsData.totalNumberOfRecords"
-        [metaData]="newsData.metaData" (pageChange)="onPageChange($event)"
-        (actionEmitter)="actionEmitterPendingNews($event)" [noRecordsMessage]="getNoRecordsMessage()">
-    </nc-web-paginated-table>
+            <button class="btn btn-primary enterprise-btn" (click)="openReportNewsModal()">
+                <i class="fas fa-plus mr-2"></i> {{ languageService.getString('reportNews') || 'Report News' }}
+            </button>
+        </div>
+    </app-page-header>
+
+    <div class="table-responsive-wrapper mt-3">
+        <nc-web-paginated-table *ngIf="newsData.header" [columns]="newsData.header" [data]="newsData.body"
+            [page]="newsData.page" [itemsPerPage]="newsData.count" [totalItems]="newsData.totalNumberOfRecords"
+            [metaData]="newsData.metaData" (pageChange)="onPageChange($event)"
+            (actionEmitter)="actionEmitterPendingNews($event)" [noRecordsMessage]="getNoRecordsMessage()">
+        </nc-web-paginated-table>
+    </div>
 </div>
 
 
 
 <div class="modal fade" id="addEmployee" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
     aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="staticBackdropLabel">
-                    {{ actionType === 'create' ? languageService.getString('addNews') :
-                    actionType === 'edit' ? languageService.getString('editNews') : '' }}
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg">
+            <div class="modal-header bg-light">
+                <h5 class="modal-title font-weight-bold" id="staticBackdropLabel">
+                    <i class="fas fa-edit mr-2 text-primary"></i>
+                    {{ actionType === 'create' ? (languageService.getString('addNews') || 'Draft News Article') :
+                    actionType === 'edit' ? (languageService.getString('editNews') || 'Edit News Article') : 'News
+                    Details' }}
                 </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <form (ngSubmit)="newsForm.form.valid && signUpCreds()" #newsForm="ngForm" class="custom-form">
-                <div class="modal-body" style="max-height: 80vh; overflow-y: auto;">
-                    <div class="form-grid">
-                        <!-- <h1>Form Valid : {{newsForm.form.valid}}</h1>
-                        <button (click)="logForm(newsForm.form)">Log Form</button> -->
-
-                        <!-- Title -->
-                        <div class="form-group full-width">
-                            <label class="form-label" for="title">{{ languageService.getString('title') }}</label>
-                            <input type="text" class="form-control" name="title"
-                                placeholder="{{ languageService.getString('title') }}"
-                                [(ngModel)]="publishNewsForm['title']" #title="ngModel" 
-                                [readonly]="disableFields"
-                                required [ngClass]="{ 'is-invalid': newsForm.submitted && title.invalid }" />
-                            <div *ngIf="newsForm.submitted && title.invalid" class="invalid-feedback">
-                                <div *ngIf="title.errors?.['required']">This field is required</div>
-                            </div>
+                <div class="modal-body p-4">
+                    <div class="row g-3">
+                        <!-- Title Section -->
+                        <div class="col-12">
+                            <label class="form-label font-weight-semibold">{{ languageService.getString('title')
+                                }}</label>
+                            <input type="text" class="form-control form-control-lg" name="title"
+                                [placeholder]="languageService.getString('title') || 'Article Headline'"
+                                [(ngModel)]="publishNewsForm['title']" #title="ngModel" [readonly]="disableFields"
+                                required [class.is-invalid]="newsForm.submitted && title.invalid" />
                         </div>
 
-                        <!-- Sub Title -->
-                        <div class="form-group full-width">
-                            <label class="form-label" for="sub_title">{{ languageService.getString('subTitle')
+                        <div class="col-12">
+                            <label class="form-label font-weight-semibold">{{ languageService.getString('subTitle')
                                 }}</label>
                             <input type="text" class="form-control" name="sub_title"
-                                placeholder="{{ languageService.getString('subTitle') }}"
+                                [placeholder]="languageService.getString('subTitle') || 'Short catchphrase or summary line'"
                                 [(ngModel)]="publishNewsForm['sub_title']" #sub_title="ngModel"
                                 [readonly]="disableFields" required
-                                [ngClass]="{ 'is-invalid': newsForm.submitted && sub_title.invalid }" />
-                            <div *ngIf="newsForm.submitted && sub_title.invalid" class="invalid-feedback">
-                                <div *ngIf="sub_title.errors?.['required']">This field is required</div>
-                            </div>
+                                [class.is-invalid]="newsForm.submitted && sub_title.invalid" />
                         </div>
 
-                        <!-- News Type and Category in same row -->
-                        <div class="form-group">
-                            <label class="form-label" for="newsType">{{ languageService.getString('newsType') }}</label>
+                        <!-- Classification Section -->
+                        <div class="col-md-6">
+                            <label class="form-label font-weight-semibold">{{ languageService.getString('newsType')
+                                }}</label>
                             <ng-select [items]="metaData['NEWS_TYPE']" name="newsType" required
-                                placeholder="{{ languageService.getString('newsType') }}"
-                                [(ngModel)]="publishNewsForm['newsType']" #newsType="ngModel" 
-                                [disabled]="disableFields"
-                                [ngClass]="{ 'is-invalid': newsForm.submitted && newsType.invalid }">
+                                [placeholder]="languageService.getString('newsType')"
+                                [(ngModel)]="publishNewsForm['newsType']" #newsType="ngModel" [disabled]="disableFields"
+                                [clearable]="false">
                             </ng-select>
-                            <div *ngIf="newsForm.submitted && newsType.invalid" class="invalid-feedback">
-                                <div *ngIf="newsType.errors?.['required']">This field is required</div>
-                            </div>
                         </div>
 
-                        <div class="form-group">
-                            <label class="form-label" for="category">{{ languageService.getString('category') }}</label>
+                        <div class="col-md-6">
+                            <label class="form-label font-weight-semibold">{{ languageService.getString('category')
+                                }}</label>
                             <ng-select [items]="metaData['NEWS_CATEGORIES']" name="category" required
-                                placeholder="{{ languageService.getString('category') }}"
-                                [(ngModel)]="publishNewsForm['category']" #category="ngModel" 
-                                [disabled]="disableFields"
-                                [ngClass]="{ 'is-invalid': newsForm.submitted && category.invalid }">
+                                [placeholder]="languageService.getString('category')"
+                                [(ngModel)]="publishNewsForm['category']" #category="ngModel" [disabled]="disableFields"
+                                [clearable]="false">
                             </ng-select>
-                            <div *ngIf="newsForm.submitted && category.invalid" class="invalid-feedback">
-                                <div *ngIf="category.errors?.['required']">This field is required</div>
-                            </div>
                         </div>
 
-                        <!-- Regional News Location Selection -->
+                        <!-- Regional Selection -->
                         <ng-container *ngIf="publishNewsForm['newsType'] === 'Regional'">
-                            <div class="col-12 mb-3">
-                                <label class="form-label" for="state">{{ languageService.getString('state') }}</label>
-                                <ng-select [items]="metaData['STATES']" bindLabel="label" bindValue="value" name="state"
-                                    required [placeholder]="languageService.getString('selectState')"
-                                    [(ngModel)]="publishNewsForm['state']" #state="ngModel" [clearable]="false"
-                                    [ngClass]="{ 'is-invalid': newsForm.submitted && state.invalid }"
-                                    (ngModelChange)="changeOfState();publishNewsForm['district']=null;publishNewsForm['mandal']=null;"
-                                    [disabled]="disableFields">
-                                </ng-select>
-                                <div *ngIf="newsForm.submitted && state.invalid" class="invalid-feedback">
-                                    <div *ngIf="state.errors?.['required']">{{
-                                        languageService.getString('fieldRequired') }}</div>
+                            <div class="col-12">
+                                <div class="bg-light p-3 rounded border">
+                                    <div class="row g-2">
+                                        <div class="col-md-4">
+                                            <label class="form-label small font-weight-bold">{{
+                                                languageService.getString('state') }}</label>
+                                            <ng-select [items]="metaData['STATES']" bindLabel="label" bindValue="value"
+                                                name="state" required
+                                                [placeholder]="languageService.getString('selectState')"
+                                                [(ngModel)]="publishNewsForm['state']" #state="ngModel"
+                                                [clearable]="false"
+                                                (ngModelChange)="changeOfState();publishNewsForm['district']=null;publishNewsForm['mandal']=null;"
+                                                [disabled]="disableFields">
+                                            </ng-select>
+                                        </div>
+                                        <div class="col-md-4" *ngIf="publishNewsForm['state']">
+                                            <label class="form-label small font-weight-bold">{{
+                                                languageService.getString('district') }}</label>
+                                            <ng-select [items]="metaData[publishNewsForm['state']+'_DISTRICTS']"
+                                                bindLabel="label" bindValue="value" [disabled]="disableFields"
+                                                name="district" required
+                                                [placeholder]="languageService.getString('selectDistrict')"
+                                                [(ngModel)]="publishNewsForm['district']" #district="ngModel"
+                                                [clearable]="false" (ngModelChange)="publishNewsForm['mandal']=null;">
+                                            </ng-select>
+                                        </div>
+                                        <div class="col-md-4" *ngIf="publishNewsForm['district']">
+                                            <label class="form-label small font-weight-bold">{{
+                                                languageService.getString('mandal') }}</label>
+                                            <ng-select
+                                                [items]="metaData[publishNewsForm['state']+'_DISTRICT_MANDALS'][publishNewsForm['district']]"
+                                                [disabled]="disableFields" name="mandal" required
+                                                [placeholder]="languageService.getString('selectMandal')"
+                                                [(ngModel)]="publishNewsForm['mandal']" #mandal="ngModel"
+                                                [clearable]="false">
+                                            </ng-select>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            <ng-container *ngIf="publishNewsForm['state']">
-                                <div class="col-12 mb-3">
-                                    <label class="form-label" for="district">{{ languageService.getString('district')
-                                        }}</label>
-                                    <ng-select [items]="metaData[publishNewsForm['state']+'_DISTRICTS']"
-                                        bindLabel="label" bindValue="value" [disabled]="disableFields" name="district"
-                                        required [placeholder]="languageService.getString('selectDistrict')"
-                                        [(ngModel)]="publishNewsForm['district']" #district="ngModel"
-                                        [clearable]="false"
-                                        [ngClass]="{ 'is-invalid': newsForm.submitted && district.invalid }"
-                                        (ngModelChange)="publishNewsForm['mandal']=null;">
-                                    </ng-select>
-                                    <div *ngIf="newsForm.submitted && district.invalid" class="invalid-feedback">
-                                        <div *ngIf="district.errors?.['required']">{{
-                                            languageService.getString('fieldRequired') }}</div>
-                                    </div>
-                                </div>
-                                <div class="col-12 mb-3" *ngIf="publishNewsForm['district']">
-                                    <label class="form-label" for="mandal">{{ languageService.getString('mandal')
-                                        }}</label>
-                                    <ng-select
-                                        [items]="metaData[publishNewsForm['state']+'_DISTRICT_MANDALS'][publishNewsForm['district']]"
-                                        [disabled]="disableFields" name="mandal" required
-                                        [placeholder]="languageService.getString('selectMandal')"
-                                        [(ngModel)]="publishNewsForm['mandal']" #mandal="ngModel" [clearable]="false"
-                                        [ngClass]="{ 'is-invalid': newsForm.submitted && mandal.invalid }">
-                                    </ng-select>
-                                    <div *ngIf="newsForm.submitted && mandal.invalid" class="invalid-feedback">
-                                        <div *ngIf="mandal.errors?.['required']">{{
-                                            languageService.getString('fieldRequired') }}</div>
-                                    </div>
-                                </div>
-                            </ng-container>
                         </ng-container>
 
-                        <!-- Description -->
-                        <div class="form-group full-width">
-                            <label class="form-label" for="description">{{ languageService.getString('description')
+                        <!-- Content Section -->
+                        <div class="col-12">
+                            <label class="form-label font-weight-semibold">{{ languageService.getString('description')
                                 }}</label>
-                            <textarea class="form-control" name="description" rows="4"
-                                placeholder="{{ languageService.getString('description') }}"
+                            <textarea class="form-control" name="description" rows="6"
+                                [placeholder]="languageService.getString('description') || 'Write full article content here...'"
                                 [(ngModel)]="publishNewsForm['description']" #description="ngModel"
                                 [readonly]="disableFields" required
-                                [ngClass]="{ 'is-invalid': newsForm.submitted && description.invalid }">
+                                [class.is-invalid]="newsForm.submitted && description.invalid">
                             </textarea>
-                            <div *ngIf="newsForm.submitted && description.invalid" class="invalid-feedback">
-                                <div *ngIf="description.errors?.['required']">This field is required</div>
-                            </div>
                         </div>
 
-                        <!-- Images Upload -->
-                        <div class="form-group full-width mt-2">
-                            <label class="form-label" for="images">{{ languageService.getString('photos') }}</label>
-                            <button type="button" class="btn btn-outline-primary upload-button"
-                                (click)="openImageUploadModal()" [disabled]="disableFields">
-                                <i class="fa-solid fa-cloud-arrow-up"></i>
-                                {{ languageService.getString('clickToUpload') }}
-                            </button>
-                            <div class="image-upload-section">
-                                <div class="image-preview" *ngIf="publishNewsForm?.['images']?.length > 0; else emptyState">
-                                    <div class="image-item" *ngFor="let image of publishNewsForm['images']; let i = index">
-                                        <img [src]="image?.externalURL || image['tempURL']" alt="News image" />
-                                        <button type="button" class="remove-image" *ngIf="!disableFields"
-                                            (click)="$event.stopPropagation(); removeImage(i, image)">
-                                            <i class="fa-solid fa-xmark"></i>
+                        <!-- Media Section -->
+                        <div class="col-12 mt-2">
+                            <label class="form-label font-weight-semibold d-block">
+                                {{ languageService.getString('photos') }}
+                                <span class="text-muted small ml-1">(At least 1 image recommended)</span>
+                            </label>
+
+                            <div class="media-upload-area p-4 border rounded bg-white text-center shadow-sm"
+                                [class.has-images]="publishNewsForm?.['images']?.length > 0">
+
+                                <div class="image-previews-grid d-flex flex-wrap gap-3 mb-3"
+                                    *ngIf="publishNewsForm?.['images']?.length > 0">
+                                    <div class="preview-item position-relative"
+                                        *ngFor="let image of publishNewsForm['images']; let i = index">
+                                        <img [src]="image?.externalURL || image['tempURL']"
+                                            class="rounded border shadow-sm"
+                                            style="width: 100px; height: 100px; object-fit: cover;">
+                                        <button type="button"
+                                            class="btn btn-danger btn-sm position-absolute top-0 start-100 translate-middle rounded-circle p-1"
+                                            *ngIf="!disableFields"
+                                            (click)="$event.stopPropagation(); removeImage(i, image)"
+                                            style="width: 24px; height: 24px; line-height: 14px;">
+                                            <i class="fas fa-times small"></i>
                                         </button>
                                     </div>
                                 </div>
-                                
-                                <ng-template #emptyState>
-                                    <div class="empty-state">
-                                        <i class="fa-regular fa-images"></i>
-                                        <p>No images uploaded yet</p>
-                                        <!-- <p>{{ languageService.getString('noImagesUploaded') || 'No images uploaded yet' }}</p> -->
-                                    </div>
-                                </ng-template>
+
+                                <div class="upload-placeholder py-3" *ngIf="!disableFields">
+                                    <button type="button" class="btn btn-outline-primary enterprise-btn-mini px-4"
+                                        (click)="openImageUploadModal()">
+                                        <i class="fas fa-upload mr-2"></i> {{ languageService.getString('clickToUpload')
+                                        || 'Add Media' }}
+                                    </button>
+                                    <p class="text-muted small mt-2 mb-0">Supports JPG, PNG, WEBP (Max 5MB per image)
+                                    </p>
+                                </div>
                             </div>
                         </div>
 
-                        <div class="form-group full-width">
-                            <label class="form-label" for="source">{{ languageService.getString('source') }}</label>
+                        <!-- Source Section -->
+                        <div class="col-md-6">
+                            <label class="form-label font-weight-semibold">{{ languageService.getString('source')
+                                }}</label>
                             <ng-select [items]="metaData['NEWS_SOURCES']" name="source" bindLabel="label"
-                                bindValue="label" placeholder="{{ languageService.getString('source') }}"
+                                bindValue="label" [placeholder]="languageService.getString('source')"
                                 [(ngModel)]="publishNewsForm['source']" #source="ngModel" [clearable]="false"
                                 (change)="getNewsActiveEmployees($event)"
-                                [disabled]="this.loggedUserDetails?.role === 'REPORTER' || disableFields"   
-                                [ngClass]="{ 'is-invalid': newsForm.submitted && source.invalid }">
-                            </ng-select>
-                            <div *ngIf="newsForm.submitted && source.invalid" class="invalid-feedback">
-                                <div *ngIf="source.errors?.['required']">This field is required</div>
-                            </div>
-                        </div>
-
-                        <!-- Source Link -->
-                        <div class="form-group full-width"
-                            *ngIf="publishNewsForm['source'] && publishNewsForm['source'] !== 'Neti Charithra'">
-                            <label class="form-label" for="sourceLink">{{ languageService.getString('sourceLink')
-                                }}</label>
-                            <input type="text" class="form-control" name="sourceLink"
-                                placeholder="{{ languageService.getString('sourceLink') }}"
-                                [(ngModel)]="publishNewsForm['sourceLink']" #sourceLink="ngModel"
-                                [readonly]="disableFields" 
-                                [required]="publishNewsForm['source'] !== 'Neti Charithra'"
-                                [ngClass]="{ 'is-invalid': newsForm.submitted && sourceLink.invalid }" />
-                            <div *ngIf="newsForm.submitted && sourceLink.invalid" class="invalid-feedback">
-                                <div *ngIf="sourceLink.errors?.['required']">This field is required</div>
-                            </div>
-                        </div>
-
-                        <!-- Reporter Selection for CEO -->
-                        <div class="form-group full-width"
-                            *ngIf="loggedUserDetails?.['role'] == 'CEO' && publishNewsForm?.['source'] === 'Neti Charithra'">
-                            <label class="form-label" for="reportedBy">{{ languageService.getString('reportedBy')
-                                }}</label>
-                            <ng-select [items]="employeesList" name="reportedBy" bindLabel="name"
-                                placeholder="{{ languageService.getString('selectReporter') }}"
-                                [(ngModel)]="publishNewsForm['reportedBy']" #reportedBy="ngModel" [clearable]="false"
-                                [ngClass]="{ 'is-invalid': newsForm.submitted && reportedBy.invalid }"
                                 [disabled]="this.loggedUserDetails?.role === 'REPORTER' || disableFields">
                             </ng-select>
-                            <div *ngIf="newsForm.submitted && reportedBy.invalid" class="invalid-feedback">
-                                <div *ngIf="reportedBy.errors?.['required']">This field is required</div>
-                            </div>
                         </div>
 
-                        <!-- Hidden Fields -->
-                        <input type="file" id="loginimages" class="form-control form-control-lg d-none"
-                            placeholder="Enter a valid images" name="images" [(ngModel)]="images" #image="ngModel"
-                            [disabled]="disableFields"
-                            [ngClass]="{ 'is-invalid': newsForm.submitted && images.invalid }" type="file"
+                        <div class="col-md-6"
+                            *ngIf="publishNewsForm['source'] && publishNewsForm['source'] !== 'Neti Charithra'">
+                            <label class="form-label font-weight-semibold">{{ languageService.getString('sourceLink')
+                                }}</label>
+                            <input type="text" class="form-control" name="sourceLink"
+                                [placeholder]="languageService.getString('sourceLink') || 'https://...'"
+                                [(ngModel)]="publishNewsForm['sourceLink']" #sourceLink="ngModel"
+                                [readonly]="disableFields" [required]="publishNewsForm['source'] !== 'Neti Charithra'"
+                                [class.is-invalid]="newsForm.submitted && sourceLink.invalid" />
+                        </div>
+
+                        <div class="col-md-6"
+                            *ngIf="loggedUserDetails?.['role'] == 'CEO' && publishNewsForm?.['source'] === 'Neti Charithra'">
+                            <label class="form-label font-weight-semibold">{{ languageService.getString('reportedBy')
+                                }}</label>
+                            <ng-select [items]="employeesList" name="reportedBy" bindLabel="name"
+                                [placeholder]="languageService.getString('selectReporter')"
+                                [(ngModel)]="publishNewsForm['reportedBy']" #reportedBy="ngModel" [clearable]="false"
+                                [disabled]="this.loggedUserDetails?.role === 'REPORTER' || disableFields">
+                            </ng-select>
+                        </div>
+
+                        <input type="file" id="loginimages" class="d-none" name="images" [(ngModel)]="images"
                             (change)="upload($event)" multiple accept=".png, .jpg, .jpeg, .gif, .webp" />
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" id="manipulateNewsCloseBtn" class="btn btn-secondary" data-bs-dismiss="modal">
+                <div class="modal-footer bg-light p-3">
+                    <button type="button" class="btn btn-secondary border-0" data-bs-dismiss="modal">
                         {{ languageService.getString('cancel') }}
                     </button>
-                    <button type="submit" class="btn btn-primary" *ngIf="actionType !== 'view'">
+                    <button type="submit" class="btn btn-primary enterprise-btn px-4" *ngIf="actionType !== 'view'">
                         {{ actionType === 'approve' ? languageService.getString('approve') :
                         actionType === 'reject' ? languageService.getString('reject') :
                         actionType === 'create' ? languageService.getString('create') :
-                        actionType === 'update' ? languageService.getString('update') : '' }}
+                        actionType === 'update' ? languageService.getString('update') : 'Submit' }}
                     </button>
                 </div>
             </form>
@@ -287,37 +255,24 @@
             </div>
             <div class="modal-body">
                 <div class="row mx-3">
-                  <div class="col-9">
-                    <input
-                      type="text"
-                      class="form-control form-control-lg"
-                      name="title"
-                      placeholder="Enter URL"
-                      [(ngModel)]="uploadOnlineTempURL"
-                      [disabled]="disableFields"
-                    />
-                  </div>
-                  <div class="col-3">
-                    <button
-                      class="btn btn-primary w-100 h-100"
-                      (click)="addImageURL()"
-                      [disabled]="disableFields"
-                    >
-                      GET
-                    </button>
-                  </div>
-              
-                  <div class="col-12 mt-2">
-                    <button
-                      class="btn btn-secondary w-100"
-                      (click)="openUploadImageLocal()"
-                      [disabled]="disableFields"
-                    >
-                      Click here to Upload Images from your Device
-                    </button>
-                  </div>
+                    <div class="col-9">
+                        <input type="text" class="form-control form-control-lg" name="title" placeholder="Enter URL"
+                            [(ngModel)]="uploadOnlineTempURL" [disabled]="disableFields" />
+                    </div>
+                    <div class="col-3">
+                        <button class="btn btn-primary w-100 h-100" (click)="addImageURL()" [disabled]="disableFields">
+                            GET
+                        </button>
+                    </div>
+
+                    <div class="col-12 mt-2">
+                        <button class="btn btn-secondary w-100" (click)="openUploadImageLocal()"
+                            [disabled]="disableFields">
+                            Click here to Upload Images from your Device
+                        </button>
+                    </div>
                 </div>
-              </div>
+            </div>
         </div>
     </div>
 </div>
@@ -340,84 +295,83 @@
                     <div class="template-selector mb-3">
                         <h6 class="fw-bold mb-2">Select Template</h6>
                         <div class="form-group">
-                            <ng-select 
-                                [(ngModel)]="selectedTemplateId"
-                                [items]="whatsappTemplates"
-                                bindLabel="name"
-                                bindValue="id"
-                                placeholder="Choose a template..."
-                                [clearable]="false"
-                                [searchable]="true"
-                                (change)="onTemplateChange()"
-                                class="custom-ng-select">
+                            <ng-select [(ngModel)]="selectedTemplateId" [items]="whatsappTemplates" bindLabel="name"
+                                bindValue="id" placeholder="Choose a template..." [clearable]="false"
+                                [searchable]="true" (change)="onTemplateChange()" class="custom-ng-select">
                             </ng-select>
                         </div>
                     </div>
-               
+
                     <!-- Template Preview -->
                     <div *ngIf="selectedTemplateObj && selectedTemplateObj.image" class="template-preview mb-3">
                         <div class="d-flex justify-content-between align-items-center mb-2">
                             <h6 class="fw-bold mb-0">Template Preview</h6>
-                            <button type="button" class="btn btn-outline-secondary btn-sm" 
-                                    (click)="resetFontAdjustments()" title="Reset font sizes">
+                            <button type="button" class="btn btn-outline-secondary btn-sm"
+                                (click)="resetFontAdjustments()" title="Reset font sizes">
                                 <i class="fas fa-undo"></i> Reset
                             </button>
                         </div>
-                        
+
                         <!-- Template Preview Container -->
-                        <div class="template-preview-wrapper" >
+                        <div class="template-preview-wrapper">
                             <div class="template-image-container" id="templateImageContainer"
-                                 [style.background-image]="'url(' + selectedTemplateObj.base64 + ')'"
-                                 style="background-size: cover; background-position: center; background-repeat: no-repeat; border-radius: 8px; position: relative; width: 382px; height: 540px; padding: 15px; margin: 0 auto;">
-       
-                                 <div class="news-container-section" style="position: absolute; top: 120px; width: 92%;">
-                                   
+                                [style.background-image]="'url(' + selectedTemplateObj.base64 + ')'"
+                                style="background-size: cover; background-position: center; background-repeat: no-repeat; border-radius: 8px; position: relative; width: 382px; height: 540px; padding: 15px; margin: 0 auto;">
+
+                                <div class="news-container-section" style="position: absolute; top: 120px; width: 92%;">
+
                                     <div class="news-title-section" style="height: 40px;">
-                                        <p [style.font-size.px]="getDynamicTitleFontSize()" 
-                                           [style.line-height.px]="getDynamicTitleLineHeight()"
-                                           [style.-webkit-line-clamp]="getMaxLinesForTitle()"
-                                           [style.line-clamp]="getMaxLinesForTitle()">
-                                           {{selectedNewsForShare?.title}}
+                                        <p [style.font-size.px]="getDynamicTitleFontSize()"
+                                            [style.line-height.px]="getDynamicTitleLineHeight()"
+                                            [style.-webkit-line-clamp]="getMaxLinesForTitle()"
+                                            [style.line-clamp]="getMaxLinesForTitle()">
+                                            {{selectedNewsForShare?.title}}
                                         </p>
-                                     </div>
-                                     <div class="news-image-section" style="height: 150px; margin-bottom: 5px;">
-                                        <img [src]="selectedNewsForShare?.images?.[0]?.base64" alt="News Image" style="width: 100%; height: 100%; object-fit: cover;">
-                                     </div>
-                                     <div class="news-content-section" style="height: 200px;">
-                                        <p [style.font-size.px]="getDynamicContentFontSize()" 
-                                           [style.line-height.px]="getDynamicContentLineHeight()"
-                                           [style.-webkit-line-clamp]="getMaxLinesForContent()"
-                                           [style.line-clamp]="getMaxLinesForContent()">
-                                           <span *ngIf="selectedNewsForShare?.regionalLanguage?.mandal?.te && selectedNewsForShare?.createdDate">
-                                             <b>{{selectedNewsForShare.regionalLanguage.mandal.te}} ({{formatNewsDateForTemplate(selectedNewsForShare.createdDate)}})</b> : 
-                                           </span>
-                                           {{selectedNewsForShare?.description}}
+                                    </div>
+                                    <div class="news-image-section" style="height: 150px; margin-bottom: 5px;">
+                                        <img [src]="selectedNewsForShare?.images?.[0]?.base64" alt="News Image"
+                                            style="width: 100%; height: 100%; object-fit: cover;">
+                                    </div>
+                                    <div class="news-content-section" style="height: 200px;">
+                                        <p [style.font-size.px]="getDynamicContentFontSize()"
+                                            [style.line-height.px]="getDynamicContentLineHeight()"
+                                            [style.-webkit-line-clamp]="getMaxLinesForContent()"
+                                            [style.line-clamp]="getMaxLinesForContent()">
+                                            <span
+                                                *ngIf="selectedNewsForShare?.regionalLanguage?.mandal?.te && selectedNewsForShare?.createdDate">
+                                                <b>{{selectedNewsForShare.regionalLanguage.mandal.te}}
+                                                    ({{formatNewsDateForTemplate(selectedNewsForShare.createdDate)}})</b>
+                                                :
+                                            </span>
+                                            {{selectedNewsForShare?.description}}
                                         </p>
-                                     </div>
-                                  </div>
-                                  
-                                  <!-- Legend/Footer Section -->
-                                  <div class="legend-footer-section" style="position: absolute; bottom: 10px; width: 92%; text-align: center;">
-                                      <div style="font-size: 7px; color: #666; line-height: 1.1;">
-                                          📰 Visit www.neticharithra.com to read more news | 📱 Now app is available in Android
-                                      </div>
-                                  </div>
-                                 
+                                    </div>
+                                </div>
+
+                                <!-- Legend/Footer Section -->
+                                <div class="legend-footer-section"
+                                    style="position: absolute; bottom: 10px; width: 92%; text-align: center;">
+                                    <div style="font-size: 7px; color: #666; line-height: 1.1;">
+                                        📰 Visit www.neticharithra.com to read more news | 📱 Now app is available in
+                                        Android
+                                    </div>
+                                </div>
+
                             </div>
                         </div>
-                        
+
                         <!-- Compact Font Controls -->
                         <div class="font-controls-compact mt-3">
                             <div class="controls-header">
                                 <span class="controls-title">
                                     <i class="fas fa-text-height"></i> Font Controls
                                 </span>
-                                <button type="button" class="btn btn-outline-secondary btn-xs" 
-                                        (click)="resetFontAdjustments()" title="Reset font sizes">
+                                <button type="button" class="btn btn-outline-secondary btn-xs"
+                                    (click)="resetFontAdjustments()" title="Reset font sizes">
                                     <i class="fas fa-undo"></i>
                                 </button>
                             </div>
-                            
+
                             <div class="controls-row">
                                 <!-- Title Controls -->
                                 <div class="control-item">
@@ -427,22 +381,21 @@
                                         <span class="current-size">{{getDynamicTitleFontSize()}}px</span>
                                     </div>
                                     <div class="control-buttons">
-                                        <button type="button" class="btn btn-outline-danger btn-xs" 
-                                                (click)="adjustTitleFontSize(-0.5)" title="Decrease">
+                                        <button type="button" class="btn btn-outline-danger btn-xs"
+                                            (click)="adjustTitleFontSize(-0.5)" title="Decrease">
                                             <i class="fas fa-minus"></i>
                                         </button>
-                                        <span class="adjustment-badge" 
-                                              [class.positive]="titleFontAdjustment > 0"
-                                              [class.negative]="titleFontAdjustment < 0">
+                                        <span class="adjustment-badge" [class.positive]="titleFontAdjustment > 0"
+                                            [class.negative]="titleFontAdjustment < 0">
                                             {{titleFontAdjustment > 0 ? '+' : ''}}{{titleFontAdjustment}}
                                         </span>
-                                        <button type="button" class="btn btn-outline-success btn-xs" 
-                                                (click)="adjustTitleFontSize(0.5)" title="Increase">
+                                        <button type="button" class="btn btn-outline-success btn-xs"
+                                            (click)="adjustTitleFontSize(0.5)" title="Increase">
                                             <i class="fas fa-plus"></i>
                                         </button>
                                     </div>
                                 </div>
-                                
+
                                 <!-- Description Controls -->
                                 <div class="control-item">
                                     <div class="control-label">
@@ -451,31 +404,32 @@
                                         <span class="current-size">{{getDynamicContentFontSize()}}px</span>
                                     </div>
                                     <div class="control-buttons">
-                                        <button type="button" class="btn btn-outline-danger btn-xs" 
-                                                (click)="adjustDescriptionFontSize(-0.5)" title="Decrease">
+                                        <button type="button" class="btn btn-outline-danger btn-xs"
+                                            (click)="adjustDescriptionFontSize(-0.5)" title="Decrease">
                                             <i class="fas fa-minus"></i>
                                         </button>
-                                        <span class="adjustment-badge" 
-                                              [class.positive]="descriptionFontAdjustment > 0"
-                                              [class.negative]="descriptionFontAdjustment < 0">
+                                        <span class="adjustment-badge" [class.positive]="descriptionFontAdjustment > 0"
+                                            [class.negative]="descriptionFontAdjustment < 0">
                                             {{descriptionFontAdjustment > 0 ? '+' : ''}}{{descriptionFontAdjustment}}
                                         </span>
-                                        <button type="button" class="btn btn-outline-success btn-xs" 
-                                                (click)="adjustDescriptionFontSize(0.5)" title="Increase">
+                                        <button type="button" class="btn btn-outline-success btn-xs"
+                                            (click)="adjustDescriptionFontSize(0.5)" title="Increase">
                                             <i class="fas fa-plus"></i>
                                         </button>
                                     </div>
                                 </div>
-                                
+
                             </div>
                             <!-- Quick Actions -->
                             <div class="quick-actions">
-                                <button type="button" class="btn btn-primary btn-xs" 
-                                        (click)="adjustTitleFontSize(1); adjustDescriptionFontSize(1)" title="Increase both">
+                                <button type="button" class="btn btn-primary btn-xs"
+                                    (click)="adjustTitleFontSize(1); adjustDescriptionFontSize(1)"
+                                    title="Increase both">
                                     <i class="fas fa-plus"></i> Both
                                 </button>
-                                <button type="button" class="btn btn-warning btn-xs" 
-                                        (click)="adjustTitleFontSize(-1); adjustDescriptionFontSize(-1)" title="Decrease both">
+                                <button type="button" class="btn btn-warning btn-xs"
+                                    (click)="adjustTitleFontSize(-1); adjustDescriptionFontSize(-1)"
+                                    title="Decrease both">
                                     <i class="fas fa-minus"></i> Both
                                 </button>
                             </div>
@@ -491,14 +445,14 @@
                             </h6>
                             <p class="share-subtitle">Select where you'd like to send this news</p>
                         </div>
-                        
+
                         <!-- Modern Card-Based Share Options -->
                         <div class="share-cards-container">
                             <!-- Share to Self Card -->
-                            <div class="share-card" [class.active]="whatsappShareData.shareOption === 'self'" 
-                                 (click)="onShareOptionChange('self')">
-                                <input type="radio" name="shareOption" id="shareToSelf" value="self" 
-                                       [(ngModel)]="whatsappShareData.shareOption" class="share-radio">
+                            <div class="share-card" [class.active]="whatsappShareData.shareOption === 'self'"
+                                (click)="onShareOptionChange('self')">
+                                <input type="radio" name="shareOption" id="shareToSelf" value="self"
+                                    [(ngModel)]="whatsappShareData.shareOption" class="share-radio">
                                 <div class="card-content">
                                     <div class="card-icon self">
                                         <i class="fas fa-user"></i>
@@ -512,12 +466,13 @@
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <!-- Share to Admin Card -->
-                            <div class="share-card recommended" [class.active]="whatsappShareData.shareOption === 'admin'" 
-                                 (click)="onShareOptionChange('admin')">
-                                <input type="radio" name="shareOption" id="shareToAdmin" value="admin" 
-                                       [(ngModel)]="whatsappShareData.shareOption" class="share-radio">
+                            <div class="share-card recommended"
+                                [class.active]="whatsappShareData.shareOption === 'admin'"
+                                (click)="onShareOptionChange('admin')">
+                                <input type="radio" name="shareOption" id="shareToAdmin" value="admin"
+                                    [(ngModel)]="whatsappShareData.shareOption" class="share-radio">
                                 <div class="recommended-badge">
                                     <i class="fas fa-star"></i> Recommended
                                 </div>
@@ -534,12 +489,12 @@
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <!-- Choose Contact Card -->
-                            <div class="share-card" [class.active]="whatsappShareData.shareOption === 'custom'" 
-                                 (click)="onShareOptionChange('custom')">
-                                <input type="radio" name="shareOption" id="shareToCustom" value="custom" 
-                                       [(ngModel)]="whatsappShareData.shareOption" class="share-radio">
+                            <div class="share-card" [class.active]="whatsappShareData.shareOption === 'custom'"
+                                (click)="onShareOptionChange('custom')">
+                                <input type="radio" name="shareOption" id="shareToCustom" value="custom"
+                                    [(ngModel)]="whatsappShareData.shareOption" class="share-radio">
                                 <div class="card-content">
                                     <div class="card-icon custom">
                                         <i class="fas fa-users"></i>
@@ -555,7 +510,7 @@
                             </div>
                         </div>
                     </div>
-                  
+
                 </div>
             </div>
             <div class="modal-footer">
@@ -566,7 +521,7 @@
                         {{ whatsappShareValidationError }}
                     </div>
                 </div>
-                
+
                 <div class="modal-footer-buttons">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                         {{ languageService.getString('cancel') || 'Cancel' }}

@@ -1,0 +1,18 @@
+<div class="kpi-card" [class]="'kpi-' + variant">
+    <div class="kpi-inner">
+        <div class="kpi-top">
+            <div class="kpi-icon-wrap">
+                <i [class]="icon"></i>
+            </div>
+            <div *ngIf="percentChange !== null" class="kpi-badge" [class.badge-positive]="isPositive"
+                [class.badge-negative]="!isPositive">
+                <i class="fas" [class.fa-arrow-up]="isPositive" [class.fa-arrow-down]="!isPositive"></i>
+                {{ percentChange | number:'1.1-1' }}%
+            </div>
+        </div>
+        <div class="kpi-value">{{ value }}</div>
+        <div class="kpi-label">{{ label }}</div>
+        <div class="kpi-sub">{{ context }}</div>
+    </div>
+    <div class="kpi-glow"></div>
+</div>

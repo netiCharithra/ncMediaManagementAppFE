@@ -1,27 +1,25 @@
 <div class="news-management">
     <app-admin-loader [show]="adminService.loaderService"></app-admin-loader>
-    <div class="news-header">
-        <div class="header-content row">
-            <h2 class="col-12 col-md-7">
-                Employee Management
-            </h2>
-            <div class="controls col-12 col-md-5 row mt-2">
-                <mat-form-field appearance="outline" class="col-7">
-                    <mat-select [(ngModel)]="employeeListData['action']" (selectionChange)="changeOfNewsType()">
-                        <mat-option value="Active">Active</mat-option>
-                        <mat-option value="Inactive">Inactive</mat-option>
-                        <mat-option value="Disabled">Disabled</mat-option>
-                    </mat-select>
-                </mat-form-field>
+    <app-page-header [title]="languageService.getString('employeeManagement') || 'Employee Management'"
+        subtitle="Manage and view employee roles, tracking, and statuses." eyebrow="PEOPLE" eyebrowIcon="fas fa-users"
+        class="mb-4 d-block">
 
-                <button mat-flat-button color="primary" class="report-news-btn col-5"
-                    (click)="actionEmitter({type:'create'})">
-                    <i class="fa-solid fa-plus"></i>
-                    Add Employee
-                </button>
+        <div class="d-flex align-items-center gap-3">
+            <!-- Filter Dropdown -->
+            <div class="custom-select-wrapper" style="width: 180px;">
+                <ng-select [(ngModel)]="employeeListData['action']" (change)="changeOfNewsType()" [searchable]="false"
+                    [clearable]="false" class="enterprise-select">
+                    <ng-option value="Active">Active Employees</ng-option>
+                    <ng-option value="Inactive">Inactive Employees</ng-option>
+                    <ng-option value="Disabled">Disabled Employees</ng-option>
+                </ng-select>
             </div>
+
+            <button class="btn btn-primary enterprise-btn" (click)="actionEmitter({type:'create'})">
+                <i class="fas fa-plus mr-2"></i> Add Employee
+            </button>
         </div>
-    </div>
+    </app-page-header>
 
     <nc-web-paginated-table *ngIf="employeeListData.tableLoaded" [columns]="employeeListData.header"
         [data]="employeeListData.body" [page]="employeeListData.page" [itemsPerPage]="employeeListData.count"
@@ -45,262 +43,179 @@
 
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
-            <div class="modal-header justify-content-between">
+            <div class="modal-header">
                 <h5 class="modal-title" id="staticBackdropLabel">{{actionType === 'create' ? 'Create ' : actionType ===
                     'edit' ? 'Edit':''}} Employee</h5>
-                <button type="button" class="close btn" data-bs-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <form (ngSubmit)="disableFields ? signUpCreds() : signUpForm.form.valid && signUpCreds()"
-                #signUpForm="ngForm" novalidate class="col-12 row m-0 p-0">
-                <div class="modal-body col-12 row custom-form-body">
+                #signUpForm="ngForm" novalidate>
+                <div class="modal-body p-4">
+                    <div class="row g-3">
 
-                    <div class="col-12 col-md-6 my-1">
-                        <label class="form-label" for="loginName">Name</label>
-                        <input type="text" id="loginName" class="form-control form-control-lg"
-                            placeholder="Enter a name as per Documents" name="name"
-                            [(ngModel)]="signUpFormValues['name']" #name="ngModel" required [disabled]="disableFields"
-                            [ngClass]="{ 'is-invalid': signUpForm.submitted && name.invalid }" />
-                        <div *ngIf="signUpForm.submitted && name.invalid" class="invalid-feedback">
-                            <div *ngIf="name?.errors?.['required']">This field is required</div>
+                        <div class="col-md-6">
+                            <label class="form-label" for="loginName">Full Name</label>
+                            <input type="text" id="loginName" class="form-control" placeholder="Name as per Documents"
+                                name="name" [(ngModel)]="signUpFormValues['name']" #name="ngModel" required
+                                [disabled]="disableFields" [class.is-invalid]="signUpForm.submitted && name.invalid" />
                         </div>
-                    </div>
-                    <div class="col-12 col-md-6 my-1">
-                        <label class="form-label" for="aadharNumber">Aadhar Number</label>
-                        <input type="number" id="aadharNumber" class="form-control form-control-lg"
-                            placeholder="XXXXXXXXXXXX" name="aadharNumber"
-                            [(ngModel)]="signUpFormValues['aadharNumber']" #aadharNumber="ngModel"
-                            [disabled]="disableFields" required
-                            [ngClass]="{ 'is-invalid': signUpForm.submitted && aadharNumber.invalid }"
-                            pattern="^[2-9]{1}[0-9]{3}[0-9]{4}[0-9]{4}$" />
-                        <div *ngIf="signUpForm.submitted && aadharNumber.invalid" class="invalid-feedback">
-                            <div *ngIf="aadharNumber?.errors?.['required']">This field is required</div>
-                            <div *ngIf="aadharNumber?.errors?.['pattern']">Invalid Aadhar format</div>
+                        <div class="col-md-6">
+                            <label class="form-label" for="aadharNumber">Aadhar Number</label>
+                            <input type="number" id="aadharNumber" class="form-control" placeholder="12-digit number"
+                                name="aadharNumber" [(ngModel)]="signUpFormValues['aadharNumber']"
+                                #aadharNumber="ngModel" [disabled]="disableFields" required
+                                [class.is-invalid]="signUpForm.submitted && aadharNumber.invalid"
+                                pattern="^[2-9]{1}[0-9]{3}[0-9]{4}[0-9]{4}$" />
                         </div>
-                    </div>
-                    <div class="col-12 col-md-6 my-1">
-                        <label class="form-label" for="loginMobile">Mobile</label>
-                        <div class="input-group">
-                            <span class="input-group-text">+91</span>
-                            <input type="number" id="loginMobile" placeholder="Enter your 10-digit mobile number"
-                                name="mobile" class="form-control form-control-lg"
-                                [(ngModel)]="signUpFormValues['mobile']" [disabled]="disableFields" #mobile="ngModel"
-                                required [ngClass]="{ 'is-invalid': signUpForm.submitted && mobile.invalid }" />
-                        </div>
-                        <div *ngIf="signUpForm.submitted && mobile.invalid" class="invalid-feedback">
-                            <div *ngIf="mobile?.errors?.['required']">This field is required</div>
-                        </div>
-                    </div>
-
-                    <div class="col-12 col-md-6 my-1">
-                        <label class="form-label" for="loginEmail">Email address</label>
-                        <input type="email" id="loginEmail" placeholder="Enter a valid email address" name="mail"
-                            [(ngModel)]="signUpFormValues['mail']" class="form-control form-control-lg" #mail="ngModel"
-                            [disabled]="disableFields" required
-                            [ngClass]="{ 'is-invalid': signUpForm.submitted && mail.invalid }"
-                            pattern="^(?=.{1,254}$)(?=.{1,64}@)[-!#$%&'*+/0-9=?A-Z^_`a-z{|}~]+(\.[-!#$%&'*+/0-9=?A-Z^_`a-z{|}~]+)*@[A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?(\.[A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?)*$" />
-                        <div *ngIf="signUpForm.submitted && mail.invalid" class="invalid-feedback">
-                            <div *ngIf="mail?.errors?.['required']">This field is required</div>
-                            <div *ngIf="mail?.errors?.['pattern']">Invalid email format</div>
-                        </div>
-                    </div>
-                    <div class="col-12 col-md-6 my-1 ">
-                        <label class="form-label col" for="loginimages">Profile Picture
-
-
-                            <span class="text-muted" style="font-size: 0.6rem;">Only 1 Image is allowed</span>
-                        </label>
-                        <button class="btn pull-right col" type="button" [disabled]="disableFields"
-                            (click)="openImageUpload('loginimages', 'profilePicture')">Click or
-                            touch
-                            here
-                            to upload Profile Picture </button>
-
-                        <ng-container *ngIf="signUpFormValues && signUpFormValues['profilePicture']">
-                            <div class="col-12 d-flex">
-                                <span class="mx-1 cursor-pointer border rounded px-1 pt-1 image_holder">
-
-                                    <img [src]="signUpFormValues['profilePicture'].tempURL" alt="Failed to load Images"
-                                        class="custom_upload_image">
-
-                                    <span *ngIf="(actionType === 'create' || actionType === 'edit')"
-                                        class="text-center h6 font-weight-bold text-center w-100 m-0 pt-1 pb-0 px-2"
-                                        (click)="removeImage('profilePicture', signUpFormValues['profilePicture'])">
-                                        <i class="fas fa-trash text-danger"></i></span>
-                                </span>
+                        <div class="col-md-6">
+                            <label class="form-label" for="loginMobile">Mobile Phone</label>
+                            <div class="input-group">
+                                <span class="input-group-text border-end-0 bg-light text-muted">+91</span>
+                                <input type="number" id="loginMobile" placeholder="10-digit number" name="mobile"
+                                    class="form-control" [(ngModel)]="signUpFormValues['mobile']"
+                                    [disabled]="disableFields" #mobile="ngModel" required
+                                    [class.is-invalid]="signUpForm.submitted && mobile.invalid" />
                             </div>
-                        </ng-container>
-
-                        <input type="file" id="loginimages" class="form-control form-control-lg d-none"
-                            placeholder="Enter a valid images" name="profilePicture"
-                            [(ngModel)]="signUpFormValues['profilePicture_copy']" #profilePicture="ngModel"
-                            [ngClass]="{ 'is-invalid': signUpForm.submitted && profilePicture.invalid }" type="file"
-                            (change)="upload($event, 'profilePicture')" multiple accept=".png, .jpg, .jpeg, .gif" />
-                        <div *ngIf="signUpForm.submitted && profilePicture.invalid" class="invalid-feedback">
-                            <div *ngIf="profilePicture?.errors?.['required']">This field is required</div>
                         </div>
-                    </div>
-                    <div class="col-12 col-md-6 my-1">
-                        <label class="form-label col" for="loginimages">Aadhar Card
-
-
-                            <span class="text-muted" style="font-size: 0.6rem;">Only 1 Image is allowed</span>
-                        </label>
-                        <button class="btn pull-right col" type="button" [disabled]="disableFields"
-                            (click)="openImageUpload('identityProofUploader', 'identityProof')">Click or
-                            touch
-                            here
-                            to upload Aadhar Card </button>
-
-                        <ng-container *ngIf="signUpFormValues && signUpFormValues['identityProof']">
-                            <div class="col-12 d-flex">
-                                <span class="mx-1 cursor-pointer border rounded px-1 pt-1 image_holder">
-
-                                    <img [src]="signUpFormValues['identityProof'].tempURL" alt="Failed to load Images"
-                                        class="custom_upload_image">
-
-                                    <span *ngIf="(actionType === 'create' || actionType === 'edit')"
-                                        class="text-center h6 font-weight-bold text-center w-100 m-0 pt-1 pb-0 px-2"
-                                        (click)="removeImage('identityProof', signUpFormValues['identityProof'])"><i
-                                            class="fas fa-trash text-danger"></i></span>
-                                </span>
-                            </div>
-                        </ng-container>
-
-                        <input type="file" id="identityProofUploader" class="form-control form-control-lg d-none"
-                            placeholder="Enter a valid images" name="identityProof"
-                            [(ngModel)]="signUpFormValues['identityProof_copy']" #identityProof="ngModel"
-                            [ngClass]="{ 'is-invalid': signUpForm.submitted && identityProof.invalid }" type="file"
-                            (change)="upload($event, 'identityProof')" multiple accept=".png, .jpg, .jpeg, .gif" />
-                        <div *ngIf="signUpForm.submitted && identityProof.invalid" class="invalid-feedback">
-                            <div *ngIf="identityProof?.errors?.['required']">This field is required</div>
+                        <div class="col-md-6">
+                            <label class="form-label" for="loginEmail">Email Address</label>
+                            <input type="email" id="loginEmail" placeholder="email@example.com" name="mail"
+                                [(ngModel)]="signUpFormValues['mail']" class="form-control" #mail="ngModel"
+                                [disabled]="disableFields" required
+                                [class.is-invalid]="signUpForm.submitted && mail.invalid"
+                                pattern="^(?=.{1,254}$)(?=.{1,64}@)[-!#$%&'*+/0-9=?A-Z^_`a-z{|}~]+(\.[-!#$%&'*+/0-9=?A-Z^_`a-z{|}~]+)*@[A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?(\.[A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?)*$" />
                         </div>
-                    </div>
-
-
-
-
-                    <div class="col-12 col-md-6 my-1" *ngIf="actionType === 'create'">
-                        <label class="form-label" for="loginPassword">Password</label>
-                        <input type="password" id="loginPassword" required class="form-control form-control-lg"
-                            [disabled]="disableFields" placeholder="Enter password"
-                            [(ngModel)]="signUpFormValues['password']" name="password" #password="ngModel"
-                            [ngClass]="{ 'is-invalid': signUpForm.submitted && password.invalid }" />
-                        <div *ngIf="signUpForm.submitted && password.invalid" class="invalid-feedback">
-                            <div *ngIf="password?.errors?.['required']">This field is required</div>
+                        <div class="col-md-6" *ngIf="actionType === 'create'">
+                            <label class="form-label" for="loginPassword">Temporary Password</label>
+                            <input type="password" id="loginPassword" required class="form-control"
+                                [disabled]="disableFields" placeholder="••••••••"
+                                [(ngModel)]="signUpFormValues['password']" name="password" #password="ngModel"
+                                [class.is-invalid]="signUpForm.submitted && password.invalid" />
                         </div>
-                    </div>
-                    <div class="col-12 col-md-6 my-1">
-                        <label class="form-label" for="loginState">State</label>
-                        <ng-select [items]="metaData['STATES']" bindLabel="label" bindValue="value" name="state"
-                            [disabled]="disableFields" required placeholder="Enter state"
-                            [(ngModel)]="signUpFormValues['state']" #state="ngModel" [clearable]="false"
-                            [ngClass]="{ 'is-invalid': signUpForm.submitted && state.invalid }"
-                            (ngModelChange)="changeOfState();signUpFormValues['district']=null;signUpFormValues['mandal']=null; ">
-                        </ng-select>
-
-                        <div *ngIf="signUpForm.submitted && state.invalid" class="invalid-feedback">
-                            <div *ngIf="state?.errors?.['required']">This field is required</div>
-                        </div>
-                    </div>
-                    <ng-container *ngIf="signUpFormValues['state']">
-
-                        <div class="col-12 col-md-6 my-1">
-                            <label class="form-label" for="loginDistrict">District</label>
-                            <ng-select [items]="metaData[signUpFormValues['state']+'_DISTRICTS']" bindLabel="label"
-                                bindValue="value" [disabled]="disableFields" name="district" required
-                                placeholder="Select District" [(ngModel)]="signUpFormValues['district']"
-                                #district="ngModel" [clearable]="false"
-                                [ngClass]="{ 'is-invalid': signUpForm.submitted && district.invalid }"
-                                (ngModelChange)="signUpFormValues['mandal']=null; ">
+                        <div class="col-md-6">
+                            <label class="form-label" for="BloodGroup">Blood Group</label>
+                            <ng-select [items]="metaData['BLOOD_GROUP']" name="bloodGroup" bindLabel="label"
+                                bindValue="value" required [disabled]="disableFields" placeholder="Select Group"
+                                [(ngModel)]="signUpFormValues['bloodGroup']" #bloodGroup="ngModel" [clearable]="false">
                             </ng-select>
-                            <div *ngIf="signUpForm.submitted && district.invalid" class="invalid-feedback">
-                                <div *ngIf="district?.errors?.['required']">This field is required</div>
+                        </div>
+
+                        <div class="col-12">
+                            <div class="row g-3">
+                                <div class="col-md-4">
+                                    <label class="form-label">State</label>
+                                    <ng-select [items]="metaData['STATES']" bindLabel="label" bindValue="value"
+                                        name="state" [disabled]="disableFields" required
+                                        [(ngModel)]="signUpFormValues['state']" #state="ngModel" [clearable]="false"
+                                        (ngModelChange)="changeOfState();signUpFormValues['district']=null;signUpFormValues['mandal']=null;">
+                                    </ng-select>
+                                </div>
+                                <div class="col-md-4" *ngIf="signUpFormValues['state']">
+                                    <label class="form-label">District</label>
+                                    <ng-select [items]="metaData[signUpFormValues['state']+'_DISTRICTS']"
+                                        bindLabel="label" bindValue="value" [disabled]="disableFields" name="district"
+                                        required [(ngModel)]="signUpFormValues['district']" #district="ngModel"
+                                        [clearable]="false" (ngModelChange)="signUpFormValues['mandal']=null;">
+                                    </ng-select>
+                                </div>
+                                <div class="col-md-4" *ngIf="signUpFormValues['district']">
+                                    <label class="form-label">Mandal</label>
+                                    <ng-select
+                                        [items]="metaData[signUpFormValues['state']+'_DISTRICT_MANDALS'][signUpFormValues['district']]"
+                                        [disabled]="disableFields" name="mandal" required
+                                        [(ngModel)]="signUpFormValues['mandal']" #mandal="ngModel" [clearable]="false">
+                                    </ng-select>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-12 col-md-6 my-1"
-                            *ngIf="metaData && signUpFormValues['district'] && metaData[signUpFormValues['state']+'_DISTRICT_MANDALS'] ">
-                            <label class="form-label" for="loginMandal">Mandal</label>
-                            <ng-select
-                                [items]="metaData[signUpFormValues['state']+'_DISTRICT_MANDALS'][signUpFormValues['district']]"
-                                [disabled]="disableFields" name="mandal" required placeholder="Select mandal"
-                                [(ngModel)]="signUpFormValues['mandal']" #mandal="ngModel" [clearable]="false"
-                                [ngClass]="{ 'is-invalid': signUpForm.submitted && mandal.invalid }">
+
+                        <div class="col-md-6">
+                            <label class="form-label">Role</label>
+                            <ng-select [items]="metaData['ROLES']" name="role" bindLabel="label" bindValue="value"
+                                required [disabled]="true" [title]="'Ask Root Admin to change role'"
+                                [(ngModel)]="signUpFormValues['role']" #role="ngModel" [clearable]="false">
                             </ng-select>
-
-                            <div *ngIf="signUpForm.submitted && mandal.invalid" class="invalid-feedback">
-                                <div *ngIf="mandal?.errors?.['required']">This field is required</div>
-                            </div>
                         </div>
-                    </ng-container>
-                    <div class="col-12 col-md-6 my-1">
-                        <label class="form-label" for="constituency">Constituency</label>
-                        <input type="text" id="constituency" placeholder="Enter a valid name" name="constituency"
-                            class="form-control form-control-lg" [(ngModel)]="signUpFormValues['constituency']"
-                            #constituency="ngModel" required [disabled]="disableFields"
-                            [ngClass]="{ 'is-invalid': signUpForm.submitted && constituency.invalid }" />
-                        <div *ngIf="signUpForm.submitted && constituency.invalid" class="invalid-feedback">
-                            <div *ngIf="constituency?.errors?.['required']">This field is required</div>
+                        <div class="col-md-6">
+                            <label class="form-label">Constituency</label>
+                            <input type="text" class="form-control" placeholder="Enter Constituency" name="constituency"
+                                [(ngModel)]="signUpFormValues['constituency']" required [disabled]="disableFields"
+                                #constituency="ngModel"
+                                [class.is-invalid]="signUpForm.submitted && constituency.invalid" />
                         </div>
-                    </div>
 
-                    <div class="col-12 col-md-6 my-1">
-                        <label class="form-label" for="BloodGroup">Blood Group</label>
-                        <ng-select [items]="metaData['BLOOD_GROUP']" name="bloodGroup" bindLabel="label"
-                            bindValue="value" required [disabled]="disableFields" placeholder="Select bloodGroup"
-                            [(ngModel)]="signUpFormValues['bloodGroup']" #bloodGroup="ngModel" [clearable]="false"
-                            [ngClass]="{ 'is-invalid': signUpForm.submitted && bloodGroup.invalid }">
-                        </ng-select>
+                        <!-- Uploads -->
+                        <div class="col-12 mt-3">
+                            <div class="row g-4 text-center">
+                                <div class="col-md-6">
+                                    <label class="form-label d-block text-start">Profile Picture</label>
+                                    <div class="image-upload-zone p-3 border rounded bg-white shadow-sm"
+                                        (click)="(!disableFields && (actionType === 'create' || actionType === 'edit')) ? profilePictureUploader.click() : null"
+                                        style="cursor: pointer; border: 2px dashed #e2e8f0 !important; min-height: 120px; display: flex; align-items: center; justify-content: center;">
 
-                        <div *ngIf="signUpForm.submitted && bloodGroup.invalid" class="invalid-feedback">
-                            <div *ngIf="bloodGroup?.errors?.['required']">This field is required</div>
-                        </div>
-                    </div>
+                                        <div *ngIf="!signUpFormValues['profilePicture']" class="text-muted">
+                                            <i class="fas fa-camera fa-2x mb-2 opacity-50"></i>
+                                            <p class="small mb-0">Upload Photo</p>
+                                        </div>
 
+                                        <div *ngIf="signUpFormValues['profilePicture']" class="position-relative">
+                                            <img [src]="signUpFormValues['profilePicture'].tempURL" class="rounded"
+                                                style="width: 80px; height: 80px; object-fit: cover;">
+                                            <span
+                                                class="badge bg-danger position-absolute top-0 start-100 translate-middle rounded-circle"
+                                                *ngIf="!disableFields && (actionType === 'create' || actionType === 'edit')"
+                                                (click)="$event.stopPropagation(); removeImage('profilePicture', signUpFormValues['profilePicture'])"
+                                                style="padding: 4px 6px; cursor: pointer;">
+                                                <i class="fas fa-times"></i>
+                                            </span>
+                                        </div>
+                                        <input type="file" #profilePictureUploader class="d-none"
+                                            (change)="upload($event, 'profilePicture')" accept="image/*">
+                                    </div>
+                                </div>
 
-                    <div class="col-12 col-md-6 my-1">
-                        <label class="form-label" for="loginRole">Role</label>
-                        <ng-select [items]="metaData['ROLE']" name="role" required [disabled]="disableFields"
-                            placeholder="Select role" [(ngModel)]="signUpFormValues['role']" #role="ngModel"
-                            [clearable]="false" [ngClass]="{ 'is-invalid': signUpForm.submitted && role.invalid }">
-                        </ng-select>
+                                <div class="col-md-6">
+                                    <label class="form-label d-block text-start">Aadhar Proof</label>
+                                    <div class="image-upload-zone p-3 border rounded bg-white shadow-sm"
+                                        (click)="(!disableFields && (actionType === 'create' || actionType === 'edit')) ? identityProofUploader.click() : null"
+                                        style="cursor: pointer; border: 2px dashed #e2e8f0 !important; min-height: 120px; display: flex; align-items: center; justify-content: center;">
 
-                        <div *ngIf="signUpForm.submitted && role.invalid" class="invalid-feedback">
-                            <div *ngIf="role?.errors?.['required']">This field is required</div>
-                        </div>
-                    </div>
+                                        <div *ngIf="!signUpFormValues['identityProof']" class="text-muted">
+                                            <i class="fas fa-id-card fa-2x mb-2 opacity-50"></i>
+                                            <p class="small mb-0">Upload ID Card</p>
+                                        </div>
 
-
-                    <div class="col-12 col-md-6 my-1">
-                        <div class="form-check">
-                            <input type="checkbox" id="rootUser" name="rootUser" class="form-check-input"
-                                [(ngModel)]="signUpFormValues.rootUser" #rootUser="ngModel" [disabled]="disableFields"
-                                [ngClass]="{ 'is-invalid': signUpForm.submitted && rootUser.invalid }" />
-
-                            <label class="form-check-label" for="rootUser">
-                                Root User
-                            </label>
-
-                            <div *ngIf="signUpForm.submitted && rootUser.invalid" class="invalid-feedback d-block">
-                                This field is required
+                                        <div *ngIf="signUpFormValues['identityProof']" class="position-relative">
+                                            <img [src]="signUpFormValues['identityProof'].tempURL" class="rounded"
+                                                style="width: 140px; height: 80px; object-fit: cover;">
+                                            <span
+                                                class="badge bg-danger position-absolute top-0 start-100 translate-middle rounded-circle"
+                                                *ngIf="!disableFields && (actionType === 'create' || actionType === 'edit')"
+                                                (click)="$event.stopPropagation(); removeImage('identityProof', signUpFormValues['identityProof'])"
+                                                style="padding: 4px 6px; cursor: pointer;">
+                                                <i class="fas fa-times"></i>
+                                            </span>
+                                        </div>
+                                        <input type="file" #identityProofUploader class="d-none"
+                                            (change)="upload($event, 'identityProof')" accept="image/*">
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                
-                <div class="modal-footer col-12 row">
-                    <button type="button" class="btn btn-secondary col" data-bs-dismiss="modal"
-                        id="closeFormModalBtn">Close</button>
-                    <button type="submit" class="btn btn-primary btn-lg col"
-                        style="padding-left: 2.5rem; padding-right: 2.5rem;">
-
+                <div class="modal-footer p-3 bg-light border-top">
+                    <button type="button" class="btn btn-secondary border-0" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary enterprise-btn px-4"
+                        [disabled]="signUpForm.invalid && !disableFields">
                         {{
-                        actionType === 'create' ? 'Create ': actionType === 'active' ? 'Activate':actionType ===
-                        'inactive' ? 'Deactivate':actionType === 'disable' ? 'Disable':actionType === 'enable' ?
-                        'Enable':actionType === 'edit' ? 'Update':''
+                        actionType === 'create' ? 'Register Employee' :
+                        actionType === 'active' ? 'Activate Account' :
+                        actionType === 'inactive' ? 'Deactivate Account' :
+                        actionType === 'disable' ? 'Lock Account' :
+                        actionType === 'enable' ? 'Unlock Account' :
+                        actionType === 'edit' ? 'Update Details' : 'Submit'
                         }}
-
                     </button>
                 </div>
             </form>

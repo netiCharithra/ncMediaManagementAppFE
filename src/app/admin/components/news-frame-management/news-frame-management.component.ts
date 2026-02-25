@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { AdminService } from '../../services/admin.service';
 import { MessageService } from '../../services/message.service';
 import { StorageService } from '../../services/storage.service';
+import { LanguageService } from '../../../services/language.service';
 declare var bootstrap: any;
 
 @Component({
@@ -15,8 +16,13 @@ export class NewsFrameManagementComponent {
   public loggedUserDetails: any = {}
   public configFrameValues: any = {};
   public previewChanges: boolean = false;
-  
-  constructor(public adminService: AdminService, private messageService: MessageService, private storage: StorageService) {
+
+  constructor(
+    public adminService: AdminService,
+    private messageService: MessageService,
+    private storage: StorageService,
+    public languageService: LanguageService
+  ) {
     this.loggedUserDetails = this.storage.getStoredUser();
   }
 
@@ -127,7 +133,7 @@ export class NewsFrameManagementComponent {
     if (action === 'show') {
       // this.newsFrameFormValues = {};
       this.images = [];
-      
+
       // Ensure textPosition is initialized
       if (!this.newsFrameFormValues['textPosition']) {
         this.newsFrameFormValues['textPosition'] = {
@@ -137,7 +143,7 @@ export class NewsFrameManagementComponent {
           contentHeight: 75
         };
       }
-      
+
       const modal = new bootstrap.Modal(document.getElementById('employeeFormModal'));
       modal.show();
     } else {
@@ -185,7 +191,7 @@ export class NewsFrameManagementComponent {
       this.messageService.showError('No image available for preview');
     }
   }
-  
+
   /**
    * Downloads the image from the provided URL
    * @param imageUrl URL of the image to download
@@ -195,7 +201,7 @@ export class NewsFrameManagementComponent {
       this.messageService.showError('No image available to download');
       return;
     }
-    
+
     try {
       // Create a temporary anchor element
       const link = document.createElement('a');
@@ -246,7 +252,7 @@ export class NewsFrameManagementComponent {
               this.fetchNewsFrameList();
             }
           },
-          (error:any) => {
+          (error: any) => {
             this.messageService.showError(error.msg || "Failed !");
           }
         )
@@ -333,19 +339,19 @@ export class NewsFrameManagementComponent {
         // Format dates for input fields (YYYY-MM-DD)
         const validFromDate = new Date(this.newsFrameFormValues['validFrom']);
         const validToDate = new Date(this.newsFrameFormValues['validTo']);
-        
+
         this.newsFrameFormValues['validFrom'] = validFromDate.toISOString().split('T')[0];
         this.newsFrameFormValues['validTo'] = validToDate.toISOString().split('T')[0];
-        
+
         // Initialize default values for new fields if they don't exist
         if (!this.newsFrameFormValues['containerHeight']) {
           this.newsFrameFormValues['containerHeight'] = 535;
         }
-        
+
         if (!this.newsFrameFormValues['frameHeight']) {
           this.newsFrameFormValues['frameHeight'] = 515;
         }
-        
+
         if (!this.newsFrameFormValues['textPosition']) {
           this.newsFrameFormValues['textPosition'] = {
             topPercent: 23,
@@ -354,13 +360,13 @@ export class NewsFrameManagementComponent {
             contentHeight: 75
           };
         }
-        
+
         this.actionType = 'edit';
         this.formModalShowHide('show');
       }
     });
   }
-  
+
   /**
    * Get frame data for configuration
    */
@@ -368,16 +374,16 @@ export class NewsFrameManagementComponent {
     this.adminService.getNewsFrameById({ frameId: id }).subscribe((response: any) => {
       if (response) {
         this.configFrameValues = { ...response };
-        
+
         // Initialize default values for fields if they don't exist
         if (!this.configFrameValues['containerHeight']) {
           this.configFrameValues['containerHeight'] = 535;
         }
-        
+
         if (!this.configFrameValues['frameHeight']) {
           this.configFrameValues['frameHeight'] = 515;
         }
-        
+
         if (!this.configFrameValues['textPosition']) {
           this.configFrameValues['textPosition'] = {
             topPercent: 23,
@@ -386,7 +392,7 @@ export class NewsFrameManagementComponent {
             contentHeight: 75
           };
         }
-        
+
         // Get image URL for preview
         if (this.configFrameValues?.['frameData']) {
           this.getConfigImageTempUrl(this.configFrameValues['frameData']);
@@ -396,7 +402,7 @@ export class NewsFrameManagementComponent {
       }
     });
   }
-  
+
   /**
    * Get image temp URL for configuration modal
    */
@@ -415,7 +421,7 @@ export class NewsFrameManagementComponent {
       }
     });
   }
-  
+
   /**
    * Shows the configure modal
    */
@@ -430,7 +436,7 @@ export class NewsFrameManagementComponent {
     const modal = new bootstrap.Modal(modalElement);
     modal.show();
   }
-  
+
   /**
    * Save frame configuration
    */
@@ -442,10 +448,10 @@ export class NewsFrameManagementComponent {
       }
       else {
         console.log("proceed to save configuration", this.configFrameValues);
-        
+
         // Create a complete payload with all necessary fields
         const payload = { ...this.configFrameValues };
-        
+
         // If validFrom and validTo exist, format them properly
         if (payload['validFrom']) {
           // Start of the day (00:00:00)
@@ -453,14 +459,14 @@ export class NewsFrameManagementComponent {
           payload['validFrom'].setHours(0, 0, 0, 0);
           payload['validFrom'] = payload['validFrom'].getTime();
         }
-        
+
         if (payload['validTo']) {
           // End of the day (23:59:59.999)
           payload['validTo'] = new Date(payload['validTo']);
           payload['validTo'].setHours(23, 59, 59, 999);
           payload['validTo'] = payload['validTo'].getTime();
         }
-        
+
         // Use updateNewsFrame API directly
         this.adminService.updateNewsFrame({ ...this.loggedUserDetails, data: { ...payload } }).subscribe(
           (response: any) => {

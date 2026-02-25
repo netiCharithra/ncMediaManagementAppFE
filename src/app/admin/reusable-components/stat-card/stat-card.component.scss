@@ -1,0 +1,246 @@
+@import '../../../admin/styles/theme';
+
+// Inherits all .kpi-card styles from the global admin theme.
+// Host-specific adjustments only.
+
+:host {
+    display: block;
+}
+
+// Import shared KPI styles inline so <app-stat-card> works standalone
+.kpi-card {
+    position: relative;
+    border-radius: $border-radius-xl;
+    overflow: hidden;
+    cursor: default;
+    transition: transform $transition-normal, box-shadow $transition-normal;
+    border: 1px solid transparent;
+
+    &:hover {
+        transform: translateY(-3px);
+
+        .kpi-glow {
+            opacity: 0.6;
+            transform: scale(1.5);
+        }
+    }
+
+    .kpi-inner {
+        position: relative;
+        z-index: 1;
+        padding: $spacing-lg;
+    }
+
+    &.kpi-indigo {
+        background: linear-gradient(135deg, #eef2ff 0%, #e0e7ff 100%);
+        border-color: #c7d2fe;
+        box-shadow: 0 4px 20px rgba(99, 102, 241, 0.12);
+
+        .kpi-icon-wrap {
+            background: #6366f1;
+            color: #fff;
+            box-shadow: 0 4px 14px rgba(99, 102, 241, 0.4);
+        }
+
+        .kpi-value {
+            color: #3730a3;
+        }
+
+        .kpi-label {
+            color: #4338ca;
+        }
+
+        .kpi-glow {
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.3), transparent 70%);
+        }
+
+        &:hover {
+            box-shadow: 0 8px 30px rgba(99, 102, 241, 0.22);
+        }
+    }
+
+    &.kpi-cyan {
+        background: linear-gradient(135deg, #ecfeff 0%, #cffafe 100%);
+        border-color: #a5f3fc;
+        box-shadow: 0 4px 20px rgba(6, 182, 212, 0.12);
+
+        .kpi-icon-wrap {
+            background: #06b6d4;
+            color: #fff;
+            box-shadow: 0 4px 14px rgba(6, 182, 212, 0.4);
+        }
+
+        .kpi-value {
+            color: #0e7490;
+        }
+
+        .kpi-label {
+            color: #0891b2;
+        }
+
+        .kpi-glow {
+            background: radial-gradient(circle, rgba(6, 182, 212, 0.3), transparent 70%);
+        }
+
+        &:hover {
+            box-shadow: 0 8px 30px rgba(6, 182, 212, 0.22);
+        }
+    }
+
+    &.kpi-emerald {
+        background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+        border-color: #6ee7b7;
+        box-shadow: 0 4px 20px rgba(16, 185, 129, 0.12);
+
+        .kpi-icon-wrap {
+            background: #10b981;
+            color: #fff;
+            box-shadow: 0 4px 14px rgba(16, 185, 129, 0.4);
+        }
+
+        .kpi-value {
+            color: #065f46;
+        }
+
+        .kpi-label {
+            color: #059669;
+        }
+
+        .kpi-glow {
+            background: radial-gradient(circle, rgba(16, 185, 129, 0.3), transparent 70%);
+        }
+
+        &:hover {
+            box-shadow: 0 8px 30px rgba(16, 185, 129, 0.22);
+        }
+    }
+
+    &.kpi-rose {
+        background: linear-gradient(135deg, #fff1f2 0%, #ffe4e6 100%);
+        border-color: #fecdd3;
+        box-shadow: 0 4px 20px rgba(244, 63, 94, 0.12);
+
+        .kpi-icon-wrap {
+            background: #f43f5e;
+            color: #fff;
+            box-shadow: 0 4px 14px rgba(244, 63, 94, 0.4);
+        }
+
+        .kpi-value {
+            color: #9f1239;
+        }
+
+        .kpi-label {
+            color: #be123c;
+        }
+
+        .kpi-glow {
+            background: radial-gradient(circle, rgba(244, 63, 94, 0.3), transparent 70%);
+        }
+
+        &:hover {
+            box-shadow: 0 8px 30px rgba(244, 63, 94, 0.22);
+        }
+    }
+
+    &.kpi-amber {
+        background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+        border-color: #fcd34d;
+        box-shadow: 0 4px 20px rgba(245, 158, 11, 0.12);
+
+        .kpi-icon-wrap {
+            background: #f59e0b;
+            color: #fff;
+            box-shadow: 0 4px 14px rgba(245, 158, 11, 0.4);
+        }
+
+        .kpi-value {
+            color: #78350f;
+        }
+
+        .kpi-label {
+            color: #b45309;
+        }
+
+        .kpi-glow {
+            background: radial-gradient(circle, rgba(245, 158, 11, 0.3), transparent 70%);
+        }
+
+        &:hover {
+            box-shadow: 0 8px 30px rgba(245, 158, 11, 0.22);
+        }
+    }
+
+    .kpi-glow {
+        position: absolute;
+        bottom: -30px;
+        right: -30px;
+        width: 110px;
+        height: 110px;
+        border-radius: 50%;
+        opacity: 0.35;
+        transition: all $transition-slow;
+        pointer-events: none;
+    }
+}
+
+.kpi-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: $spacing-md;
+}
+
+.kpi-icon-wrap {
+    width: 42px;
+    height: 42px;
+    border-radius: $border-radius-md;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 17px;
+    flex-shrink: 0;
+}
+
+.kpi-badge {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    padding: 3px 9px;
+    border-radius: 9999px;
+    font-size: 0.6875rem;
+    font-weight: 600;
+
+    i {
+        font-size: 9px;
+    }
+
+    &.badge-positive {
+        background: rgba(16, 185, 129, 0.15);
+        color: #10b981;
+    }
+
+    &.badge-negative {
+        background: rgba(239, 68, 68, 0.12);
+        color: #ef4444;
+    }
+}
+
+.kpi-value {
+    font-size: 2rem;
+    font-weight: 700;
+    letter-spacing: -1px;
+    line-height: 1;
+    margin-bottom: 4px;
+}
+
+.kpi-label {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    margin-bottom: 2px;
+}
+
+.kpi-sub {
+    font-size: 0.6875rem;
+    color: #94a3b8;
+}

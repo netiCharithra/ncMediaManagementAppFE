@@ -28,6 +28,9 @@ import { DashboardMapComponent } from './components/dashboard-map/dashboard-map.
 import { WhatsappBotLinkingComponent } from './components/whatsapp-bot-linking/whatsapp-bot-linking.component';
 import { GeocodingService } from './services/geocoding.service';
 import { NewsFrameManagementComponent } from './components/news-frame-management/news-frame-management.component';
+import { StatCardComponent } from './reusable-components/stat-card/stat-card.component';
+import { StatusBadgeComponent } from './reusable-components/status-badge/status-badge.component';
+import { PageHeaderComponent } from './reusable-components/page-header/page-header.component';
 
 
 @NgModule({
@@ -43,7 +46,10 @@ import { NewsFrameManagementComponent } from './components/news-frame-management
     EmployeeTracingComponent,
     DashboardMapComponent,
     WhatsappBotLinkingComponent,
-    NewsFrameManagementComponent
+    NewsFrameManagementComponent,
+    StatCardComponent,
+    StatusBadgeComponent,
+    PageHeaderComponent
   ],
   imports: [
     CommonModule,

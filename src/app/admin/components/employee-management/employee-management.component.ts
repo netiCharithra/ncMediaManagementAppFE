@@ -30,7 +30,15 @@ export class EmployeeManagementComponent implements OnInit {
   private baseUrl = environment.BE_BASE_URL;
 
 
-  constructor(public adminService: AdminService, private alertService: MessageService, private storage: StorageService, private router: Router, private http: HttpClient, private _activatedRoute: ActivatedRoute) {
+  constructor(
+    public adminService: AdminService,
+    private alertService: MessageService,
+    private storage: StorageService,
+    private router: Router,
+    private http: HttpClient,
+    private _activatedRoute: ActivatedRoute,
+    public languageService: LanguageService
+  ) {
     // _activatedRoute.queryParams.subscribe(
     //   params => {
     //     console.log('queryParams', params)
@@ -133,9 +141,9 @@ export class EmployeeManagementComponent implements OnInit {
   public actionType: any = '';
   public disableFields: boolean = false;
   public identityVerificationRejectionReason: any;
-  openImageUpload(key: any, bindingKey:any) {
+  openImageUpload(key: any, bindingKey: any) {
 
-    if(this.signUpFormValues[bindingKey]){
+    if (this.signUpFormValues[bindingKey]) {
       this.alertService.showError("Only One File Is allowed or Remove Existing Image");
       alert("Only One File Is allowed or Remove Existing Image");
       return;
@@ -295,7 +303,7 @@ export class EmployeeManagementComponent implements OnInit {
         if (response) {
           this.signUpFormValues = response;
 
-          if(['edit','create','active','inactive','disable','enable'].includes(event?.type)){
+          if (['edit', 'create', 'active', 'inactive', 'disable', 'enable'].includes(event?.type)) {
             this.formModalShowHide('show')
           }
           if (eventType && eventType === 'verify_identity') {
@@ -326,10 +334,10 @@ export class EmployeeManagementComponent implements OnInit {
     try {
       this.internalLoader = true;
       const userData = this.storage.getStoredUser();
-      this.adminService.manipulateIndividualEmployee({ type: this.actionType, data: this.signUpFormValues, employeeId: userData.employeeId}).subscribe((response) => {
+      this.adminService.manipulateIndividualEmployee({ type: this.actionType, data: this.signUpFormValues, employeeId: userData.employeeId }).subscribe((response) => {
         if (response) {
           console.log("EDIT UPDATE SUCCESS")
-          if(['inactive','active','disable','enable','edit','create'].includes(this.actionType)){
+          if (['inactive', 'active', 'disable', 'enable', 'edit', 'create'].includes(this.actionType)) {
             document.getElementById('closeFormModalBtn')?.click();
           }
           this.alertService.showInfo(response.msg || " ");

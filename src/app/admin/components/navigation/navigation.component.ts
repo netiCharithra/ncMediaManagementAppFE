@@ -4,6 +4,8 @@ import { Observable } from 'rxjs';
 import { AuthService } from '../../services/auth.service';
 import { DataStore } from '../../store/data.store';
 import { LanguageService } from '../../../services/language.service';
+import { filter, map } from 'rxjs/operators';
+import { NavigationEnd, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-navigation',
@@ -15,6 +17,7 @@ export class NavigationComponent implements OnInit {
   isMobile = window.innerWidth <= 768;
   userData$: Observable<any>;
   currentLanguage: 'te' | 'en';
+  breadcrumbs: Array<{ label: string; url: string }> = [];
 
   constructor(
     private authService: AuthService,
@@ -24,10 +27,18 @@ export class NavigationComponent implements OnInit {
   ) {
     this.userData$ = this.dataStore.userData$;
     this.currentLanguage = this.languageService.getCurrentLanguage();
-    
+
     // Subscribe to language changes
     this.languageService.currentLang$.subscribe(lang => {
       this.currentLanguage = lang;
+      this.updateBreadcrumbs(); // Refresh labels on language change
+    });
+
+    // Listen to route changes for breadcrumbs
+    this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd)
+    ).subscribe(() => {
+      this.updateBreadcrumbs();
     });
   }
 
@@ -43,7 +54,7 @@ export class NavigationComponent implements OnInit {
   private checkScreenSize() {
     const wasMobile = this.isMobile;
     this.isMobile = window.innerWidth <= 768;
-    
+
     // Auto collapse when switching to mobile
     if (!wasMobile && this.isMobile && this.isExpanded) {
       this.isExpanded = false;
@@ -74,5 +85,43 @@ export class NavigationComponent implements OnInit {
     }
     const allowedRoles = ['CEO', 'InCharge CEO'];
     return allowedRoles.includes(user.role);
+  }
+
+  private updateBreadcrumbs(): void {
+    const root = this.router.routerState.snapshot.root;
+    this.breadcrumbs = [];
+    this.addBreadcrumb(root, '');
+  }
+
+  private addBreadcrumb(route: any, url: string): void {
+    const children: any[] = route.children;
+
+    if (children.length === 0) {
+      return;
+    }
+
+    for (const child of children) {
+      const routeURL: string = child.url.map((segment: any) => segment.path).join('/');
+      if (routeURL !== '') {
+        url += `/${routeURL}`;
+      }
+
+      // Try to get translate-friendly label
+      const label = child.data['title'] || routeURL;
+
+      if (label) {
+        // Map common labels to translations if available
+        const translatedLabel = this.languageService.getString(this.camelize(label) as any) || label;
+        this.breadcrumbs.push({ label: translatedLabel, url: url });
+      }
+
+      this.addBreadcrumb(child, url);
+    }
+  }
+
+  private camelize(str: string): string {
+    return str.replace(/(?:^\w|[A-Z]|\b\w)/g, (word: string, index: number) => {
+      return index === 0 ? word.toLowerCase() : word.toUpperCase();
+    }).replace(/\s+/g, '').replace(/-/g, '');
   }
 }

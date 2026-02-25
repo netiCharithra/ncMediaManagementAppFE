@@ -1,34 +1,32 @@
 <div class="news-management">
   <app-admin-loader [show]="adminService.loaderService"></app-admin-loader>
-  <div class="news-header">
-    <div class="header-content row">
-      <h2 class="col-12 col-md-7">
-        News Frame Management
-      </h2>
-      <div class="controls col-12 col-md-5 row mt-2">
-        <mat-form-field appearance="outline" class="col-7">
-          <mat-select [(ngModel)]="newsFrameData['action']" (selectionChange)="changeofNewFrame()">
-            <mat-option *ngFor="let status of frameStatus" [value]="status">
-              {{ status }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
+  <app-page-header [title]="languageService.getString('frameManagement') || 'News Frame Management'"
+    subtitle="Configure brand overlays and templates for shared news content." eyebrow="CONTENT"
+    eyebrowIcon="fas fa-crop-simple" class="mb-4 d-block">
 
-
-        <!-- (click)="actionEmitter({type:'create'})" -->
-        <button mat-flat-button color="primary" class="report-news-btn col-5" (click)="actionEmitter({type:'create'})">
-          <i class="fa-solid fa-plus"></i>
-          Add News Frame
-        </button>
+    <div class="d-flex align-items-center gap-3">
+      <!-- Filter Dropdown -->
+      <div class="custom-select-wrapper" style="width: 180px;">
+        <ng-select [(ngModel)]="newsFrameData['action']" (change)="changeofNewFrame()" [searchable]="false"
+          [clearable]="false" class="enterprise-select">
+          <ng-option *ngFor="let status of frameStatus" [value]="status">{{status}}</ng-option>
+        </ng-select>
       </div>
+
+      <button class="btn btn-primary enterprise-btn" (click)="actionEmitter({type:'create'})">
+        <i class="fas fa-plus mr-2"></i> Add Frame
+      </button>
     </div>
-  </div>
+  </app-page-header>
   <!-- (pageChange)="onPageChangeRejectedNews($event)" (actionEmitter)="actionEmitter($event)" -->
 
-  <nc-web-paginated-table *ngIf="newsFrameListData.tableLoaded" [columns]="newsFrameListData.header"
-        [data]="newsFrameListData.body" [page]="newsFrameListData.page" [itemsPerPage]="newsFrameData.count"
-        [totalItems]="newsFrameListData.totalNumberOfRecords" [metaData]="newsFrameListData.metaData"
-        [noRecordsMessage]="'No News Frame available in records'" (pageChange)="onPageChange($event)" (actionEmitter)="actionEmitter($event)"></nc-web-paginated-table>
+  <div class="table-responsive-wrapper mt-3">
+    <nc-web-paginated-table *ngIf="newsFrameListData.tableLoaded" [columns]="newsFrameListData.header"
+      [data]="newsFrameListData.body" [page]="newsFrameListData.page" [itemsPerPage]="newsFrameData.count"
+      [totalItems]="newsFrameListData.totalNumberOfRecords" [metaData]="newsFrameListData.metaData"
+      [noRecordsMessage]="'No News Frame available in records'" (pageChange)="onPageChange($event)"
+      (actionEmitter)="actionEmitter($event)"></nc-web-paginated-table>
+  </div>
 </div>
 
 
@@ -51,7 +49,8 @@
         <div class="modal-body col-12 row custom-form-body p-4">
 
           <div class="col-12 mb-4">
-            <h6 class="text-muted fw-bold mb-3 border-bottom pb-2"><i class="fas fa-info-circle me-2"></i>Basic Information</h6>
+            <h6 class="text-muted fw-bold mb-3 border-bottom pb-2"><i class="fas fa-info-circle me-2"></i>Basic
+              Information</h6>
           </div>
 
           <!-- Frame Name -->
@@ -59,12 +58,13 @@
             <label class="form-label fw-medium" for="frameName">Frame Name</label>
             <div class="input-group">
               <span class="input-group-text bg-light"><i class="fas fa-tag"></i></span>
-              <input type="text" id="frameName" class="form-control" placeholder="Enter Frame Name"
-                name="frameName" [(ngModel)]="newsFrameFormValues['frameName']" #frameName="ngModel" required
-                [disabled]="disableFields" [ngClass]="{ 'is-invalid': newsFrameForm.submitted && frameName.invalid }" />
+              <input type="text" id="frameName" class="form-control" placeholder="Enter Frame Name" name="frameName"
+                [(ngModel)]="newsFrameFormValues['frameName']" #frameName="ngModel" required [disabled]="disableFields"
+                [ngClass]="{ 'is-invalid': newsFrameForm.submitted && frameName.invalid }" />
             </div>
             <div *ngIf="newsFrameForm.submitted && frameName.invalid" class="invalid-feedback d-block mt-1 ms-1">
-              <small *ngIf="frameName?.errors?.['required']"><i class="fas fa-exclamation-circle me-1"></i>Frame name is required</small>
+              <small *ngIf="frameName?.errors?.['required']"><i class="fas fa-exclamation-circle me-1"></i>Frame name is
+                required</small>
             </div>
           </div>
 
@@ -75,7 +75,8 @@
               <span class="input-group-text bg-light"><i class="fas fa-language"></i></span>
               <select id="frameLanguage" class="form-select" name="frameLanguage"
                 [(ngModel)]="newsFrameFormValues['frameLanguage']" #frameLanguage="ngModel" required
-                [disabled]="disableFields" [ngClass]="{ 'is-invalid': newsFrameForm.submitted && frameLanguage.invalid }">
+                [disabled]="disableFields"
+                [ngClass]="{ 'is-invalid': newsFrameForm.submitted && frameLanguage.invalid }">
                 <option value="" disabled selected>Select language</option>
                 <option value="en">English</option>
                 <option value="te">Telugu</option>
@@ -85,7 +86,8 @@
               </select>
             </div>
             <div *ngIf="newsFrameForm.submitted && frameLanguage.invalid" class="invalid-feedback d-block mt-1 ms-1">
-              <small *ngIf="frameLanguage?.errors?.['required']"><i class="fas fa-exclamation-circle me-1"></i>Frame language is required</small>
+              <small *ngIf="frameLanguage?.errors?.['required']"><i class="fas fa-exclamation-circle me-1"></i>Frame
+                language is required</small>
             </div>
           </div>
 
@@ -94,25 +96,28 @@
             <label class="form-label fw-medium d-block" for="fileName">Frame Image</label>
             <div class="d-flex align-items-center p-3 border rounded bg-light">
               <div class="me-3">
-                <button (click)="openUploadImageLocal()" type="button" class="btn btn-primary btn-sm" [disabled]="actionType ==='edit'">
+                <button (click)="openUploadImageLocal()" type="button" class="btn btn-primary btn-sm"
+                  [disabled]="actionType ==='edit'">
                   <i class="fas fa-upload me-1"></i> Upload Image
                 </button>
-                <input type="file" id="uploadFrameBtn" class="form-control d-none"
-                  placeholder="Enter a valid images" name="images" [(ngModel)]="images" #image="ngModel"
-                  [disabled]="disableFields" [ngClass]="{ 'is-invalid': newsFrameForm.submitted && image.invalid }"
-                  type="file" (change)="upload($event)" accept=".png, .jpg, .jpeg, .gif" />
+                <input type="file" id="uploadFrameBtn" class="form-control d-none" placeholder="Enter a valid images"
+                  name="images" [(ngModel)]="images" #image="ngModel" [disabled]="disableFields"
+                  [ngClass]="{ 'is-invalid': newsFrameForm.submitted && image.invalid }" type="file"
+                  (change)="upload($event)" accept=".png, .jpg, .jpeg, .gif" />
               </div>
 
               <!-- Preview and Remove Buttons (shown only when image exists) -->
               <div *ngIf="newsFrameFormValues?.['frameData']?.['tempURL']" class="d-flex align-items-center">
                 <div class="me-3">
-                  <img [src]="newsFrameFormValues?.['frameData']?.['tempURL']" alt="Thumbnail" class="img-thumbnail" style="height: 50px; width: auto;">
+                  <img [src]="newsFrameFormValues?.['frameData']?.['tempURL']" alt="Thumbnail" class="img-thumbnail"
+                    style="height: 50px; width: auto;">
                 </div>
                 <div>
                   <button type="button" class="btn btn-outline-primary btn-sm me-2" (click)="openImagePreview()">
                     <i class="fas fa-eye me-1"></i> Preview
                   </button>
-                  <button type="button" class="btn btn-outline-danger btn-sm" (click)="removeUploadedImage()" [disabled]="actionType ==='edit'">
+                  <button type="button" class="btn btn-outline-danger btn-sm" (click)="removeUploadedImage()"
+                    [disabled]="actionType ==='edit'">
                     <i class="fas fa-trash me-1"></i> Remove
                   </button>
                 </div>
@@ -124,7 +129,8 @@
           </div>
 
           <div class="col-12 mb-4 mt-2">
-            <h6 class="text-muted fw-bold mb-3 border-bottom pb-2"><i class="fas fa-calendar-alt me-2"></i>Validity Period</h6>
+            <h6 class="text-muted fw-bold mb-3 border-bottom pb-2"><i class="fas fa-calendar-alt me-2"></i>Validity
+              Period</h6>
           </div>
 
           <!-- Valid From -->
@@ -137,7 +143,8 @@
                 [ngClass]="{ 'is-invalid': newsFrameForm.submitted && validFrom.invalid }" />
             </div>
             <div *ngIf="newsFrameForm.submitted && validFrom.invalid" class="invalid-feedback d-block mt-1 ms-1">
-              <small *ngIf="validFrom?.errors?.['required']"><i class="fas fa-exclamation-circle me-1"></i>Valid From date is required</small>
+              <small *ngIf="validFrom?.errors?.['required']"><i class="fas fa-exclamation-circle me-1"></i>Valid From
+                date is required</small>
             </div>
           </div>
 
@@ -151,12 +158,14 @@
                 [ngClass]="{ 'is-invalid': newsFrameForm.submitted && validTo.invalid }" />
             </div>
             <div *ngIf="newsFrameForm.submitted && validTo.invalid" class="invalid-feedback d-block mt-1 ms-1">
-              <small *ngIf="validTo?.errors?.['required']"><i class="fas fa-exclamation-circle me-1"></i>Valid To date is required</small>
+              <small *ngIf="validTo?.errors?.['required']"><i class="fas fa-exclamation-circle me-1"></i>Valid To date
+                is required</small>
             </div>
           </div>
 
           <div class="col-12 mb-4 mt-2">
-            <h6 class="text-muted fw-bold mb-3 border-bottom pb-2"><i class="fas fa-ruler me-2"></i>Frame Dimensions</h6>
+            <h6 class="text-muted fw-bold mb-3 border-bottom pb-2"><i class="fas fa-ruler me-2"></i>Frame Dimensions
+            </h6>
           </div>
 
           <!-- Container Height -->
@@ -165,12 +174,14 @@
             <div class="input-group">
               <span class="input-group-text bg-light"><i class="fas fa-arrows-alt-v"></i></span>
               <input type="number" id="containerHeight" class="form-control" placeholder="Enter Container Height"
-                name="containerHeight" [(ngModel)]="newsFrameFormValues['containerHeight']" #containerHeight="ngModel" required
-                [disabled]="disableFields" [ngClass]="{ 'is-invalid': newsFrameForm.submitted && containerHeight.invalid }" />
+                name="containerHeight" [(ngModel)]="newsFrameFormValues['containerHeight']" #containerHeight="ngModel"
+                required [disabled]="disableFields"
+                [ngClass]="{ 'is-invalid': newsFrameForm.submitted && containerHeight.invalid }" />
               <span class="input-group-text bg-light">px</span>
             </div>
             <div *ngIf="newsFrameForm.submitted && containerHeight.invalid" class="invalid-feedback d-block mt-1 ms-1">
-              <small *ngIf="containerHeight?.errors?.['required']"><i class="fas fa-exclamation-circle me-1"></i>Container height is required</small>
+              <small *ngIf="containerHeight?.errors?.['required']"><i
+                  class="fas fa-exclamation-circle me-1"></i>Container height is required</small>
             </div>
           </div>
 
@@ -181,16 +192,19 @@
               <span class="input-group-text bg-light"><i class="fas fa-crop-alt"></i></span>
               <input type="number" id="frameHeight" class="form-control" placeholder="Enter Frame Height"
                 name="frameHeight" [(ngModel)]="newsFrameFormValues['frameHeight']" #frameHeight="ngModel" required
-                [disabled]="disableFields" [ngClass]="{ 'is-invalid': newsFrameForm.submitted && frameHeight.invalid }" />
+                [disabled]="disableFields"
+                [ngClass]="{ 'is-invalid': newsFrameForm.submitted && frameHeight.invalid }" />
               <span class="input-group-text bg-light">px</span>
             </div>
             <div *ngIf="newsFrameForm.submitted && frameHeight.invalid" class="invalid-feedback d-block mt-1 ms-1">
-              <small *ngIf="frameHeight?.errors?.['required']"><i class="fas fa-exclamation-circle me-1"></i>Frame height is required</small>
+              <small *ngIf="frameHeight?.errors?.['required']"><i class="fas fa-exclamation-circle me-1"></i>Frame
+                height is required</small>
             </div>
           </div>
 
           <div class="col-12 mb-4 mt-2">
-            <h6 class="text-muted fw-bold mb-3 border-bottom pb-2"><i class="fas fa-align-left me-2"></i>Text Position Settings</h6>
+            <h6 class="text-muted fw-bold mb-3 border-bottom pb-2"><i class="fas fa-align-left me-2"></i>Text Position
+              Settings</h6>
           </div>
 
           <!-- Text Position - Top Percent -->
@@ -199,12 +213,15 @@
             <div class="input-group">
               <span class="input-group-text bg-light"><i class="fas fa-arrow-down"></i></span>
               <input type="number" id="topPercent" class="form-control" placeholder="Enter Top Position"
-                name="topPercent" [(ngModel)]="(newsFrameFormValues['textPosition'] = newsFrameFormValues['textPosition'] || {}).topPercent" #topPercent="ngModel" required
-                [disabled]="disableFields" [ngClass]="{ 'is-invalid': newsFrameForm.submitted && topPercent.invalid }" />
+                name="topPercent"
+                [(ngModel)]="(newsFrameFormValues['textPosition'] = newsFrameFormValues['textPosition'] || {}).topPercent"
+                #topPercent="ngModel" required [disabled]="disableFields"
+                [ngClass]="{ 'is-invalid': newsFrameForm.submitted && topPercent.invalid }" />
               <span class="input-group-text bg-light">%</span>
             </div>
             <div *ngIf="newsFrameForm.submitted && topPercent.invalid" class="invalid-feedback d-block mt-1 ms-1">
-              <small *ngIf="topPercent?.errors?.['required']"><i class="fas fa-exclamation-circle me-1"></i>Top position percentage is required</small>
+              <small *ngIf="topPercent?.errors?.['required']"><i class="fas fa-exclamation-circle me-1"></i>Top position
+                percentage is required</small>
             </div>
           </div>
 
@@ -214,12 +231,15 @@
             <div class="input-group">
               <span class="input-group-text bg-light"><i class="fas fa-arrow-right"></i></span>
               <input type="number" id="leftPercent" class="form-control" placeholder="Enter Left Position"
-                name="leftPercent" [(ngModel)]="(newsFrameFormValues['textPosition'] = newsFrameFormValues['textPosition'] || {}).leftPercent" #leftPercent="ngModel" required
-                [disabled]="disableFields" [ngClass]="{ 'is-invalid': newsFrameForm.submitted && leftPercent.invalid }" />
+                name="leftPercent"
+                [(ngModel)]="(newsFrameFormValues['textPosition'] = newsFrameFormValues['textPosition'] || {}).leftPercent"
+                #leftPercent="ngModel" required [disabled]="disableFields"
+                [ngClass]="{ 'is-invalid': newsFrameForm.submitted && leftPercent.invalid }" />
               <span class="input-group-text bg-light">%</span>
             </div>
             <div *ngIf="newsFrameForm.submitted && leftPercent.invalid" class="invalid-feedback d-block mt-1 ms-1">
-              <small *ngIf="leftPercent?.errors?.['required']"><i class="fas fa-exclamation-circle me-1"></i>Left position percentage is required</small>
+              <small *ngIf="leftPercent?.errors?.['required']"><i class="fas fa-exclamation-circle me-1"></i>Left
+                position percentage is required</small>
             </div>
           </div>
 
@@ -228,13 +248,17 @@
             <label class="form-label fw-medium" for="frameReductionWidthPercent">Frame Reduction Width</label>
             <div class="input-group">
               <span class="input-group-text bg-light"><i class="fas fa-compress-arrows-alt"></i></span>
-              <input type="number" id="frameReductionWidthPercent" class="form-control" placeholder="Enter Frame Reduction Width"
-                name="frameReductionWidthPercent" [(ngModel)]="(newsFrameFormValues['textPosition'] = newsFrameFormValues['textPosition'] || {}).frameReductionWidthPercent" #frameReductionWidthPercent="ngModel" required
-                [disabled]="disableFields" [ngClass]="{ 'is-invalid': newsFrameForm.submitted && frameReductionWidthPercent.invalid }" />
+              <input type="number" id="frameReductionWidthPercent" class="form-control"
+                placeholder="Enter Frame Reduction Width" name="frameReductionWidthPercent"
+                [(ngModel)]="(newsFrameFormValues['textPosition'] = newsFrameFormValues['textPosition'] || {}).frameReductionWidthPercent"
+                #frameReductionWidthPercent="ngModel" required [disabled]="disableFields"
+                [ngClass]="{ 'is-invalid': newsFrameForm.submitted && frameReductionWidthPercent.invalid }" />
               <span class="input-group-text bg-light">%</span>
             </div>
-            <div *ngIf="newsFrameForm.submitted && frameReductionWidthPercent.invalid" class="invalid-feedback d-block mt-1 ms-1">
-              <small *ngIf="frameReductionWidthPercent?.errors?.['required']"><i class="fas fa-exclamation-circle me-1"></i>Frame reduction width percentage is required</small>
+            <div *ngIf="newsFrameForm.submitted && frameReductionWidthPercent.invalid"
+              class="invalid-feedback d-block mt-1 ms-1">
+              <small *ngIf="frameReductionWidthPercent?.errors?.['required']"><i
+                  class="fas fa-exclamation-circle me-1"></i>Frame reduction width percentage is required</small>
             </div>
           </div>
 
@@ -244,12 +268,15 @@
             <div class="input-group">
               <span class="input-group-text bg-light"><i class="fas fa-text-height"></i></span>
               <input type="number" id="contentHeight" class="form-control" placeholder="Enter Content Height"
-                name="contentHeight" [(ngModel)]="(newsFrameFormValues['textPosition'] = newsFrameFormValues['textPosition'] || {}).contentHeight" #contentHeight="ngModel" required
-                [disabled]="disableFields" [ngClass]="{ 'is-invalid': newsFrameForm.submitted && contentHeight.invalid }" />
+                name="contentHeight"
+                [(ngModel)]="(newsFrameFormValues['textPosition'] = newsFrameFormValues['textPosition'] || {}).contentHeight"
+                #contentHeight="ngModel" required [disabled]="disableFields"
+                [ngClass]="{ 'is-invalid': newsFrameForm.submitted && contentHeight.invalid }" />
               <span class="input-group-text bg-light">%</span>
             </div>
             <div *ngIf="newsFrameForm.submitted && contentHeight.invalid" class="invalid-feedback d-block mt-1 ms-1">
-              <small *ngIf="contentHeight?.errors?.['required']"><i class="fas fa-exclamation-circle me-1"></i>Content height percentage is required</small>
+              <small *ngIf="contentHeight?.errors?.['required']"><i class="fas fa-exclamation-circle me-1"></i>Content
+                height percentage is required</small>
             </div>
           </div>
 
@@ -261,7 +288,8 @@
               <i class="fas fa-times me-1"></i> Cancel
             </button>
             <button type="submit" class="btn btn-primary px-4">
-              <i class="fas fa-{{ actionType === 'create' ? 'plus' : actionType === 'edit' ? 'save' : 'check' }} me-1"></i>
+              <i
+                class="fas fa-{{ actionType === 'create' ? 'plus' : actionType === 'edit' ? 'save' : 'check' }} me-1"></i>
               {{
               actionType === 'create' ? 'Create Frame' :
               actionType === 'active' ? 'Activate' :
@@ -295,7 +323,7 @@
           <img [src]="newsFrameFormValues?.['frameData']?.['tempURL']" alt="Frame Preview" class="img-fluid w-100"
             style="max-height: 70vh; object-fit: contain;">
           <div class="position-absolute top-0 end-0 p-2">
-            <button type="button" class="btn btn-sm btn-light rounded-circle" title="Download Image" 
+            <button type="button" class="btn btn-sm btn-light rounded-circle" title="Download Image"
               (click)="downloadImage(newsFrameFormValues?.['frameData']?.['tempURL'])">
               <i class="fas fa-download"></i>
             </button>
@@ -335,7 +363,8 @@
                 <i class="fas fa-ruler me-2"></i>Frame Dimensions
               </h6>
               <div class="form-check form-switch">
-                <input class="form-check-input" type="checkbox" id="previewChanges" [(ngModel)]="previewChanges" name="previewChanges">
+                <input class="form-check-input" type="checkbox" id="previewChanges" [(ngModel)]="previewChanges"
+                  name="previewChanges">
                 <label class="form-check-label" for="previewChanges">Preview Changes</label>
               </div>
             </div>
@@ -347,12 +376,15 @@
             <div class="input-group">
               <span class="input-group-text bg-light"><i class="fas fa-arrows-alt-v"></i></span>
               <input type="number" id="configContainerHeight" class="form-control" placeholder="Enter Container Height"
-                name="containerHeight" [(ngModel)]="configFrameValues['containerHeight']" #configContainerHeight="ngModel" required
+                name="containerHeight" [(ngModel)]="configFrameValues['containerHeight']"
+                #configContainerHeight="ngModel" required
                 [ngClass]="{ 'is-invalid': configFrameForm.submitted && configContainerHeight.invalid }" />
               <span class="input-group-text bg-light">px</span>
             </div>
-            <div *ngIf="configFrameForm.submitted && configContainerHeight.invalid" class="invalid-feedback d-block mt-1 ms-1">
-              <small *ngIf="configContainerHeight?.errors?.['required']"><i class="fas fa-exclamation-circle me-1"></i>Container height is required</small>
+            <div *ngIf="configFrameForm.submitted && configContainerHeight.invalid"
+              class="invalid-feedback d-block mt-1 ms-1">
+              <small *ngIf="configContainerHeight?.errors?.['required']"><i
+                  class="fas fa-exclamation-circle me-1"></i>Container height is required</small>
             </div>
           </div>
 
@@ -366,13 +398,16 @@
                 [ngClass]="{ 'is-invalid': configFrameForm.submitted && configFrameHeight.invalid }" />
               <span class="input-group-text bg-light">px</span>
             </div>
-            <div *ngIf="configFrameForm.submitted && configFrameHeight.invalid" class="invalid-feedback d-block mt-1 ms-1">
-              <small *ngIf="configFrameHeight?.errors?.['required']"><i class="fas fa-exclamation-circle me-1"></i>Frame height is required</small>
+            <div *ngIf="configFrameForm.submitted && configFrameHeight.invalid"
+              class="invalid-feedback d-block mt-1 ms-1">
+              <small *ngIf="configFrameHeight?.errors?.['required']"><i class="fas fa-exclamation-circle me-1"></i>Frame
+                height is required</small>
             </div>
           </div>
 
           <div class="col-12 mb-4 mt-2">
-            <h6 class="text-muted fw-bold mb-3 border-bottom pb-2"><i class="fas fa-align-left me-2"></i>Text Position Settings</h6>
+            <h6 class="text-muted fw-bold mb-3 border-bottom pb-2"><i class="fas fa-align-left me-2"></i>Text Position
+              Settings</h6>
           </div>
 
           <!-- Text Position - Top Percent -->
@@ -381,12 +416,16 @@
             <div class="input-group">
               <span class="input-group-text bg-light"><i class="fas fa-arrow-down"></i></span>
               <input type="number" id="configTopPercent" class="form-control" placeholder="Enter Top Position"
-                name="topPercent" [(ngModel)]="(configFrameValues['textPosition'] = configFrameValues['textPosition'] || {}).topPercent" #configTopPercent="ngModel" required
+                name="topPercent"
+                [(ngModel)]="(configFrameValues['textPosition'] = configFrameValues['textPosition'] || {}).topPercent"
+                #configTopPercent="ngModel" required
                 [ngClass]="{ 'is-invalid': configFrameForm.submitted && configTopPercent.invalid }" />
               <span class="input-group-text bg-light">%</span>
             </div>
-            <div *ngIf="configFrameForm.submitted && configTopPercent.invalid" class="invalid-feedback d-block mt-1 ms-1">
-              <small *ngIf="configTopPercent?.errors?.['required']"><i class="fas fa-exclamation-circle me-1"></i>Top position percentage is required</small>
+            <div *ngIf="configFrameForm.submitted && configTopPercent.invalid"
+              class="invalid-feedback d-block mt-1 ms-1">
+              <small *ngIf="configTopPercent?.errors?.['required']"><i class="fas fa-exclamation-circle me-1"></i>Top
+                position percentage is required</small>
             </div>
           </div>
 
@@ -396,12 +435,16 @@
             <div class="input-group">
               <span class="input-group-text bg-light"><i class="fas fa-arrow-right"></i></span>
               <input type="number" id="configLeftPercent" class="form-control" placeholder="Enter Left Position"
-                name="leftPercent" [(ngModel)]="(configFrameValues['textPosition'] = configFrameValues['textPosition'] || {}).leftPercent" #configLeftPercent="ngModel" required
+                name="leftPercent"
+                [(ngModel)]="(configFrameValues['textPosition'] = configFrameValues['textPosition'] || {}).leftPercent"
+                #configLeftPercent="ngModel" required
                 [ngClass]="{ 'is-invalid': configFrameForm.submitted && configLeftPercent.invalid }" />
               <span class="input-group-text bg-light">%</span>
             </div>
-            <div *ngIf="configFrameForm.submitted && configLeftPercent.invalid" class="invalid-feedback d-block mt-1 ms-1">
-              <small *ngIf="configLeftPercent?.errors?.['required']"><i class="fas fa-exclamation-circle me-1"></i>Left position percentage is required</small>
+            <div *ngIf="configFrameForm.submitted && configLeftPercent.invalid"
+              class="invalid-feedback d-block mt-1 ms-1">
+              <small *ngIf="configLeftPercent?.errors?.['required']"><i class="fas fa-exclamation-circle me-1"></i>Left
+                position percentage is required</small>
             </div>
           </div>
 
@@ -410,13 +453,17 @@
             <label class="form-label fw-medium" for="configFrameReductionWidthPercent">Frame Reduction Width</label>
             <div class="input-group">
               <span class="input-group-text bg-light"><i class="fas fa-compress-arrows-alt"></i></span>
-              <input type="number" id="configFrameReductionWidthPercent" class="form-control" placeholder="Enter Frame Reduction Width"
-                name="frameReductionWidthPercent" [(ngModel)]="(configFrameValues['textPosition'] = configFrameValues['textPosition'] || {}).frameReductionWidthPercent" #configFrameReductionWidthPercent="ngModel" required
+              <input type="number" id="configFrameReductionWidthPercent" class="form-control"
+                placeholder="Enter Frame Reduction Width" name="frameReductionWidthPercent"
+                [(ngModel)]="(configFrameValues['textPosition'] = configFrameValues['textPosition'] || {}).frameReductionWidthPercent"
+                #configFrameReductionWidthPercent="ngModel" required
                 [ngClass]="{ 'is-invalid': configFrameForm.submitted && configFrameReductionWidthPercent.invalid }" />
               <span class="input-group-text bg-light">%</span>
             </div>
-            <div *ngIf="configFrameForm.submitted && configFrameReductionWidthPercent.invalid" class="invalid-feedback d-block mt-1 ms-1">
-              <small *ngIf="configFrameReductionWidthPercent?.errors?.['required']"><i class="fas fa-exclamation-circle me-1"></i>Frame reduction width percentage is required</small>
+            <div *ngIf="configFrameForm.submitted && configFrameReductionWidthPercent.invalid"
+              class="invalid-feedback d-block mt-1 ms-1">
+              <small *ngIf="configFrameReductionWidthPercent?.errors?.['required']"><i
+                  class="fas fa-exclamation-circle me-1"></i>Frame reduction width percentage is required</small>
             </div>
           </div>
 
@@ -426,12 +473,16 @@
             <div class="input-group">
               <span class="input-group-text bg-light"><i class="fas fa-text-height"></i></span>
               <input type="number" id="configContentHeight" class="form-control" placeholder="Enter Content Height"
-                name="contentHeight" [(ngModel)]="(configFrameValues['textPosition'] = configFrameValues['textPosition'] || {}).contentHeight" #configContentHeight="ngModel" required
+                name="contentHeight"
+                [(ngModel)]="(configFrameValues['textPosition'] = configFrameValues['textPosition'] || {}).contentHeight"
+                #configContentHeight="ngModel" required
                 [ngClass]="{ 'is-invalid': configFrameForm.submitted && configContentHeight.invalid }" />
               <span class="input-group-text bg-light">%</span>
             </div>
-            <div *ngIf="configFrameForm.submitted && configContentHeight.invalid" class="invalid-feedback d-block mt-1 ms-1">
-              <small *ngIf="configContentHeight?.errors?.['required']"><i class="fas fa-exclamation-circle me-1"></i>Content height percentage is required</small>
+            <div *ngIf="configFrameForm.submitted && configContentHeight.invalid"
+              class="invalid-feedback d-block mt-1 ms-1">
+              <small *ngIf="configContentHeight?.errors?.['required']"><i
+                  class="fas fa-exclamation-circle me-1"></i>Content height percentage is required</small>
             </div>
           </div>
 
@@ -445,24 +496,21 @@
                 <!-- Frame container with fixed dimensions -->
                 <div class="d-flex justify-content-center align-items-center bg-dark">
                   <!-- Frame with proper dimensions using aspect ratio preservation -->
-                  <div class="position-relative" 
-                    [ngStyle]="{
+                  <div class="position-relative" [ngStyle]="{
                       'width': 'auto',
                       'height': (configFrameValues?.['frameHeight'] || 515) + 'px',
                       'max-height': '400px',
                       'max-width': '100%'
                     }">
                     <!-- Actual frame image -->
-                    <img [src]="configFrameValues?.['frameData']?.['tempURL']" alt="Frame Preview" 
-                      [ngStyle]="{
+                    <img [src]="configFrameValues?.['frameData']?.['tempURL']" alt="Frame Preview" [ngStyle]="{
                         'height': '100%',
                         'max-width': '100%',
                         'object-fit': 'contain'
                       }">
-                    
+
                     <!-- Overlay showing text position inside the frame -->
-                    <div class="position-absolute" 
-                      [ngStyle]="{
+                    <div class="position-absolute" [ngStyle]="{
                         'top': (configFrameValues?.['textPosition']?.topPercent || 0) + '%', 
                         'left': (configFrameValues?.['textPosition']?.leftPercent || 0) + '%',
                         'width': 'calc(100% - ' + ((configFrameValues?.['textPosition']?.frameReductionWidthPercent || 0) * 2) + '%)',
@@ -479,9 +527,10 @@
                 </div>
                 <div class="mt-2 p-2 text-start">
                   <small class="text-muted">
-                    <i class="fas fa-info-circle me-1"></i> Container: {{configFrameValues?.['containerHeight'] || 535}}px | 
-                    Frame: {{configFrameValues?.['frameHeight'] || 515}}px | 
-                    Text Position: {{configFrameValues?.['textPosition']?.topPercent || 0}}% from top, 
+                    <i class="fas fa-info-circle me-1"></i> Container: {{configFrameValues?.['containerHeight'] ||
+                    535}}px |
+                    Frame: {{configFrameValues?.['frameHeight'] || 515}}px |
+                    Text Position: {{configFrameValues?.['textPosition']?.topPercent || 0}}% from top,
                     {{configFrameValues?.['textPosition']?.leftPercent || 0}}% from left
                   </small>
                 </div>

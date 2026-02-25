@@ -1,0 +1,6 @@
+<span class="badge" [class]="'badge--' + status">
+    <span *ngIf="pulse" class="badge__pulse"></span>
+    <i *ngIf="icon" [class]="icon"></i>
+    <span *ngIf="label" class="badge__label">{{ label }}</span>
+    <ng-content></ng-content>
+</span>

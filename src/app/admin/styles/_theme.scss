@@ -1,75 +1,135 @@
-// Brand Colors
-$primary: #1976d2;
-$primary-light: lighten($primary, 10%);
-$primary-dark: darken($primary, 10%);
-$secondary: #455a64;
-$accent: #ffd740;
+// ============================================================
+// NC MEDIA — Enterprise Design System Tokens
+// ============================================================
 
-// Text Colors
-$text-primary: #2c3e50;
-$text-secondary: #546e7a;
-$text-muted: #90a4ae;
+// -- Color Palette (Deep Slate + Violet Accent) --
+
+// Primary accent: electric violet-indigo
+$primary: #6366f1;
+$primary-light: #818cf8;
+$primary-dark: #4f46e5;
+$primary-glow: rgba(99, 102, 241, 0.18);
+$primary-subtle: rgba(99, 102, 241, 0.08);
+
+// Neutral / Slate scale
+$slate-950: #020617;
+$slate-900: #0f172a;
+$slate-800: #1e293b;
+$slate-700: #334155;
+$slate-600: #475569;
+$slate-500: #64748b;
+$slate-400: #94a3b8;
+$slate-300: #cbd5e1;
+$slate-200: #e2e8f0;
+$slate-100: #f1f5f9;
+$slate-50: #f8fafc;
+
+// Text
+$text-primary: $slate-900;
+$text-secondary: $slate-600;
+$text-muted: $slate-400;
 $text-light: #ffffff;
-$text-dark: #000000;
+$text-dark: $slate-950;
+$text-on-dark: $slate-300;
 
-// Background Colors
+// Backgrounds
 $bg-primary: #ffffff;
-$bg-secondary: #f8f9fa;
-$bg-light: #eceff1;
-$bg-dark: #263238;
+$bg-secondary: $slate-50;
+$bg-tertiary: $slate-100;
+$bg-surface: #ffffff;
+$bg-dark: $slate-900;
+$bg-sidebar: $slate-900;
 
-// Status Colors
-$success: #4caf50;
-$warning: #ff9800;
-$error: #f44336;
-$info: #2196f3;
+// Status
+$success: #10b981;
+$success-light: rgba(16, 185, 129, 0.12);
+$warning: #f59e0b;
+$warning-light: rgba(245, 158, 11, 0.12);
+$error: #ef4444;
+$error-light: rgba(239, 68, 68, 0.12);
+$info: #3b82f6;
+$info-light: rgba(59, 130, 246, 0.12);
 
-// Border Colors
-$border-light: #e0e0e0;
-$border-dark: #cfd8dc;
+// Category accent colours (for stat cards)
+$accent-cyan: #06b6d4;
+$accent-rose: #f43f5e;
+$accent-amber: #f59e0b;
+$accent-emerald: #10b981;
 
-// Shadow Colors
-$shadow-color: rgba(0, 0, 0, 0.1);
+// Borders
+$border-light: $slate-200;
+$border-medium: $slate-300;
+$border-dark: $slate-700;
+$border-sidebar: rgba(255, 255, 255, 0.08);
 
 // Hover States
-$hover-light: rgba($primary, 0.05);
-$hover-dark: rgba($primary, 0.1);
+$hover-light: $primary-subtle;
+$hover-dark: rgba(255, 255, 255, 0.06);
+$hover-sidebar: rgba(255, 255, 255, 0.08);
 
 // Gradients
-$gradient-primary: linear-gradient(135deg, $primary, $primary-dark);
-$gradient-secondary: linear-gradient(135deg, $secondary, $bg-dark);
+$gradient-primary: linear-gradient(135deg, $primary 0%, $primary-dark 100%);
+$gradient-sidebar: linear-gradient(180deg, $slate-900 0%, #0d1526 100%);
+$gradient-accent: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+$gradient-success: linear-gradient(135deg, #10b981 0%, #059669 100%);
+$gradient-surface: linear-gradient(160deg, #ffffff 0%, $slate-50 100%);
+
+// Shadow system
+$shadow-xs: 0 1px 2px rgba(15, 23, 42, 0.04);
+$shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.08), 0 1px 2px rgba(15, 23, 42, 0.06);
+$shadow-md: 0 4px 6px rgba(15, 23, 42, 0.07), 0 2px 4px rgba(15, 23, 42, 0.06);
+$shadow-lg: 0 10px 15px rgba(15, 23, 42, 0.08), 0 4px 6px rgba(15, 23, 42, 0.05);
+$shadow-xl: 0 20px 25px rgba(15, 23, 42, 0.10), 0 8px 10px rgba(15, 23, 42, 0.05);
+$shadow-glow: 0 0 0 3px $primary-glow;
+$shadow-color: rgba(15, 23, 42, 0.08);
 
 // Spacing
+$spacing-xxs: 2px;
 $spacing-xs: 4px;
 $spacing-sm: 8px;
 $spacing-md: 16px;
 $spacing-lg: 24px;
 $spacing-xl: 32px;
+$spacing-2xl: 48px;
+$spacing-3xl: 64px;
 
-// Border Radius
-$border-radius-sm: 4px;
+// Border Radii
+$border-radius-xs: 4px;
+$border-radius-sm: 6px;
 $border-radius-md: 8px;
 $border-radius-lg: 12px;
 $border-radius-xl: 16px;
+$border-radius-2xl: 20px;
+$border-radius-pill: 9999px;
 
-// Font Sizes
-$font-size-xs: 12px;
-$font-size-sm: 14px;
-$font-size-md: 16px;
-$font-size-lg: 18px;
-$font-size-xl: 24px;
+// Typography
+$font-family-base: 'Inter', 'Noto Sans Telugu', system-ui, sans-serif;
+$font-family-display: 'Inter', 'Noto Sans Telugu', sans-serif;
 
-// Font Weights
+$font-size-xs: 0.6875rem; // 11px
+$font-size-sm: 0.8125rem; // 13px
+$font-size-md: 0.9375rem; // 15px
+$font-size-lg: 1.0625rem; // 17px
+$font-size-xl: 1.25rem; // 20px
+$font-size-2xl: 1.5rem; // 24px
+$font-size-3xl: 2rem; // 32px
+
 $font-weight-normal: 400;
 $font-weight-medium: 500;
-$font-weight-bold: 600;
+$font-weight-semibold: 600;
+$font-weight-bold: 700;
+
+$line-height-sm: 1.25;
+$line-height-base: 1.5;
+$line-height-lg: 1.75;
 
 // Transitions
-$transition-fast: 0.2s ease;
-$transition-normal: 0.3s ease;
-$transition-slow: 0.4s ease;
+$transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+$transition-normal: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+$transition-slow: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+$transition-spring: 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
 
-// Z-index
+// Z-index scale
 $z-index-dropdown: 1000;
 $z-index-sticky: 1020;
 $z-index-fixed: 1030;
@@ -83,17 +143,32 @@ $breakpoint-sm: 576px;
 $breakpoint-md: 768px;
 $breakpoint-lg: 992px;
 $breakpoint-xl: 1200px;
+$breakpoint-2xl: 1400px;
 
+// Sidebar dimensions
+$sidebar-width: 260px;
+$sidebar-collapsed-width: 68px;
+$header-height: 60px;
+
+// ============================================================
 // Mixins
+// ============================================================
+
 @mixin elevation($level) {
-  @if $level == 1 {
-    box-shadow: 0 2px 4px $shadow-color;
-  } @else if $level == 2 {
-    box-shadow: 0 4px 8px $shadow-color;
-  } @else if $level == 3 {
-    box-shadow: 0 8px 16px $shadow-color;
-  } @else if $level == 4 {
-    box-shadow: 0 12px 24px $shadow-color;
+  @if $level ==1 {
+    box-shadow: $shadow-sm;
+  }
+
+  @else if $level ==2 {
+    box-shadow: $shadow-md;
+  }
+
+  @else if $level ==3 {
+    box-shadow: $shadow-lg;
+  }
+
+  @else if $level ==4 {
+    box-shadow: $shadow-xl;
   }
 }
 
@@ -103,14 +178,76 @@ $breakpoint-xl: 1200px;
   justify-content: center;
 }
 
+@mixin flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
 @mixin truncate {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
+@mixin card-base {
+  background: $bg-surface;
+  border: 1px solid $border-light;
+  border-radius: $border-radius-lg;
+  box-shadow: $shadow-sm;
+}
+
+@mixin glass-surface {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+@mixin focus-ring {
+  outline: none;
+  box-shadow: $shadow-glow;
+}
+
 @mixin responsive($breakpoint) {
   @media (min-width: $breakpoint) {
     @content;
   }
+}
+
+@mixin respond-below($breakpoint) {
+  @media (max-width: #{$breakpoint - 1px}) {
+    @content;
+  }
+}
+
+@mixin skeleton-loading {
+  background: linear-gradient(90deg, $slate-100 25%, $slate-50 50%, $slate-100 75%);
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.5s infinite;
+}
+
+@keyframes skeleton-shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+// Status badge helper
+@mixin status-badge($bg, $color) {
+  background: $bg;
+  color: $color;
+  padding: 3px 10px;
+  border-radius: $border-radius-pill;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-semibold;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
 }

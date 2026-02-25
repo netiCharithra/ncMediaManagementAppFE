@@ -18,13 +18,13 @@ const routes: Routes = [
     component: NavigationComponent,
     canActivate: [AuthGuard],
     children: [
-      { path: 'dashboard', component: DashboardComponent },
-      { path: 'user-info', component: UserInfoComponent },
-      { path: 'news-management', component: NewsManagementComponent },
-      { path: 'employee-management', component: EmployeeManagementComponent },
-      { path: 'employee-tracing', component: EmployeeTracingComponent },
-      { path: 'whatsapp-bot-linking', component: WhatsappBotLinkingComponent },
-      { path: 'news-frame-management', component: NewsFrameManagementComponent },
+      { path: 'dashboard', component: DashboardComponent, data: { title: 'Dashboard' } },
+      { path: 'user-info', component: UserInfoComponent, data: { title: 'UserInfo' } },
+      { path: 'news-management', component: NewsManagementComponent, data: { title: 'NewsManagement' } },
+      { path: 'employee-management', component: EmployeeManagementComponent, data: { title: 'EmployeeManagement' } },
+      { path: 'employee-tracing', component: EmployeeTracingComponent, data: { title: 'EmployeeTracing' } },
+      { path: 'whatsapp-bot-linking', component: WhatsappBotLinkingComponent, data: { title: 'WhatsApp Bot' } },
+      { path: 'news-frame-management', component: NewsFrameManagementComponent, data: { title: 'Frame Management' } },
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
     ]
   }

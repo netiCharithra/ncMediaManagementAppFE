@@ -416,13 +416,13 @@
                 </div>
 
                 <!-- Evidence -->
-                <div class="d-section" *ngIf="(selectedGrievance?.evidenceFiles?.length || 0) > 0">
+                <div class="d-section" *ngIf="(selectedGrievance.evidenceFiles.length || 0) > 0">
                     <div class="d-section__head">
                         <i class="fa-solid fa-paperclip"></i> Evidence Files
-                        <span class="d-section__count">{{ selectedGrievance?.evidenceFiles?.length }}</span>
+                        <span class="d-section__count">{{ selectedGrievance.evidenceFiles.length }}</span>
                     </div>
                     <div class="evidence-grid">
-                        <div *ngFor="let file of (selectedGrievance?.evidenceFiles || []); let fi = index"
+                        <div *ngFor="let file of (selectedGrievance.evidenceFiles || []); let fi = index"
                             class="evidence-item" [attr.id]="'evidence-' + fi">
                             <ng-container *ngIf="isImageFile(file)">
                                 <a [href]="file" target="_blank" rel="noopener">
@@ -444,13 +444,13 @@
                 <div class="d-section">
                     <div class="d-section__head">
                         <i class="fa-solid fa-timeline"></i> Audit Trail
-                        <span class="d-section__count" *ngIf="(selectedGrievance?.timeline?.length || 0) > 0">
-                            {{ selectedGrievance?.timeline?.length }}
+                        <span class="d-section__count" *ngIf="(selectedGrievance.timeline.length || 0) > 0">
+                            {{ selectedGrievance.timeline.length }}
                         </span>
                     </div>
 
-                    <ul class="timeline" *ngIf="(selectedGrievance?.timeline?.length || 0) > 0">
-                        <li *ngFor="let e of (selectedGrievance?.timeline || []); let last = last; let ti = index"
+                    <ul class="timeline" *ngIf="(selectedGrievance.timeline.length || 0) > 0">
+                        <li *ngFor="let e of (selectedGrievance.timeline || []); let last = last; let ti = index"
                             class="tl-item" [attr.id]="'tl-' + ti">
                             <div class="tl-dot" [style.background]="getStatusCfg(e.status).color">
                                 <i class="fa-solid" [ngClass]="getStatusCfg(e.status).icon"></i>

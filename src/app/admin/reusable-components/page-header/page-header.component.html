@@ -1,0 +1,15 @@
+<div class="page-header">
+    <div class="header-content">
+        <p class="eyebrow" *ngIf="eyebrow">
+            <i *ngIf="eyebrowIcon" class="eyebrow-icon" [class]="eyebrowIcon"></i>
+            {{ eyebrow }}
+        </p>
+        <h1 class="title">{{ title }}</h1>
+        <p class="subtitle" *ngIf="subtitle">{{ subtitle }}</p>
+    </div>
+
+    <div class="header-actions">
+        <!-- Content projection for buttons or timeframe selectors -->
+        <ng-content></ng-content>
+    </div>
+</div>

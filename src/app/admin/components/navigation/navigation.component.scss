@@ -1,336 +1,726 @@
 @import '../../styles/theme';
 
-// Variables
-$sidebar-width: 260px;
-$sidebar-collapsed-width: 70px;
-$header-height: 60px;
+// ============================================================
+// Admin Shell — Enterprise Layout
+// ============================================================
 
-// Colors
-$primary: #1976d2;
-$text-primary: #333;
-$text-secondary: #666;
-$border-color: #e0e0e0;
-$hover-bg: #f5f5f5;
+// Import Google Fonts (Inter + Noto Sans Telugu for bilingual)
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+Telugu:wght@400;500;600;700&display=swap');
 
-.admin-layout {
+* {
+  box-sizing: border-box;
+}
+
+.admin-shell {
   display: flex;
   height: 100vh;
   background: $bg-secondary;
-  position: relative;
   overflow: hidden;
+  position: relative;
 }
 
-// Mobile Menu Container
-.mobile-menu-container {
-  display: none;
-  position: fixed;
-  top: $spacing-md;
-  left: $spacing-md;
-  z-index: $z-index-fixed + 1;
-  gap: $spacing-sm;
-  align-items: center;
-  background: $bg-primary;
-  padding: $spacing-xs;
-  border-radius: $border-radius-md;
-  @include elevation(2);
-
-  .mobile-menu-btn {
-    background: none;
-    border: none;
-    color: $text-dark;
-    width: 36px;
-    height: 36px;
-    border-radius: $border-radius-sm;
-    cursor: pointer;
-    @include flex-center;
-    transition: all $transition-fast;
-
-    &:hover {
-      background: $hover-dark;
-    }
-  }
-
-  .mobile-logo {
-    height: 36px;
-    width: 36px;
-    object-fit: contain;
-    padding: $spacing-xs;
-  }
-
-  @media (max-width: $breakpoint-md) {
-    display: flex;
-    // top: $spacing-sm;
-  }
-}
+// ============================================================
+// SIDEBAR
+// ============================================================
 
 .sidebar {
-  width: $sidebar-collapsed-width;
-  background: $bg-primary;
-  border-right: 1px solid $border-light;
+  width: $sidebar-width;
+  background: $bg-sidebar;
+  background: $gradient-sidebar;
   display: flex;
   flex-direction: column;
+  flex-shrink: 0;
   transition: width $transition-normal;
   overflow: hidden;
-  @include elevation(2);
-  
-  &.expanded {
-    width: $sidebar-width;
-    
-    .logo {
-      opacity: 1;
-      visibility: visible;
-      transform: translateX(0);
-    }
+  position: relative;
+  z-index: $z-index-fixed;
+  border-right: 1px solid $border-sidebar;
 
-    .nav-menu {
-      .nav-item a {
-        justify-content: flex-start;
-        gap: $spacing-md;
-        
-        i {
-          margin: 0;
-        }
-        
-        span {
-          opacity: 1;
-          visibility: visible;
-          transform: translateX(0);
-          width: auto;
-        }
+  // Subtle inner glow on the right edge
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 1px;
+    height: 100%;
+    background: linear-gradient(180deg, transparent 0%, rgba(99, 102, 241, 0.4) 50%, transparent 100%);
+  }
+
+  &.collapsed {
+    width: $sidebar-collapsed-width;
+
+    .sidebar-header {
+      padding: 0;
+      justify-content: center;
+
+      .brand-mark {
+        justify-content: center;
+        margin: 0;
+      }
+
+      .sidebar-toggle {
+        display: none; // Toggle is now in topbar for collapsed desktop
       }
     }
 
-    .brand-name, 
-    .user-info, 
-    .logout-button span {
-      opacity: 1;
-      visibility: visible;
-      transform: translateX(0);
-      width: auto;
+    .nav-link {
+      justify-content: center;
+      padding: 0;
+      width: 100%;
+
+      .nav-icon-wrap {
+        margin: 0 auto;
+      }
+    }
+
+    .user-card {
+      flex-direction: column;
+      padding: $spacing-sm $spacing-xs;
+      gap: $spacing-sm;
+      align-items: center;
+
+      .user-avatar {
+        margin: 0 auto;
+      }
+
+      .user-meta {
+        display: none;
+      }
+
+      .logout-btn {
+        width: 34px;
+        height: 34px;
+        padding: 0;
+        justify-content: center;
+        margin: 0 auto;
+
+        span {
+          display: none;
+        }
+      }
     }
   }
 
-  @media (max-width: $breakpoint-md) {
+  // Mobile: hidden off-screen by default
+  @include respond-below($breakpoint-md) {
     position: fixed;
-    height: 100%;
-    z-index: $z-index-fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
     transform: translateX(-100%);
-    width: $sidebar-width;
-    
-    &.expanded { 
+    width: $sidebar-width !important;
+    transition: transform $transition-normal;
+    z-index: $z-index-modal;
+
+    &.mobile-open {
       transform: translateX(0);
     }
   }
 }
 
+// -- Sidebar Header --
 .sidebar-header {
   height: $header-height;
   padding: 0 $spacing-md;
   display: flex;
   align-items: center;
-  gap: $spacing-md;
-  border-bottom: 1px solid $border-light;
-  background: $gradient-primary;
+  justify-content: space-between;
+  border-bottom: 1px solid $border-sidebar;
+  flex-shrink: 0;
+  gap: $spacing-sm;
 
-  .toggle-btn {
-    background: none;
-    border: none;
-    color: $text-light;
-    cursor: pointer;
-    padding: $spacing-sm;
-    font-size: $font-size-lg;
-    min-width: 36px;
-    height: 36px;
+  .brand-mark {
+    display: flex;
+    align-items: center;
+    gap: $spacing-sm;
+    overflow: hidden;
+    flex: 1;
+  }
+
+  .brand-logo-wrap {
+    width: 34px;
+    height: 34px;
     border-radius: $border-radius-md;
-    @include flex-center;
-    transition: all $transition-fast;
+    background: $gradient-accent;
+    padding: 2px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 0 1px rgba(99, 102, 241, 0.4), $shadow-md;
 
-    &:hover {
-      background: $hover-dark;
-      transform: scale(1.05);
+    .brand-logo {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      border-radius: $border-radius-sm;
     }
   }
 
-  .logo {
+  .brand-text {
     display: flex;
-    align-items: center;
-    gap: $spacing-md;
-    opacity: 0;
-    visibility: hidden;
-    transform: translateX(-$spacing-md);
-    transition: all $transition-normal;
-    
-    img {
-      height: 32px;
-      width: 32px;
-      object-fit: contain;
-      background: $bg-primary;
-      padding: $spacing-xs;
-      border-radius: $border-radius-md;
-      @include elevation(1);
-    }
-    
+    flex-direction: column;
+    overflow: hidden;
+    animation: fadeSlideIn $transition-normal;
+
     .brand-name {
-      font-size: $font-size-lg;
+      font-size: $font-size-md;
+      font-weight: $font-weight-bold;
+      color: $text-light;
+      @include truncate;
+      letter-spacing: -0.3px;
+    }
+
+    .brand-tagline {
+      font-size: $font-size-xs;
+      color: $slate-400;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
       font-weight: $font-weight-medium;
+    }
+  }
+
+  .sidebar-toggle {
+    width: 30px;
+    height: 30px;
+    border: none;
+    background: $hover-sidebar;
+    border-radius: $border-radius-sm;
+    color: $slate-400;
+    cursor: pointer;
+    @include flex-center;
+    transition: all $transition-fast;
+    flex-shrink: 0;
+
+    i {
+      font-size: 12px;
+    }
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.12);
+      color: $text-light;
+    }
+  }
+}
+
+// -- Navigation --
+.sidebar-nav {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: $spacing-md 0;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.nav-section {
+  margin-bottom: $spacing-sm;
+
+  .nav-section-label {
+    display: block;
+    font-size: $font-size-xs;
+    font-weight: $font-weight-semibold;
+    color: $slate-500;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: $spacing-xs $spacing-md;
+    margin-bottom: $spacing-xs;
+    animation: fadeSlideIn $transition-normal;
+  }
+}
+
+.nav-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.nav-item {
+  padding: 2px $spacing-sm;
+
+  &.active .nav-link {
+    background: $primary-subtle;
+    border-color: rgba(99, 102, 241, 0.3);
+
+    .nav-icon-wrap {
+      background: $primary;
+      color: $text-light;
+      box-shadow: 0 4px 12px rgba(99, 102, 241, 0.45);
+    }
+
+    .nav-label {
+      color: $primary-light;
+      font-weight: $font-weight-semibold;
+    }
+  }
+}
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  gap: $spacing-md;
+  padding: 0 $spacing-sm;
+  height: 44px;
+  border-radius: $border-radius-md;
+  text-decoration: none;
+  color: $slate-400;
+  border: 1px solid transparent;
+  transition: all $transition-fast;
+  position: relative;
+  overflow: hidden;
+
+  &:hover {
+    background: $hover-sidebar;
+    color: $text-light;
+    border-color: $border-sidebar;
+
+    .nav-icon-wrap {
+      color: $primary-light;
+    }
+  }
+}
+
+.nav-icon-wrap {
+  width: 34px;
+  height: 34px;
+  border-radius: $border-radius-sm;
+  @include flex-center;
+  transition: all $transition-fast;
+  flex-shrink: 0;
+  font-size: 15px;
+
+  &.active-icon {
+    background: $primary;
+    color: $text-light;
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.45);
+  }
+}
+
+.nav-label {
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+  @include truncate;
+  animation: fadeSlideIn $transition-fast;
+  color: inherit;
+}
+
+.active-indicator {
+  position: absolute;
+  right: $spacing-md;
+  width: 6px;
+  height: 6px;
+  background: $primary;
+  border-radius: 50%;
+  box-shadow: 0 0 8px $primary;
+}
+
+// -- Sidebar Footer --
+.sidebar-footer {
+  border-top: 1px solid $border-sidebar;
+  padding: $spacing-md $spacing-sm;
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-sm;
+  flex-shrink: 0;
+}
+
+.language-pill {
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+  background: $hover-sidebar;
+  border-radius: $border-radius-md;
+  padding: $spacing-xs $spacing-sm;
+  border: 1px solid $border-sidebar;
+  animation: fadeSlideIn $transition-normal;
+
+  i {
+    color: $slate-400;
+    font-size: $font-size-sm;
+    flex-shrink: 0;
+  }
+
+  .lang-select {
+    background: transparent;
+    border: none;
+    color: $slate-300;
+    font-size: $font-size-sm;
+    cursor: pointer;
+    outline: none;
+    flex: 1;
+
+    option {
+      background: $slate-800;
+      color: $text-light;
+    }
+  }
+}
+
+.lang-icon-btn {
+  width: 44px;
+  height: 34px;
+  border: none;
+  background: $hover-sidebar;
+  border-radius: $border-radius-md;
+  color: $slate-400;
+  cursor: pointer;
+  @include flex-center;
+  margin: 0 auto;
+  transition: all $transition-fast;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.12);
+    color: $text-light;
+  }
+}
+
+.user-card {
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+  background: $hover-sidebar;
+  border-radius: $border-radius-md;
+  padding: $spacing-sm;
+  border: 1px solid $border-sidebar;
+
+  .user-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: $border-radius-sm;
+    background: $gradient-accent;
+    @include flex-center;
+    flex-shrink: 0;
+    font-size: $font-size-sm;
+    font-weight: $font-weight-bold;
+    color: $text-light;
+  }
+
+  .user-meta {
+    flex: 1;
+    overflow: hidden;
+    animation: fadeSlideIn $transition-normal;
+
+    .user-name {
+      margin: 0;
+      font-size: $font-size-sm;
+      font-weight: $font-weight-semibold;
       color: $text-light;
       @include truncate;
     }
-  }
-}
 
-.nav-menu {
-  list-style: none;
-  padding: $spacing-md 0;
-  margin: 0;
-  flex: 1;
-  overflow-y: auto;
-
-  .nav-item {
-    a {
-      height: 48px;
-      padding: 0 $spacing-md;
-      display: flex;
-      align-items: center;
-      color: $text-secondary;
-      text-decoration: none;
-      transition: all $transition-fast;
-      position: relative;
-      justify-content: center;
-
-      i {
-        font-size: $font-size-lg;
-        min-width: 24px;
-        text-align: center;
-        transition: margin $transition-normal;
-      }
-
-      span {
-        opacity: 0;
-        visibility: hidden;
-        transform: translateX(-$spacing-sm);
-        transition: all $transition-normal;
-        white-space: nowrap;
-        width: 0;
-        font-weight: $font-weight-medium;
-      }
-
-      &:hover {
-        background: $hover-light;
-        color: $primary;
-      }
-    }
-
-    &.active a {
-      color: $primary;
-      background: $hover-light;
-      font-weight: $font-weight-bold;
-    }
-  }
-}
-
-.sidebar-footer {
-  border-top: 1px solid $border-light;
-  padding: $spacing-md;
-
-  .language-selector {
-    select {
-      width: 100%;
-      padding: 0.5rem;
-      border-radius: 4px;
-      background-color: rgba(255, 255, 255, 0.1);
-      color: white;
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      cursor: pointer;
-      
-      &:hover {
-        background-color: rgba(255, 255, 255, 0.2);
-      }
-
-      option {
-        background-color: var(--primary-color);
-        color: white;
-      }
+    .user-role-badge {
+      font-size: $font-size-xs;
+      color: $primary-light;
+      font-weight: $font-weight-medium;
+      @include truncate;
+      display: block;
     }
   }
 
-  .user-profile {
-    display: flex;
-    align-items: center;
-    gap: $spacing-md;
-    margin-bottom: $spacing-md;
-    padding-bottom: $spacing-md;
-    border-bottom: 1px solid $border-light;
-
-    i {
-      font-size: $font-size-xl;
-      color: $text-secondary;
-    }
-
-    .user-info {
-      opacity: 0;
-      visibility: hidden;
-      transition: all $transition-normal;
-      
-      .name {
-        margin: 0;
-        font-weight: $font-weight-medium;
-        color: $text-primary;
-        @include truncate;
-      }
-      .role {
-        margin: $spacing-xs 0 0;
-        font-size: $font-size-xs;
-        color: $text-secondary;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-      }
-    }
-  }
-
-  .logout-button {
-    width: 100%;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    gap: $spacing-md;
-    padding: 0 $spacing-md;
+  .logout-btn {
     background: none;
-    border: 1px solid $border-light;
-    border-radius: $border-radius-md;
-    color: $text-secondary;
+    border: none;
+    color: $slate-500;
     cursor: pointer;
+    padding: $spacing-xs;
+    border-radius: $border-radius-sm;
+    @include flex-center;
+    gap: $spacing-xs;
+    font-size: $font-size-sm;
     transition: all $transition-fast;
+    flex-shrink: 0;
+    white-space: nowrap;
 
     span {
-      opacity: 0;
-      visibility: hidden;
-      transition: all $transition-normal;
+      animation: fadeSlideIn $transition-fast;
+      font-size: $font-size-xs;
       font-weight: $font-weight-medium;
     }
 
     &:hover {
-      background: $hover-light;
       color: $error;
-      border-color: $error;
+      background: rgba(239, 68, 68, 0.1);
     }
   }
 }
 
-.main-content {
-  flex: 1;
-  padding: $spacing-lg;
-  overflow-y: auto;
-  // margin-left: $sidebar-collapsed-width;
-  transition: margin-left $transition-normal;
+// Mobile overlay
+.sidebar-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(2px);
+  z-index: $z-index-modal - 1;
+  animation: fadeIn $transition-fast;
 
-  &.expanded {
-    // margin-left: $sidebar-width;
+  @include respond-below($breakpoint-md) {
+    display: block;
+  }
+}
+
+// ============================================================
+// MAIN AREA
+// ============================================================
+
+.main-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  min-width: 0;
+}
+
+// -- Top Bar --
+.topbar {
+  height: $header-height;
+  background: $bg-surface;
+  border-bottom: 1px solid $border-light;
+  padding: 0 $spacing-lg;
+  @include flex-between;
+  flex-shrink: 0;
+  box-shadow: $shadow-xs;
+  z-index: $z-index-sticky;
+  position: relative;
+
+  @include respond-below($breakpoint-md) {
+    padding: 0 $spacing-md;
+  }
+}
+
+.topbar-left {
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+
+  @include responsive($breakpoint-md) {
+    gap: $spacing-md;
+  }
+}
+
+.topbar-toggle {
+  width: 36px;
+  height: 36px;
+  border: 1px solid $border-light;
+  background: $bg-surface;
+  border-radius: $border-radius-md;
+  color: $text-secondary;
+  cursor: pointer;
+  @include flex-center;
+  transition: all $transition-fast;
+
+  &:hover {
+    background: $bg-tertiary;
+    border-color: $border-medium;
+    color: $text-primary;
+  }
+}
+
+.topbar-logo {
+  height: 28px;
+  object-fit: contain;
+
+  @include responsive($breakpoint-md) {
+    height: 30px;
+  }
+}
+
+// Breadcrumb
+.breadcrumb-nav {
+  display: flex;
+  align-items: center;
+}
+
+.breadcrumb-list {
+  display: flex;
+  align-items: center;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  gap: $spacing-xs;
+}
+
+.breadcrumb-item {
+  display: flex;
+  align-items: center;
+
+  .breadcrumb-link {
+    font-size: $font-size-sm;
+    color: $slate-500;
+    text-decoration: none;
+    transition: all $transition-fast;
+    padding: 2px 4px;
+    border-radius: 4px;
+
+    i {
+      font-size: 14px;
+    }
+
+    &:hover {
+      color: $primary;
+      background: rgba(99, 102, 241, 0.08);
+    }
+
+    &.active {
+      color: $slate-900;
+      font-weight: 600;
+      pointer-events: none;
+    }
+  }
+}
+
+.breadcrumb-separator {
+  display: flex;
+  align-items: center;
+  margin: 0 4px;
+
+  i {
+    font-size: 10px;
+    color: $slate-300;
+  }
+}
+
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: $spacing-md;
+}
+
+.topbar-action-btn {
+  position: relative;
+  width: 36px;
+  height: 36px;
+  border: 1px solid $border-light;
+  background: $bg-surface;
+  border-radius: $border-radius-md;
+  color: $text-secondary;
+  cursor: pointer;
+  @include flex-center;
+  transition: all $transition-fast;
+
+  i {
+    font-size: 14px;
   }
 
-  @media (max-width: $breakpoint-md) {
-    padding-top: calc(#{$header-height} + #{$spacing-xs});
-    margin-left: 0;
-    &.expanded { margin-left: 0; }
+  &:hover {
+    background: $bg-tertiary;
+    color: $text-primary;
+  }
+
+  .notification-dot {
+    position: absolute;
+    top: 7px;
+    right: 7px;
+    width: 7px;
+    height: 7px;
+    background: $error;
+    border-radius: 50%;
+    border: 2px solid $bg-surface;
+  }
+}
+
+.logout-quick-btn {
+  color: $slate-400;
+
+  &:hover {
+    color: $error !important;
+    background: $error-light !important;
+    border-color: rgba($error, 0.2) !important;
+  }
+}
+
+.topbar-user {
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+  padding: 4px $spacing-sm;
+  border: 1px solid $border-light;
+  border-radius: 40px; // More rounded like modern enterprise chips
+  background: white;
+  cursor: pointer;
+  transition: all $transition-fast;
+  height: 40px;
+
+  &:hover {
+    background: white;
+    border-color: $primary;
+    box-shadow: $shadow-sm;
+
+    .topbar-avatar {
+      transform: scale(1.05);
+    }
+  }
+}
+
+.topbar-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: $border-radius-sm;
+  background: $gradient-accent;
+  @include flex-center;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-bold;
+  color: $text-light;
+}
+
+.topbar-user-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+
+  .topbar-user-name {
+    font-size: $font-size-xs;
+    font-weight: $font-weight-semibold;
+    color: $text-primary;
+    line-height: 1.2;
+  }
+
+  .topbar-user-role {
+    font-size: 10px;
+    color: $text-muted;
+    line-height: 1.2;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+}
+
+// -- Page Content --
+.page-content {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  background: $bg-secondary;
+  padding: $spacing-md;
+
+  @include respond-below($breakpoint-md) {
+    padding: $spacing-sm;
+  }
+}
+
+// ============================================================
+// Animations
+// ============================================================
+@keyframes fadeSlideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-6px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
   }
 }

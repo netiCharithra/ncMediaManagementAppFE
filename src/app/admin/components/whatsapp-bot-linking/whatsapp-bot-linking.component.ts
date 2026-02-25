@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AdminService } from '../../services/admin.service';
 import { StorageService } from '../../services/storage.service';
 import { MessageService } from '../../services/message.service';
+import { LanguageService } from '../../../services/language.service';
 import { interval, Subscription } from 'rxjs';
 
 interface WhatsAppBotStatus {
@@ -35,7 +36,7 @@ export class WhatsappBotLinkingComponent implements OnInit, OnDestroy {
   public isRefreshing = false;
   public autoRefreshEnabled = true;
   public errorMessage = '';
-  
+
   // Subscriptions
   private refreshSubscription: Subscription | null = null;
   private statusCheckInterval = 30000; // 5 seconds
@@ -45,7 +46,8 @@ export class WhatsappBotLinkingComponent implements OnInit, OnDestroy {
   constructor(
     private adminService: AdminService,
     private storageService: StorageService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    public languageService: LanguageService
   ) {
     this.loggedUserDetails = this.storageService.getStoredUser();
   }
@@ -66,14 +68,14 @@ export class WhatsappBotLinkingComponent implements OnInit, OnDestroy {
       // Call your API endpoint: whatsapp/qr-code
       const response = await this.adminService.getWhatsAppQRCode().toPromise();
       this.whatsappData = response;
-      
+
       // Set QR code image if available
       if (response.qrCodeBase64) {
         this.qrCodeImage = `data:image/png;base64,${response.qrCodeBase64}`;
       } else {
         this.qrCodeImage = null;
       }
-      
+
       console.log('WhatsApp Status:', this.whatsappData);
     } catch (error) {
       console.error('Error loading WhatsApp status:', error);
@@ -94,11 +96,11 @@ export class WhatsappBotLinkingComponent implements OnInit, OnDestroy {
   // Stop WhatsApp Bot with confirmation
   stopBot(): void {
     const confirmed = confirm('Are you sure you want to stop the WhatsApp bot? This will disconnect the bot and stop all WhatsApp services.');
-    
+
     if (confirmed) {
       this.isLoading = true;
       this.errorMessage = '';
-      
+
       this.adminService.stopWhatsAppBot().subscribe({
         next: (response) => {
           this.messageService.showInfo('WhatsApp bot stopped successfully');
@@ -170,7 +172,7 @@ export class WhatsappBotLinkingComponent implements OnInit, OnDestroy {
   // Get status badge class for styling
   getStatusBadgeClass(): string {
     if (!this.whatsappData) return 'badge-secondary';
-    
+
     if (this.whatsappData.isAuthenticated) {
       return 'badge-success';
     } else if (this.whatsappData.botStatus.hasQRCode) {
@@ -183,7 +185,7 @@ export class WhatsappBotLinkingComponent implements OnInit, OnDestroy {
   // Get status text
   getStatusText(): string {
     if (!this.whatsappData) return 'Unknown';
-    
+
     if (this.whatsappData.isAuthenticated) {
       return 'Connected & Authenticated';
     } else if (this.whatsappData.botStatus.hasQRCode) {

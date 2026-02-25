@@ -3,17 +3,18 @@ import { AdminService } from '../../services/admin.service';
 import { MessageService } from '../../services/message.service';
 import { DatePipe, formatDate } from '@angular/common';
 import { StorageService } from '../../services/storage.service';
+import { LanguageService } from '../../../services/language.service';
 
 declare var bootstrap: any;
 
 @Component({
   selector: 'app-employee-tracing',
-  
+
   templateUrl: './employee-tracing.component.html',
   styleUrl: './employee-tracing.component.scss'
 })
-export class EmployeeTracingComponent implements OnInit{
-  public actions=[{'label':'Active', value:true},{'label':"In Active", value:false}]
+export class EmployeeTracingComponent implements OnInit {
+  public actions = [{ 'label': 'Active', value: true }, { 'label': "In Active", value: false }]
   @ViewChild('addEmployeeTracingBtnBtn', { static: false }) addEmployeeTracingBtnBtn!: ElementRef;
 
   public employeeTracingList: any = {
@@ -30,7 +31,13 @@ export class EmployeeTracingComponent implements OnInit{
   public listingTable: any = {};
   public employeeTracingFormValues: any = {};
   public QRLink: any = '';
-  constructor(public adminService: AdminService, private alertService: MessageService, private datePipe: DatePipe,private storage: StorageService) {
+  constructor(
+    public adminService: AdminService,
+    private alertService: MessageService,
+    private datePipe: DatePipe,
+    private storage: StorageService,
+    public languageService: LanguageService
+  ) {
 
   }
 
@@ -47,8 +54,8 @@ export class EmployeeTracingComponent implements OnInit{
   }
 
 
-  changeOfNewsType = ()=>{
-    this.employeeTracingList.page=1;
+  changeOfNewsType = () => {
+    this.employeeTracingList.page = 1;
     this.getTableListing()
   }
   ngAfterViewInit(): void {
@@ -62,11 +69,11 @@ export class EmployeeTracingComponent implements OnInit{
   getAllEmployees = () => {
     try {
       this.adminService.loaderService = true;
-      this.adminService.getEmployeeTracingActiveEmployeeList({...{ page: this.pageNumber}}).subscribe((response:any) => {
+      this.adminService.getEmployeeTracingActiveEmployeeList({ ...{ page: this.pageNumber } }).subscribe((response: any) => {
         if (response) {
           this.metaData['employees'] = response || []
           // this.employeeTables = this.employeeTablesCopy = response['data'] || [];
-        } 
+        }
         this.adminService.loaderService = false;
       })
     } catch (error) {
@@ -77,18 +84,18 @@ export class EmployeeTracingComponent implements OnInit{
   getTableListing = () => {
     try {
       this.adminService.loaderService = true;
-      this.adminService.getEmployeTracingList(this.employeeTracingList).subscribe((response:any) => {
+      this.adminService.getEmployeTracingList(this.employeeTracingList).subscribe((response: any) => {
         if (response) {
 
           this.employeeTracingList.tableLoaded = true;
           this.employeeTracingList.header = response?.tableData?.headerContent || []
-          this.employeeTracingList.body = response?.tableData?.bodyContent|| []
+          this.employeeTracingList.body = response?.tableData?.bodyContent || []
           this.employeeTracingList.metaData = response?.metaData || []
           this.employeeTracingList.totalNumberOfRecords = response?.totalRecords || []
 
           this.listingTable = { ...response || {}, currentPage: this.pageNumber };
 
-        } 
+        }
         this.adminService.loaderService = false;
       })
     } catch (error) {
@@ -115,7 +122,7 @@ export class EmployeeTracingComponent implements OnInit{
 
     // canvas.toBlob((blob) => {
     //   if (blob) {
-          
+
     // const canvas = document.querySelector('canvas') as HTMLCanvasElement;
 
     // canvas.toBlob((blob) => {
@@ -124,7 +131,7 @@ export class EmployeeTracingComponent implements OnInit{
     //   this.alertService.open('success', "QR Code Copied Successfully..",'Success')
     // });
 
-     
+
     //   } else {
     //     this.alertService.open('error', "Failed to copy QR Code", 'Error');
     //   }

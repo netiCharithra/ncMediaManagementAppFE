@@ -86,7 +86,9 @@ export class LanguageService {
       inactive: 'Inactive',
       save: 'Save',
       reportedBy: 'Reported By',
-      grievance: 'Grievance'
+      grievance: 'Grievance',
+      newsFrameManagement: 'News Frame Management',
+      frameManagement: 'Frame Management'
     },
     te: {
       home: 'హోమ్',
@@ -148,23 +150,24 @@ export class LanguageService {
       dashboard: 'డాష్‌బోర్డ్',
       userInfo: 'వినియోగదారు సమాచారం',
       logout: 'లాగ్అవుట్',
-      // Employee management strings
-      employeeManagement: 'ఉద్యోగుల నిర్వహణ',
-      employeeTracing: 'ఉద్యోగుల ట్రేసింగ్',
+      employeeManagement: 'ఉద్యోగి నిర్వహణ',
+      employeeTracing: 'ఉద్యోగి ట్రేసింగ్',
       addEmployee: 'ఉద్యోగిని జోడించండి',
       name: 'పేరు',
-      email: 'ఇమెయిల్',
+      email: 'ఈమెయిల్',
       mobile: 'మొబైల్',
       role: 'పాత్ర',
       phone: 'ఫోన్',
       status: 'స్థితి',
       actions: 'చర్యలు',
       selectRole: 'పాత్రను ఎంచుకోండి',
-      active: 'యాక్టివ్',
-      inactive: 'ఇన్యాక్టివ్',
+      active: 'క్రియాశీల',
+      inactive: 'నిష్క్రియ',
       save: 'సేవ్ చేయండి',
-      reportedBy: 'ప్రమాణం',
-      grievance: 'ఫిర్యాదు'
+      reportedBy: 'నివేదించిన వారు',
+      grievance: 'ఫిర్యాదు',
+      newsFrameManagement: 'వార్తల ఫ్రేమ్ నిర్వహణ',
+      frameManagement: 'ఫ్రేమ్ నిర్వహణ'
     }
   };
 

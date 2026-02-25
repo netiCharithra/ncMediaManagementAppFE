@@ -1,97 +1,217 @@
-<div class="admin-layout">
-  <!-- Mobile Menu Button -->
-  <div class="mobile-menu-container" *ngIf="isMobile && !isExpanded">
-    <button class="mobile-menu-btn" (click)="toggleMenu()">
-      <i class="fas fa-bars"></i>
-    </button>
-    <img src="assets/images/logos/fullLogo.png" alt="NC Media Logo" class="mobile-logo">
-  </div>
+<div class="admin-shell">
 
-  <!-- Sidebar Navigation -->
-  <nav class="sidebar" [class.expanded]="isExpanded">
+  <!-- ============ SIDEBAR ============ -->
+  <aside class="sidebar" [class.collapsed]="!isExpanded" [class.mobile-open]="isExpanded && isMobile">
+
+    <!-- Sidebar Header -->
     <div class="sidebar-header">
-      <button class="toggle-btn" (click)="toggleMenu()">
-        <i class="fas fa-bars"></i>
-      </button>
-      <div class="logo">
-        <img src="assets/images/logos/fullLogo.png" alt="NC Media Logo">
-        <span class="brand-name">NC Media</span>
+      <div class="brand-mark">
+        <div class="brand-logo-wrap">
+          <img src="assets/images/logos/fullLogo.png" alt="NC Media" class="brand-logo">
+        </div>
+        <div class="brand-text" *ngIf="isExpanded">
+          <span class="brand-name">NC Media</span>
+          <span class="brand-tagline">Admin Console</span>
+        </div>
       </div>
+      <button class="sidebar-toggle" (click)="toggleMenu()"
+        [title]="isExpanded ? 'Collapse sidebar' : 'Expand sidebar'">
+        <i class="fas" [class.fa-chevron-left]="isExpanded" [class.fa-bars]="!isExpanded"></i>
+      </button>
     </div>
 
-    <ul class="nav-menu">
-      <li class="nav-item" routerLinkActive="active">
-        <a routerLink="/admin/dashboard" (click)="isMobile ? toggleMenu() : null">
-          <i class="fas fa-chart-line"></i>
-          <span>{{ languageService.getString('dashboard') }}</span>
-        </a>
-      </li>
-      <li class="nav-item" routerLinkActive="active">
-        <a routerLink="/admin/user-info" (click)="isMobile ? toggleMenu() : null">
-          <i class="fas fa-user"></i>
-          <span>{{ languageService.getString('userInfo') }}</span>
-        </a>
-      </li>
-      <li class="nav-item" routerLinkActive="active">
-        <a routerLink="/admin/news-management" (click)="isMobile ? toggleMenu() : null">
-          <i class="fas fa-newspaper"></i>
-          <span>{{ languageService.getString('newsManagement') }}</span>
-        </a>
-      </li>
-      <li class="nav-item" routerLinkActive="active">
-        <a routerLink="/admin/employee-management" (click)="isMobile ? toggleMenu() : null">
-          <i class="fas fa-users"></i>
-          <span>{{ languageService.getString('employeeManagement') }}</span>
-        </a>
-      </li>
+    <!-- Main Navigation -->
+    <nav class="sidebar-nav" role="navigation" aria-label="Main navigation">
+      <div class="nav-section">
+        <span class="nav-section-label" *ngIf="isExpanded">Overview</span>
+        <ul class="nav-list">
+          <li class="nav-item" routerLinkActive="active" #dashRla="routerLinkActive">
+            <a routerLink="/admin/dashboard" class="nav-link" (click)="isMobile ? toggleMenu() : null"
+              [title]="!isExpanded ? languageService.getString('dashboard') : ''">
+              <span class="nav-icon-wrap" [class.active-icon]="dashRla.isActive">
+                <i class="fas fa-chart-line"></i>
+              </span>
+              <span class="nav-label" *ngIf="isExpanded">{{ languageService.getString('dashboard') }}</span>
+              <span class="active-indicator" *ngIf="dashRla.isActive && isExpanded"></span>
+            </a>
+          </li>
+        </ul>
+      </div>
 
-      <li class="nav-item" routerLinkActive="active">
-        <a routerLink="/admin/employee-tracing" (click)="isMobile ? toggleMenu() : null">
-          <i class="fas fa-users-cog"></i>
-          <span>{{ languageService.getString('employeeTracing') }}</span>
-        </a>
-      </li>
+      <div class="nav-section">
+        <span class="nav-section-label" *ngIf="isExpanded">Management</span>
+        <ul class="nav-list">
+          <li class="nav-item" routerLinkActive="active" #userRla="routerLinkActive">
+            <a routerLink="/admin/user-info" class="nav-link" (click)="isMobile ? toggleMenu() : null"
+              [title]="!isExpanded ? languageService.getString('userInfo') : ''">
+              <span class="nav-icon-wrap" [class.active-icon]="userRla.isActive">
+                <i class="fas fa-user"></i>
+              </span>
+              <span class="nav-label" *ngIf="isExpanded">{{ languageService.getString('userInfo') }}</span>
+            </a>
+          </li>
 
-      <!-- WhatsApp Bot Linking - Only for CEO and InCharge CEO -->
-      <li class="nav-item" routerLinkActive="active" >
-        <a routerLink="/admin/whatsapp-bot-linking" (click)="isMobile ? toggleMenu() : null">
-          <i class="fab fa-whatsapp"></i>
-          <span>WhatsApp Bot</span>
-        </a>
-      </li>
+          <li class="nav-item" routerLinkActive="active" #newsRla="routerLinkActive">
+            <a routerLink="/admin/news-management" class="nav-link" (click)="isMobile ? toggleMenu() : null"
+              [title]="!isExpanded ? languageService.getString('newsManagement') : ''">
+              <span class="nav-icon-wrap" [class.active-icon]="newsRla.isActive">
+                <i class="fas fa-newspaper"></i>
+              </span>
+              <span class="nav-label" *ngIf="isExpanded">{{ languageService.getString('newsManagement') }}</span>
+            </a>
+          </li>
 
-      <li class="nav-item" routerLinkActive="active" >
-        <a routerLink="/admin/news-frame-management" (click)="isMobile ? toggleMenu() : null">
-          <i class="fab fa-newspaper"></i>
-          <span>News Frame Management</span>
-        </a>
-      </li>
-    </ul>
+          <li class="nav-item" routerLinkActive="active" #empRla="routerLinkActive">
+            <a routerLink="/admin/employee-management" class="nav-link" (click)="isMobile ? toggleMenu() : null"
+              [title]="!isExpanded ? languageService.getString('employeeManagement') : ''">
+              <span class="nav-icon-wrap" [class.active-icon]="empRla.isActive">
+                <i class="fas fa-users"></i>
+              </span>
+              <span class="nav-label" *ngIf="isExpanded">{{ languageService.getString('employeeManagement') }}</span>
+            </a>
+          </li>
 
+          <li class="nav-item" routerLinkActive="active" #traceRla="routerLinkActive">
+            <a routerLink="/admin/employee-tracing" class="nav-link" (click)="isMobile ? toggleMenu() : null"
+              [title]="!isExpanded ? languageService.getString('employeeTracing') : ''">
+              <span class="nav-icon-wrap" [class.active-icon]="traceRla.isActive">
+                <i class="fas fa-users-cog"></i>
+              </span>
+              <span class="nav-label" *ngIf="isExpanded">{{ languageService.getString('employeeTracing') }}</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <div class="nav-section">
+        <span class="nav-section-label" *ngIf="isExpanded">Integrations</span>
+        <ul class="nav-list">
+          <li class="nav-item" routerLinkActive="active" #waRla="routerLinkActive">
+            <a routerLink="/admin/whatsapp-bot-linking" class="nav-link" (click)="isMobile ? toggleMenu() : null"
+              [title]="!isExpanded ? 'WhatsApp Bot' : ''">
+              <span class="nav-icon-wrap" [class.active-icon]="waRla.isActive">
+                <i class="fab fa-whatsapp"></i>
+              </span>
+              <span class="nav-label" *ngIf="isExpanded">WhatsApp Bot</span>
+            </a>
+          </li>
+
+          <li class="nav-item" routerLinkActive="active" #frameRla="routerLinkActive">
+            <a routerLink="/admin/news-frame-management" class="nav-link" (click)="isMobile ? toggleMenu() : null"
+              [title]="!isExpanded ? 'Frame Management' : ''">
+              <span class="nav-icon-wrap" [class.active-icon]="frameRla.isActive">
+                <i class="fas fa-film"></i>
+              </span>
+              <span class="nav-label" *ngIf="isExpanded">Frame Management</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <!-- Sidebar Footer -->
     <div class="sidebar-footer">
-      <!-- Language Selector -->
-      <div class="language-selector">
-        <select [(ngModel)]="currentLanguage" (change)="switchLanguage($event)" class="form-select">
+      <!-- Language Toggle -->
+      <div class="language-pill" *ngIf="isExpanded">
+        <i class="fas fa-globe"></i>
+        <select [(ngModel)]="currentLanguage" (change)="switchLanguage($event)" class="lang-select">
           <option value="en">English</option>
           <option value="te">తెలుగు</option>
         </select>
       </div>
-      <div class="user-profile" *ngIf="userData$ | async as user">
-        <i class="fas fa-user-circle"></i>
-        <div class="user-info">
-          <p class="name">{{ user.name }}</p>
-          <p class="role">{{ user.role }}</p>
+      <button class="lang-icon-btn" *ngIf="!isExpanded" title="Switch Language">
+        <i class="fas fa-globe"></i>
+      </button>
+
+      <!-- User Profile -->
+      <div class="user-card" *ngIf="userData$ | async as user">
+        <div class="user-avatar">
+          <span>{{ user.name?.charAt(0)?.toUpperCase() }}</span>
+        </div>
+        <div class="user-meta" *ngIf="isExpanded">
+          <p class="user-name">{{ user.name }}</p>
+          <span class="user-role-badge">{{ user.role }}</span>
+        </div>
+        <button class="logout-btn" (click)="logout()" [title]="isExpanded ? '' : 'Logout'">
+          <i class="fas fa-sign-out-alt"></i>
+          <span *ngIf="isExpanded">{{ languageService.getString('logout') }}</span>
+        </button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Mobile overlay -->
+  <div class="sidebar-overlay" *ngIf="isMobile && isExpanded" (click)="toggleMenu()"></div>
+
+  <!-- ============ MAIN AREA ============ -->
+  <div class="main-area">
+
+    <!-- Top Bar -->
+    <header class="topbar">
+      <div class="topbar-left">
+        <button class="topbar-toggle" (click)="toggleMenu()" *ngIf="isMobile || !isExpanded">
+          <i class="fas fa-bars"></i>
+        </button>
+        <img src="assets/images/logos/fullLogo.png" alt="NC Media" class="topbar-logo" *ngIf="isMobile">
+        <!-- Breadcrumb -->
+        <nav class="breadcrumb-nav" *ngIf="!isMobile" aria-label="Breadcrumb">
+          <ol class="breadcrumb-list">
+            <li class="breadcrumb-item">
+              <a routerLink="/admin/dashboard" class="breadcrumb-link"><i class="fas fa-home"></i></a>
+            </li>
+            <li class="breadcrumb-separator" *ngIf="breadcrumbs.length > 0"><i class="fas fa-chevron-right"></i></li>
+            <li class="breadcrumb-item" *ngFor="let b of breadcrumbs; let last = last">
+              <a [routerLink]="b.url" [class.active]="last" class="breadcrumb-link">{{ b.label }}</a>
+              <span class="breadcrumb-separator" *ngIf="!last"><i class="fas fa-chevron-right"></i></span>
+            </li>
+          </ol>
+        </nav>
+      </div>
+
+      <div class="topbar-right">
+        <!-- Notification Bell -->
+        <button class="topbar-action-btn" title="Notifications">
+          <i class="fas fa-bell"></i>
+          <span class="notification-dot"></span>
+        </button>
+        <!-- Quick Logout -->
+        <button class="topbar-action-btn logout-quick-btn" (click)="logout()" title="Logout">
+          <i class="fas fa-power-off"></i>
+        </button>
+        <!-- User Profile Chip (Dropdown) -->
+        <div class="dropdown">
+          <div class="topbar-user" *ngIf="userData$ | async as user" data-bs-toggle="dropdown" aria-expanded="false"
+            style="cursor: pointer;">
+            <div class="topbar-avatar">
+              <span>{{ user.name?.charAt(0)?.toUpperCase() }}</span>
+            </div>
+            <div class="topbar-user-meta" *ngIf="!isMobile">
+              <span class="topbar-user-name">{{ user.name }}</span>
+              <span class="topbar-user-role">{{ user.role }}</span>
+            </div>
+            <i class="fas fa-chevron-down" style="font-size: 10px; margin-left: 8px; color: #94a3b8;"></i>
+          </div>
+          <ul class="dropdown-menu dropdown-menu-end shadow border-0"
+            style="min-width: 200px; border-radius: 8px; margin-top: 8px;">
+            <li>
+              <h6 class="dropdown-header">Account Management</h6>
+            </li>
+            <li><a class="dropdown-item py-2" routerLink="/admin/user-info"><i
+                  class="fas fa-user-circle me-2 text-secondary"></i> Settings & Info</a></li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+            <li><a class="dropdown-item py-2 text-danger font-weight-bold" href="javascript:void(0)"
+                (click)="logout()"><i class="fas fa-sign-out-alt me-2"></i> Logout System</a></li>
+          </ul>
         </div>
       </div>
-      <button class="logout-button" (click)="logout()">
-        <i class="fas fa-sign-out-alt"></i>
-        <span>{{ languageService.getString('logout') }}</span>
-      </button>
-    </div>
-  </nav>
+    </header>
 
-  <!-- Main Content -->
-  <main class="main-content" [class.expanded]="isExpanded && !isMobile">
-    <router-outlet></router-outlet>
-  </main>
+    <!-- Page Content -->
+    <main class="page-content">
+      <router-outlet></router-outlet>
+    </main>
+  </div>
+
 </div>

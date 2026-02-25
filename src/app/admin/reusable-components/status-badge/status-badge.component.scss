@@ -1,0 +1,92 @@
+@import '../../../admin/styles/theme';
+
+:host {
+    display: inline-flex;
+}
+
+.badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    border-radius: 9999px;
+    font-size: 0.6875rem; // 11px
+    font-weight: 600;
+    line-height: 1;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+
+    i {
+        font-size: 10px;
+    }
+}
+
+// Semantic Color Variants
+.badge--neutral {
+    background-color: var(--slate-100, #f1f5f9);
+    color: var(--slate-600, #475569);
+    border: 1px solid var(--slate-200, #e2e8f0);
+}
+
+.badge--primary {
+    background-color: rgba(99, 102, 241, 0.12);
+    color: var(--primary, #6366f1);
+    border: 1px solid rgba(99, 102, 241, 0.2);
+}
+
+.badge--success {
+    background-color: rgba(16, 185, 129, 0.12);
+    color: var(--success, #10b981);
+    border: 1px solid rgba(16, 185, 129, 0.2);
+}
+
+.badge--error {
+    background-color: rgba(239, 68, 68, 0.12);
+    color: var(--error, #ef4444);
+    border: 1px solid rgba(239, 68, 68, 0.2);
+}
+
+.badge--warning {
+    background-color: rgba(245, 158, 11, 0.12);
+    color: var(--warning, #f59e0b);
+    border: 1px solid rgba(245, 158, 11, 0.2);
+}
+
+.badge--info {
+    background-color: rgba(59, 130, 246, 0.12);
+    color: var(--info, #3b82f6);
+    border: 1px solid rgba(59, 130, 246, 0.2);
+}
+
+// Pulse Animation Dot
+.badge__pulse {
+    position: relative;
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: currentColor;
+    flex-shrink: 0;
+
+    &::after {
+        content: '';
+        position: absolute;
+        inset: -2px;
+        border-radius: 50%;
+        border: 2px solid currentColor;
+        opacity: 0.6;
+        animation: statusPulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+}
+
+@keyframes statusPulse {
+    0% {
+        transform: scale(0.8);
+        opacity: 1;
+    }
+
+    100% {
+        transform: scale(2.5);
+        opacity: 0;
+    }
+}

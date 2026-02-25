@@ -27,13 +27,14 @@
     aspect-ratio: 1;
     border-radius: 8px;
     overflow: hidden;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.10);
     background: #fff;
     transition: transform 0.2s, box-shadow 0.2s;
-    
+
     &:hover {
       transform: translateY(-2px);
-      box-shadow: 0 4px 16px rgba(0,0,0,0.16);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.16);
+
       .remove-image {
         opacity: 1;
         transform: translateY(0);
@@ -65,7 +66,7 @@
       transform: translateY(-10px);
       transition: all 0.2s;
       padding: 0;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.16);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.16);
       z-index: 2;
       font-size: 14px;
 
@@ -90,6 +91,7 @@
       margin-bottom: 0.5rem;
       opacity: 0.6;
     }
+
     p {
       margin: 0.5rem 0 0;
       font-size: 0.95rem;
@@ -111,14 +113,16 @@
   margin-bottom: 1rem;
   font-weight: 500;
   font-size: 1rem;
-  
+
   &:hover {
     background: rgba(0, 123, 255, 0.10);
     transform: translateY(-1px);
   }
+
   &:active {
     transform: translateY(0);
   }
+
   i {
     font-size: 1.1em;
   }
@@ -141,6 +145,7 @@
     margin: 0;
     color: #1a237e;
   }
+
   .subtitle {
     color: #666;
     font-size: 1.1rem;
@@ -149,20 +154,16 @@
 }
 
 .news-management {
-  padding: 20px;
-
-  @media (max-width: 768px) {
-    padding: 0px;padding-top:5px;
-  }
+  padding: 0;
 
   .news-header {
     margin-bottom: 20px;
-    
+
     .header-content {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      
+
       h2 {
         margin: 0;
         color: $text-primary;
@@ -174,17 +175,17 @@
         display: flex;
         align-items: center;
         gap: $spacing-md;
-        
+
         mat-form-field {
           width: 200px;
           margin: 0;
-          
+
           ::ng-deep {
             .mat-mdc-form-field-wrapper {
               margin: 0;
               padding: 0;
             }
-            
+
             .mat-mdc-form-field-infix {
               min-height: 40px;
               padding-top: 8px;
@@ -205,7 +206,7 @@
           height: 40px;
           padding: 0 $spacing-md;
           line-height: 40px;
-          
+
           i {
             margin-right: $spacing-xs;
           }
@@ -213,7 +214,7 @@
           @media (max-width: 768px) {
             padding: 5px;
           }
-        
+
         }
       }
     }
@@ -241,7 +242,7 @@
           padding: 8px 12px;
           border: 1px solid #ced4da;
           border-radius: 4px;
-          
+
           &:focus {
             border-color: #80bdff;
             outline: 0;
@@ -259,12 +260,12 @@
           gap: 10px;
           transition: all 0.3s ease;
           background-color: transparent;
-          
+
           &:hover {
             border-color: #80bdff;
             background-color: rgba(0, 123, 255, 0.05);
           }
-          
+
           i {
             font-size: 1.5rem;
           }
@@ -281,159 +282,73 @@
     }
   }
 
-  // Modal Styles
+  // Modal Styles (Enterprise Edition)
   .modal {
-  .modal-dialog {
-    max-width: 520px;
-    margin: 2.5rem auto;
-    box-shadow: 0 8px 32px rgba(0,0,0,0.18), 0 1.5px 8px rgba(0,0,0,0.09);
-    border-radius: 18px;
-    background: transparent;
-    
-    &.modal-lg {
-      max-width: 880px;
-    }
-    
-    .modal-content {
-      display: flex;
-      flex-direction: column;
-      max-height: 92vh;
-      border: none;
-      border-radius: 18px;
-      background: #fff;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.18), 0 1.5px 8px rgba(0,0,0,0.09);
-      overflow: hidden;
-      
-      .modal-header {
-        flex-shrink: 0;
-        border-bottom: 1px solid #e9ecef;
-        padding: 1.5rem 2rem 1rem 2rem;
-        background: #f7f9fb;
-        align-items: center;
-        display: flex;
-        min-height: 64px;
-        
-        .modal-title {
-          margin: 0;
-          font-size: 1.35rem;
-          font-weight: 600;
-          color: #222;
-          letter-spacing: 0.01em;
-        }
-        .btn-close {
-          margin-left: auto;
-          background: none;
-          border: none;
-          font-size: 1.3rem;
-          opacity: 0.7;
-          transition: opacity 0.2s;
-          &:hover {
-            opacity: 1;
-          }
-        }
-      }
-      
-      .modal-body {
-        flex: 1;
-        padding: 2rem;
-        background: #fff;
-        overflow-y: auto;
-        font-size: 1.05rem;
-        color: #333;
-        line-height: 1.6;
-      }
-      
-      .modal-footer {
-        flex-shrink: 0;
-        border-top: 1px solid #e9ecef;
-        background: #f7f9fb;
-        padding: 1.25rem 2rem;
-        display: flex;
-        justify-content: flex-end;
-        gap: 0.75rem;
-        
-        .btn {
-          min-width: 110px;
-          height: 40px;
-          padding: 0 1.5rem;
-          font-size: 1rem;
-          font-weight: 500;
-          border-radius: 8px;
-          box-shadow: 0 1px 2px rgba(0,0,0,0.04);
-          transition: background 0.18s, color 0.18s, box-shadow 0.18s;
-          
-          &.btn-primary {
-            background: #007bff;
-            color: #fff;
-            border: none;
-            &:hover {
-              background: #0056b3;
-            }
-          }
-          &.btn-secondary {
-            background: #f2f2f2;
-            color: #333;
-            border: none;
-            &:hover {
-              background: #e0e0e0;
-            }
-          }
-        }
-      }
-    }
-  }
-  
-  // Responsive adjustments
-  @media (max-width: 768px) {
     .modal-dialog {
-      max-width: 96vw;
-      margin: 1rem auto;
-      
+      max-width: 800px;
+      margin: 2.5rem auto;
+
+      &.modal-lg {
+        max-width: 900px;
+      }
+
+      &.modal-md {
+        max-width: 500px;
+      }
+
       .modal-content {
-        border-radius: 12px;
-        
-        .modal-header, .modal-footer {
-          padding: 1rem 1rem;
+        border: none !important;
+        border-radius: 12px !important;
+        box-shadow: $shadow-xl !important;
+        overflow: hidden;
+
+        .modal-header {
+          background: #ffffff;
+          border-bottom: 1px solid $border-light !important;
+          padding: 1.25rem 1.5rem !important;
+
+          .modal-title {
+            font-weight: 600;
+            color: $slate-900;
+            font-size: 1.125rem;
+            margin: 0;
+          }
+
+          .btn-close,
+          .close {
+            opacity: 0.6;
+            transition: all 0.2s;
+            outline: none;
+            background: none;
+            border: none;
+
+            &:hover {
+              opacity: 1;
+              color: $error;
+            }
+          }
         }
+
         .modal-body {
-          padding: 1rem;
+          padding: 1.5rem !important;
+          background: $bg-secondary;
+          overflow-y: auto;
+          max-height: calc(100vh - 200px);
         }
-        
+
         .modal-footer {
-          flex-shrink: 0;
-          border-top: 1px solid #e9ecef;
-          background: #f7f9fb;
-          padding: 1.25rem 2rem;
+          background: white;
+          border-top: 1px solid $border-light !important;
+          padding: 1.25rem 1.5rem !important;
           display: flex;
           justify-content: flex-end;
           gap: 0.75rem;
-          
+
           .btn {
-            min-width: 110px;
-            height: 40px;
-            padding: 0 1.5rem;
-            font-size: 1rem;
+            border-radius: 6px;
             font-weight: 500;
-            border-radius: 8px;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.04);
-            transition: background 0.18s, color 0.18s, box-shadow 0.18s;
-            
-            &.btn-primary {
-              background: #007bff;
-              color: #fff;
-              border: none;
-              &:hover {
-                background: #0056b3;
-              }
-            }
-            &.btn-secondary {
-              background: #f2f2f2;
-              color: #333;
-              border: none;
-              &:hover {
-                background: #e0e0e0;
-              }
-            }
+            padding: 0.5rem 1.25rem;
+            transition: all 0.2s ease;
           }
         }
       }
@@ -448,17 +363,19 @@
         .input-group {
           .form-control {
             border-right: 0;
+
             &:focus {
               border-color: #80bdff;
               box-shadow: none;
             }
           }
+
           .btn {
             border-left: 0;
             display: flex;
             align-items: center;
             gap: 0.5rem;
-            
+
             i {
               font-size: 1.1rem;
             }
@@ -475,11 +392,11 @@
           gap: 0.5rem;
           border: 2px dashed #ced4da;
           transition: all 0.3s ease;
-          
+
           i {
             font-size: 1.25rem;
           }
-          
+
           &:hover {
             border-color: #80bdff;
             background-color: rgba(0, 123, 255, 0.05);
@@ -497,7 +414,7 @@
   @media (max-width: $breakpoint-md) {
     .news-header {
       padding: $spacing-sm;
-      
+
       .header-content {
         flex-direction: column;
         align-items: stretch;
@@ -505,7 +422,7 @@
 
         .controls {
           flex-direction: column;
-          
+
           mat-form-field {
             width: 100%;
           }
@@ -519,21 +436,20 @@
   }
 
   .modal {
-      .modal-dialog {
-        margin: $spacing-sm;
-      }
+    .modal-dialog {
+      margin: $spacing-sm;
+    }
 
-      .modal-body {
-        padding: $spacing-md;
-      }
+    .modal-body {
+      padding: $spacing-md;
+    }
 
-      .modal-footer {
-        flex-direction: column;
-        
-        .btn {
-          width: 100%;
-          margin: 0;
-        }
+    .modal-footer {
+      flex-direction: column;
+
+      .btn {
+        width: 100%;
+        margin: 0;
       }
     }
   }
@@ -551,17 +467,17 @@ textarea[readonly] {
     border: 1px solid #dee2e6;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     transition: box-shadow 0.3s ease;
-    
+
     &:hover {
       box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
     }
-    
+
     .news-container-section {
       // background: rgba(255, 255, 255, 0.95);
       backdrop-filter: blur(5px);
       border-radius: 6px;
       // box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-      
+
       .news-title-section {
         display: flex;
         align-items: center;
@@ -569,7 +485,7 @@ textarea[readonly] {
         padding: 0px;
         // background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
         border-bottom: 1px solid #dee2e6;
-        
+
         p {
           margin: 0;
           font-weight: 600;
@@ -580,12 +496,12 @@ textarea[readonly] {
           word-wrap: break-word;
           hyphens: auto;
           text-overflow: ellipsis;
-          
+
           // Dynamic font size and line height will be set via TypeScript
           // Line clamp will be dynamically calculated based on content
         }
       }
-      
+
       .news-image-section {
         position: relative;
         overflow: hidden;
@@ -593,18 +509,18 @@ textarea[readonly] {
         display: flex;
         align-items: center;
         justify-content: center;
-        
+
         img {
           width: 100%;
           height: 100%;
           object-fit: cover;
           transition: transform 0.3s ease;
-          
+
           &:hover {
             transform: scale(1.02);
           }
         }
-        
+
         // Fallback for missing images
         &:empty::before {
           content: '📷';
@@ -613,12 +529,12 @@ textarea[readonly] {
           opacity: 0.5;
         }
       }
-      
+
       .news-content-section {
         padding: 0px;
         // background: #ffffff;
         // border-top: 1px solid #dee2e6;
-        
+
         p {
           margin: 0;
           color: #495057;
@@ -629,48 +545,37 @@ textarea[readonly] {
           hyphens: auto;
           text-align: justify;
           text-overflow: ellipsis;
-          
+
           // Dynamic font size, line height, and line clamp will be set via TypeScript
           // This allows for truly responsive text that adapts to content length
         }
       }
     }
   }
-  
+
   // Enhanced responsive design
-  @media (max-width: 768px) {
-    .template-image-container {
-      // width: 100% !important;
-      // max-width: 320px;
-      // height: auto;
-      // aspect-ratio: 9/16;
-      // margin: 0 auto;
-      
-      // Font sizes and line clamps are now dynamically calculated
-      // No need for hardcoded responsive values
-    }
-  }
-  
+  @media (max-width: 768px) {}
+
   @media (max-width: 480px) {
     .template-image-container {
       .news-container-section {
         .news-title-section {
           padding: 6px 10px;
         }
-        
+
         .news-content-section {
           padding: 0px;
         }
       }
     }
   }
-  
+
   // Template Preview Wrapper
   .template-preview-wrapper {
     text-align: center;
     margin-bottom: 1rem;
   }
-  
+
   // Compact Font Controls - Modal Optimized
   .font-controls-compact {
     background: #f8f9fa;
@@ -679,7 +584,7 @@ textarea[readonly] {
     padding: 0.75rem;
     max-width: 100%;
     overflow: hidden;
-    
+
     .controls-header {
       display: flex;
       justify-content: space-between;
@@ -687,19 +592,19 @@ textarea[readonly] {
       margin-bottom: 0.75rem;
       padding-bottom: 0.5rem;
       border-bottom: 1px solid #dee2e6;
-      
+
       .controls-title {
         font-size: 0.85rem;
         font-weight: 600;
         color: #495057;
-        
+
         i {
           color: #007bff;
           margin-right: 0.4rem;
           font-size: 0.8rem;
         }
       }
-      
+
       .btn-xs {
         padding: 0.2rem 0.4rem;
         font-size: 0.7rem;
@@ -707,19 +612,19 @@ textarea[readonly] {
         border-radius: 3px;
       }
     }
-    
+
     .controls-row {
       display: flex;
       flex-direction: column;
       gap: 0.75rem;
-      
+
       // Always stack in modal for better space utilization
       @media (min-width: 1200px) {
         flex-direction: row;
         align-items: center;
       }
     }
-    
+
     .control-item {
       display: flex;
       align-items: center;
@@ -730,11 +635,11 @@ textarea[readonly] {
       border-radius: 4px;
       margin-bottom: 0.5rem;
       box-sizing: border-box;
-      
+
       &:last-child {
         margin-bottom: 0;
       }
-      
+
       .control-label {
         display: flex;
         align-items: center;
@@ -744,7 +649,7 @@ textarea[readonly] {
         color: #495057;
         flex: 1;
         min-width: 0;
-        
+
         i {
           color: #007bff;
           width: 12px;
@@ -752,13 +657,13 @@ textarea[readonly] {
           font-size: 0.7rem;
           flex-shrink: 0;
         }
-        
+
         .label-text {
           white-space: nowrap;
           overflow: hidden;
           text-overflow: ellipsis;
         }
-        
+
         .current-size {
           color: #007bff;
           font-weight: 600;
@@ -770,13 +675,13 @@ textarea[readonly] {
           flex-shrink: 0;
         }
       }
-      
+
       .control-buttons {
         display: flex;
         align-items: center;
         gap: 0.3rem;
         flex-shrink: 0;
-        
+
         .btn-xs {
           width: 20px;
           height: 20px;
@@ -785,12 +690,12 @@ textarea[readonly] {
           align-items: center;
           justify-content: center;
           border-radius: 2px;
-          
+
           i {
             font-size: 0.6rem;
           }
         }
-        
+
         .adjustment-badge {
           font-size: 0.65rem;
           font-weight: 600;
@@ -800,12 +705,12 @@ textarea[readonly] {
           color: #6c757d;
           min-width: 24px;
           text-align: center;
-          
+
           &.positive {
             color: #28a745;
             background: #d4edda;
           }
-          
+
           &.negative {
             color: #dc3545;
             background: #f8d7da;
@@ -813,7 +718,7 @@ textarea[readonly] {
         }
       }
     }
-    
+
     .quick-actions {
       display: flex;
       gap: 0.3rem;
@@ -821,14 +726,14 @@ textarea[readonly] {
       margin-top: 0.5rem;
       padding-top: 0.5rem;
       border-top: 1px solid #e9ecef;
-      
+
       .btn-xs {
         padding: 0.25rem 0.5rem;
         font-size: 0.65rem;
         line-height: 1.2;
         border-radius: 2px;
         white-space: nowrap;
-        
+
         i {
           margin-right: 0.2rem;
           font-size: 0.6rem;
@@ -842,11 +747,11 @@ textarea[readonly] {
 .whatsapp-share-options {
   border-top: 1px solid #e9ecef;
   padding-top: 1.5rem;
-  
+
   .share-header {
     text-align: center;
     margin-bottom: 1.5rem;
-    
+
     .share-title {
       font-size: 1.1rem;
       font-weight: 700;
@@ -855,26 +760,26 @@ textarea[readonly] {
       display: flex;
       align-items: center;
       justify-content: center;
-      
+
       i {
         color: #25d366; // WhatsApp green
         font-size: 1.2rem;
       }
     }
-    
+
     .share-subtitle {
       font-size: 0.9rem;
       color: #6b7280;
       margin: 0;
     }
   }
-  
+
   .share-cards-container {
     display: flex;
     flex-direction: column;
     gap: 0.75rem;
   }
-  
+
   .share-card {
     position: relative;
     border: 2px solid #e5e7eb;
@@ -883,42 +788,42 @@ textarea[readonly] {
     cursor: pointer;
     transition: all 0.3s ease;
     background: linear-gradient(135deg, #ffffff 0%, #f9fafb 100%);
-    
+
     &:hover {
       border-color: #25d366;
       transform: translateY(-2px);
       box-shadow: 0 8px 25px rgba(37, 211, 102, 0.15);
     }
-    
+
     &.active {
       border-color: #25d366;
       background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%);
       box-shadow: 0 4px 20px rgba(37, 211, 102, 0.2);
-      
+
       .card-indicator {
         opacity: 1;
         transform: scale(1);
       }
-      
+
       .card-icon {
         transform: scale(1.1);
       }
     }
-    
+
     &.recommended {
       border-color: #fbbf24;
-      
+
       &:hover {
         border-color: #f59e0b;
         box-shadow: 0 8px 25px rgba(245, 158, 11, 0.15);
       }
-      
+
       &.active {
         border-color: #f59e0b;
         background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
         box-shadow: 0 4px 20px rgba(245, 158, 11, 0.2);
       }
-      
+
       .recommended-badge {
         position: absolute;
         top: -8px;
@@ -933,26 +838,26 @@ textarea[readonly] {
         align-items: center;
         gap: 0.25rem;
         box-shadow: 0 2px 8px rgba(245, 158, 11, 0.3);
-        
+
         i {
           font-size: 0.6rem;
         }
       }
     }
-    
+
     .share-radio {
       position: absolute;
       opacity: 0;
       pointer-events: none;
     }
-    
+
     .card-content {
       display: flex;
       align-items: center;
       gap: 1rem;
       position: relative;
     }
-    
+
     .card-icon {
       width: 48px;
       height: 48px;
@@ -964,26 +869,26 @@ textarea[readonly] {
       color: white;
       transition: all 0.3s ease;
       flex-shrink: 0;
-      
+
       &.self {
         background: linear-gradient(135deg, #3b82f6, #1d4ed8);
         box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
       }
-      
+
       &.admin {
         background: linear-gradient(135deg, #10b981, #059669);
         box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
       }
-      
+
       &.custom {
         background: linear-gradient(135deg, #f59e0b, #d97706);
         box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
       }
     }
-    
+
     .card-info {
       flex: 1;
-      
+
       .card-title {
         font-size: 1rem;
         font-weight: 600;
@@ -991,7 +896,7 @@ textarea[readonly] {
         margin: 0 0 0.25rem 0;
         line-height: 1.2;
       }
-      
+
       .card-description {
         font-size: 0.85rem;
         color: #6b7280;
@@ -999,7 +904,7 @@ textarea[readonly] {
         line-height: 1.3;
       }
     }
-    
+
     .card-indicator {
       opacity: 0;
       transform: scale(0.8);
@@ -1009,27 +914,27 @@ textarea[readonly] {
       flex-shrink: 0;
     }
   }
-  
+
   // Responsive design
   @media (max-width: 576px) {
     .share-card {
       padding: 0.875rem;
-      
+
       .card-content {
         gap: 0.75rem;
       }
-      
+
       .card-icon {
         width: 42px;
         height: 42px;
         font-size: 1.1rem;
       }
-      
+
       .card-info {
         .card-title {
           font-size: 0.95rem;
         }
-        
+
         .card-description {
           font-size: 0.8rem;
         }
@@ -1041,7 +946,7 @@ textarea[readonly] {
 // Platform-Specific Instructions Styling
 ::ng-deep .platform-instructions {
   margin: 1rem 0;
-  
+
   .platform-header {
     display: flex;
     align-items: center;
@@ -1050,45 +955,45 @@ textarea[readonly] {
     padding: 0.75rem;
     border-radius: 8px;
     font-size: 1rem;
-    
+
     i {
       font-size: 1.2rem;
     }
-    
+
     &.android {
       background: linear-gradient(135deg, #a4c639, #8bc34a);
       color: white;
     }
-    
+
     &.ios {
       background: linear-gradient(135deg, #007aff, #5856d6);
       color: white;
     }
-    
+
     &.desktop {
       background: linear-gradient(135deg, #6c757d, #495057);
       color: white;
     }
   }
-  
+
   &.android .platform-header {
     background: linear-gradient(135deg, #a4c639, #8bc34a);
   }
-  
+
   &.ios .platform-header {
     background: linear-gradient(135deg, #007aff, #5856d6);
   }
-  
+
   &.desktop .platform-header {
     background: linear-gradient(135deg, #6c757d, #495057);
   }
-  
+
   .instruction-steps {
     display: flex;
     flex-direction: column;
     gap: 0.75rem;
   }
-  
+
   .step {
     display: flex;
     align-items: flex-start;
@@ -1098,12 +1003,12 @@ textarea[readonly] {
     border-radius: 8px;
     border-left: 3px solid transparent;
     transition: all 0.3s ease;
-    
+
     &:hover {
       background: rgba(255, 255, 255, 0.1);
       transform: translateX(2px);
     }
-    
+
     .step-number {
       width: 24px;
       height: 24px;
@@ -1118,16 +1023,16 @@ textarea[readonly] {
       flex-shrink: 0;
       margin-top: 0.1rem;
     }
-    
+
     .step-content {
       flex: 1;
-      
+
       strong {
         color: #1f2937;
         font-size: 0.9rem;
         line-height: 1.4;
       }
-      
+
       small {
         color: #6b7280;
         font-size: 0.8rem;
@@ -1137,58 +1042,58 @@ textarea[readonly] {
       }
     }
   }
-  
+
   // Platform-specific step styling
   &.android .step {
     border-left-color: #a4c639;
-    
+
     .step-number {
       background: linear-gradient(135deg, #a4c639, #8bc34a);
     }
   }
-  
+
   &.ios .step {
     border-left-color: #007aff;
-    
+
     .step-number {
       background: linear-gradient(135deg, #007aff, #5856d6);
     }
   }
-  
+
   &.desktop .step {
     border-left-color: #6c757d;
-    
+
     .step-number {
       background: linear-gradient(135deg, #6c757d, #495057);
     }
   }
-  
+
   // Responsive design
   @media (max-width: 576px) {
     .platform-header {
       padding: 0.5rem;
       font-size: 0.9rem;
-      
+
       i {
         font-size: 1rem;
       }
     }
-    
+
     .step {
       padding: 0.5rem;
       gap: 0.5rem;
-      
+
       .step-number {
         width: 20px;
         height: 20px;
         font-size: 0.7rem;
       }
-      
+
       .step-content {
         strong {
           font-size: 0.85rem;
         }
-        
+
         small {
           font-size: 0.75rem;
         }
@@ -1202,7 +1107,7 @@ textarea[readonly] {
   .validation-error-container {
     width: 100%;
     margin-bottom: 0;
-    
+
     .alert {
       margin-bottom: 1rem;
       border: none;
@@ -1212,32 +1117,32 @@ textarea[readonly] {
       color: #991b1b;
       font-size: 0.9rem;
       padding: 0.75rem 1rem;
-      
+
       i {
         color: #dc2626;
         margin-right: 0.5rem;
       }
     }
   }
-  
+
   .modal-footer-buttons {
     display: flex;
     justify-content: flex-end;
     gap: 0.5rem;
     width: 100%;
   }
-  
+
   // Responsive design
   @media (max-width: 576px) {
     .validation-error-container .alert {
       font-size: 0.85rem;
       padding: 0.6rem 0.8rem;
     }
-    
+
     .modal-footer-buttons {
       flex-direction: column;
       gap: 0.75rem;
-      
+
       .btn {
         width: 100%;
       }
@@ -1261,38 +1166,38 @@ textarea[readonly] {
     min-height: 42px;
     font-size: 14px;
     transition: all 0.2s ease;
-    
+
     &:hover {
       border-color: #0d6efd;
       box-shadow: 0 0 0 0.1rem rgba(13, 110, 253, 0.1);
     }
-    
+
     &.ng-select-focused {
       border-color: #0d6efd;
       box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
     }
-    
+
     .ng-select-container {
       background-color: #fff;
       border-radius: 8px;
       padding: 0 12px;
-      
+
       .ng-value-container {
         padding: 8px 0;
-        
+
         .ng-placeholder {
           color: #6c757d;
           font-style: italic;
         }
-        
+
         .ng-value {
           color: #212529;
           font-weight: 500;
-          
+
           .ng-value-label {
             display: flex;
             align-items: center;
-            
+
             &::before {
               content: '\f15c'; // FontAwesome file-alt icon
               font-family: 'Font Awesome 5 Free';
@@ -1303,48 +1208,48 @@ textarea[readonly] {
           }
         }
       }
-      
+
       .ng-arrow-wrapper {
         .ng-arrow {
           border-color: #6c757d transparent transparent;
           border-style: solid;
           border-width: 5px 5px 0;
         }
-        
+
         &.ng-arrow-wrapper-focused .ng-arrow {
           border-color: #0d6efd transparent transparent;
         }
       }
     }
   }
-  
+
   ::ng-deep .ng-dropdown-panel {
     border: 1px solid #dee2e6;
     border-radius: 8px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     margin-top: 4px;
-    
+
     .ng-dropdown-panel-items {
       .ng-option {
         padding: 12px 16px;
         font-size: 14px;
         transition: background-color 0.2s ease;
-        
+
         &:hover {
           background-color: #f8f9fa;
         }
-        
+
         &.ng-option-selected {
           background-color: #e7f3ff;
           color: #0d6efd;
           font-weight: 500;
         }
-        
+
         &.ng-option-highlighted {
           background-color: #0d6efd;
           color: white;
         }
-        
+
         // Add icon to each option
         &::before {
           content: '\f15c'; // FontAwesome file-alt icon
@@ -1353,7 +1258,7 @@ textarea[readonly] {
           color: #0d6efd;
           margin-right: 8px;
         }
-        
+
         &.ng-option-highlighted::before {
           color: white;
         }

@@ -1,0 +1,83 @@
+@import '../../../admin/styles/theme';
+
+:host {
+    display: block;
+}
+
+.page-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: $spacing-lg;
+    flex-wrap: wrap;
+    margin-bottom: $spacing-xl;
+
+    @include respond-below($breakpoint-md) {
+        margin-bottom: $spacing-lg;
+    }
+}
+
+.header-content {
+    .eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: $spacing-xs;
+        font-size: $font-size-xs;
+        font-weight: $font-weight-semibold;
+        color: $primary;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin: 0 0 $spacing-xs;
+    }
+
+    .title {
+        font-size: $font-size-3xl;
+        font-weight: $font-weight-bold;
+        color: $text-primary;
+        letter-spacing: -0.5px;
+        margin: 0 0 $spacing-xs;
+        line-height: 1.1;
+
+        @include respond-below($breakpoint-md) {
+            font-size: $font-size-2xl;
+        }
+    }
+
+    .subtitle {
+        font-size: $font-size-md;
+        color: $text-secondary;
+        margin: 0;
+        line-height: $line-height-base;
+
+        @include respond-below($breakpoint-md) {
+            font-size: $font-size-sm;
+        }
+
+        strong {
+            color: $text-primary;
+            font-weight: $font-weight-semibold;
+        }
+    }
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: $spacing-sm;
+
+    @include respond-below($breakpoint-md) {
+        width: 100%;
+        flex-direction: column;
+        align-items: stretch;
+        gap: $spacing-md;
+
+        ::ng-deep {
+
+            .custom-select-wrapper,
+            ng-select,
+            .btn {
+                width: 100% !important;
+            }
+        }
+    }
+}

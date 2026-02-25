@@ -187,8 +187,27 @@ h2 {
   margin: 0 auto;
 }
 
+.table-responsive-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin-bottom: 1rem;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+
+  &::-webkit-scrollbar {
+    height: 6px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #e0e0e0;
+    border-radius: 3px;
+  }
+}
+
 ::ng-deep .cdk-overlay-container {
-  z-index: 1000; // Or higher than your dialog
+  z-index: 1000;
 }
 
 ::ng-deep .cdk-global-overlay-wrapper,
