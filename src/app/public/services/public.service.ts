@@ -1,4 +1,5 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { Observable, map } from 'rxjs';
 import { HttpHeaders } from '@angular/common/http';
 import { HttpService } from '../../services/http.service';
@@ -36,7 +37,10 @@ export class PublicService {
     GRIEVANCE_REPORT: '/public/grievance-report'
   };
 
-  constructor(private httpService: HttpService) { }
+  constructor(
+    private httpService: HttpService,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) { }
 
   /**
    * Get latest news with pagination
@@ -173,15 +177,16 @@ export class PublicService {
 
   /** Build adminAuth header from localStorage */
   private adminHeaders(): HttpHeaders {
+    if (!isPlatformBrowser(this.platformId)) {
+      return new HttpHeaders({ adminAuth: '' });
+    }
     let employeeId = localStorage.getItem('officer_id') || '';
-
     if (!employeeId) {
       const user = localStorage.getItem('nc_auth_user');
       try {
         employeeId = user ? JSON.parse(user)?.employeeId ?? '' : '';
       } catch { }
     }
-
     return new HttpHeaders({ adminAuth: employeeId });
   }
 

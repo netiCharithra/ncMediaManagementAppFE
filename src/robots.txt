@@ -1,0 +1,13 @@
+User-agent: *
+Allow: /
+
+# Block admin panel from indexing
+Disallow: /admin
+Disallow: /admin/
+
+# Block grievance admin from indexing
+Disallow: /grievance/admin
+Disallow: /validate-employee/
+
+# Sitemap
+Sitemap: https://neticharithra.com/sitemap.xml

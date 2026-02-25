@@ -1,5 +1,5 @@
-import { Component, OnInit, HostListener, ViewChild } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, OnInit, HostListener, ViewChild, PLATFORM_ID, Inject } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { NewsService } from '../../../news.service';
 import { CompactNewsCardComponent } from '../compact-news-card/compact-news-card.component';
@@ -7,6 +7,7 @@ import { NewsCardComponent } from '../news-card/news-card.component';
 import { NgbCarousel, NgbSlideEvent, NgbSlideEventSource } from '@ng-bootstrap/ng-bootstrap';
 import { PublicService } from '../../services/public.service';
 import { LanguageService } from '../../../services/language.service';
+import { SeoService } from '../../../services/seo.service';
 
 @Component({
   selector: 'app-home',
@@ -30,20 +31,33 @@ export class HomeComponent implements OnInit {
   regionalHasMore = false;
   internationalHasMore = false;
 
-  isMobile = window.innerWidth <= 768;
+  // Safe default false (desktop-first); real value set in ngOnInit on browser only
+  isMobile = false;
 
   currentLanguage: 'te' | 'en';
 
-  constructor(private publicService: PublicService, public languageService: LanguageService) { 
+  constructor(
+    private publicService: PublicService,
+    public languageService: LanguageService,
+    private seoService: SeoService,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) {
     this.currentLanguage = this.languageService.getCurrentLanguage();
   }
 
   ngOnInit(): void {
-    
-    this.loadLatestNews();
-    this.loadNewsTypeCategorizedNews();
-    this.getNewsCategoryCategorizedNews();
-    this.getMetaData()
+    if (isPlatformBrowser(this.platformId)) {
+      this.isMobile = window.innerWidth <= 768;
+    }
+    this.seoService.setDefaults();
+    // Skip data API calls on the server — they keep the SSR Zone alive
+    // (backend unreachable during dev SSR → 30s timeout).
+    if (isPlatformBrowser(this.platformId)) {
+      this.loadLatestNews();
+      this.loadNewsTypeCategorizedNews();
+      this.getNewsCategoryCategorizedNews();
+      this.getMetaData();
+    }
   }
 
   loadLatestNews(): void {
@@ -67,7 +81,7 @@ export class HomeComponent implements OnInit {
     this.publicService.getNewsTypeCategorizedNews({})
       .subscribe({
         next: (response) => {
-          this.categoryWiseNews = response[0]?.['types'] || [];
+          this.categoryWiseNews = response?.[0]?.['types'] || [];
         },
         error: (error) => {
           console.error('Error loading news by type:', error);
@@ -95,14 +109,14 @@ export class HomeComponent implements OnInit {
   }
 
   getMetaData(): void {
-    
+
     this.publicService.getMetaData({ metaList: ['NEWS_CATEGORIES_REGIONAL'] })
       .subscribe(response => {
         this.categoryMetaList = response?.['NEWS_CATEGORIES_REGIONAL'] || [];
       });
   }
- 
-  getCategoryLabel(label:any):any {
+
+  getCategoryLabel(label: any): any {
     const found = this.categoryMetaList.find((item: any) => item.label === label);
     return found[this.currentLanguage] || label;
   }

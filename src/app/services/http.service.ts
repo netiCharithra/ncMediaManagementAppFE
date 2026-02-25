@@ -57,7 +57,6 @@ export class HttpService {
 
     return this.http.get(`${this.baseUrl}${endpoint}`, options).pipe(
       map((response: any) => {
-        console.log("RES", response?.data)
         if (response && response.status === 'success' && response?.data) {
           return response?.data;
         } else {
@@ -97,7 +96,6 @@ export class HttpService {
 
     return from(this.locationService.getLocation()).pipe(
       switchMap((location) => {
-        console.log("location", location)
         let bodyWithLanguage = {
           ...body,
           language: this.selectedLanguage,
@@ -113,7 +111,6 @@ export class HttpService {
           };
         }
 
-        console.log("dontChangeBody", formData)
 
         return this.http.post(`${baseApiUrl || this.baseUrl}${endpoint}`, formData || bodyWithLanguage, options).pipe(
           map((response: any) => {

@@ -5,6 +5,8 @@ import { NewsService } from '../../../news.service';
 import { LanguageService } from '../../../services/language.service';
 import { PublicService } from '../../services/public.service';
 import { formatDate } from '@angular/common';
+import { SeoService } from '../../../services/seo.service';
+import { SchemaService } from '../../../services/schema.service';
 
 @Component({
   selector: 'app-news-expanded',
@@ -63,7 +65,9 @@ export class NewsExpandedComponent implements OnInit {
     public router: Router,
     private newsService: NewsService,
     public languageService: LanguageService,
-    private publicService: PublicService
+    private publicService: PublicService,
+    private seoService: SeoService,
+    private schemaService: SchemaService
   ) { }
 
   ngOnInit(): void {
@@ -95,24 +99,42 @@ export class NewsExpandedComponent implements OnInit {
     this.isLoadingContent = true;
     this.error = null;
 
-    const params = {
-      newsId: id,
-      language: language
-    };
+    const params = { newsId: id, language };
 
     this.publicService.getNewsInfo(params).subscribe({
       next: (response: any) => {
         if (response && response.specificRecord) {
           this.news = response.specificRecord[0];
           this.latestNews = response.recentRecords || [];
+
+          // ── SEO: update meta tags for this article ──────────────────────
+          const n = this.news;
+          const firstImage = n.images?.[0] || n.thumbnail || undefined;
+          const publishedIso = n.publishedAt
+            ? new Date(n.publishedAt).toISOString()
+            : n.createdAt
+              ? new Date(n.createdAt).toISOString()
+              : undefined;
+          const shortDesc = n.summary || n.description
+            ? (n.summary || n.description).substring(0, 160)
+            : `${n.title} – Read the full story on Neti Charithra`;
+
+          this.seoService.setForArticle(n.title, shortDesc, firstImage, publishedIso);
+
+          this.schemaService.injectArticleSchema({
+            headline: n.title,
+            description: shortDesc,
+            image: firstImage,
+            datePublished: publishedIso,
+            dateModified: publishedIso,
+            url: window.location.href
+          });
+          // ────────────────────────────────────────────────────────────────
         } else {
           this.error = 'News not found';
         }
         this.loading = false;
-        // Small delay to show skeleton animation
-        setTimeout(() => {
-          this.isLoadingContent = false;
-        }, 500);
+        setTimeout(() => { this.isLoadingContent = false; }, 500);
       },
       error: (err: any) => {
         console.error('Error fetching news:', err);

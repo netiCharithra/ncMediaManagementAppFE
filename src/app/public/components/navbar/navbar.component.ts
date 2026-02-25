@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, PLATFORM_ID, Inject } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { LanguageService } from '../../../services/language.service';
 import { BannerService } from '../../../services/banner.service';
 import { Observable, map } from 'rxjs';
@@ -24,7 +25,8 @@ export class NavbarComponent implements OnInit {
   constructor(
     private languageService: LanguageService,
     private publicService: PublicService,
-    private bannerService: BannerService
+    private bannerService: BannerService,
+    @Inject(PLATFORM_ID) private platformId: Object
   ) {
     this.currentLang$ = this.languageService.currentLang$;
     this.logoPath$ = this.currentLang$.pipe(
@@ -33,23 +35,26 @@ export class NavbarComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // Start Live Clock
-    this.clockInterval = setInterval(() => {
-      this.today = new Date();
-    }, 1000);
+    // Live clock — only runs in the browser (setInterval keeps Zone alive on server)
+    if (isPlatformBrowser(this.platformId)) {
+      this.clockInterval = setInterval(() => {
+        this.today = new Date();
+      }, 1000);
+    }
 
     // Subscribe to language changes
     this.currentLang$.subscribe(lang => {
       this.currentLanguage = lang;
-      console.log('Current Language:', this.currentLanguage);
     });
 
-    this.bannerService.bannerVisible$.subscribe(visible => {
-      this.isBannerVisible = visible;
-    });
+    if (isPlatformBrowser(this.platformId)) {
+      this.bannerService.bannerVisible$.subscribe(visible => {
+        this.isBannerVisible = visible;
+      });
 
-    const metaDataList = ['NEWS_CATEGORIES_REGIONAL'];
-    this.getMetaData(metaDataList);
+      const metaDataList = ['NEWS_CATEGORIES_REGIONAL'];
+      this.getMetaData(metaDataList);
+    }
   }
 
   ngOnDestroy(): void {
@@ -68,7 +73,6 @@ export class NavbarComponent implements OnInit {
 
   switchLanguage(event: Event): void {
     const select = event.target as HTMLSelectElement;
-    console.log(select.value, 'ennnnn')
     this.languageService.setLanguage(select.value as 'en' | 'te');
   }
 
@@ -83,7 +87,6 @@ export class NavbarComponent implements OnInit {
             this[typedKey] = response[typedKey];
           }
         });
-        console.log("Response Nav", response);
       });
   }
 }

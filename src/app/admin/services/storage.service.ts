@@ -1,6 +1,6 @@
-import { Injectable } from '@angular/core';
+import { Injectable, PLATFORM_ID, Inject } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { BehaviorSubject, Observable } from 'rxjs';
-// import { User } from '../models/user.model';
 
 @Injectable({
   providedIn: 'root'
@@ -8,11 +8,15 @@ import { BehaviorSubject, Observable } from 'rxjs';
 export class StorageService {
   private readonly USER_KEY = 'nc_auth_user';
   private readonly TOKEN_KEY = 'nc_auth_token';
-  
+
+  private readonly isBrowser: boolean;
+
   private currentUserSubject: BehaviorSubject<any | null>;
   public currentUser: Observable<any | null>;
 
-  constructor() {
+  constructor(@Inject(PLATFORM_ID) platformId: Object) {
+    this.isBrowser = isPlatformBrowser(platformId);
+    // On the server, localStorage doesn't exist – initialise with null.
     this.currentUserSubject = new BehaviorSubject<any | null>(this.getStoredUser());
     this.currentUser = this.currentUserSubject.asObservable();
   }
@@ -22,15 +26,17 @@ export class StorageService {
   }
 
   setUser(user: any): void {
-    // Store user details
-    localStorage.setItem(this.USER_KEY, JSON.stringify(user));
-    if (user.token) {
-      localStorage.setItem(this.TOKEN_KEY, user.token);
+    if (this.isBrowser) {
+      localStorage.setItem(this.USER_KEY, JSON.stringify(user));
+      if (user.token) {
+        localStorage.setItem(this.TOKEN_KEY, user.token);
+      }
     }
     this.currentUserSubject.next(user);
   }
 
-  getStoredUser() {
+  getStoredUser(): any | null {
+    if (!this.isBrowser) return null;
     const storedUser = localStorage.getItem(this.USER_KEY);
     if (storedUser) {
       try {
@@ -43,6 +49,7 @@ export class StorageService {
   }
 
   getToken(): string | null {
+    if (!this.isBrowser) return null;
     return localStorage.getItem(this.TOKEN_KEY);
   }
 
@@ -67,8 +74,10 @@ export class StorageService {
   }
 
   clearStorage(): void {
-    localStorage.removeItem(this.USER_KEY);
-    localStorage.removeItem(this.TOKEN_KEY);
+    if (this.isBrowser) {
+      localStorage.removeItem(this.USER_KEY);
+      localStorage.removeItem(this.TOKEN_KEY);
+    }
     this.currentUserSubject.next(null);
   }
 

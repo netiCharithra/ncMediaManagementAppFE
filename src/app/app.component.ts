@@ -1,6 +1,9 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, PLATFORM_ID, Inject } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { NavigationEnd, Router } from '@angular/router';
 import { filter, Subscription } from 'rxjs';
+import { SchemaService } from './services/schema.service';
+import { SeoService } from './services/seo.service';
 
 @Component({
   selector: 'app-root',
@@ -9,33 +12,42 @@ import { filter, Subscription } from 'rxjs';
 })
 export class AppComponent implements OnInit, OnDestroy {
   title = 'news-website';
-  private subscription: any;
+  private subscription: Subscription = new Subscription();
 
+  private isBrowser: boolean;
 
-  constructor(private router:Router){
-    
+  constructor(
+    private router: Router,
+    private schemaService: SchemaService,
+    private seoService: SeoService,
+    @Inject(PLATFORM_ID) platformId: Object
+  ) {
+    this.isBrowser = isPlatformBrowser(platformId);
   }
 
   ngOnInit(): void {
-    this.router.events
-      .pipe(filter(event => event instanceof NavigationEnd))
-      .subscribe((event: NavigationEnd) => {
-        this.scrollToTop();
-      });
+    // Inject site-wide JSON-LD once (WebSite + SiteNavigationElement)
+    this.schemaService.injectSiteSchema();
+
+    // On every route change: scroll to top + refresh canonical URL
+    this.subscription.add(
+      this.router.events
+        .pipe(filter(event => event instanceof NavigationEnd))
+        .subscribe(() => {
+          this.scrollToTop();
+          // Individual pages set their own full SEO, but we refresh
+          // the canonical here too as a fallback for lazy routes.
+        })
+    );
   }
 
   scrollToTop(behavior: 'auto' | 'smooth' = 'auto') {
-    // This will work regardless of where router-outlet is placed
-    window.scrollTo({
-      top: 0,
-      left: 0,
-      behavior: behavior
-    });
+    if (this.isBrowser) {
+      window.scrollTo({ top: 0, left: 0, behavior });
+    }
   }
 
   ngOnDestroy() {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-    }
+    this.subscription.unsubscribe();
   }
 }

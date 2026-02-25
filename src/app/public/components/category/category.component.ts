@@ -1,8 +1,11 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit, PLATFORM_ID, Inject } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { PublicService } from '../../services/public.service';
 import { NewsItem } from '../../../types/news.types';
 import { PaginationState } from '../../../types/pagination.types';
+import { SeoService } from '../../../services/seo.service';
+import { NAV_CATEGORIES } from '../../../services/schema.service';
 
 @Component({
   selector: 'app-category',
@@ -18,28 +21,49 @@ export class CategoryComponent implements OnInit {
     endOfRecords: false,
     loading: false
   };
-  isMobile: boolean = window.innerWidth <= 768;
+  // Safe SSR default; updated in ngOnInit on browser
+  isMobile = false;
 
   constructor(
     private route: ActivatedRoute,
-    private publicService: PublicService
+    private publicService: PublicService,
+    private seoService: SeoService,
+    @Inject(PLATFORM_ID) private platformId: Object
   ) { }
 
   @HostListener('window:resize')
   onResize() {
-    this.isMobile = window.innerWidth <= 768;
+    if (isPlatformBrowser(this.platformId)) {
+      this.isMobile = window.innerWidth <= 768;
+    }
   }
 
   @HostListener('window:scroll', ['$event'])
   onScroll() {
+    if (!isPlatformBrowser(this.platformId)) return;
     if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 1000 && !this.pagination.loading && !this.pagination.endOfRecords) {
       this.loadMore();
     }
   }
 
   ngOnInit() {
+    if (isPlatformBrowser(this.platformId)) {
+      this.isMobile = window.innerWidth <= 768;
+    }
     this.route.params.subscribe(params => {
       this.category = params['category'];
+      // Update SEO for this category
+      const catMeta = NAV_CATEGORIES.find(
+        c => c.label.toLowerCase() === this.category.toLowerCase()
+      );
+      if (catMeta) {
+        this.seoService.setForCategory(catMeta.label, catMeta.te);
+      } else {
+        this.seoService.updateSeo({
+          title: `${this.category} వార్తలు`,
+          description: `Latest ${this.category} news in Telugu | Neti Charithra`,
+        });
+      }
       this.resetPagination();
       this.loadNews();
     });

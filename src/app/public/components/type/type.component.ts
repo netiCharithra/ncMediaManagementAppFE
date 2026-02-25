@@ -1,4 +1,5 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit, PLATFORM_ID, Inject } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { PublicService } from '../../services/public.service';
 import { NewsItem } from '../../../types/news.types';
@@ -18,26 +19,33 @@ export class TypeComponent implements OnInit {
     endOfRecords: false,
     loading: false
   };
-  isMobile: boolean = window.innerWidth <= 768;
+  isMobile = false; // Safe SSR default; updated in ngOnInit on browser
 
   constructor(
     private route: ActivatedRoute,
-    private publicService: PublicService
+    private publicService: PublicService,
+    @Inject(PLATFORM_ID) private platformId: Object
   ) { }
 
   @HostListener('window:resize')
   onResize() {
-    this.isMobile = window.innerWidth <= 768;
+    if (isPlatformBrowser(this.platformId)) {
+      this.isMobile = window.innerWidth <= 768;
+    }
   }
 
   @HostListener('window:scroll', ['$event'])
   onScroll() {
+    if (!isPlatformBrowser(this.platformId)) return;
     if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 1000 && !this.pagination.loading && !this.pagination.endOfRecords) {
       this.loadMore();
     }
   }
 
   ngOnInit() {
+    if (isPlatformBrowser(this.platformId)) {
+      this.isMobile = window.innerWidth <= 768;
+    }
     this.route.params.subscribe(params => {
       this.type = params['type'];
       this.resetPagination();

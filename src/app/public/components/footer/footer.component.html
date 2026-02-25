@@ -1,48 +1,124 @@
-<footer class="footer">
-  <div class="container">
-    <div class="footer-content">
-      <div class="footer-brand">
-        <img [src]="logoPath" [alt]="'NC Media'" class="logo">
-        <p>{{ getString('footerText') }}</p>
-      </div>
-      
-      <div class="footer-links">
-        <div class="link-group">
-          <h4>{{ getString('navigation') }}</h4>
-          <a routerLink="/">{{ getString('home') }}</a>
-          <a routerLink="/regional">{{ getString('regional') }}</a>
-          <a routerLink="/international">{{ getString('international') }}</a>
-        </div>
-        
-        <div class="link-group">
-          <h4>{{ getString('contact') }}</h4>
-          <a href="mailto:info&#64;ncmedia.com">
-            <i class="fas fa-envelope"></i> info&#64;ncmedia.com
+<footer class="footer" role="contentinfo" aria-label="Site Footer">
+  <!-- ── Top accent bar ─────────────────────────────────────────────────── -->
+  <div class="footer-accent-bar"></div>
+
+  <div class="footer-inner">
+    <div class="container">
+
+      <!-- ── Main grid ──────────────────────────────────────────────────── -->
+      <div class="footer-grid">
+
+        <!-- Brand column -->
+        <div class="footer-brand">
+          <a routerLink="/home" aria-label="Neti Charithra Home">
+            <img [src]="logoPath" alt="Neti Charithra – నేటి చరిత్ర Logo" class="footer-logo" width="160" height="56">
           </a>
-          <a href="tel:+1234567890">
-            <i class="fas fa-phone"></i> +1 (234) 567-890
-          </a>
-        </div>
-        
-        <div class="link-group">
-          <h4>{{ getString('followUs') || 'Follow Us' }}</h4>
-          <div class="social-links">
-            <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-            <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
-            <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-            <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+          <p class="footer-tagline">
+            తెలుగు వార్తలు, విశ్లేషణలు, మరియు అప్‌డేట్‌లు<br>
+            <span>Latest Telugu News from AP &amp; Telangana</span>
+          </p>
+          <!-- Social links -->
+          <div class="social-links" aria-label="Social Media Links">
+            <a *ngFor="let s of socialLinks" [href]="s.url" [attr.aria-label]="s.label"
+              [title]="s.label + ' – Neti Charithra'" target="_blank" rel="noopener noreferrer" class="social-btn">
+              <i [class]="s.icon"></i>
+            </a>
           </div>
         </div>
-      </div>
-    </div>
-    
-    <div class="footer-bottom">
-      <p>
-        &copy; {{ currentYear }} NC Media. {{ getString('copyright') }}
-        <span *ngIf="visitorCount > 0" class="visitor-count">
-          <i class="fas fa-users"></i> {{ visitorCount.toLocaleString() }} {{ getString('visitors') || 'Visitors' }}
+
+        <!-- News Categories column -->
+        <div class="footer-col">
+          <h3 class="footer-heading">వార్తా విభాగాలు</h3>
+          <nav aria-label="News Category Navigation">
+            <ul class="footer-nav-list">
+              <li *ngFor="let cat of categories">
+                <a [routerLink]="['/category', cat.label.toLowerCase()]" [title]="cat.te + ' వార్తలు – Neti Charithra'"
+                  class="footer-link">
+                  <i [class]="'fas fa-' + cat.icon" aria-hidden="true"></i>
+                  <span>{{ cat.te }} <small>{{ cat.label }}</small></span>
+                </a>
+              </li>
+            </ul>
+          </nav>
+        </div>
+
+        <!-- Quick Links column -->
+        <div class="footer-col">
+          <h3 class="footer-heading">త్వరిత లింకులు</h3>
+          <nav aria-label="Quick Links Navigation">
+            <ul class="footer-nav-list">
+              <li>
+                <a routerLink="/home" title="హోమ్ పేజ్ – Neti Charithra Home" class="footer-link">
+                  <i class="fas fa-home" aria-hidden="true"></i>
+                  <span>హోమ్ <small>Home</small></span>
+                </a>
+              </li>
+              <li>
+                <a routerLink="/latest-news" title="తాజా వార్తలు – Latest Telugu News" class="footer-link">
+                  <i class="fas fa-bolt" aria-hidden="true"></i>
+                  <span>తాజా వార్తలు <small>Latest</small></span>
+                </a>
+              </li>
+              <li>
+                <a routerLink="/regional" title="ప్రాంతీయ వార్తలు – Regional Telugu News" class="footer-link">
+                  <i class="fas fa-map-marker-alt" aria-hidden="true"></i>
+                  <span>ప్రాంతీయం <small>Regional</small></span>
+                </a>
+              </li>
+              <li>
+                <a routerLink="/international" title="అంతర్జాతీయ వార్తలు – International News" class="footer-link">
+                  <i class="fas fa-globe-asia" aria-hidden="true"></i>
+                  <span>అంతర్జాతీయం <small>International</small></span>
+                </a>
+              </li>
+              <li>
+                <a routerLink="/grievance" title="ఫిర్యాదు నమోదు – Submit a Grievance" class="footer-link">
+                  <i class="fas fa-hands-helping" aria-hidden="true"></i>
+                  <span>ఫిర్యాదు <small>Grievance</small></span>
+                </a>
+              </li>
+            </ul>
+          </nav>
+        </div>
+
+        <!-- Contact column -->
+        <div class="footer-col">
+          <h3 class="footer-heading">సంప్రదించండి</h3>
+          <address class="footer-contact">
+            <a href="mailto:info@neticharithra.com" title="Email Neti Charithra" class="footer-link contact-link">
+              <i class="fas fa-envelope" aria-hidden="true"></i>
+              <span>info&#64;neticharithra.com</span>
+            </a>
+            <a href="tel:+919100000000" title="Call Neti Charithra" class="footer-link contact-link">
+              <i class="fas fa-phone-alt" aria-hidden="true"></i>
+              <span>+91 91000 00000</span>
+            </a>
+            <div class="app-badges">
+              <a href="https://play.google.com/store/apps/neticharithra" target="_blank" rel="noopener noreferrer"
+                title="Download Neti Charithra Android App" class="badge-btn">
+                <i class="fab fa-google-play" aria-hidden="true"></i> Google Play
+              </a>
+            </div>
+          </address>
+        </div>
+
+      </div><!-- /footer-grid -->
+
+      <!-- ── Bottom bar ──────────────────────────────────────────────────── -->
+      <div class="footer-bottom">
+        <p class="copyright">
+          &copy; {{ currentYear }} <strong>Neti Charithra</strong>.
+          {{ getString('copyright') || 'All rights reserved.' }}
+        </p>
+        <span *ngIf="visitorCount > 0" class="visitor-count" title="Total website visitors">
+          <i class="fas fa-users" aria-hidden="true"></i>
+          {{ visitorCount.toLocaleString('te-IN') }} visitors
         </span>
-      </p>
+        <p class="disclaimer">
+          తెలుగు వార్తా పోర్టల్ | Telugu News Portal
+        </p>
+      </div>
+
     </div>
   </div>
 </footer>
