@@ -1,4 +1,5 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Inject, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'app-splash-screen',
@@ -10,6 +11,8 @@ export class SplashScreenComponent implements OnInit, OnDestroy {
   private animationDuration = 500; // milliseconds
   private minimumDisplayTime = 2000; // Minimum display time in milliseconds
 
+  constructor(@Inject(PLATFORM_ID) private platformId: Object) { }
+
   ngOnInit() {
     // Hide splash screen after minimum display time
     setTimeout(() => {
@@ -19,12 +22,14 @@ export class SplashScreenComponent implements OnInit, OnDestroy {
 
   private hideSplash() {
     this.showSplash = false;
-    
-    // Remove from DOM after animation completes
+
+    // Remove from DOM after animation completes (browser only)
     setTimeout(() => {
-      const splashElement = document.querySelector('app-splash-screen');
-      if (splashElement) {
-        splashElement.remove();
+      if (isPlatformBrowser(this.platformId)) {
+        const splashElement = document.querySelector('app-splash-screen');
+        if (splashElement) {
+          splashElement.remove();
+        }
       }
     }, this.animationDuration);
   }

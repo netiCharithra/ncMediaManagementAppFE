@@ -1,11 +1,11 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
-import * as L from 'leaflet';
-import 'leaflet.markercluster';
+import { Component, Input, OnChanges, SimpleChanges, Inject, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import type * as L from 'leaflet';
 import { GeocodingService } from '../../services/geocoding.service';
 
 @Component({
   selector: 'app-dashboard-map',
- 
+
   templateUrl: './dashboard-map.component.html',
   styleUrl: './dashboard-map.component.scss'
 })
@@ -19,12 +19,26 @@ export class DashboardMapComponent implements OnChanges {
   isLoading = true;
   rawCoordinates: any[] = [];
 
-  constructor(private geocodingService: GeocodingService) {}
+  private leaflet: typeof L | undefined;
 
-  ngOnChanges(changes: SimpleChanges): void {
+  constructor(
+    private geocodingService: GeocodingService,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) { }
+
+  async ngOnChanges(changes: SimpleChanges): Promise<void> {
+    if (!isPlatformBrowser(this.platformId)) {
+      this.isLoading = false;
+      return;
+    }
+
     if (changes['visitorLocations'] && changes['visitorLocations'].currentValue) {
       this.rawCoordinates = this.visitorLocations || [];
       if (this.rawCoordinates.length > 0) {
+        if (!this.leaflet) {
+          this.leaflet = await import('leaflet');
+          await import('leaflet.markercluster');
+        }
         this.initMap();
         // Ensure map is fully initialized before loading markers
         setTimeout(() => this.loadMarkers(), 0);
@@ -35,6 +49,9 @@ export class DashboardMapComponent implements OnChanges {
   }
 
   private initMap(): void {
+    if (!this.leaflet) return;
+    const L = this.leaflet;
+
     this.map = L.map('map').setView([20.5937, 78.9629], 4.3); // Center on India
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -42,14 +59,18 @@ export class DashboardMapComponent implements OnChanges {
       attribution: '© OpenStreetMap contributors'
     }).addTo(this.map);
 
+    // @ts-ignore
     this.markerClusterGroup = L.markerClusterGroup();
-    this.map?.addLayer(this.markerClusterGroup);
+    this.map?.addLayer(this.markerClusterGroup!);
   }
 
   private async loadMarkers(): Promise<void> {
+    if (!this.leaflet) return;
+    const L = this.leaflet;
+
     try {
       console.log('Loading markers, rawCoordinates:', this.rawCoordinates);
-      
+
       // Always set loading to false after a maximum timeout to prevent infinite loading
       const loadingTimeout = setTimeout(() => {
         console.warn('Map loading timeout reached, forcing isLoading = false');
@@ -83,9 +104,9 @@ export class DashboardMapComponent implements OnChanges {
       // Clear any existing markers
       this.markerClusterGroup?.clearLayers();
       this.markers = [];
-      
+
       console.log(`Processing ${this.rawCoordinates.length} coordinates`);
-      
+
       // Process coordinates with Promise.allSettled for better error handling
       const markerPromises = this.rawCoordinates.map(async (point, index) => {
         try {
@@ -109,7 +130,7 @@ export class DashboardMapComponent implements OnChanges {
               </small>
             </div>
           `;
-          
+
           marker.bindPopup(basicPopupContent);
           this.markerClusterGroup?.addLayer(marker);
           this.markers.push(marker);
@@ -117,12 +138,12 @@ export class DashboardMapComponent implements OnChanges {
           // Try to get address with timeout
           try {
             const addressPromise = this.geocodingService.getAddress(point.lat, point.lng).toPromise();
-            const timeoutPromise = new Promise((_, reject) => 
+            const timeoutPromise = new Promise((_, reject) =>
               setTimeout(() => reject(new Error('Address lookup timeout')), 5000)
             );
-            
+
             const address = await Promise.race([addressPromise, timeoutPromise]) as string;
-            
+
             // Update popup with address if successful
             if (address && typeof address === 'string') {
               marker.setPopupContent(`
@@ -135,7 +156,7 @@ export class DashboardMapComponent implements OnChanges {
                   </small>
                 </div>
               `);
-              
+
               marker.bindTooltip(address);
             }
           } catch (addressError) {
@@ -149,13 +170,13 @@ export class DashboardMapComponent implements OnChanges {
 
       // Wait for all markers to be processed (or fail)
       await Promise.allSettled(markerPromises);
-      
+
       console.log(`Finished processing ${this.markers.length} markers`);
-      
+
       // Clear timeout and set loading to false
       clearTimeout(loadingTimeout);
       this.isLoading = false;
-      
+
     } catch (error) {
       console.error('Critical error in loadMarkers:', error);
       // Ensure loading is always set to false, even on critical errors
