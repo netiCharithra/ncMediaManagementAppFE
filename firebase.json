@@ -9,7 +9,45 @@
     "rewrites": [
       {
         "source": "**",
-        "destination": "/index.html"
+        "destination": "/index.csr.html"
+      }
+    ],
+    "headers": [
+      {
+        "source": "/sitemap.xml",
+        "headers": [
+          {
+            "key": "Content-Type",
+            "value": "application/xml"
+          }
+        ]
+      },
+      {
+        "source": "/robots.txt",
+        "headers": [
+          {
+            "key": "Content-Type",
+            "value": "text/plain"
+          }
+        ]
+      },
+      {
+        "source": "**/*.js",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "public, max-age=31536000, immutable"
+          }
+        ]
+      },
+      {
+        "source": "**/*.css",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "public, max-age=31536000, immutable"
+          }
+        ]
       }
     ]
   }
