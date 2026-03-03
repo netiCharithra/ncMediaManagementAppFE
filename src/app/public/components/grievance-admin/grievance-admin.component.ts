@@ -1,6 +1,6 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Inject, PLATFORM_ID } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { DatePipe } from '@angular/common';
+import { DatePipe, isPlatformBrowser } from '@angular/common';
 import { Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
 import { PublicService } from '../../services/public.service';
@@ -94,6 +94,7 @@ export class GrievanceAdminComponent implements OnInit, OnDestroy {
         private fb: FormBuilder,
         private publicService: PublicService,
         private datePipe: DatePipe,
+        @Inject(PLATFORM_ID) private platformId: object,
     ) { }
 
     ngOnInit(): void {
@@ -101,17 +102,21 @@ export class GrievanceAdminComponent implements OnInit, OnDestroy {
         this.buildFilterForm();
         this.buildActionForm();
 
-        // Restore session from localStorage
-        const employeeId = localStorage.getItem('officer_id');
-        if (employeeId) {
-            this.isAuthenticated = true;
-            this.officerName = localStorage.getItem('officer_name') || employeeId;
-            this.initDashboard();
+        // Restore session from localStorage (browser-only)
+        if (isPlatformBrowser(this.platformId)) {
+            const employeeId = localStorage.getItem('officer_id');
+            if (employeeId) {
+                this.isAuthenticated = true;
+                this.officerName = localStorage.getItem('officer_name') || employeeId;
+                this.initDashboard();
+            }
         }
     }
 
     ngOnDestroy(): void {
-        document.body.classList.remove('drawer-open');
+        if (isPlatformBrowser(this.platformId)) {
+            document.body.classList.remove('drawer-open');
+        }
         this.destroy$.next();
         this.destroy$.complete();
     }
@@ -189,8 +194,10 @@ export class GrievanceAdminComponent implements OnInit, OnDestroy {
                         const id = userData?.employeeId || userData?.id || payload.identifier;
                         const name = userData?.name || id;
 
-                        localStorage.setItem('officer_id', id);
-                        localStorage.setItem('officer_name', name);
+                        if (isPlatformBrowser(this.platformId)) {
+                            localStorage.setItem('officer_id', id);
+                            localStorage.setItem('officer_name', name);
+                        }
                         this.officerName = name;
                         this.isAuthenticated = true;
 
@@ -240,8 +247,10 @@ export class GrievanceAdminComponent implements OnInit, OnDestroy {
     }
 
     logout(): void {
-        localStorage.removeItem('officer_id');
-        localStorage.removeItem('officer_name');
+        if (isPlatformBrowser(this.platformId)) {
+            localStorage.removeItem('officer_id');
+            localStorage.removeItem('officer_name');
+        }
         this.isAuthenticated = false;
         this.officerName = null;
         this.grievances = [];
@@ -343,10 +352,12 @@ export class GrievanceAdminComponent implements OnInit, OnDestroy {
     private scrollPosition = 0;
 
     openDetail(ticketId: string): void {
-        this.scrollPosition = window.pageYOffset;
+        if (isPlatformBrowser(this.platformId)) {
+            this.scrollPosition = window.pageYOffset;
+            document.body.classList.add('drawer-open');
+            document.body.style.top = `-${this.scrollPosition}px`;
+        }
         this.isDrawerOpen = true;
-        document.body.classList.add('drawer-open');
-        document.body.style.top = `-${this.scrollPosition}px`;
 
         this.selectedGrievance = null;
         this.isDetailLoading = true;
@@ -374,9 +385,11 @@ export class GrievanceAdminComponent implements OnInit, OnDestroy {
 
     closeDrawer(): void {
         this.isDrawerOpen = false;
-        document.body.classList.remove('drawer-open');
-        document.body.style.top = '';
-        window.scrollTo(0, this.scrollPosition);
+        if (isPlatformBrowser(this.platformId)) {
+            document.body.classList.remove('drawer-open');
+            document.body.style.top = '';
+            window.scrollTo(0, this.scrollPosition);
+        }
         this.selectedGrievance = null;
     }
 
@@ -390,8 +403,8 @@ export class GrievanceAdminComponent implements OnInit, OnDestroy {
         this.actionError = null;
         this.actionSuccess = false;
 
-        const officerId = localStorage.getItem('officer_id') || undefined;
-        const officerName = this.officerName || localStorage.getItem('officer_name') || undefined;
+        const officerId = isPlatformBrowser(this.platformId) ? (localStorage.getItem('officer_id') || undefined) : undefined;
+        const officerName = this.officerName || (isPlatformBrowser(this.platformId) ? (localStorage.getItem('officer_name') || undefined) : undefined);
 
         const payload = {
             ...this.actionForm.value,

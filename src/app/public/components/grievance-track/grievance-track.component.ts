@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostBinding } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
+import { GrievanceThemeService } from '../../services/grievance-theme.service';
 import { PublicService } from '../../services/public.service';
 import {
     GrievanceTrackResponse,
@@ -74,12 +75,17 @@ export class GrievanceTrackComponent implements OnInit {
             },
         };
 
+    @HostBinding('class.dark-theme') get darkTheme() { return this.themeService.isDark; }
+
     constructor(
         private fb: FormBuilder,
         private publicService: PublicService,
         private datePipe: DatePipe,
-        private route: ActivatedRoute
+        private route: ActivatedRoute,
+        public themeService: GrievanceThemeService
     ) { }
+
+    toggleTheme(): void { this.themeService.toggle(); }
 
     ngOnInit(): void {
         this.buildForm();

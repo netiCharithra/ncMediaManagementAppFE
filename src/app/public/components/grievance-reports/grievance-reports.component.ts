@@ -1,7 +1,8 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostBinding } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { PublicService } from '../../services/public.service';
+import { GrievanceThemeService } from '../../services/grievance-theme.service';
 import {
     GrievanceReportResponse,
     MonthlyComplianceTrend,
@@ -19,6 +20,9 @@ export class GrievanceReportsComponent implements OnInit, OnDestroy {
     isLoading = false;
     error: string | null = null;
     selectedYear: number = new Date().getFullYear();
+
+    readonly currentMonth: number = new Date().getMonth() + 1;
+    readonly currentYear: number = new Date().getFullYear();
 
     readonly availableYears: number[] = (() => {
         const current = new Date().getFullYear();
@@ -43,7 +47,14 @@ export class GrievanceReportsComponent implements OnInit, OnDestroy {
 
     private destroy$ = new Subject<void>();
 
-    constructor(private publicService: PublicService) { }
+    @HostBinding('class.dark-theme') get darkTheme() { return this.themeService.isDark; }
+
+    constructor(
+        private publicService: PublicService,
+        public themeService: GrievanceThemeService
+    ) { }
+
+    toggleTheme(): void { this.themeService.toggle(); }
 
     ngOnInit(): void {
         this.loadReports();
@@ -105,13 +116,14 @@ export class GrievanceReportsComponent implements OnInit, OnDestroy {
         };
     }
 
-    resolutionRate(resolved: number, rejected: number): number {
+    resolutionRate(resolved: number, rejected: number): number | null {
         const total = resolved + rejected;
-        if (total === 0) return 0;
+        if (total === 0) return null;
         return Math.round((resolved / total) * 100);
     }
 
-    rateColor(rate: number): string {
+    rateColor(rate: number | null): string {
+        if (rate === null) return '#9E9E9E';
         if (rate >= 70) return '#2E7D32';
         if (rate >= 40) return '#F57C00';
         return '#C62828';
@@ -119,6 +131,16 @@ export class GrievanceReportsComponent implements OnInit, OnDestroy {
 
     getCategoryLabel(cat: string): string {
         return this.CATEGORY_LABELS[cat] || cat;
+    }
+
+    /**
+     * Converts a resolution rate (0–100) to SVG stroke-dashoffset for the circular gauge.
+     * The gauge circle has r=32, so circumference = 2 * π * 32 ≈ 201.06.
+     */
+    getGaugeDashOffset(rate: number | null): number {
+        const circumference = 2 * Math.PI * 32; // ≈ 201.06
+        if (rate === null) return circumference;
+        return circumference - (rate / 100) * circumference;
     }
 
     /** Returns months to show: all 12 for past years, up to current month for current year */

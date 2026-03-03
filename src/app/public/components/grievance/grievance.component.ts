@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostBinding } from '@angular/core';
 import { Location } from '@angular/common';
 import { Router } from '@angular/router';
+import { GrievanceThemeService } from '../../services/grievance-theme.service';
 import {
     FormBuilder,
     FormGroup,
@@ -48,12 +49,17 @@ export class GrievanceComponent implements OnInit {
     private readonly MAX_FILES = 3;
     private readonly ALLOWED_TYPES = ['image/png', 'image/jpeg', 'image/gif', 'application/pdf'];
 
+    @HostBinding('class.dark-theme') get darkTheme() { return this.themeService.isDark; }
+
     constructor(
         private fb: FormBuilder,
         private publicService: PublicService,
         private location: Location,
-        private router: Router
+        private router: Router,
+        public themeService: GrievanceThemeService
     ) { }
+
+    toggleTheme(): void { this.themeService.toggle(); }
 
     ngOnInit(): void {
         this.buildForm();

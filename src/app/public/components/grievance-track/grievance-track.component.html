@@ -1,247 +1,251 @@
-<section class="grievance-track-page">
+<section class="gt-page">
 
-    <!-- ─── Quick Nav ───────────────────────────────────────────────────── -->
-    <div class="quick-nav">
-        <div class="container d-flex align-items-center gap-2">
+    <!-- ── Sticky Top Nav ── -->
+    <nav class="top-nav">
+        <div class="top-nav__inner">
             <a routerLink="/grievance" class="nav-btn">
-                <i class="fa-solid fa-chevron-left"></i> File a Grievance
+                <i class="fa-solid fa-chevron-left"></i>
+                <span>File a Grievance</span>
             </a>
-            <span class="nav-breadcrumb">
-                <i class="fa-solid fa-map-location-dot"></i> Track Your Complaint
+            <span class="top-nav__breadcrumb">
+                <i class="fa-solid fa-radar"></i>
+                Track Your Complaint
             </span>
+            <button class="nav-btn nav-btn--theme" style="margin-left:auto" (click)="toggleTheme()"
+                [title]="themeService.isDark ? 'Switch to Light Mode' : 'Switch to Dark Mode'" id="theme-toggle-btn">
+                <i class="fa-solid" [ngClass]="themeService.isDark ? 'fa-sun' : 'fa-moon'"></i>
+            </button>
         </div>
-    </div>
+    </nav>
 
-    <!-- ─── Hero ───────────────────────────────────────────────────────── -->
-    <header class="page-hero">
-        <div class="container">
-            <span class="hero-badge">
-                <i class="fa-solid fa-radar"></i> Status Tracker
-            </span>
-            <h1 class="hero-title">Track Your Grievance</h1>
-            <p class="hero-subtitle">
+    <!-- ── Hero Banner ── -->
+    <header class="hero">
+        <div class="hero__bg-grid"></div>
+        <div class="hero__inner">
+            <div class="hero__pill">
+                <i class="fa-solid fa-radar"></i>
+                <span>Status Tracker</span>
+            </div>
+            <h1 class="hero__title">Track Your<br><span class="hero__title--accent">Grievance</span></h1>
+            <p class="hero__sub">
                 Enter your Ticket&nbsp;ID to view the real-time status and complete
                 action timeline of your complaint.
             </p>
         </div>
-        <div class="hero-decor" aria-hidden="true"></div>
+        <div class="hero__fade"></div>
     </header>
 
-    <!-- ─── Main Body ──────────────────────────────────────────────────── -->
-    <main class="main-body">
-        <div class="container">
-            <div class="tracker-layout">
+    <!-- ── Main Body ── -->
+    <main class="gt-body">
+        <div class="tracker-layout">
 
-                <!-- ═══ Search Card ════════════════════════════════════════════ -->
-                <div class="search-card" id="search-card">
-                    <div class="search-card__header">
-                        <i class="fa-solid fa-ticket"></i>
-                        <span>Enter Your Ticket ID</span>
-                    </div>
-                    <div class="search-card__body">
-                        <form [formGroup]="trackForm" (ngSubmit)="onSearch()" novalidate autocomplete="off">
-                            <div class="ticket-input-group" [class.has-error]="isInvalid('ticketId')">
-                                <label class="ticket-label" for="ticketIdInput">
-                                    Ticket ID <span class="req-star">*</span>
-                                </label>
-                                <div class="ticket-input-wrap">
-                                    <span class="ticket-prefix" aria-hidden="true">
-                                        <i class="fa-solid fa-hashtag"></i>
-                                    </span>
-                                    <input id="ticketIdInput" type="text" class="ticket-input"
-                                        formControlName="ticketId" placeholder="NC-GR-2026-0001" spellcheck="false"
-                                        autocapitalize="characters"
-                                        (input)="ticketIdCtrl.setValue(ticketIdCtrl.value?.toUpperCase())" />
-                                    <button type="submit" class="search-btn" [disabled]="isLoading"
-                                        id="track-search-btn" aria-label="Track grievance">
-                                        <span *ngIf="!isLoading">
-                                            <i class="fa-solid fa-magnifying-glass"></i>
-                                            <span class="btn-text">Track</span>
-                                        </span>
-                                        <span *ngIf="isLoading" class="spinner-wrap">
-                                            <span class="mini-spinner"></span>
-                                        </span>
-                                    </button>
-                                </div>
-                                <!-- Validation messages -->
-                                <div class="ticket-hint" *ngIf="!isInvalid('ticketId')">
-                                    Format: <strong>NC-GR-YYYY-NNNN</strong> &nbsp;·&nbsp;
-                                    e.g., NC-GR-2026-0001
-                                </div>
-                                <span *ngIf="isInvalid('ticketId')" class="field-error" role="alert">
-                                    <ng-container *ngIf="ticketIdCtrl.hasError('required')">Ticket ID is
-                                        required.</ng-container>
-                                    <ng-container
-                                        *ngIf="ticketIdCtrl.hasError('pattern') && !ticketIdCtrl.hasError('required')">
-                                        Must match format <strong>NC-GR-YYYY-NNNN</strong> (e.g. NC-GR-2026-0001).
-                                    </ng-container>
+            <!-- ═══ Search Card ═══ -->
+            <div class="search-card" id="search-card">
+                <div class="search-card__header">
+                    <span class="search-card__header-icon"><i class="fa-solid fa-ticket"></i></span>
+                    <span>Enter Your Ticket ID</span>
+                </div>
+                <div class="search-card__body">
+                    <form [formGroup]="trackForm" (ngSubmit)="onSearch()" novalidate autocomplete="off">
+                        <div class="ticket-field" [class.ticket-field--error]="isInvalid('ticketId')">
+                            <label class="ticket-field__label" for="ticketIdInput">
+                                Ticket ID <span class="req-star">*</span>
+                            </label>
+                            <div class="ticket-input-wrap">
+                                <span class="ticket-prefix" aria-hidden="true">
+                                    <i class="fa-solid fa-hashtag"></i>
                                 </span>
+                                <input id="ticketIdInput" type="text" class="ticket-input" formControlName="ticketId"
+                                    placeholder="NC-GR-2026-0001" spellcheck="false" autocapitalize="characters"
+                                    (input)="ticketIdCtrl.setValue(ticketIdCtrl.value?.toUpperCase())" />
+                                <button type="submit" class="search-btn" [disabled]="isLoading" id="track-search-btn"
+                                    aria-label="Track grievance">
+                                    <span *ngIf="!isLoading">
+                                        <i class="fa-solid fa-magnifying-glass"></i>
+                                        <span class="search-btn__text">Track</span>
+                                    </span>
+                                    <span *ngIf="isLoading" class="search-btn__spinner">
+                                        <span class="spinner"></span>
+                                    </span>
+                                </button>
                             </div>
-                        </form>
-                    </div>
-                </div>
 
-                <!-- ═══ Result Area ════════════════════════════════════════════ -->
-
-                <!-- Loading Spinner -->
-                <div *ngIf="isLoading" class="state-card state-loading" role="status" aria-live="polite">
-                    <div class="pulse-ring">
-                        <div class="pulse-inner"></div>
-                    </div>
-                    <p class="state-text">Fetching your complaint status…</p>
-                </div>
-
-                <!-- Not Found / Server Error -->
-                <div *ngIf="!isLoading && errorMessage" class="state-card state-error" role="alert">
-                    <div class="state-icon">
-                        <i *ngIf="errorMessage === 'not_found'" class="fa-solid fa-file-circle-question"></i>
-                        <i *ngIf="errorMessage === 'server_error'" class="fa-solid fa-triangle-exclamation"></i>
-                    </div>
-                    <ng-container *ngIf="errorMessage === 'not_found'">
-                        <h2 class="state-heading">Ticket Not Found</h2>
-                        <p class="state-body">
-                            We couldn't locate a complaint with that Ticket ID. Double-check the format
-                            <strong>NC-GR-YYYY-NNNN</strong> and try again.
-                        </p>
-                    </ng-container>
-                    <ng-container *ngIf="errorMessage === 'server_error'">
-                        <h2 class="state-heading">Something went wrong</h2>
-                        <p class="state-body">
-                            A server error occurred while fetching your complaint. Please try again in a moment.
-                        </p>
-                    </ng-container>
-                    <button class="retry-btn" (click)="onReset()" id="track-retry-btn">
-                        <i class="fa-solid fa-rotate-left"></i> Try Again
-                    </button>
-                </div>
-
-                <!-- ─── Track Result ──────────────────────────────────────────── -->
-                <div *ngIf="!isLoading && trackData" class="result-wrapper" id="track-result">
-
-                    <!-- Current Status Badge -->
-                    <div class="current-status-bar" [ngClass]="getStatusConfig(trackData.currentStatus).bgClass">
-                        <div class="csb-inner container">
-                            <div class="csb-label">Current Status</div>
-                            <div class="csb-badge">
-                                <i class="fa-solid" [ngClass]="getStatusConfig(trackData.currentStatus).icon"></i>
-                                {{ getStatusConfig(trackData.currentStatus).label }}
+                            <div class="ticket-hint" *ngIf="!isInvalid('ticketId')">
+                                Format: <strong>NC-GR-YYYY-NNNN</strong>&nbsp;·&nbsp;e.g., NC-GR-2026-0001
                             </div>
-                            <div class="csb-ticket">{{ trackData.ticketId }}</div>
+                            <span *ngIf="isInvalid('ticketId')" class="field-error" role="alert">
+                                <ng-container *ngIf="ticketIdCtrl.hasError('required')">Ticket ID is
+                                    required.</ng-container>
+                                <ng-container
+                                    *ngIf="ticketIdCtrl.hasError('pattern') && !ticketIdCtrl.hasError('required')">
+                                    Must match format <strong>NC-GR-YYYY-NNNN</strong> (e.g. NC-GR-2026-0001).
+                                </ng-container>
+                            </span>
                         </div>
-                    </div>
+                    </form>
+                </div>
+            </div>
 
-                    <div class="container">
-                        <div class="result-grid">
+            <!-- ═══ Loading ═══ -->
+            <div *ngIf="isLoading" class="state-card" role="status" aria-live="polite">
+                <div class="pulse-ring">
+                    <div class="pulse-inner"></div>
+                </div>
+                <p class="state-card__text">Fetching your complaint status…</p>
+            </div>
 
-                            <!-- ─── Complainant Summary Card ───────────────────────── -->
-                            <div class="summary-card">
-                                <div class="summary-card__header">
-                                    <i class="fa-solid fa-id-card"></i>
-                                    <span>Complaint Summary</span>
-                                </div>
-                                <ul class="summary-list">
-                                    <li class="summary-item">
-                                        <span class="si-label"><i class="fa-solid fa-user"></i> Complainant</span>
-                                        <span class="si-value">{{ trackData.complainantName }}</span>
-                                    </li>
-                                    <li class="summary-item">
-                                        <span class="si-label"><i class="fa-solid fa-calendar-plus"></i>
-                                            Submitted</span>
-                                        <span class="si-value">{{ formatEpoch(trackData.submittedAt) }}</span>
-                                    </li>
-                                    <li class="summary-item">
-                                        <span class="si-label"><i class="fa-solid fa-tag"></i> Category</span>
-                                        <span class="si-value">{{ getCategoryLabel(trackData.grievanceCategory)
-                                            }}</span>
-                                    </li>
-                                    <li class="summary-item" *ngIf="trackData.contentUrl">
-                                        <span class="si-label"><i class="fa-solid fa-link"></i> Content URL</span>
-                                        <a class="si-value si-link" [href]="trackData.contentUrl" target="_blank"
-                                            rel="noopener noreferrer">View Content ↗</a>
-                                    </li>
-                                    <li class="summary-item">
-                                        <span class="si-label"><i class="fa-solid fa-clock-rotate-left"></i> Last
-                                            Updated</span>
-                                        <span class="si-value">{{ formatEpoch(trackData.updatedAt) }}</span>
-                                    </li>
-                                </ul>
-                            </div>
-
-                            <!-- ─── Timeline ──────────────────────────────────────── -->
-                            <div class="timeline-card">
-                                <div class="timeline-card__header">
-                                    <i class="fa-solid fa-timeline"></i>
-                                    <span>Action Timeline</span>
-                                    <span class="tl-count">{{ resolvedTimeline.length }} step(s)</span>
-                                </div>
-
-                                <div class="timeline-body">
-                                    <ol class="timeline" aria-label="Complaint timeline">
-                                        <li *ngFor="let entry of resolvedTimeline; let i = index; let last = last"
-                                            class="tl-item" [class.tl-item--last]="last" [class.tl-item--active]="last">
-                                            <!-- Connector line (hidden for last) -->
-                                            <div class="tl-connector" *ngIf="!last"></div>
-
-                                            <!-- Icon node -->
-                                            <div class="tl-node" [ngClass]="getStatusConfig(entry.status).bgClass"
-                                                [attr.aria-label]="getStatusConfig(entry.status).label">
-                                                <i class="fa-solid" [ngClass]="getStatusConfig(entry.status).icon"></i>
-                                            </div>
-
-                                            <!-- Content -->
-                                            <div class="tl-content">
-                                                <div class="tl-header">
-                                                    <span class="tl-status-label"
-                                                        [ngClass]="getStatusConfig(entry.status).bgClass">
-                                                        {{ getStatusConfig(entry.status).label }}
-                                                    </span>
-                                                    <time class="tl-timestamp" [attr.datetime]="entry.timestamp">
-                                                        <i class="fa-regular fa-clock"></i>
-                                                        {{ formatEpoch(entry.timestamp) }}
-                                                    </time>
-                                                </div>
-                                                <p class="tl-action">{{ entry.actionTaken }}</p>
-                                                <p class="tl-by" *ngIf="entry.updatedBy">
-                                                    <i class="fa-solid fa-user-shield"></i> {{ entry.updatedBy }}
-                                                </p>
-                                            </div>
-                                        </li>
-                                    </ol>
-                                </div>
-                            </div>
-
-                        </div><!-- /result-grid -->
-
-                        <!-- Reset button -->
-                        <div class="track-footer">
-                            <button class="track-another-btn" (click)="onReset()" id="track-another-btn">
-                                <i class="fa-solid fa-rotate-left"></i> Track Another Ticket
-                            </button>
-                            <a routerLink="/grievance" class="file-new-btn" id="file-new-btn">
-                                <i class="fa-solid fa-plus"></i> File New Complaint
-                            </a>
-                        </div>
-                    </div><!-- /container -->
-                </div><!-- /result-wrapper -->
-
-                <!-- Empty-state hero prompt (before any search) -->
-                <div *ngIf="!isLoading && !hasSearched && !trackData" class="state-card state-idle">
-                    <div class="idle-visual" aria-hidden="true">
-                        <i class="fa-solid fa-radar idle-icon"></i>
-                        <div class="idle-rings">
-                            <span class="ring ring-1"></span>
-                            <span class="ring ring-2"></span>
-                            <span class="ring ring-3"></span>
-                        </div>
-                    </div>
-                    <p class="state-body">
-                        Enter your <strong>Ticket ID</strong> above to track the real-time
-                        status of your complaint.
+            <!-- ═══ Error States ═══ -->
+            <div *ngIf="!isLoading && errorMessage" class="state-card state-card--error" role="alert">
+                <div class="state-card__icon-wrap state-card__icon-wrap--error">
+                    <i *ngIf="errorMessage === 'not_found'" class="fa-solid fa-file-circle-question"></i>
+                    <i *ngIf="errorMessage === 'server_error'" class="fa-solid fa-triangle-exclamation"></i>
+                </div>
+                <ng-container *ngIf="errorMessage === 'not_found'">
+                    <h2 class="state-card__heading">Ticket Not Found</h2>
+                    <p class="state-card__body">
+                        We couldn't locate a complaint with that Ticket ID. Double-check the format
+                        <strong>NC-GR-YYYY-NNNN</strong> and try again.
                     </p>
+                </ng-container>
+                <ng-container *ngIf="errorMessage === 'server_error'">
+                    <h2 class="state-card__heading">Something went wrong</h2>
+                    <p class="state-card__body">
+                        A server error occurred while fetching your complaint. Please try again in a moment.
+                    </p>
+                </ng-container>
+                <button class="retry-btn" (click)="onReset()" id="track-retry-btn">
+                    <i class="fa-solid fa-rotate-left"></i> Try Again
+                </button>
+            </div>
+
+            <!-- ═══ Track Result ═══ -->
+            <div *ngIf="!isLoading && trackData" class="result-wrapper" id="track-result">
+
+                <!-- Current Status Banner -->
+                <div class="status-banner" [ngClass]="getStatusConfig(trackData.currentStatus).bgClass">
+                    <div class="status-banner__inner">
+                        <div class="status-banner__label">Current Status</div>
+                        <div class="status-banner__badge">
+                            <i class="fa-solid" [ngClass]="getStatusConfig(trackData.currentStatus).icon"></i>
+                            {{ getStatusConfig(trackData.currentStatus).label }}
+                        </div>
+                        <div class="status-banner__ticket">{{ trackData.ticketId }}</div>
+                    </div>
                 </div>
 
-            </div><!-- /tracker-layout -->
-        </div><!-- /container -->
+                <div class="result-grid">
+
+                    <!-- Complaint Summary -->
+                    <div class="summary-card">
+                        <div class="summary-card__header">
+                            <span class="summary-card__header-icon"><i class="fa-solid fa-id-card"></i></span>
+                            <span>Complaint Summary</span>
+                        </div>
+                        <ul class="summary-list">
+                            <li class="summary-item">
+                                <span class="summary-item__label"><i class="fa-solid fa-user"></i> Complainant</span>
+                                <span class="summary-item__value">{{ trackData.complainantName }}</span>
+                            </li>
+                            <li class="summary-item">
+                                <span class="summary-item__label"><i class="fa-solid fa-calendar-plus"></i>
+                                    Submitted</span>
+                                <span class="summary-item__value">{{ formatEpoch(trackData.submittedAt) }}</span>
+                            </li>
+                            <li class="summary-item">
+                                <span class="summary-item__label"><i class="fa-solid fa-tag"></i> Category</span>
+                                <span class="summary-item__value">{{ getCategoryLabel(trackData.grievanceCategory)
+                                    }}</span>
+                            </li>
+                            <li class="summary-item" *ngIf="trackData.contentUrl">
+                                <span class="summary-item__label"><i class="fa-solid fa-link"></i> Content URL</span>
+                                <a class="summary-item__link" [href]="trackData.contentUrl" target="_blank"
+                                    rel="noopener noreferrer">
+                                    View Content <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                                </a>
+                            </li>
+                            <li class="summary-item">
+                                <span class="summary-item__label"><i class="fa-solid fa-clock-rotate-left"></i> Last
+                                    Updated</span>
+                                <span class="summary-item__value">{{ formatEpoch(trackData.updatedAt) }}</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Action Timeline -->
+                    <div class="timeline-card">
+                        <div class="timeline-card__header">
+                            <span class="timeline-card__header-icon"><i class="fa-solid fa-timeline"></i></span>
+                            <span>Action Timeline</span>
+                            <span class="timeline-count">{{ resolvedTimeline.length }} step(s)</span>
+                        </div>
+
+                        <div class="timeline-body">
+                            <ol class="timeline-list" aria-label="Complaint timeline">
+                                <li *ngFor="let entry of resolvedTimeline; let i = index; let last = last"
+                                    class="tl-item" [class.tl-item--last]="last" [class.tl-item--active]="last">
+
+                                    <!-- Connector line -->
+                                    <div class="tl-connector" *ngIf="!last"></div>
+
+                                    <!-- Node icon -->
+                                    <div class="tl-node" [ngClass]="getStatusConfig(entry.status).bgClass"
+                                        [attr.aria-label]="getStatusConfig(entry.status).label">
+                                        <i class="fa-solid" [ngClass]="getStatusConfig(entry.status).icon"></i>
+                                    </div>
+
+                                    <!-- Content -->
+                                    <div class="tl-content">
+                                        <div class="tl-header">
+                                            <span class="tl-status-badge"
+                                                [ngClass]="getStatusConfig(entry.status).bgClass">
+                                                {{ getStatusConfig(entry.status).label }}
+                                            </span>
+                                            <time class="tl-timestamp" [attr.datetime]="entry.timestamp">
+                                                <i class="fa-regular fa-clock"></i>
+                                                {{ formatEpoch(entry.timestamp) }}
+                                            </time>
+                                        </div>
+                                        <p class="tl-action">{{ entry.actionTaken }}</p>
+                                        <p class="tl-by" *ngIf="entry.updatedBy">
+                                            <i class="fa-solid fa-user-shield"></i> {{ entry.updatedBy }}
+                                        </p>
+                                    </div>
+                                </li>
+                            </ol>
+                        </div>
+                    </div>
+
+                </div><!-- /result-grid -->
+
+                <!-- Footer Actions -->
+                <div class="result-footer">
+                    <button class="btn-reset" (click)="onReset()" id="track-another-btn">
+                        <i class="fa-solid fa-rotate-left"></i> Track Another Ticket
+                    </button>
+                    <a routerLink="/grievance" class="btn-file" id="file-new-btn">
+                        <i class="fa-solid fa-plus"></i> File New Complaint
+                    </a>
+                </div>
+
+            </div><!-- /result-wrapper -->
+
+            <!-- ═══ Idle State (before search) ═══ -->
+            <div *ngIf="!isLoading && !hasSearched && !trackData" class="idle-state">
+                <div class="idle-visual" aria-hidden="true">
+                    <i class="fa-solid fa-radar idle-visual__icon"></i>
+                    <div class="idle-rings">
+                        <span class="ring ring-1"></span>
+                        <span class="ring ring-2"></span>
+                        <span class="ring ring-3"></span>
+                    </div>
+                </div>
+                <p class="idle-state__text">
+                    Enter your <strong>Ticket ID</strong> above to track the real-time
+                    status of your complaint.
+                </p>
+            </div>
+
+        </div><!-- /tracker-layout -->
     </main>
 
 </section>

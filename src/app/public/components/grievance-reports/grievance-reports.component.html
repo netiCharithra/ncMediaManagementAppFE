@@ -1,110 +1,188 @@
 <div class="cr-page">
 
-    <!-- ── Quick Nav ── -->
-    <div class="quick-nav">
-        <div class="qn-inner">
-            <div class="qn-links">
-                <a routerLink="/grievance" class="qn-btn" id="qn-grievance">
-                    <i class="fa-solid fa-arrow-left"></i><span>Grievance Portal</span>
+    <!-- ── Sticky Nav ── -->
+    <nav class="top-nav">
+        <div class="top-nav__inner">
+            <div class="top-nav__links">
+                <a routerLink="/grievance" class="nav-btn" id="qn-grievance">
+                    <i class="fa-solid fa-arrow-left-long"></i>
+                    <span>Grievance Portal</span>
                 </a>
-                <a routerLink="/grievance/admin" class="qn-btn qn-btn--admin" id="qn-portal">
-                    <i class="fa-solid fa-shield-halved"></i><span>Officer Portal</span>
+                <a routerLink="/grievance/admin" class="nav-btn nav-btn--admin" id="qn-portal">
+                    <i class="fa-solid fa-shield-halved"></i>
+                    <span>Officer Portal</span>
                 </a>
             </div>
-            <span class="qn-rule">IT Rules 2021 — Public Transparency</span>
+            <div class="top-nav__actions">
+                <button class="nav-btn nav-btn--theme" (click)="toggleTheme()"
+                    [title]="themeService.isDark ? 'Switch to Light Mode' : 'Switch to Dark Mode'"
+                    id="theme-toggle-btn">
+                    <i class="fa-solid" [ngClass]="themeService.isDark ? 'fa-sun' : 'fa-moon'"></i>
+                </button>
+                <span class="top-nav__tag">
+                    <i class="fa-solid fa-balance-scale"></i>
+                    IT Rules 2021 &mdash; Public Transparency
+                </span>
+            </div>
         </div>
-    </div>
+    </nav>
 
-    <!-- ── Hero ── -->
-    <div class="cr-hero">
-        <div class="cr-hero__inner">
-            <div class="cr-hero__badge">
-                <i class="fa-solid fa-chart-column"></i> Compliance Reports
+    <!-- ── Hero Banner ── -->
+    <header class="hero">
+        <div class="hero__bg-grid"></div>
+        <div class="hero__inner">
+            <div class="hero__pill">
+                <i class="fa-solid fa-chart-column"></i>
+                <span>Compliance Reports</span>
             </div>
-            <h1 class="cr-hero__title">Monthly Grievance Redressal Statistics</h1>
-            <p class="cr-hero__sub">
+            <h1 class="hero__title">Monthly Grievance<br><span class="hero__title--accent">Redressal Statistics</span>
+            </h1>
+            <p class="hero__sub">
                 Transparent, periodically updated statistics on grievances received and redressed under
-                the Information Technology (Intermediary Guidelines and Digital Media Ethics Code) Rules, 2021.
+                the Information Technology (Intermediary Guidelines and Digital Media Ethics Code) Rules,&nbsp;2021.
             </p>
         </div>
-    </div>
+        <div class="hero__fade"></div>
+    </header>
 
-    <!-- ── Body ── -->
-    <div class="cr-body">
+    <!-- ── Page Body ── -->
+    <main class="cr-body">
 
-        <!-- Year picker + summary strip -->
-        <div class="cr-controls">
-            <div class="year-group">
-                <span class="year-group__label">
-                    <i class="fa-solid fa-calendar-days"></i> Select Year
+        <!-- Year Toggle & KPI Hero Strip -->
+        <section class="controls-section">
+
+            <!-- Year Toggle -->
+            <div class="year-toggle-wrap">
+                <span class="year-toggle__label">
+                    <i class="fa-solid fa-calendar-days"></i>
+                    Year
                 </span>
-                <div class="year-pills">
-                    <button *ngFor="let y of availableYears" class="year-pill"
-                        [class.year-pill--active]="y === selectedYear" (click)="changeYear(y)" [attr.id]="'yr-' + y">
+                <div class="year-toggle" role="group" aria-label="Select year">
+                    <button *ngFor="let y of availableYears" class="yr-btn" [class.yr-btn--active]="y === selectedYear"
+                        (click)="changeYear(y)" [id]="'yr-' + y" [attr.aria-pressed]="y === selectedYear">
                         {{ y }}
                     </button>
                 </div>
             </div>
 
-            <!-- Annual summary (overall) -->
-            <div class="summary-strip" *ngIf="!isLoading && !error && report?.overall">
-                <div class="ss-stat">
-                    <span class="ss-num">{{ report!.overall.total }}</span>
-                    <span class="ss-lbl">Yearly Total</span>
+            <!-- KPI Hero Cards -->
+            <div class="kpi-row" *ngIf="!isLoading && !error && report?.overall">
+                <div class="kpi-card kpi-card--total">
+                    <div class="kpi-card__icon-wrap kpi-card__icon-wrap--indigo">
+                        <i class="fa-solid fa-inbox"></i>
+                    </div>
+                    <div class="kpi-card__body">
+                        <span class="kpi-card__num">{{ report!.overall.total }}</span>
+                        <span class="kpi-card__lbl">Yearly Total</span>
+                    </div>
+                    <div class="kpi-card__bar kpi-card__bar--indigo"></div>
                 </div>
-                <div class="ss-divider"></div>
-                <div class="ss-stat">
-                    <span class="ss-num ss-num--green">{{ report!.overall.resolved }}</span>
-                    <span class="ss-lbl">Resolved</span>
+
+                <div class="kpi-card kpi-card--resolved">
+                    <div class="kpi-card__icon-wrap kpi-card__icon-wrap--emerald">
+                        <i class="fa-solid fa-circle-check"></i>
+                    </div>
+                    <div class="kpi-card__body">
+                        <span class="kpi-card__num kpi-card__num--emerald">{{ report!.overall.resolved }}</span>
+                        <span class="kpi-card__lbl">Resolved</span>
+                    </div>
+                    <div class="kpi-card__bar kpi-card__bar--emerald"></div>
                 </div>
-                <div class="ss-divider"></div>
-                <div class="ss-stat">
-                    <span class="ss-num ss-num--amber">{{ report!.overall.underInvestigation }}</span>
-                    <span class="ss-lbl">In Progress</span>
+
+                <div class="kpi-card kpi-card--progress">
+                    <div class="kpi-card__icon-wrap kpi-card__icon-wrap--amber">
+                        <i class="fa-solid fa-hourglass-half"></i>
+                    </div>
+                    <div class="kpi-card__body">
+                        <span class="kpi-card__num kpi-card__num--amber">{{ report!.overall.underInvestigation }}</span>
+                        <span class="kpi-card__lbl">In Progress</span>
+                    </div>
+                    <div class="kpi-card__bar kpi-card__bar--amber"></div>
                 </div>
-                <div class="ss-divider"></div>
-                <div class="ss-stat">
-                    <span class="ss-num"
-                        [style.color]="rateColor(resolutionRate(report!.overall.resolved, report!.overall.rejected))">
-                        {{ resolutionRate(report!.overall.resolved, report!.overall.rejected) }}%
-                    </span>
-                    <span class="ss-lbl">Resolution Rate</span>
+
+                <div class="kpi-card kpi-card--rate">
+                    <div class="kpi-card__icon-wrap kpi-card__icon-wrap--rate"
+                        [class.kpi-card__icon-wrap--emerald]="(resolutionRate(report!.overall.resolved, report!.overall.rejected) ?? 0) >= 70"
+                        [class.kpi-card__icon-wrap--amber]="(resolutionRate(report!.overall.resolved, report!.overall.rejected) ?? 0) < 70 && (resolutionRate(report!.overall.resolved, report!.overall.rejected) ?? 0) >= 40"
+                        [class.kpi-card__icon-wrap--rose]="(resolutionRate(report!.overall.resolved, report!.overall.rejected) ?? 0) < 40 && resolutionRate(report!.overall.resolved, report!.overall.rejected) !== null">
+                        <i class="fa-solid fa-gauge-high"></i>
+                    </div>
+                    <div class="kpi-card__body">
+                        <span class="kpi-card__num"
+                            [class.kpi-card__num--emerald]="(resolutionRate(report!.overall.resolved, report!.overall.rejected) ?? 0) >= 70"
+                            [class.kpi-card__num--amber]="(resolutionRate(report!.overall.resolved, report!.overall.rejected) ?? 0) < 70 && (resolutionRate(report!.overall.resolved, report!.overall.rejected) ?? 0) >= 40"
+                            [class.kpi-card__num--rose]="(resolutionRate(report!.overall.resolved, report!.overall.rejected) ?? 0) < 40 && resolutionRate(report!.overall.resolved, report!.overall.rejected) !== null">
+                            {{ resolutionRate(report!.overall.resolved, report!.overall.rejected) !== null
+                            ? resolutionRate(report!.overall.resolved, report!.overall.rejected) + '%'
+                            : 'N/A' }}
+                        </span>
+                        <span class="kpi-card__lbl">Resolution Rate</span>
+                    </div>
+                    <div class="kpi-card__bar"
+                        [class.kpi-card__bar--emerald]="(resolutionRate(report!.overall.resolved, report!.overall.rejected) ?? 0) >= 70"
+                        [class.kpi-card__bar--amber]="(resolutionRate(report!.overall.resolved, report!.overall.rejected) ?? 0) < 70 && (resolutionRate(report!.overall.resolved, report!.overall.rejected) ?? 0) >= 40"
+                        [class.kpi-card__bar--rose]="(resolutionRate(report!.overall.resolved, report!.overall.rejected) ?? 0) < 40">
+                    </div>
                 </div>
             </div>
-        </div>
+        </section>
 
-        <!-- Category Breakdown (New Section) -->
-        <div class="category-breakdown" *ngIf="!isLoading && !error && report?.byCategory?.length">
-            <h2 class="section-title">
-                <i class="fa-solid fa-tags"></i> Performance by Category ({{ selectedYear }})
-            </h2>
-            <div class="category-grid">
-                <div class="category-card" *ngFor="let cat of report!.byCategory">
-                    <div class="cat-header">
-                        <span class="cat-name">{{ getCategoryLabel(cat.category) }}</span>
-                        <span class="cat-total">{{ cat.total }}</span>
+        <!-- ── Category Breakdown ── -->
+        <section class="section-block" *ngIf="!isLoading && !error && report?.byCategory?.length">
+            <div class="section-block__header">
+                <h2 class="section-heading">
+                    <span class="section-heading__icon"><i class="fa-solid fa-tags"></i></span>
+                    Category Breakdown
+                    <span class="section-heading__year">{{ selectedYear }}</span>
+                </h2>
+            </div>
+
+            <div class="cat-grid">
+                <div class="cat-card" *ngFor="let cat of report!.byCategory">
+                    <div class="cat-card__top">
+                        <div class="cat-card__name">{{ getCategoryLabel(cat.category) }}</div>
+                        <span class="cat-card__badge">{{ cat.total }} total</span>
                     </div>
-                    <div class="cat-stats-row">
-                        <div class="cat-mini-stat">
-                            <span class="cat-mini-lbl">Resolved</span>
-                            <span class="cat-mini-val success">{{ cat.resolved }}</span>
+
+                    <!-- Resolved bar -->
+                    <div class="cat-bar-row">
+                        <div class="cat-bar-row__meta">
+                            <span class="cat-bar-row__label cat-bar-row__label--success">
+                                <i class="fa-solid fa-circle-check"></i> Resolved
+                            </span>
+                            <span class="cat-bar-row__count cat-bar-row__count--success">{{ cat.resolved }}</span>
                         </div>
-                        <div class="cat-mini-stat">
-                            <span class="cat-mini-lbl">Rejected</span>
-                            <span class="cat-mini-val danger">{{ cat.rejected }}</span>
+                        <div class="cat-bar-track">
+                            <div class="cat-bar-fill cat-bar-fill--success"
+                                [style.width.%]="cat.total > 0 ? (cat.resolved / cat.total) * 100 : 0"></div>
                         </div>
-                        <div class="cat-mini-stat">
-                            <span class="cat-mini-lbl">Avg. Time</span>
-                            <span class="cat-mini-val">{{ cat.avgResolutionHours ? cat.avgResolutionHours + 'h' : '—'
-                                }}</span>
+                    </div>
+
+                    <!-- Rejected bar -->
+                    <div class="cat-bar-row">
+                        <div class="cat-bar-row__meta">
+                            <span class="cat-bar-row__label cat-bar-row__label--danger">
+                                <i class="fa-solid fa-circle-xmark"></i> Rejected
+                            </span>
+                            <span class="cat-bar-row__count cat-bar-row__count--danger">{{ cat.rejected }}</span>
                         </div>
+                        <div class="cat-bar-track">
+                            <div class="cat-bar-fill cat-bar-fill--danger"
+                                [style.width.%]="cat.total > 0 ? (cat.rejected / cat.total) * 100 : 0"></div>
+                        </div>
+                    </div>
+
+                    <!-- Avg time -->
+                    <div class="cat-card__footer" *ngIf="cat.avgResolutionHours">
+                        <i class="fa-regular fa-clock"></i>
+                        Avg. Resolution: <strong>{{ cat.avgResolutionHours }}h</strong>
                     </div>
                 </div>
             </div>
-        </div>
+        </section>
 
-        <!-- Loading skeleton -->
-        <div class="reports-grid" *ngIf="isLoading">
+        <!-- ── Loading Skeleton ── -->
+        <div class="timeline-grid" *ngIf="isLoading">
             <div class="rmc rmc--skeleton" *ngFor="let i of [1,2,3,4,5,6,7,8,9,10,11,12]">
                 <div class="sk sk--head"></div>
                 <div class="sk sk--num"></div>
@@ -114,88 +192,129 @@
             </div>
         </div>
 
-        <!-- Error -->
+        <!-- ── Error State ── -->
         <div class="empty-state" *ngIf="!isLoading && error">
-            <i class="fa-solid fa-triangle-exclamation empty-state__icon empty-state__icon--error"></i>
+            <div class="empty-state__icon-wrap empty-state__icon-wrap--error">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+            </div>
+            <p class="empty-state__title">Something went wrong</p>
             <p class="empty-state__text">{{ error }}</p>
             <button class="retry-btn" (click)="loadReports()">
                 <i class="fa-solid fa-rotate-right"></i> Retry
             </button>
         </div>
 
-        <!-- Empty -->
+        <!-- ── Empty State ── -->
         <div class="empty-state" *ngIf="!isLoading && !error && !report">
-            <i class="fa-solid fa-folder-open empty-state__icon"></i>
+            <div class="empty-state__icon-wrap">
+                <i class="fa-solid fa-folder-open"></i>
+            </div>
+            <p class="empty-state__title">No Data Available</p>
             <p class="empty-state__text">No compliance data published for {{ selectedYear }} yet.</p>
         </div>
 
-        <!-- Month cards grid -->
-        <div class="reports-grid" *ngIf="!isLoading && !error && report">
-            <div *ngFor="let m of displayedMonths" class="rmc" [attr.id]="'report-' + selectedYear + '-' + m">
+        <!-- ── Performance Timeline (Month Cards) ── -->
+        <section class="section-block" *ngIf="!isLoading && !error && report">
+            <div class="section-block__header">
+                <h2 class="section-heading">
+                    <span class="section-heading__icon"><i class="fa-solid fa-timeline"></i></span>
+                    Performance Timeline
+                    <span class="section-heading__year">{{ selectedYear }}</span>
+                </h2>
+            </div>
 
-                <div *ngIf="getTrendForMonth(m) as data">
-                    <!-- Header -->
-                    <div class="rmc__head">
-                        <div class="rmc__month-name">{{ MONTH_NAMES[m - 1] }}</div>
-                        <span class="rmc__year-tag">{{ selectedYear }}</span>
-                    </div>
+            <div class="timeline-grid">
+                <div *ngFor="let m of displayedMonths" class="rmc"
+                    [class.rmc--active]="m === currentMonth && selectedYear === currentYear"
+                    [attr.id]="'report-' + selectedYear + '-' + m">
 
-                    <!-- Big total -->
-                    <div class="rmc__total">
-                        <span class="rmc__total-num">{{ data.total }}</span>
-                        <span class="rmc__total-sub">Complaints Received</span>
-                    </div>
+                    <div *ngIf="getTrendForMonth(m) as data">
 
-                    <!-- 4-stat grid -->
-                    <div class="rmc__stats">
-                        <div class="rmc__stat">
-                            <i class="fa-solid fa-circle-check" style="color:#2E7D32"></i>
-                            <span class="rmc__stat-n" style="color:#2E7D32">{{ data.resolved }}</span>
-                            <span class="rmc__stat-l">Resolved</span>
-                        </div>
-                        <div class="rmc__stat">
-                            <i class="fa-solid fa-circle-xmark" style="color:#C62828"></i>
-                            <span class="rmc__stat-n" style="color:#C62828">{{ data.rejected }}</span>
-                            <span class="rmc__stat-l">Rejected</span>
-                        </div>
-                        <div class="rmc__stat">
-                            <i class="fa-solid fa-hourglass-half" style="color:#F57C00"></i>
-                            <span class="rmc__stat-n" style="color:#F57C00">{{ data.underInvestigation }}</span>
-                            <span class="rmc__stat-l">Process</span>
-                        </div>
-                        <div class="rmc__stat">
-                            <i class="fa-solid fa-paper-plane" style="color:#1976D2"></i>
-                            <span class="rmc__stat-n" style="color:#1976D2">{{ data.submitted }}</span>
-                            <span class="rmc__stat-l">Submitted</span>
-                        </div>
-                    </div>
-
-                    <!-- Resolution rate bar -->
-                    <div class="rmc__rate">
-                        <div class="rmc__rate-row">
-                            <span class="rmc__rate-lbl">Resolution Rate</span>
-                            <span class="rmc__rate-pct"
-                                [style.color]="rateColor(resolutionRate(data.resolved, data.rejected))">
-                                {{ resolutionRate(data.resolved, data.rejected) }}%
+                        <!-- Card Header -->
+                        <div class="rmc__head">
+                            <div class="rmc__head-left">
+                                <span class="rmc__month">{{ MONTH_NAMES[m - 1] }}</span>
+                                <span class="rmc__year-tag">{{ selectedYear }}</span>
+                            </div>
+                            <span class="rmc__active-badge" *ngIf="m === currentMonth && selectedYear === currentYear">
+                                <span class="rmc__active-dot"></span>
+                                Current
                             </span>
                         </div>
-                        <div class="rmc__rate-track">
-                            <div class="rmc__rate-fill" [style.width.%]="resolutionRate(data.resolved, data.rejected)"
-                                [style.background]="rateColor(resolutionRate(data.resolved, data.rejected))">
+
+                        <!-- Circular Gauge + Total -->
+                        <div class="rmc__gauge-section">
+                            <!-- SVG Circular Progress Gauge -->
+                            <div class="gauge-wrap">
+                                <svg class="gauge-svg" viewBox="0 0 80 80" aria-hidden="true">
+                                    <circle class="gauge-track" cx="40" cy="40" r="32" />
+                                    <circle class="gauge-fill" cx="40" cy="40" r="32"
+                                        [attr.stroke]="rateColor(resolutionRate(data.resolved, data.rejected))"
+                                        [style.stroke-dashoffset]="getGaugeDashOffset(resolutionRate(data.resolved, data.rejected))" />
+                                </svg>
+                                <div class="gauge-center">
+                                    <span class="gauge-pct"
+                                        [style.color]="rateColor(resolutionRate(data.resolved, data.rejected))">
+                                        {{ resolutionRate(data.resolved, data.rejected) !== null
+                                        ? resolutionRate(data.resolved, data.rejected) + '%'
+                                        : 'N/A' }}
+                                    </span>
+                                    <span class="gauge-sub">Rate</span>
+                                </div>
+                            </div>
+
+                            <div class="rmc__total-block">
+                                <span class="rmc__total-num">{{ data.total }}</span>
+                                <span class="rmc__total-label">Complaints</span>
+                            </div>
+                        </div>
+
+                        <!-- 4-stat grid -->
+                        <div class="rmc__stats">
+                            <div class="rmc__stat rmc__stat--success">
+                                <i class="fa-solid fa-circle-check"></i>
+                                <span class="rmc__stat-num">{{ data.resolved }}</span>
+                                <span class="rmc__stat-lbl">Resolved</span>
+                            </div>
+                            <div class="rmc__stat rmc__stat--danger">
+                                <i class="fa-solid fa-circle-xmark"></i>
+                                <span class="rmc__stat-num">{{ data.rejected }}</span>
+                                <span class="rmc__stat-lbl">Rejected</span>
+                            </div>
+                            <div class="rmc__stat rmc__stat--amber" title="In Process">
+                                <i class="fa-solid fa-hourglass-half"></i>
+                                <span class="rmc__stat-num">{{ data.underInvestigation }}</span>
+                                <span class="rmc__stat-lbl">In Process</span>
+                            </div>
+                            <div class="rmc__stat rmc__stat--blue" title="Submitted">
+                                <i class="fa-solid fa-paper-plane"></i>
+                                <span class="rmc__stat-num">{{ data.submitted }}</span>
+                                <span class="rmc__stat-lbl">Submitted</span>
+                            </div>
+                        </div>
+
+                        <!-- Thin resolution rate bar at bottom -->
+                        <div class="rmc__rate-bar">
+                            <div class="rmc__rate-fill"
+                                [style.width.%]="resolutionRate(data.resolved, data.rejected) ?? 0" [style.background]="resolutionRate(data.resolved, data.rejected) !== null
+                                    ? rateColor(resolutionRate(data.resolved, data.rejected))
+                                    : 'transparent'">
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div><!-- /reports-grid -->
+        </section>
 
-        <!-- Legal footer -->
-        <div class="legal-note">
+        <!-- ── Legal Footer ── -->
+        <footer class="legal-note">
             <i class="fa-solid fa-scale-balanced"></i>
-            Published in compliance with Rule 4(2) of the IT (Intermediary Guidelines and Digital Media Ethics Code)
-            Rules, 2021.
-            Data is updated periodically by the Grievance Officer.
-        </div>
+            <span>
+                Published in compliance with <strong>Rule 4(2)</strong> of the IT (Intermediary Guidelines and Digital
+                Media Ethics Code)
+                Rules, 2021. Data is updated periodically by the Grievance Officer.
+            </span>
+        </footer>
 
-    </div><!-- /cr-body -->
+    </main>
 </div>

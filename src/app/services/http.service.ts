@@ -79,7 +79,9 @@ export class HttpService {
 
     return this.http.get(`${this.baseUrl}${endpoint}`, options).pipe(
       switchMap(async (response: any) => {
-        const decRes = await this.decryptIfEncrypted(response);
+        const decResOriginal = await this.decryptIfEncrypted(response);
+        const decRes = await decResOriginal.payload;
+        console.log("decRes", decRes);
         if (decRes && decRes.status === 'success' && decRes?.data) {
           return decRes?.data;
         } else {
@@ -191,7 +193,9 @@ export class HttpService {
         const finalBody = { payload: encryptedBody };
         return this.http.put(`${this.baseUrl}${endpoint}`, finalBody, options).pipe(
           switchMap(async (response: any) => {
-            const decRes = await this.decryptIfEncrypted(response);
+            const decResOriginal = await this.decryptIfEncrypted(response);
+            const decRes = await decResOriginal.payload;
+
             if (decRes && decRes.status === 'success') {
               return decRes;
             } else {
@@ -227,7 +231,9 @@ export class HttpService {
 
     return this.http.delete(`${this.baseUrl}${endpoint}`, options).pipe(
       switchMap(async (response: any) => {
-        const decRes = await this.decryptIfEncrypted(response);
+        const decResOriginal = await this.decryptIfEncrypted(response);
+        const decRes = await decResOriginal.payload;
+
         if (decRes && decRes.status === 'success') {
           return decRes;
         } else {
@@ -266,7 +272,8 @@ export class HttpService {
         const finalBody = { payload: encryptedBody };
         return this.http.patch(`${this.baseUrl}${endpoint}`, finalBody, options).pipe(
           switchMap(async (response: any) => {
-            const decRes = await this.decryptIfEncrypted(response);
+            const decResOriginal = await this.decryptIfEncrypted(response);
+            const decRes = await decResOriginal.payload;
             if (decRes && decRes.status === 'success') {
               return decRes.data ?? decRes;
             } else {
