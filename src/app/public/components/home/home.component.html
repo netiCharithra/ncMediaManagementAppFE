@@ -55,7 +55,8 @@
     <div class="container">
       <div class="section-header">
         <h2>{{getCategoryLabel(section['category'])}}</h2>
-        <a [routerLink]="'/category/'+section['category']" class="view-all">{{languageService.getString('viewAll')}}</a>
+        <a [routerLink]="getCategorySlug(section['category'])"
+          class="view-all">{{languageService.getString('viewAll')}}</a>
       </div>
 
       <div class="news-grid" *ngIf="!isLoadingNewsCategories">

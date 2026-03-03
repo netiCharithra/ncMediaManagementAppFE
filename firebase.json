@@ -6,6 +6,73 @@
       "**/.*",
       "**/node_modules/**"
     ],
+    "redirects": [
+      {
+        "source": "/home",
+        "destination": "/",
+        "type": 301
+      },
+      {
+        "source": "/category/General",
+        "destination": "/general",
+        "type": 301
+      },
+      {
+        "source": "/category/general",
+        "destination": "/general",
+        "type": 301
+      },
+      {
+        "source": "/category/Political",
+        "destination": "/politics",
+        "type": 301
+      },
+      {
+        "source": "/category/political",
+        "destination": "/politics",
+        "type": 301
+      },
+      {
+        "source": "/category/Entertainment",
+        "destination": "/entertainment",
+        "type": 301
+      },
+      {
+        "source": "/category/entertainment",
+        "destination": "/entertainment",
+        "type": 301
+      },
+      {
+        "source": "/category/Sports",
+        "destination": "/sports",
+        "type": 301
+      },
+      {
+        "source": "/category/sports",
+        "destination": "/sports",
+        "type": 301
+      },
+      {
+        "source": "/category/Technology",
+        "destination": "/technology",
+        "type": 301
+      },
+      {
+        "source": "/category/technology",
+        "destination": "/technology",
+        "type": 301
+      },
+      {
+        "source": "/category/Business",
+        "destination": "/business",
+        "type": 301
+      },
+      {
+        "source": "/category/business",
+        "destination": "/business",
+        "type": 301
+      }
+    ],
     "rewrites": [
       {
         "source": "**",

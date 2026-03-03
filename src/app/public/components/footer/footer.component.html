@@ -10,7 +10,8 @@
 
         <!-- Brand column -->
         <div class="footer-brand">
-          <a routerLink="/home" aria-label="Neti Charithra Home">
+          <!-- Brand links to homepage root "/" -->
+          <a routerLink="/" aria-label="Neti Charithra Home">
             <img [src]="logoPath" alt="Neti Charithra – నేటి చరిత్ర Logo" class="footer-logo" width="160" height="56">
           </a>
           <p class="footer-tagline">
@@ -32,8 +33,7 @@
           <nav aria-label="News Category Navigation">
             <ul class="footer-nav-list">
               <li *ngFor="let cat of categories">
-                <a [routerLink]="['/category', cat.label]" [title]="cat.te + ' వార్తలు – Neti Charithra'"
-                  class="footer-link">
+                <a [routerLink]="'/' + cat.urlSlug" [title]="cat.te + ' వార్తలు – Neti Charithra'" class="footer-link">
                   <i [class]="'fas fa-' + cat.icon" aria-hidden="true"></i>
                   <span>{{ cat.te }} <small>{{ cat.label }}</small></span>
                 </a>
@@ -48,7 +48,8 @@
           <nav aria-label="Quick Links Navigation">
             <ul class="footer-nav-list">
               <li>
-                <a routerLink="/home" title="హోమ్ పేజ్ – Neti Charithra Home" class="footer-link">
+                <!-- Home → root path -->
+                <a routerLink="/" title="హోమ్ పేజ్ – Neti Charithra Home" class="footer-link">
                   <i class="fas fa-home" aria-hidden="true"></i>
                   <span>హోమ్ <small>Home</small></span>
                 </a>

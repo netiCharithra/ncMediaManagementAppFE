@@ -93,13 +93,20 @@ export class SeoService {
 
     /**
      * Convenience helper for category pages.
+     * @param categoryEnLabel  Backend label e.g. 'Political'
+     * @param categoryTeLabel  Telugu label e.g. 'రాజకీయం'
+     * @param urlSlug          SEO path segment e.g. 'politics' — used to build canonical URL.
+     *                         When provided, canonical = https://neticharithra.com/{urlSlug}.
+     *                         When omitted, falls back to router.url (which is the new flat path).
      */
-    setForCategory(categoryEnLabel: string, categoryTeLabel: string): void {
+    setForCategory(categoryEnLabel: string, categoryTeLabel: string, urlSlug?: string): void {
         this.updateSeo({
             title: `${categoryTeLabel} - ${categoryEnLabel}`,
             description: `${categoryTeLabel} వార్తలు – తాజా ${categoryEnLabel} వార్తలు, విశ్లేషణలు మరియు అప్‌డేట్‌లు | Neti Charithra`,
             keywords: `${categoryTeLabel}, ${categoryEnLabel} news Telugu, ${categoryEnLabel} Andhra news, ${DEFAULT_KEYWORDS}`,
             ogType: 'website',
+            // Explicit canonical to prevent old /category/ paths from being indexed
+            canonicalUrl: urlSlug ? `${BASE_URL}/${urlSlug}` : undefined,
         });
     }
 

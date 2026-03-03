@@ -141,7 +141,6 @@ export class HttpService {
               switchMap(async (response: any) => {
                 const decResOriginal = await this.decryptIfEncrypted(response);
                 const decRes = await decResOriginal.payload;
-                console.log('decRes', decRes);
                 // Handle both wrapped {status, data} and flat objects
                 const isSuccess = decRes?.status === 'success' || (decRes && !decRes.status);
 

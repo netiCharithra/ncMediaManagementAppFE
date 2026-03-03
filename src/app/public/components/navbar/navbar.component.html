@@ -9,7 +9,8 @@
           <span class="time">{{ today | date:'h:mm:ss a' }}</span>
         </div>
 
-        <a class="brand-link" routerLink="/home">
+        <!-- Brand links to root "/" (homepage) -->
+        <a class="brand-link" routerLink="/">
           <img [src]="logoPath$ | async" alt="NC Media" class="brand-logo">
         </a>
 
@@ -35,12 +36,14 @@
     <div class="container">
       <ul class="nav-links">
         <li>
-          <a routerLink="/home" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">{{ getString('home')
+          <!-- Home → root path -->
+          <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">{{ getString('home')
             }}</a>
         </li>
+        <!-- Categories use getNavSlug() to correctly map API labels to SEO slugs -->
         <li *ngFor="let category of NEWS_CATEGORIES_REGIONAL">
-          <a [routerLink]="['/category', category.label]" routerLinkActive="active">
-            {{ category[currentLanguage] || category.label }}
+          <a [routerLink]="'/' + getNavSlug(category)" routerLinkActive="active">
+            {{ category[currentLanguage] || category.te || category.label }}
           </a>
         </li>
       </ul>
@@ -54,10 +57,10 @@
       <button class="close-btn" (click)="toggleMenu()">&times;</button>
     </div>
     <ul class="mobile-nav-list">
-      <li><a routerLink="/home" (click)="toggleMenu()">{{ getString('home') }}</a></li>
+      <li><a routerLink="/" (click)="toggleMenu()">{{ getString('home') }}</a></li>
       <li *ngFor="let category of NEWS_CATEGORIES_REGIONAL">
-        <a [routerLink]="['/category', category.label]" routerLinkActive="active" (click)="toggleMenu()">
-          {{ category[currentLanguage] || category.label }}
+        <a [routerLink]="'/' + getNavSlug(category)" routerLinkActive="active" (click)="toggleMenu()">
+          {{ category[currentLanguage] || category.te || category.label }}
         </a>
       </li>
       <li>

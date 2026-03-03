@@ -4,6 +4,7 @@ import { LanguageService } from '../../../services/language.service';
 import { BannerService } from '../../../services/banner.service';
 import { Observable, map } from 'rxjs';
 import { PublicService } from '../../services/public.service';
+import { NAV_CATEGORIES } from '../../../services/schema.service';
 
 @Component({
   selector: 'app-navbar',
@@ -88,5 +89,25 @@ export class NavbarComponent implements OnInit {
           }
         });
       });
+  }
+
+  /**
+   * Maps an API-returned category object to its SEO-friendly URL slug.
+   * The API returns { label: 'Political', te: 'రాజకీయం', ... } but has no urlSlug.
+   * We look it up from NAV_CATEGORIES (local source of truth) by matching label.
+   *
+   * Examples:
+   *   { label: 'Political' }     → 'politics'
+   *   { label: 'Entertainment' } → 'entertainment'
+   *   { label: 'General' }       → 'general'
+   *
+   * Falls back to label.toLowerCase() only if the category is unknown,
+   * which would be a backend data issue.
+   */
+  getNavSlug(category: any): string {
+    const match = NAV_CATEGORIES.find(
+      c => c.label.toLowerCase() === (category?.label ?? '').toLowerCase()
+    );
+    return match ? match.urlSlug : (category?.label ?? '').toLowerCase();
   }
 }

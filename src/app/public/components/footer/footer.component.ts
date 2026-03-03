@@ -34,7 +34,7 @@ export class FooterComponent implements OnInit {
   }
 
   get logoPath(): string {
-    return 'assets/images/logo.png';
+    return 'assets/images/logos/logo-512x512.png';
   }
 
   ngOnInit(): void {
