@@ -35,8 +35,9 @@ export class AppComponent implements OnInit, OnDestroy {
         .pipe(filter(event => event instanceof NavigationEnd))
         .subscribe(() => {
           this.scrollToTop();
-          // Individual pages set their own full SEO, but we refresh
-          // the canonical here too as a fallback for lazy routes.
+          // Fallback canonical refresh — individual pages override this
+          // via their own updateSeo()/setForArticle()/setForCategory() calls.
+          this.seoService.refreshCanonical();
         })
     );
   }

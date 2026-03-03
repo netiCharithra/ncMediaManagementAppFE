@@ -1,13 +1,41 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# Neti Charithra – robots.txt
+# https://neticharithra.com
+# Updated: 2026-03-03
+# ─────────────────────────────────────────────────────────────────────────────
+
+# Allow all crawlers by default
 User-agent: *
 Allow: /
 
-# Block admin panel from indexing
+# Block admin and internal panels from indexing
 Disallow: /admin
 Disallow: /admin/
+Disallow: /grievance/admin
+Disallow: /grievance/admin/
+Disallow: /validate-employee/
 
-# Block grievance admin from indexing
+# Allow all static assets (CSS, JS, images, fonts)
+Allow: /assets/
+Allow: /*.js$
+Allow: /*.css$
+Allow: /favicon.png
+Allow: /manifest.webmanifest
+
+# ── Google-specific rules ─────────────────────────────────────────────────────
+User-agent: Googlebot
+Allow: /
+Disallow: /admin
+Disallow: /admin/
 Disallow: /grievance/admin
 Disallow: /validate-employee/
 
-# Sitemap
+# ── Google News – allow all public news pages ─────────────────────────────────
+User-agent: Googlebot-News
+Allow: /
+Allow: /news/
+Disallow: /admin
+Disallow: /grievance/admin
+
+# ── Sitemap references ────────────────────────────────────────────────────────
 Sitemap: https://neticharithra.com/sitemap.xml

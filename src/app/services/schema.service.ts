@@ -68,8 +68,9 @@ export class SchemaService {
         dateModified?: string;
         authorName?: string;
         url?: string;
-        categoryLabel?: string;
-        categorySlug?: string;
+        categoryLabel?: string;   // e.g. 'Political' (EN label)
+        categorySlug?: string;   // e.g. 'politics'
+        articleSection?: string; // same as categoryLabel if omitted
     }): void {
         const articleUrl = article.url || BASE_URL;
         const catSlug = article.categorySlug || '';
@@ -105,17 +106,22 @@ export class SchemaService {
                     : [BASE_URL + '/assets/images/og-default.jpg'],
                 datePublished: article.datePublished || new Date().toISOString(),
                 dateModified: article.dateModified || article.datePublished || new Date().toISOString(),
+                inLanguage: 'te-IN',
+                articleSection: article.articleSection || article.categoryLabel || 'General',
                 author: {
-                    '@type': 'Organization',
-                    name: article.authorName || 'Neti Charithra',
+                    '@type': 'Person',
+                    name: article.authorName || 'Neti Charithra Editorial Team',
                     url: BASE_URL
                 },
                 publisher: {
                     '@type': 'Organization',
                     name: 'Neti Charithra',
+                    url: BASE_URL,
                     logo: {
                         '@type': 'ImageObject',
-                        url: BASE_URL + '/assets/images/logos/logo-512x512.png'
+                        url: BASE_URL + '/assets/images/logos/logo-512x512.png',
+                        width: 512,
+                        height: 512
                     }
                 },
                 mainEntityOfPage: {
@@ -170,7 +176,7 @@ export class SchemaService {
             itemListElement: newsItems.map((item, idx) => ({
                 '@type': 'ListItem',
                 position: idx + 1,
-                url: BASE_URL + '/news/' + (item.language || 'te') + '/' + item.newsId,
+                url: `${BASE_URL}/news/${item.language || 'te'}/${item.newsId}`,
                 name: item.title
             }))
         };
@@ -258,6 +264,16 @@ export class SchemaService {
             name: 'Neti Charithra Site Navigation',
             itemListElement: navElements
         };
+    }
+
+    /**
+     * Remove a page-level schema block.
+     * Call from ngOnDestroy() of components that inject their own schema,
+     * to avoid stale JSON-LD appearing on subsequent pages.
+     */
+    removePageSchema(id: 'ld-json-article' | 'ld-json-category' | 'ld-json-homepage'): void {
+        const el = this.document.getElementById(id);
+        if (el) { el.remove(); }
     }
 
     /** Create or replace a <script type="application/ld+json"> block */

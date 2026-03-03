@@ -1,12 +1,14 @@
-import { Component, OnInit, HostListener } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener, Inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { trigger, state, style, animate, transition } from '@angular/animations';
+import { DOCUMENT } from '@angular/common';
 import { NewsService } from '../../../news.service';
 import { LanguageService } from '../../../services/language.service';
 import { PublicService } from '../../services/public.service';
 import { formatDate } from '@angular/common';
 import { SeoService } from '../../../services/seo.service';
 import { SchemaService } from '../../../services/schema.service';
+import { NAV_CATEGORIES } from '../../../services/schema.service';
 
 @Component({
   selector: 'app-news-expanded',
@@ -32,7 +34,7 @@ import { SchemaService } from '../../../services/schema.service';
     ])
   ]
 })
-export class NewsExpandedComponent implements OnInit {
+export class NewsExpandedComponent implements OnInit, OnDestroy {
   news: any;
   latestNews: any[] = [];
   loading = true;
@@ -67,7 +69,8 @@ export class NewsExpandedComponent implements OnInit {
     public languageService: LanguageService,
     private publicService: PublicService,
     private seoService: SeoService,
-    private schemaService: SchemaService
+    private schemaService: SchemaService,
+    @Inject(DOCUMENT) private document: Document
   ) { }
 
   ngOnInit(): void {
@@ -121,13 +124,27 @@ export class NewsExpandedComponent implements OnInit {
 
           this.seoService.setForArticle(n.title, shortDesc, firstImage, publishedIso);
 
+          // ── Resolve category from the article's category field ────────────
+          const rawCategory: string = n.category || n.newsCategory || '';
+          const catMeta = NAV_CATEGORIES.find(
+            c => c.label.toLowerCase() === rawCategory.toLowerCase()
+          );
+
+          // Safe canonical URL (SSR: document.URL works on both server + browser)
+          const articleCanonicalUrl =
+            `https://neticharithra.com/news/${this.language}/${this.newsId}`;
+
           this.schemaService.injectArticleSchema({
             headline: n.title,
             description: shortDesc,
             image: firstImage,
             datePublished: publishedIso,
             dateModified: publishedIso,
-            url: window.location.href
+            authorName: n.reportedBy?.name || n.author?.name || undefined,
+            url: articleCanonicalUrl,
+            categoryLabel: catMeta?.label || rawCategory || 'General',
+            categorySlug: catMeta?.urlSlug || undefined,
+            articleSection: catMeta?.label || rawCategory || 'General',
           });
           // ────────────────────────────────────────────────────────────────
         } else {
@@ -153,6 +170,12 @@ export class NewsExpandedComponent implements OnInit {
     if (newsId && language) {
       this.fetchNews(newsId, language);
     }
+  }
+
+  ngOnDestroy(): void {
+    // Remove article-specific schema when leaving the article page
+    // to prevent it leaking onto the next page during client-side navigation.
+    this.schemaService.removePageSchema('ld-json-article');
   }
 
   navigateToHome(): void {

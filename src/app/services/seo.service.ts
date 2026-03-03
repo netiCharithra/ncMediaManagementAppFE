@@ -93,20 +93,24 @@ export class SeoService {
 
     /**
      * Convenience helper for category pages.
-     * @param categoryEnLabel  Backend label e.g. 'Political'
-     * @param categoryTeLabel  Telugu label e.g. 'రాజకీయం'
-     * @param urlSlug          SEO path segment e.g. 'politics' — used to build canonical URL.
-     *                         When provided, canonical = https://neticharithra.com/{urlSlug}.
-     *                         When omitted, falls back to router.url (which is the new flat path).
+     * Emits richer, unique meta descriptions per category for better
+     * differentiation in SERPs.
      */
     setForCategory(categoryEnLabel: string, categoryTeLabel: string, urlSlug?: string): void {
+        const canonicalUrl = urlSlug ? `${BASE_URL}/${urlSlug}` : undefined;
         this.updateSeo({
-            title: `${categoryTeLabel} - ${categoryEnLabel}`,
-            description: `${categoryTeLabel} వార్తలు – తాజా ${categoryEnLabel} వార్తలు, విశ్లేషణలు మరియు అప్‌డేట్‌లు | Neti Charithra`,
-            keywords: `${categoryTeLabel}, ${categoryEnLabel} news Telugu, ${categoryEnLabel} Andhra news, ${DEFAULT_KEYWORDS}`,
+            title: `${categoryTeLabel} - ${categoryEnLabel} వార్తలు`,
+            description:
+                `${categoryTeLabel} వార్తలు – Neti Charithra లో తాజా ${categoryEnLabel} వార్తలు, ` +
+                `విశ్లేషణలు మరియు అప్‌డేట్‌లు. Latest ${categoryEnLabel} news from Andhra Pradesh ` +
+                `and Telangana in Telugu. | నేటి చరిత్ర`,
+            keywords:
+                `${categoryTeLabel}, ${categoryEnLabel} news Telugu, ` +
+                `${categoryEnLabel} Andhra Pradesh news, ${categoryEnLabel} Telangana news, ` +
+                `${DEFAULT_KEYWORDS}`,
             ogType: 'website',
-            // Explicit canonical to prevent old /category/ paths from being indexed
-            canonicalUrl: urlSlug ? `${BASE_URL}/${urlSlug}` : undefined,
+            // Explicit canonical prevents old /category/ paths from being indexed
+            canonicalUrl,
         });
     }
 
@@ -133,7 +137,20 @@ export class SeoService {
             description: DEFAULT_DESCRIPTION,
             keywords: DEFAULT_KEYWORDS,
             ogType: 'website',
+            canonicalUrl: BASE_URL + '/',
         });
+    }
+
+    /**
+     * Refresh only the canonical tag to the current router URL.
+     * Call from AppComponent on NavigationEnd as a safety net for routes
+     * that do not invoke updateSeo() themselves.
+     */
+    refreshCanonical(): void {
+        // Only update if no component has set an explicit canonical
+        // (i.e. the current canonical already equals BASE_URL + router.url)
+        const currentCanonical = BASE_URL + this.router.url.split('?')[0];
+        this.setCanonical(currentCanonical);
     }
 
     // ── Private helpers ─────────────────────────────────────────────────────────

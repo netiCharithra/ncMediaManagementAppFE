@@ -1,4 +1,4 @@
-import { Component, HostListener, OnInit, PLATFORM_ID, Inject } from '@angular/core';
+import { Component, HostListener, OnInit, OnDestroy, PLATFORM_ID, Inject } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { PublicService } from '../../services/public.service';
@@ -26,9 +26,13 @@ import { SchemaService } from '../../../services/schema.service';
   templateUrl: './category.component.html',
   styleUrls: ['./category.component.scss']
 })
-export class CategoryComponent implements OnInit {
+export class CategoryComponent implements OnInit, OnDestroy {
   /** Display-ready category name (backend value, e.g. "Political") */
   category: string = '';
+  /** Telugu display label e.g. "రాజకీయం" */
+  categoryTe: string = '';
+  /** SEO url slug e.g. "politics" */
+  categorySlug: string = '';
   newsList: NewsItem[] = [];
   pagination: PaginationState = {
     page: 1,
@@ -97,9 +101,14 @@ export class CategoryComponent implements OnInit {
     );
 
     if (catMeta) {
+      this.categoryTe = catMeta.te;
+      this.categorySlug = catMeta.urlSlug;
       this.seoService.setForCategory(catMeta.label, catMeta.te, catMeta.urlSlug);
+      // Inject schema now with empty items; will be refreshed after news loads
       this.schemaService.injectCategorySchema(catMeta.label, catMeta.te, catMeta.urlSlug);
     } else {
+      this.categoryTe = rawCategory;
+      this.categorySlug = rawCategory.toLowerCase();
       this.seoService.updateSeo({
         title: `${rawCategory} వార్తలు`,
         description: `Latest ${rawCategory} news in Telugu | Neti Charithra`,
@@ -130,10 +139,30 @@ export class CategoryComponent implements OnInit {
       count: this.pagination.count
     }).subscribe({
       next: (response: any) => {
-        this.newsList = [...this.newsList, ...response?.records || []];
-        this.pagination.endOfRecords = response?.records?.length < this.pagination.count;
+        const newItems = response?.records || [];
+        this.newsList = [...this.newsList, ...newItems];
+        this.pagination.endOfRecords = newItems.length < this.pagination.count;
         this.pagination.page++;
         this.pagination.loading = false;
+
+        // Refresh category ItemList schema after the first page loads
+        if (this.pagination.page === 2 && this.newsList.length > 0) {
+          const catMeta = NAV_CATEGORIES.find(
+            c => c.label.toLowerCase() === this.category.toLowerCase()
+          );
+          if (catMeta) {
+            this.schemaService.injectCategorySchema(
+              catMeta.label,
+              catMeta.te,
+              catMeta.urlSlug,
+              this.newsList.slice(0, 10).map((item: any) => ({
+                title: item.title,
+                newsId: item._id || item.newsId || item.id,
+                language: item.language || 'te'
+              }))
+            );
+          }
+        }
       },
       error: () => {
         this.pagination.loading = false;
@@ -144,5 +173,9 @@ export class CategoryComponent implements OnInit {
 
   loadMore() {
     this.loadNews();
+  }
+
+  ngOnDestroy(): void {
+    this.schemaService.removePageSchema('ld-json-category');
   }
 }

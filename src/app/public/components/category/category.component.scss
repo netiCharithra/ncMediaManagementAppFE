@@ -3,6 +3,27 @@
     min-height: 80vh;
     padding-top: 24px;
 
+    // Breadcrumb
+    .category-breadcrumb {
+        .breadcrumb {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+
+            .breadcrumb-item a {
+                color: var(--brand-primary);
+                text-decoration: none;
+
+                &:hover {
+                    text-decoration: underline;
+                }
+            }
+
+            .breadcrumb-item.active {
+                color: var(--text-muted);
+            }
+        }
+    }
+
     .featured-news {
         max-width: 960px;
         margin-left: auto;
@@ -14,6 +35,17 @@
             font-family: var(--font-heading);
             color: var(--brand-slate);
             margin-bottom: 12px;
+            display: flex;
+            align-items: baseline;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .category-label-en {
+            font-size: 0.55em;
+            font-weight: 400;
+            color: var(--text-muted);
+            letter-spacing: 0.5px;
         }
 
         .header-line {
@@ -22,6 +54,50 @@
             background: var(--brand-primary);
             border-radius: 2px;
         }
+    }
+
+    // ── Auto-scrolling SEO ticker ────────────────────────────────────────────
+    .category-ticker {
+        overflow: hidden;
+        border-left: 3px solid var(--brand-primary);
+        background: var(--bg-card, #f8f9fa);
+        border-radius: 0 6px 6px 0;
+        padding: 8px 0;
+
+        .ticker-track {
+            display: flex;
+            width: max-content;
+            animation: ticker-scroll 40s linear infinite;
+
+            &:hover {
+                animation-play-state: paused; // pause on hover
+            }
+        }
+
+        .ticker-content {
+            white-space: nowrap;
+            font-size: 0.82rem;
+            line-height: 1.5;
+            color: var(--text-muted);
+            padding: 0 32px; // gap between the two copies
+
+            strong {
+                color: var(--brand-slate, #2d3748);
+                font-weight: 600;
+            }
+        }
+    }
+
+    @keyframes ticker-scroll {
+        0% {
+            transform: translateX(0);
+        }
+
+        100% {
+            transform: translateX(-50%);
+        }
+
+        // -50% = shift by exactly one copy
     }
 
     .news-list-grid {
@@ -36,7 +112,11 @@
 
     @media (max-width: 768px) {
         .category-header h1 {
-            font-size: 1.75rem; // Matched with homepage headers
+            font-size: 1.75rem;
+        }
+
+        .category-intro .intro-text {
+            font-size: 0.82rem;
         }
     }
 }
