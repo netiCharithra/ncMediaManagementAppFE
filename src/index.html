@@ -23,11 +23,15 @@
   <!-- Canonical – SeoService injects a dynamic one per route -->
   <link rel="canonical" href="https://neticharithra.com/">
 
-  <!-- Favicon -->
-  <link rel="icon" type="image/png" href="assets/images/logos/fullLogo.png">
+  <!-- Favicon – absolute root path so it resolves on every route -->
+  <link rel="icon" type="image/png" sizes="512x512" href="/favicon.png">
+  <link rel="apple-touch-icon" href="/favicon.png">
+
+  <!-- Web App Manifest -->
+  <link rel="manifest" href="/manifest.webmanifest">
 
   <!-- App base -->
-  <base href="./">
+  <base href="/">
 
   <!-- Google Fonts: Telugu + UI font -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -60,6 +64,27 @@
 
   <!-- Google Search Console verification (replace with your actual code) -->
   <!-- <meta name="google-site-verification" content="YOUR_VERIFICATION_CODE"> -->
+
+  <!-- JSON-LD: Organization Structured Data (logo shown in Google Search) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Neti Charithra",
+    "alternateName": "నేటి చరిత్ర",
+    "url": "https://neticharithra.com",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://neticharithra.com/assets/images/logos/logo-512x512.png",
+      "width": 512,
+      "height": 512
+    },
+    "description": "Neti Charithra – Latest Telugu news from Andhra Pradesh and Telangana covering Politics, Entertainment, Sports, Technology and Business.",
+    "sameAs": [
+      "https://twitter.com/neticharithra"
+    ]
+  }
+  </script>
 </head>
 
 <body>
